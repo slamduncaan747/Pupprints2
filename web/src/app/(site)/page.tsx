@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/lib/config";
 import { absoluteUrl } from "@/lib/utils";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { Hero } from "@/components/home/hero";
 import { HowItWorks } from "@/components/home/how-it-works";
 import { StyleGallery } from "@/components/home/style-gallery";
@@ -27,11 +28,14 @@ export const metadata: Metadata = {
     url: "/",
     title: `${TITLE} | ${site.name}`,
     description: DESCRIPTION,
+    locale: "en_US",
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: `${TITLE} | ${site.name}`,
     description: DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE.url],
   },
 };
 

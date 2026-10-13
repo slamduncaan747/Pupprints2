@@ -6,6 +6,7 @@ import { PRODUCT_MAP, PRODUCTS, PROMISES, type ProductType } from "@/lib/catalog
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
@@ -38,7 +39,21 @@ export async function generateMetadata({ params }: PageProps<"/shop/[type]">): P
     title: c.title,
     description: c.metaDescription,
     alternates: { canonical: `/shop/${product.type}` },
-    openGraph: { title: `${c.title} | ${site.name}`, description: c.metaDescription, url: `/shop/${product.type}` },
+    openGraph: {
+      type: "website",
+      title: `${c.title} | ${site.name}`,
+      description: c.metaDescription,
+      url: `/shop/${product.type}`,
+      siteName: site.name,
+      locale: "en_US",
+      images: [DEFAULT_OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${c.title} | ${site.name}`,
+      description: c.metaDescription,
+      images: [DEFAULT_OG_IMAGE.url],
+    },
   };
 }
 
