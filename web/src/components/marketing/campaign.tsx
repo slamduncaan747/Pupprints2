@@ -104,6 +104,7 @@ export function ProductLayout({
       <div className="min-w-0">
         <ul
           aria-label={galleryLabel}
+          tabIndex={single ? undefined : 0}
           className={cn(
             "flex gap-0.5 lg:flex-col lg:overflow-visible",
             !single && "snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",

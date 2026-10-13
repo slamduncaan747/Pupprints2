@@ -48,7 +48,10 @@ export default function StylesPage() {
         lede={`${STYLES.length} styles, each made for one subject: your dog. Preview any of them free with your own photo.`}
       />
 
-      <section aria-label="All styles" className="pb-24 sm:pb-36">
+      <section aria-labelledby="all-styles" className="pb-24 sm:pb-36">
+        <h2 id="all-styles" className="sr-only">
+          All styles
+        </h2>
         <div className="mx-auto max-w-[1440px] sm:px-10">
           <ul className="grid grid-cols-2 gap-x-0.5 gap-y-12 sm:gap-x-4 sm:gap-y-16 lg:grid-cols-3 lg:gap-y-24">
             {STYLES.map((style, i) => (

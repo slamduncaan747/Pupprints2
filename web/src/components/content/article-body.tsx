@@ -152,17 +152,25 @@ function BlockView({ block, id, index }: { block: Block; id?: string; index: num
 
 /**
  * A pull quote for long articles: the first sentence of a paragraph about a third of the way in,
- * repeated in large Bodoni italic. It only repeats the article's own words, so it's hidden from
- * screen readers.
+ * repeated in large Bodoni italic a couple of blocks later (`index` is where it's set). It only
+ * repeats the article's own words, so it's hidden from screen readers.
  */
 function pullQuote(article: Article): { index: number; text: string } | null {
-  if (article.body.length < 12) return null;
-  for (let i = Math.floor(article.body.length * 0.35); i < article.body.length - 3; i++) {
-    const block = article.body[i];
-    if (block.type !== "paragraph" || article.body[i - 1]?.type !== "paragraph") continue;
+  const body = article.body;
+  if (body.length < 12) return null;
+  for (let i = Math.floor(body.length * 0.3); i < Math.min(body.length - 3, body.length * 0.75); i++) {
+    const block = body[i];
+    if (block.type !== "paragraph") continue;
+    // Skip item descriptions in listicles (paragraphs directly under an h3).
+    const prev = body[i - 1];
+    if (prev?.type === "heading" && (prev.level ?? 2) === 3) continue;
     const first = plainText(block.text).split(/(?<=[.!?])\s+/)[0] ?? "";
-    if (first.length >= 50 && first.length <= 130 && /[.!?]$/.test(first) && !/^(But|And|So|Or|It|This|That|They)\b/.test(first)) {
-      return { index: i, text: first };
+    if (first.length < 50 || first.length > 130 || !/[.!?]$/.test(first)) continue;
+    // A line worth quoting: no prices, numbers or quotations, and it stands on its own.
+    if (/[0-9$:;"“”]/.test(first) || /^(But|And|So|Or|It|This|That|They|These|Those)\b/.test(first)) continue;
+    // Set it a few blocks later, but never between a heading and its first paragraph.
+    for (let j = i + 2; j <= Math.min(i + 4, body.length - 1); j++) {
+      if (body[j - 1].type !== "heading") return { index: j, text: first };
     }
   }
   return null;

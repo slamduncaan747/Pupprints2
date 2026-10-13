@@ -4,7 +4,7 @@ import { Block, Bullets, Rows, textLink } from "@/components/marketing/blocks";
 import { FaqList } from "@/components/marketing/faq";
 import { CampaignImage } from "@/components/marketing/campaign";
 import { STYLE_MAP } from "@/lib/catalog";
-import { STYLE_SAMPLES } from "@/lib/samples";
+import { GALLERY, STYLE_SAMPLES } from "@/lib/samples";
 import { PartnerApplyForm } from "@/components/partners/apply-form";
 import { PROGRAM } from "@/components/partners/program";
 import { site } from "@/lib/config";
@@ -125,6 +125,14 @@ const FAQ = [
   },
 ];
 
+/** A gallery portrait for the hero, falling back to the royal style sample. */
+const HERO = (() => {
+  const g = GALLERY.find((x) => x.style === "pop-art");
+  return g
+    ? { src: g.src, style: g.style, alt: `${STYLE_MAP[g.style].name} portrait of a ${g.dog}` }
+    : { src: STYLE_SAMPLES.royal, style: "royal" as const, alt: `Example ${STYLE_MAP.royal.name} dog portrait` };
+})();
+
 export default function PartnersPage() {
   return (
     <>
@@ -134,9 +142,9 @@ export default function PartnersPage() {
         lede={`A fine-art portrait of your dog for your content, ${DISCOUNT} off for your followers, and ${COMMISSION} on every order. For creators of every size.`}
         media={
           <CampaignImage
-            src={STYLE_SAMPLES.royal}
-            alt={`Example ${STYLE_MAP.royal.name} dog portrait`}
-            swatch={STYLE_MAP.royal.swatch}
+            src={HERO.src}
+            alt={HERO.alt}
+            swatch={STYLE_MAP[HERO.style].swatch}
             priority
             fill
           />

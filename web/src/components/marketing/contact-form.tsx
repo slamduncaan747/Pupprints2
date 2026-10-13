@@ -136,7 +136,7 @@ export function ContactForm({
             id="contact-topic"
             name="topic"
             defaultValue={defaultTopic && CONTACT_TOPICS.some((t) => t.value === defaultTopic) ? defaultTopic : "order"}
-            className={cn(inputBase, "h-12 appearance-none bg-[length:14px] bg-[right_0_center] bg-no-repeat pr-8")}
+            className={cn(inputBase, "h-12 appearance-none bg-no-repeat pr-8 [background-position:right_0_center] [background-size:14px]")}
             style={{
               backgroundImage:
                 "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",

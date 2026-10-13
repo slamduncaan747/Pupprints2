@@ -42,7 +42,10 @@ export default function ShopPage() {
         lede="Canvas, framed and fine art prints, each made to order from your portrait. Every one begins with a free preview."
       />
 
-      <section aria-label="Products" className="pb-24 sm:pb-36">
+      <section aria-labelledby="all-products" className="pb-24 sm:pb-36">
+        <h2 id="all-products" className="sr-only">
+          Products
+        </h2>
         <div className="mx-auto max-w-[1440px] sm:px-10">
           <ul className="grid grid-cols-2 gap-x-0.5 gap-y-12 sm:gap-x-4 lg:grid-cols-4">
             {PRODUCTS.map((p, i) => (

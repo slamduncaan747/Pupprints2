@@ -106,7 +106,7 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
             <p className="label mt-8 text-ink-3">
               By the Pup Prints team <span aria-hidden="true">·</span>{" "}
               <time dateTime={article.date}>{formatArticleDate(article.date)}</time> <span aria-hidden="true">·</span>{" "}
-              {article.readingMinutes} min read
+              <span className="whitespace-nowrap">{article.readingMinutes} min read</span>
             </p>
           </Container>
           <figure>
