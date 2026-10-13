@@ -196,7 +196,9 @@ export type Product = {
   tagline: string;
   details: string[];
   variants: Variant[];
-  /** Minimum production + shipping estimate in business days. */
+  /** Size preselected in the configurator. */
+  defaultVariantId: string;
+  /** Production + US shipping estimate in business days. */
   shipDays: [number, number];
   frameColors?: FrameColor[];
   badge?: string;
@@ -204,35 +206,25 @@ export type Product = {
 
 export const PRODUCTS: Product[] = [
   {
-    type: "digital",
-    name: "Digital Portrait",
-    shortName: "Digital",
-    tagline: "The full-resolution file, delivered instantly.",
+    type: "canvas",
+    name: "Gallery Canvas",
+    shortName: "Canvas",
+    tagline: "Hand-stretched canvas with a gallery wrap. Our most popular piece.",
     details: [
-      "Print-ready high-resolution file (up to 24×30\" at 300 DPI)",
-      "Unwatermarked, yours to print, share and post",
-      "Delivered to your inbox in minutes",
-    ],
-    variants: [{ id: "digital-hires", label: "High-res file", widthIn: 0, heightIn: 0, price: 2900 }],
-    shipDays: [0, 0],
-  },
-  {
-    type: "poster",
-    name: "Fine Art Print",
-    shortName: "Print",
-    tagline: "Archival matte paper, rich gallery color.",
-    details: [
-      "Museum-grade 200gsm archival matte paper",
-      "Fade-resistant pigment inks rated for 100+ years",
-      "Shipped flat or in a rigid tube",
+      "Poly-cotton canvas, hand-stretched over a solid wood stretcher bar",
+      "Image wraps the edges for a finished gallery look",
+      "Arrives ready to hang, hardware included",
     ],
     variants: [
-      { id: "poster-8x10", label: "8×10\"", widthIn: 8, heightIn: 10, price: 3900 },
-      { id: "poster-12x16", label: "12×16\"", widthIn: 12, heightIn: 16, price: 4900 },
-      { id: "poster-18x24", label: "18×24\"", widthIn: 18, heightIn: 24, price: 6900 },
-      { id: "poster-24x36", label: "24×36\"", widthIn: 24, heightIn: 36, price: 8900 },
+      { id: "canvas-8x10", label: "8×10\"", widthIn: 8, heightIn: 10, price: 5900 },
+      { id: "canvas-12x16", label: "12×16\"", widthIn: 12, heightIn: 16, price: 7900 },
+      { id: "canvas-16x20", label: "16×20\"", widthIn: 16, heightIn: 20, price: 9900 },
+      { id: "canvas-18x24", label: "18×24\"", widthIn: 18, heightIn: 24, price: 11500 },
+      { id: "canvas-24x36", label: "24×36\"", widthIn: 24, heightIn: 36, price: 14900 },
     ],
-    shipDays: [3, 7],
+    defaultVariantId: "canvas-16x20",
+    shipDays: [5, 9],
+    badge: "Most popular",
   },
   {
     type: "framed",
@@ -242,36 +234,66 @@ export const PRODUCTS: Product[] = [
     details: [
       "Solid wood frame in black, white or natural oak",
       "Shatter-resistant acrylic glazing and hanging hardware included",
-      "Archival matte paper with pigment inks",
+      "Archival matte paper with fade-resistant pigment inks",
     ],
     variants: [
-      { id: "framed-8x10", label: "8×10\"", widthIn: 8, heightIn: 10, price: 7900 },
-      { id: "framed-12x16", label: "12×16\"", widthIn: 12, heightIn: 16, price: 10900 },
-      { id: "framed-18x24", label: "18×24\"", widthIn: 18, heightIn: 24, price: 14900 },
+      { id: "framed-8x10", label: "8×10\"", widthIn: 8, heightIn: 10, price: 7500 },
+      { id: "framed-12x16", label: "12×16\"", widthIn: 12, heightIn: 16, price: 9500 },
+      { id: "framed-16x20", label: "16×20\"", widthIn: 16, heightIn: 20, price: 11900 },
+      { id: "framed-18x24", label: "18×24\"", widthIn: 18, heightIn: 24, price: 12900 },
       { id: "framed-24x36", label: "24×36\"", widthIn: 24, heightIn: 36, price: 19900 },
     ],
-    shipDays: [4, 8],
+    defaultVariantId: "framed-12x16",
+    shipDays: [5, 9],
     frameColors: ["black", "white", "oak"],
     badge: "Most gifted",
   },
   {
-    type: "canvas",
-    name: "Gallery Canvas",
-    shortName: "Canvas",
-    tagline: "Hand-stretched canvas with a gallery wrap.",
+    type: "poster",
+    name: "Fine Art Print",
+    shortName: "Print",
+    tagline: "Museum-grade matte paper, rich gallery color.",
     details: [
-      "Poly-cotton canvas, hand-stretched over a 1.25\" wood frame",
-      "Image wraps the edges for a finished gallery look",
-      "Arrives ready to hang",
+      "Archival, acid-free matte paper (enhanced matte, 189gsm)",
+      "Fade-resistant pigment inks",
+      "Ships flat or rolled in a protective tube, ready for your own frame",
     ],
     variants: [
-      { id: "canvas-12x16", label: "12×16\"", widthIn: 12, heightIn: 16, price: 9900 },
-      { id: "canvas-16x20", label: "16×20\"", widthIn: 16, heightIn: 20, price: 12900 },
-      { id: "canvas-24x36", label: "24×36\"", widthIn: 24, heightIn: 36, price: 18900 },
+      { id: "poster-8x10", label: "8×10\"", widthIn: 8, heightIn: 10, price: 3500 },
+      { id: "poster-12x16", label: "12×16\"", widthIn: 12, heightIn: 16, price: 4500 },
+      { id: "poster-18x24", label: "18×24\"", widthIn: 18, heightIn: 24, price: 5900 },
+      { id: "poster-24x36", label: "24×36\"", widthIn: 24, heightIn: 36, price: 7900 },
     ],
+    defaultVariantId: "poster-12x16",
     shipDays: [4, 8],
   },
+  {
+    type: "digital",
+    name: "Digital Portrait",
+    shortName: "Digital",
+    tagline: "The full-resolution file, delivered instantly. Free with any print.",
+    details: [
+      "High-resolution, print-ready file",
+      "No watermark: yours to print, share and post",
+      "Delivered to your inbox right after checkout",
+    ],
+    variants: [{ id: "digital-hires", label: "High-res file", widthIn: 0, heightIn: 0, price: 2900 }],
+    defaultVariantId: "digital-hires",
+    shipDays: [0, 0],
+  },
 ];
+
+/** Order bumps: the same portrait on a small gift. Only offered alongside a physical piece. */
+export type Addon = { id: string; name: string; description: string; price: number };
+
+export const ADDONS: Addon[] = [
+  { id: "addon-ornament", name: "Matching ornament", description: "3\" glossy ceramic ornament with your portrait on both sides", price: 1900 },
+  { id: "addon-mug", name: "Matching mug", description: "11oz glossy ceramic mug, dishwasher safe", price: 2500 },
+];
+
+export function findAddon(id: string): Addon | undefined {
+  return ADDONS.find((a) => a.id === id);
+}
 
 export const PRODUCT_MAP = Object.fromEntries(PRODUCTS.map((p) => [p.type, p])) as Record<ProductType, Product>;
 
@@ -286,17 +308,27 @@ export function findVariant(variantId: string): { product: Product; variant: Var
 /** Lowest price across all products, for "from $X" copy. */
 export const STARTING_PRICE = Math.min(...PRODUCTS.flatMap((p) => p.variants.map((v) => v.price)));
 
-/** Add the hi-res digital file to any physical order for this price. */
-export const DIGITAL_ADDON_PRICE = 1000;
+/** Lowest physical-product price ("prints from $35"). */
+export const STARTING_PHYSICAL_PRICE = Math.min(
+  ...PRODUCTS.filter((p) => p.type !== "digital").flatMap((p) => p.variants.map((v) => v.price)),
+);
 
-/** Free US shipping threshold (cents). Orders below pay FLAT_SHIPPING. */
-export const FREE_SHIPPING_THRESHOLD = 7500;
-export const FLAT_SHIPPING = 795;
+/** The hi-res digital file is included free with any physical piece. */
+export const DIGITAL_INCLUDED_WITH_PHYSICAL = true;
+
+/** Countries we ship physical products to at launch, with flat shipping per order (cents). US is free. */
+export const SHIPPING_RATES: Record<"US" | "CA", number> = { US: 0, CA: 995 };
+export const SHIPPING_COUNTRIES = Object.keys(SHIPPING_RATES) as ("US" | "CA")[];
+
+/** Kept for compatibility: US shipping is always free, so the threshold is $0. */
+export const FREE_SHIPPING_THRESHOLD = 0;
+export const FLAT_SHIPPING = 0;
 
 /** Guarantee + promise copy, reused across the site. */
 export const PROMISES = {
   preview: "See your portrait free before you pay",
   rerolls: "Try every style free — redo as often as you like",
   guarantee: "Love it or we'll remake or refund it",
-  shipping: `Free US shipping on orders over $${FREE_SHIPPING_THRESHOLD / 100}`,
+  shipping: "Free US shipping on every order",
+  digital: "Free hi-res digital file with every print",
 };

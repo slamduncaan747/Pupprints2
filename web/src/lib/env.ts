@@ -16,8 +16,9 @@ export const env = {
   stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
 
-  // AI image providers (first configured one in AI_PROVIDER_ORDER wins, others are fallbacks)
-  aiProviderOrder: (process.env.AI_PROVIDER_ORDER ?? "gemini,fal,openai,replicate")
+  // AI image providers (first configured one in AI_PROVIDER_ORDER wins, others are fallbacks).
+  // Ids: fal (Nano Banana 2.1 on fal), replicate (same model), fal-gpt (GPT Image 2.5 Flare on fal), gemini (Google direct), openai.
+  aiProviderOrder: (process.env.AI_PROVIDER_ORDER ?? "fal,replicate,fal-gpt,gemini,openai")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean),
