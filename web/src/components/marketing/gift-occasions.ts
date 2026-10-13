@@ -12,6 +12,8 @@ export type Occasion = {
   slug: OccasionSlug;
   /** Short name for cards and breadcrumbs. */
   name: string;
+  /** Used in "Styles we love for …". */
+  forLabel: string;
   icon: LucideIcon;
   /** One line for gift-guide cards. */
   card: string;
@@ -39,6 +41,7 @@ const ORNAMENT = ADDONS.find((a) => a.id === "addon-ornament");
 export const OCCASIONS: Occasion[] = [
   {
     slug: "christmas",
+    forLabel: "Christmas",
     name: "Christmas",
     icon: Snowflake,
     card: "The gift that gets the gasp on Christmas morning.",
@@ -82,6 +85,7 @@ export const OCCASIONS: Occasion[] = [
   },
   {
     slug: "memorial",
+    forLabel: "remembering them",
     name: "In memory",
     icon: Flower2,
     card: "A gentle, lasting way to remember a best friend.",
@@ -126,6 +130,7 @@ export const OCCASIONS: Occasion[] = [
   },
   {
     slug: "mothers-day",
+    forLabel: "Mother's Day",
     name: "Mother's Day",
     icon: Heart,
     card: "For the dog mom who has everything (except this).",
@@ -165,6 +170,7 @@ export const OCCASIONS: Occasion[] = [
   },
   {
     slug: "birthday",
+    forLabel: "birthdays",
     name: "Birthday",
     icon: Cake,
     card: "Their birthday, or their dog's. Both deserve a portrait.",
@@ -204,6 +210,7 @@ export const OCCASIONS: Occasion[] = [
   },
   {
     slug: "new-puppy",
+    forLabel: "a new puppy",
     name: "New puppy",
     icon: Baby,
     card: "They're only this small for a few weeks.",
@@ -240,6 +247,7 @@ export const OCCASIONS: Occasion[] = [
   },
   {
     slug: "fathers-day",
+    forLabel: "Father's Day",
     name: "Father's Day",
     icon: Medal,
     card: "For the dog dad and his best friend.",
@@ -291,4 +299,5 @@ export const EVERYTHING_CARD = {
   icon: Gift,
   card: "Nobody else will give them a portrait of their own dog.",
   href: "/styles",
+  cta: "Browse styles",
 };

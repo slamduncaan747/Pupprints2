@@ -96,10 +96,9 @@ export function itemLabel({ product, variant }: PricedItem) {
 }
 
 export const PRICE_BANDS: { title: string; note: string; min: number; max: number }[] = [
-  { title: "Under $50", note: "Thoughtful, easy, instantly giftable", min: 0, max: 4999 },
-  { title: "$50 to $100", note: "The sweet spot for most gifts", min: 5000, max: 9999 },
-  { title: "$100 to $150", note: "Framed and ready to hang", min: 10000, max: 14999 },
-  { title: "$150 and up", note: "Statement pieces for a big wall", min: 15000, max: Number.MAX_SAFE_INTEGER },
+  { title: "Under $60", note: "Thoughtful, easy and instantly giftable", min: 0, max: 5999 },
+  { title: "$60 to $100", note: "The sweet spot for most gifts", min: 6000, max: 10000 },
+  { title: "$100 and up", note: "Statement pieces, ready to hang", min: 10001, max: Number.MAX_SAFE_INTEGER },
 ];
 
 export function itemsInBand(min: number, max: number) {

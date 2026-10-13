@@ -113,12 +113,12 @@ const AVOID: { variant: Variant; title: string; body: string }[] = [
 /** Good-vs-avoid photo guidance with drawn illustrations (no stock photos). */
 export function PhotoTips({ className }: { className?: string }) {
   return (
-    <div className={cn("grid gap-6 lg:grid-cols-[0.85fr_1.15fr]", className)}>
+    <div className={cn("grid gap-6 lg:grid-cols-[0.7fr_1.3fr]", className)}>
       <div className="flex flex-col rounded-card bg-white/70 p-6 ring-1 ring-line sm:p-8">
         <p className="inline-flex items-center gap-2 self-start rounded-full bg-sage-soft px-3 py-1 text-xs font-semibold uppercase tracking-wider text-moss">
           <Check className="h-3.5 w-3.5" aria-hidden="true" /> Great photo
         </p>
-        <div className="mx-auto mt-6 w-full max-w-[220px] overflow-hidden rounded-lg shadow-soft">
+        <div className="mx-auto mt-6 w-full max-w-[200px] overflow-hidden rounded-lg shadow-soft lg:max-w-[180px]">
           <PhotoIllustration variant="good" title="Illustration of a good photo: a sharp close-up of a dog's face in soft light" />
         </div>
         <ul className="mt-7 space-y-3">
@@ -136,7 +136,7 @@ export function PhotoTips({ className }: { className?: string }) {
         <p className="inline-flex items-center gap-2 rounded-full bg-clay-soft px-3 py-1 text-xs font-semibold uppercase tracking-wider text-clay-dark">
           <X className="h-3.5 w-3.5" aria-hidden="true" /> Try to avoid
         </p>
-        <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-6">
+        <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 sm:gap-x-5">
           {AVOID.map((a) => (
             <li key={a.variant}>
               <div className="relative overflow-hidden rounded-lg shadow-soft">

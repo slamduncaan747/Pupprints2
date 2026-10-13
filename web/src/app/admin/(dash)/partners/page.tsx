@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Plus, Search, Upload } from "lucide-react";
+import { Gift, Plus, Search, Upload } from "lucide-react";
 import { db } from "@/lib/supabase/server";
 import type { PartnerRow } from "@/lib/partners";
 import { fetchAll } from "@/components/admin/queries";
@@ -166,7 +166,7 @@ export default async function PartnersPage({ searchParams }: PageProps<"/admin/p
             Add creators by hand, import a research CSV, or share the <Link href="/partners" className="underline">creator program page</Link>.
           </EmptyState>
         ) : (
-          <Table className="[&_table]:min-w-[980px]">
+          <Table className="[&_table]:min-w-[1040px]">
             <thead>
               <tr>
                 <Th>Partner</Th>
@@ -178,6 +178,9 @@ export default async function PartnersPage({ searchParams }: PageProps<"/admin/p
                 <Th className="text-right">Orders</Th>
                 <Th className="text-right">Revenue</Th>
                 <Th>Last contact</Th>
+                <Th>
+                  <span className="sr-only">Actions</span>
+                </Th>
               </tr>
             </thead>
             <tbody>
@@ -215,6 +218,15 @@ export default async function PartnersPage({ searchParams }: PageProps<"/admin/p
                     <Td className="text-right tabular-nums">{a ? fmtNum(a.orders) : "—"}</Td>
                     <Td className="text-right tabular-nums">{a ? fmtMoney(a.revenueCents) : "—"}</Td>
                     <Td className="whitespace-nowrap text-xs text-ink-2">{p.last_contacted_at ? fmtDate(p.last_contacted_at, false) : "Never"}</Td>
+                    <Td>
+                      <Link
+                        href={`/admin/partners/${p.id}/gift`}
+                        className={adminButton("secondary", "h-8 px-2.5 text-xs")}
+                        title="Create a gift portrait for this creator"
+                      >
+                        <Gift className="h-3.5 w-3.5" /> Gift
+                      </Link>
+                    </Td>
                   </tr>
                 );
               })}

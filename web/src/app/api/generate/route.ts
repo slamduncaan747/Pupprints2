@@ -4,6 +4,7 @@ import { env } from "@/lib/env";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { makeWatermarkedPreview, toPrintMaster } from "@/lib/image";
 import { BUCKETS, db, previewUrl, signedUrl } from "@/lib/supabase/server";
+import { storeObject } from "@/lib/image/storage";
 import { ensureSessionId, getIpHash } from "@/lib/session";
 
 export const runtime = "nodejs";
@@ -137,15 +138,15 @@ export async function POST(req: Request) {
     const fullPath = `${sessionId}/${generationId}.png`;
     const previewPath = `${sessionId}/${generationId}.jpg`;
 
-    const [fullUpload, previewUpload] = await Promise.all([
-      supabase.storage.from(BUCKETS.portraits).upload(fullPath, master.bytes, { contentType: "image/png", upsert: true }),
-      supabase.storage
-        .from(BUCKETS.previews)
-        .upload(previewPath, preview.bytes, { contentType: "image/jpeg", upsert: true, cacheControl: "31536000" }),
+    // The AI call already cost money: retry transient storage failures instead of discarding the result.
+    await Promise.all([
+      storeObject(BUCKETS.portraits, fullPath, master.bytes, { contentType: "image/png", upsert: true }),
+      storeObject(BUCKETS.previews, previewPath, preview.bytes, {
+        contentType: "image/jpeg",
+        upsert: true,
+        cacheControl: "31536000",
+      }),
     ]);
-    if (fullUpload.error || previewUpload.error) {
-      throw new Error(`Storage failed: ${fullUpload.error?.message ?? previewUpload.error?.message}`);
-    }
 
     const durationMs = Date.now() - started;
     await supabase

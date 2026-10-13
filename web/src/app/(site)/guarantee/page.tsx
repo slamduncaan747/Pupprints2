@@ -68,8 +68,8 @@ export default function GuaranteePage() {
         aside={
           <div className="mx-auto flex max-w-[360px] items-center justify-center">
             <div className="relative aspect-square w-full max-w-[320px] rounded-full bg-paper p-5 shadow-frame">
-              <div className="flex h-full w-full flex-col items-center justify-center rounded-full border-2 border-dashed border-moss/40 text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-moss">The Pup Prints promise</p>
+              <div className="flex h-full w-full flex-col items-center justify-center rounded-full border-2 border-dashed border-moss/40 px-10 text-center">
+                <p className="max-w-[11rem] text-[10px] font-semibold uppercase leading-relaxed tracking-[0.22em] text-moss">Our promise</p>
                 <p className="mt-3 font-display text-4xl leading-[1.05] sm:text-5xl">
                   Love it
                   <br />

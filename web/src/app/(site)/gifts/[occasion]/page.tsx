@@ -166,7 +166,7 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
             <SectionHeading
               align="left"
               eyebrow={memorial ? "Styles" : "Suggested styles"}
-              title={memorial ? "Soft, timeless styles" : `Styles we love for ${o.name.toLowerCase()}`}
+              title={memorial ? "Soft, timeless styles" : `Styles we love for ${o.forLabel}`}
               subtitle={memorial ? "Try any of them with your photo. You'll see it before you decide anything." : undefined}
             />
             <ButtonLink href="/styles" variant="secondary" className="self-start sm:self-auto">

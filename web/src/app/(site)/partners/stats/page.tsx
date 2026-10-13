@@ -116,7 +116,7 @@ export default async function PartnerStatsPage({ searchParams }: PageProps<"/par
         </dl>
       </section>
 
-      <section aria-labelledby="share" className="mt-12 grid gap-8 lg:grid-cols-[1.2fr_1fr]">
+      <section aria-labelledby="share" className="mt-12 grid gap-8 lg:grid-cols-[1.2fr_1fr] [&>*]:min-w-0">
         <div className="rounded-card bg-white p-5 ring-1 ring-line sm:p-8">
           <h2 id="share" className="font-display text-2xl">Share</h2>
           <p className="mt-2 text-[15px] text-ink-2">

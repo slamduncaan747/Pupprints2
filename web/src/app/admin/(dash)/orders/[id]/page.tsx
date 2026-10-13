@@ -264,6 +264,16 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/orde
                 )}
               </Row>
             </dl>
+            <p className="border-t border-line px-4 py-2.5 text-xs">
+              <a
+                href={`/api/admin/orders/${order.id}/fulfill`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 text-ink-2 underline-offset-2 hover:text-ink hover:underline"
+              >
+                Print-ready file links (7-day signed URLs) <ExternalLink className="h-3 w-3" />
+              </a>
+            </p>
             {order.print_files != null && (
               <details className="border-t border-line px-4 py-2 text-xs text-ink-3">
                 <summary className="cursor-pointer py-1">Print files JSON</summary>

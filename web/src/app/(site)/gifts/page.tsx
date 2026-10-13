@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CreditCard, Mail, Package, Sparkles } from "lucide-react";
+import { ArrowRight, CreditCard, Gift, Mail, Package, Sparkles } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/ui/container";
@@ -27,9 +27,9 @@ const REVEAL_STEPS = [
 
 export default function GiftsPage() {
   const cards = [
-    ...OCCASIONS.map((o) => ({ href: `/gifts/${o.slug}`, name: o.name, icon: o.icon, card: o.card })),
+    ...OCCASIONS.map((o) => ({ href: `/gifts/${o.slug}`, name: o.name, icon: o.icon, card: o.card, cta: "See ideas" })),
     EVERYTHING_CARD,
-    { href: "/gift-cards", name: "Gift cards", icon: CreditCard, card: "Let them choose the photo and style. Coming soon." },
+    { href: "/gift-cards", name: "Gift cards", icon: CreditCard, card: "Let them choose the photo and style. Coming soon.", cta: "Learn more" },
   ];
 
   return (
@@ -56,11 +56,15 @@ export default function GiftsPage() {
         }
         note={<>Christmas: order physical pieces by {CHRISTMAS_US_CUTOFF} for standard US delivery. Gift Reveal any time.</>}
         aside={
-          <div className="relative mx-auto max-w-[480px] px-6 sm:px-0">
-            <div className="absolute -left-2 top-10 w-[42%] -rotate-3 sm:left-0">
-              <FramedArt style="holiday" finish="oak" priority sizes="(max-width: 1024px) 40vw, 16vw" />
+          <div className="relative mx-auto max-w-[480px] rounded-[2rem] bg-blush/40 px-8 pb-14 pt-12 sm:px-12" aria-hidden="true">
+            <div className="grid grid-cols-[1fr_0.8fr] items-end gap-6">
+              <FramedArt style="holiday" finish="oak" priority sizes="(max-width: 1024px) 45vw, 18vw" />
+              <FramedArt style="royal" finish="black" sizes="(max-width: 1024px) 35vw, 14vw" className="mb-6" />
             </div>
-            <GiftRevealMock style="royal" className="ml-auto mr-0 w-[66%] max-w-[300px]" />
+            <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 rotate-[-4deg] items-center gap-2 rounded-lg bg-paper px-4 py-2.5 shadow-soft ring-1 ring-line">
+              <Gift className="h-4 w-4 text-clay" />
+              <span className="font-display text-[15px]">For you, love from the dog</span>
+            </div>
           </div>
         }
       />
@@ -69,7 +73,7 @@ export default function GiftsPage() {
         <Container>
           <SectionHeading eyebrow="Ideas by occasion" title="Who's it for?" />
           <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {cards.map(({ href, name, icon: Icon, card }) => (
+            {cards.map(({ href, name, icon: Icon, card, cta }) => (
               <li key={href + name}>
                 <Link
                   href={href}
@@ -81,7 +85,7 @@ export default function GiftsPage() {
                   <span className="mt-6 font-display text-2xl leading-tight">{name}</span>
                   <span className="mt-2 flex-1 text-[15px] leading-relaxed text-ink-2">{card}</span>
                   <span className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-medium text-clay-dark">
-                    See ideas <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden="true" />
+                    {cta} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden="true" />
                   </span>
                 </Link>
               </li>
@@ -129,7 +133,7 @@ export default function GiftsPage() {
             title="Gifts at every price"
             subtitle="Real prices, including free US shipping. Every physical piece comes with the hi-res digital file."
           />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-5 md:grid-cols-3">
             {PRICE_BANDS.map((band) => {
               const items = itemsInBand(band.min, band.max);
               if (items.length === 0) return null;

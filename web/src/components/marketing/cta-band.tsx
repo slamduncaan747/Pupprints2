@@ -48,7 +48,7 @@ export function CtaBand({
         <h2 className="mx-auto max-w-3xl font-display text-4xl leading-[1.05] sm:text-6xl">{title}</h2>
         <p className={cn("mx-auto mt-5 max-w-xl text-lg leading-relaxed", t.text)}>{body}</p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <ButtonLink href={href} variant={tone === "clay" ? "primary" : "accent"} size="lg">
+          <ButtonLink href={href} variant={tone === "clay" ? "primary" : tone === "moss" ? "light" : "accent"} size="lg">
             {cta} <ArrowRight className="h-4 w-4" />
           </ButtonLink>
           {children}

@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { BUCKETS, db, signedUrl } from "@/lib/supabase/server";
 import { ImageError, normalizeUpload } from "@/lib/image";
+import { storeObject } from "@/lib/image/storage";
 import { ensureSessionId, getIpHash } from "@/lib/session";
 
 export const runtime = "nodejs";
@@ -73,11 +74,14 @@ export async function POST(req: Request) {
   const uploadId = randomUUID();
   const path = `${sessionId}/${uploadId}.jpg`;
 
-  const { error: storageError } = await supabase.storage
-    .from(BUCKETS.uploads)
-    .upload(path, normalized.bytes, { contentType: "image/jpeg", upsert: false, cacheControl: "31536000" });
-  if (storageError) {
-    console.error("[upload] storage failed", storageError);
+  try {
+    await storeObject(BUCKETS.uploads, path, normalized.bytes, {
+      contentType: "image/jpeg",
+      upsert: true,
+      cacheControl: "31536000",
+    });
+  } catch (err) {
+    console.error("[upload] storage failed", err);
     return json({ error: "upload_failed", message: "We couldn't save your photo. Please try again." }, 502);
   }
 
