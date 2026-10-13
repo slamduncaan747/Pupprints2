@@ -18,6 +18,7 @@ export function Block({
   intro,
   children,
   layout = "split",
+  compact = false,
   className,
 }: {
   id?: string;
@@ -25,6 +26,8 @@ export function Block({
   intro?: ReactNode;
   children: ReactNode;
   layout?: "split" | "stack";
+  /** Less vertical space, for runs of similar sections (FAQ groups, journal categories). */
+  compact?: boolean;
   className?: string;
 }) {
   const headingId = id && title ? `${id}-title` : undefined;
@@ -34,7 +37,8 @@ export function Block({
       <Container>
         <div
           className={cn(
-            "border-t border-line py-16 sm:py-24",
+            "border-t border-line",
+            compact ? "py-12 sm:py-16" : "py-16 sm:py-24",
             split && "lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,680px)] lg:gap-16",
           )}
         >

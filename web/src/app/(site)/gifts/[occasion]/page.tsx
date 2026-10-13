@@ -15,6 +15,7 @@ import { Block, Facts, Note, Prose, Rows, textLink } from "@/components/marketin
 import { StyleCard } from "@/components/marketing/style-card";
 import { OCCASIONS, getOccasion } from "@/components/marketing/gift-occasions";
 import { stylesFor } from "@/components/marketing/style-content";
+import { firstSentences } from "@/components/marketing/honest";
 import {
   CHRISTMAS_2026,
   CHRISTMAS_CA_CUTOFF,
@@ -83,7 +84,7 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ href: "/gifts", label: "Gifts" }, { href: `/gifts/${o.slug}`, label: o.name }]} />}
         title={o.h1}
-        lede={<p>{o.lede}</p>}
+        lede={<p>{firstSentences(o.lede)}</p>}
         media={
           <FramedArt
             style={o.feature}

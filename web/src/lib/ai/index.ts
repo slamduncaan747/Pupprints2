@@ -35,9 +35,9 @@ const REGISTRY: Record<string, PortraitProvider> = {
 const MIN_ATTEMPT_MS = 12_000;
 
 /**
- * Providers that will be tried, in order. Follows AI_PROVIDER_ORDER (ids: fal, replicate, fal-gpt,
- * gemini, openai) and skips any without credentials. The dev mock (AI_MOCK=1, never in
- * production) goes first when enabled.
+ * Providers that will be tried, in order. Follows AI_PROVIDER_ORDER (default "openai,gemini,fal,replicate";
+ * ids: openai, gemini, fal, replicate, fal-gpt) and skips any without credentials. The dev mock
+ * (AI_MOCK=1, never in production) goes first when enabled.
  */
 export function configuredProviders(): PortraitProvider[] {
   const order = mockEnabled() ? ["mock", ...env.aiProviderOrder] : env.aiProviderOrder;
@@ -61,7 +61,8 @@ export function aiAvailable() {
  * Generate a portrait, walking the provider chain until one succeeds.
  * - A timeout/HTTP/outage failure moves on to the next provider.
  * - A content-policy refusal skips every remaining provider running the same model family
- *   (fal and Replicate both proxy Google for Nano Banana).
+ *   (gemini, fal and Replicate all run Google's Nano Banana by default), so an OpenAI refusal
+ *   still gets a Gemini attempt and vice versa.
  * Throws AiUnavailableError (nothing configured) or GenerationFailedError (all failed).
  */
 export async function generatePortrait(input: GeneratePortraitInput): Promise<GeneratePortraitResult> {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { formatPrice } from "@/lib/utils";
 import { NewsletterForm } from "@/components/site/newsletter-form";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, DataTable, Prose, Rows } from "@/components/marketing/blocks";
+import { Block, Rows } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd, type FaqItem } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
@@ -57,32 +57,17 @@ export default function GiftCardsPage() {
       </PageHero>
 
       <Block title="Planned amounts" intro="US shipping is free on every order, so the whole amount goes toward their portrait.">
-        <DataTable
-          caption="Planned gift card amounts and what each covers"
-          head={["Amount", "Covers up to"]}
-          rows={AMOUNTS.map((amount) => ({
+        <Rows
+          items={AMOUNTS.map((amount) => ({
             key: String(amount),
-            cells: [
-              formatPrice(amount),
-              <span key="c" className="text-ink-2">
-                {itemsCoveredBy(amount, 2).map(itemLabel).join(" or ")}
-              </span>,
-            ],
+            title: formatPrice(amount),
+            body: `Up to ${itemsCoveredBy(amount, 2).map(itemLabel).join(" or ")}`,
           }))}
         />
       </Block>
 
       <Block title="They pick, we print">
         <Rows numbered items={STEPS} />
-      </Block>
-
-      <Block title="Need a gift today?">
-        <Prose>
-          <p>
-            Make their portrait from a photo of their dog, then send a digital Gift Reveal the moment you order. They see it
-            instantly, and the print follows.
-          </p>
-        </Prose>
       </Block>
 
       <Block title="About gift cards">

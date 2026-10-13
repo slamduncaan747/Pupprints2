@@ -34,7 +34,7 @@ export function ResultView({
   const strip = [...generations].reverse(); // oldest → newest, reads left to right
 
   return (
-    <section className="mx-auto grid w-full max-w-6xl gap-10 px-5 pt-8 pb-20 sm:px-8 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center lg:gap-20 lg:pt-14">
+    <section className="mx-auto grid w-full max-w-6xl gap-10 px-5 pt-8 pb-20 sm:px-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center lg:gap-20">
       {/* The portrait, large, in a thin frame */}
       <div className="flex min-w-0 flex-col items-center">
         <FrameMockup
@@ -80,43 +80,52 @@ export function ResultView({
             <h2 className="font-sans text-[12px] tracking-[0.14em] text-ink-3 uppercase">
               Your portraits <span className="tabular-nums">({strip.length})</span>
             </h2>
-            <ul className="-mx-5 mt-4 flex snap-x gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:justify-center sm:px-0 lg:justify-start">
-              {strip.map((g) => {
-                const gs = getStyle(g.style);
-                const isActive = g.generationId === active.generationId;
-                return (
-                  <li key={g.generationId} className="shrink-0 snap-start">
-                    <button
-                      type="button"
-                      onClick={() => onSelect(g.generationId)}
-                      aria-pressed={isActive}
-                      aria-label={`Show ${gs?.name ?? g.style} preview`}
-                      className="group flex w-[60px] flex-col items-center gap-1.5 pt-1"
-                    >
-                      <span
-                        className={cn(
-                          "block aspect-[3/4] w-full overflow-hidden outline-1 outline-offset-[3px] transition-[outline-color]",
-                          isActive ? "outline-ink" : "outline-transparent group-hover:outline-line",
-                        )}
+            <div className="-mx-5 mt-4 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0">
+              <ul className="mx-auto flex w-max snap-x gap-3 lg:mx-0">
+                {strip.map((g) => {
+                  const gs = getStyle(g.style);
+                  const isActive = g.generationId === active.generationId;
+                  return (
+                    <li key={g.generationId} className="shrink-0 snap-start">
+                      <button
+                        type="button"
+                        onClick={() => onSelect(g.generationId)}
+                        aria-pressed={isActive}
+                        aria-label={`Show ${gs?.name ?? g.style} preview`}
+                        className="group flex w-[60px] flex-col items-center gap-1.5 pt-1"
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={g.previewUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
-                      </span>
-                      <span className={cn("w-full truncate text-center text-[11px]", isActive ? "text-ink" : "text-ink-3")}>
-                        {gs?.name.replace(/^The /, "") ?? g.style}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+                        <span
+                          className={cn(
+                            "block aspect-[3/4] w-full overflow-hidden outline-1 outline-offset-[3px] transition-[outline-color]",
+                            isActive ? "outline-ink" : "outline-transparent group-hover:outline-line",
+                          )}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={g.previewUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
+                        </span>
+                        <span
+                          className={cn(
+                            "w-full truncate text-center text-[11px]",
+                            isActive ? "text-ink" : "text-ink-3",
+                          )}
+                        >
+                          {gs?.name.replace(/^The /, "") ?? g.style}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         )}
 
         <div className={cn("mt-8", strip.length > 1 ? "" : "border-t border-line pt-6")}>
           {showEmail ? (
             <div className="text-left">
-              <p className="mb-3 text-[14px] text-ink-2">We&apos;ll email you this preview so you can come back to it.</p>
+              <p className="mb-3 text-[14px] text-ink-2">
+                We&apos;ll email you this preview so you can come back to it.
+              </p>
               <EmailCapture
                 source="save_preview"
                 generationId={active.generationId}

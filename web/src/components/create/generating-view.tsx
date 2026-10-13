@@ -49,7 +49,10 @@ export function GeneratingView({
   const name = petName.trim();
 
   return (
-    <section className="mx-auto w-full max-w-md px-5 pt-8 pb-20 text-center sm:max-w-lg sm:px-8 sm:pt-14" aria-busy="true">
+    <section
+      className="mx-auto w-full max-w-md px-5 pt-8 pb-20 text-center sm:max-w-lg sm:px-8 sm:pt-10"
+      aria-busy="true"
+    >
       <p className="text-[12px] tracking-[0.14em] text-ink-3 uppercase">{s?.name ?? "Your portrait"}</p>
       <h1 className="mt-3 font-display text-[2.6rem] leading-[1.02] sm:text-[3.5rem]">
         {name ? `${name}'s portrait is on the easel.` : "Your portrait is on the easel."}
@@ -95,7 +98,10 @@ export function GeneratingView({
         aria-valuenow={Math.round(pct)}
         className="mx-auto mt-6 h-px w-full max-w-[280px] bg-line sm:max-w-[320px]"
       >
-        <div className="h-full bg-ink transition-[width] duration-300 ease-out" style={{ width: `${Math.max(3, pct)}%` }} />
+        <div
+          className="h-full bg-ink transition-[width] duration-300 ease-out"
+          style={{ width: `${Math.max(3, pct)}%` }}
+        />
       </div>
       <p className="mt-4 text-[13px] text-ink-3">Usually under a minute. Keep this page open.</p>
 

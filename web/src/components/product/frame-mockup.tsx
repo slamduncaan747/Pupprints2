@@ -61,7 +61,8 @@ export function FrameMockup({
   imgStyle,
   children,
 }: FrameMockupProps) {
-  const ratio = printSize && printSize.widthIn > 0 && printSize.heightIn > 0 ? printSize.widthIn / printSize.heightIn : 3 / 4;
+  const ratio =
+    printSize && printSize.widthIn > 0 && printSize.heightIn > 0 ? printSize.widthIn / printSize.heightIn : 3 / 4;
   const art = (
     <Artwork src={src} alt={alt} ratio={ratio} priority={priority} className={imgClassName} style={imgStyle}>
       {children}
@@ -210,8 +211,22 @@ function Canvas({ src, ratio, children }: { src: string; ratio: number; children
 function EdgeImage({ src, ratio, side }: { src: string; ratio: number; side: "right" | "bottom" }) {
   const style: CSSProperties =
     side === "right"
-      ? { right: 0, top: 0, height: "100%", aspectRatio: String(ratio), transform: "scaleX(-1)", transformOrigin: "right" }
-      : { left: 0, bottom: 0, width: "100%", aspectRatio: String(ratio), transform: "scaleY(-1)", transformOrigin: "bottom" };
+      ? {
+          right: 0,
+          top: 0,
+          height: "100%",
+          aspectRatio: String(ratio),
+          transform: "scaleX(-1)",
+          transformOrigin: "right",
+        }
+      : {
+          left: 0,
+          bottom: 0,
+          width: "100%",
+          aspectRatio: String(ratio),
+          transform: "scaleY(-1)",
+          transformOrigin: "bottom",
+        };
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={src} alt="" aria-hidden draggable={false} className="absolute max-w-none object-cover" style={style} />

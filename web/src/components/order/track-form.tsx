@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ExternalLink, PackageSearch } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OrderTimeline } from "./order-timeline";
 import type { TrackResponse } from "./track";
 import { formatDay } from "./timeline";
 
 const input =
-  "mt-1.5 block h-12 w-full rounded-xl border border-line bg-white px-4 text-base text-ink placeholder:text-ink-3 focus:border-clay focus:outline-none focus:ring-2 focus:ring-clay/20";
+  "mt-2 block h-12 w-full rounded-[3px] border border-line bg-white px-4 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink";
 
 export function TrackForm({ initialOrder = "", supportEmail }: { initialOrder?: string; supportEmail: string }) {
   const [state, setState] = useState<
@@ -42,10 +42,10 @@ export function TrackForm({ initialOrder = "", supportEmail }: { initialOrder?: 
 
   return (
     <div>
-      <form onSubmit={submit} className="rounded-card bg-white p-6 shadow-soft ring-1 ring-line sm:p-8" noValidate={false}>
+      <form onSubmit={submit} noValidate={false}>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="t-order" className="text-sm font-medium text-ink-2">
+            <label htmlFor="t-order" className="text-[13px] text-ink-2">
               Order number
             </label>
             <input
@@ -61,27 +61,26 @@ export function TrackForm({ initialOrder = "", supportEmail }: { initialOrder?: 
             />
           </div>
           <div>
-            <label htmlFor="t-email" className="text-sm font-medium text-ink-2">
+            <label htmlFor="t-email" className="text-[13px] text-ink-2">
               Email used at checkout
             </label>
             <input id="t-email" name="email" type="email" required autoComplete="email" maxLength={254} placeholder="you@example.com" className={input} />
           </div>
         </div>
-        <Button type="submit" variant="primary" size="lg" className="mt-5 w-full sm:w-auto" disabled={state.status === "loading"}>
-          <PackageSearch className="h-5 w-5" aria-hidden="true" />
+        <Button type="submit" variant="primary" size="lg" className="mt-6 w-full sm:w-auto" disabled={state.status === "loading"}>
           {state.status === "loading" ? "Looking it up…" : "Track order"}
         </Button>
-        <p className="mt-4 text-sm text-ink-3">Your order number is in your confirmation email (it starts with PP-).</p>
+        <p className="mt-4 text-[13px] text-ink-3">Your order number is in your confirmation email (it starts with PP-).</p>
       </form>
 
-      <div ref={resultRef} aria-live="polite" className="mt-8 scroll-mt-24">
+      <div ref={resultRef} aria-live="polite" className="mt-12 scroll-mt-24">
         {state.status === "error" && (
-          <div className="rounded-card bg-clay-soft/60 p-5 text-[15px] text-clay-dark" role="alert">
+          <p className="border-t border-line pt-6 text-[15px] leading-relaxed text-ink" role="alert">
             {state.message}{" "}
-            <a className="underline underline-offset-2" href={`mailto:${supportEmail}`}>
+            <a className="underline decoration-ink/25 underline-offset-4 hover:decoration-ink" href={`mailto:${supportEmail}`}>
               {supportEmail}
             </a>
-          </div>
+          </p>
         )}
         {state.status === "found" && <TrackResult data={state.data} />}
       </div>
@@ -91,17 +90,18 @@ export function TrackForm({ initialOrder = "", supportEmail }: { initialOrder?: 
 
 function TrackResult({ data }: { data: TrackResponse }) {
   return (
-    <section aria-labelledby="track-result-title" className="rounded-card bg-white p-6 ring-1 ring-line sm:p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-clay">
+    <section aria-labelledby="track-result-title" className="border-t border-line pt-10">
+      <p className="text-[12px] tracking-[0.14em] text-ink-3 uppercase">
         Order {data.orderNumber} · placed {formatDay(new Date(data.placedAt), { month: "short", day: "numeric" })}
       </p>
-      <h2 id="track-result-title" className="mt-3 font-display text-3xl leading-tight">
+      <h2 id="track-result-title" className="mt-3 font-display text-[2.4rem] leading-[1.04] sm:text-5xl">
         {data.title}
       </h2>
-      <p className="mt-2 text-ink-2">{data.body}</p>
+      <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{data.body}</p>
       {data.arrival && (
-        <p className="mt-4 inline-flex rounded-full bg-sage-soft px-4 py-1.5 text-[15px] text-moss">
-          Estimated arrival <span className="ml-1.5 font-semibold">{data.arrival}</span>
+        <p className="mt-6 flex items-baseline justify-between gap-4 border-y border-line py-3.5 text-[15px]">
+          <span className="text-ink-2">Estimated arrival</span>
+          <span className="text-ink">{data.arrival}</span>
         </p>
       )}
 
@@ -110,26 +110,26 @@ function TrackResult({ data }: { data: TrackResponse }) {
           href={data.tracking.url}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 flex items-center justify-between gap-4 rounded-2xl bg-ink px-5 py-4 text-paper transition-colors hover:bg-ink/90"
+          className="mt-6 flex items-center justify-between gap-4 rounded-[3px] bg-ink px-5 py-4 text-paper transition-colors hover:bg-ink/85"
         >
           <span>
-            <span className="block font-medium">Track your package{data.tracking.carrier ? ` with ${data.tracking.carrier}` : ""}</span>
-            {data.tracking.number && <span className="block font-mono text-sm text-paper/70">{data.tracking.number}</span>}
+            <span className="block text-[15px] font-medium">Track your package{data.tracking.carrier ? ` with ${data.tracking.carrier}` : ""}</span>
+            {data.tracking.number && <span className="block text-[13px] text-paper/70 tabular-nums">{data.tracking.number}</span>}
           </span>
-          <ExternalLink className="h-5 w-5 shrink-0" aria-hidden="true" />
+          <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
         </a>
       )}
       {!data.tracking?.url && data.tracking?.number && (
         <p className="mt-6 text-[15px] text-ink-2">
           Tracking number{data.tracking.carrier ? ` (${data.tracking.carrier})` : ""}:{" "}
-          <span className="font-mono text-ink">{data.tracking.number}</span>
+          <span className="text-ink tabular-nums">{data.tracking.number}</span>
         </p>
       )}
 
       <OrderTimeline steps={data.timeline} className="mt-8" />
 
-      <div className="mt-8 border-t border-line pt-5">
-        <h3 className="font-sans text-sm font-semibold uppercase tracking-wider text-ink-3">In this order</h3>
+      <div className="mt-10">
+        <h3 className="font-sans text-[12px] tracking-[0.14em] text-ink-3 uppercase">In this order</h3>
         <ul className="mt-3 space-y-1.5 text-[15px] text-ink-2">
           {data.items.map((i, n) => (
             <li key={n}>

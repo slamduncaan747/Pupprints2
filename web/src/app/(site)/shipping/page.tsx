@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/catalog";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, DataTable, Note, Prose, Rows, textLink } from "@/components/marketing/blocks";
+import { Block, Facts, Note, Prose, Rows, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
@@ -57,22 +57,20 @@ export default function ShippingPage() {
 
       <Block
         title="How long it takes"
-        intro="Estimates include production and delivery, in business days, for US addresses. Canadian orders usually take a few extra business days."
+        intro="Estimates include production and delivery, in business days, for US addresses. US shipping is free on every product."
       >
-        <DataTable
-          caption="Estimated delivery time and shipping cost by product"
-          head={["Product", "Arrives in", "US shipping"]}
-          rows={PRODUCTS.map((p) => ({
+        <Facts
+          items={PRODUCTS.map((p) => ({
             key: p.type,
-            cells: [
-              <Link key="n" href={`/shop/${p.type}`} className="hover:underline hover:underline-offset-4">
+            label: (
+              <Link href={`/shop/${p.type}`} className="hover:underline hover:underline-offset-4">
                 {p.name}
-              </Link>,
-              isPhysical(p) ? shipWindow(p) : "Instantly, by email",
-              "Free",
-            ],
+              </Link>
+            ),
+            value: isPhysical(p) ? shipWindow(p) : "Instantly, by email",
           }))}
         />
+        <Note className="mt-6">Canadian orders usually take a few extra business days.</Note>
       </Block>
 
       <Block title="What happens after you order">
@@ -84,20 +82,7 @@ export default function ShippingPage() {
         title="Christmas order-by dates"
         intro="Our recommended last order dates for standard delivery before Christmas. They're honest guidance, not guarantees: carriers get very busy in December, so earlier is always better."
       >
-        <DataTable
-          caption="Christmas 2026 recommended order-by dates"
-          head={["What", "Order by"]}
-          rows={christmasRows.map((r) => ({
-            key: r.what + r.where,
-            cells: [
-              <>
-                {r.what}
-                <span className="mt-0.5 block text-[14px] text-ink-3">{r.where}</span>
-              </>,
-              r.when,
-            ],
-          }))}
-        />
+        <Facts items={christmasRows.map((r) => ({ key: r.what + r.where, label: r.what, note: r.where, value: r.when }))} />
         <Note className="mt-6">
           The Canada date allows a little extra time for cross-border transit. Physical pieces are made to order, so please
           don&apos;t wait for the last day.

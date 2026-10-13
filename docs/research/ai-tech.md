@@ -326,6 +326,25 @@ curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/interactions" 
 
 JS SDK: `ai.interactions.create({ model, input, response_format })` with `@google/genai`. Batch tier is 50% off; use it for non-interactive work such as marketing assets and gallery seeding.
 
+Verified 2026-10-13 (docs + `@google/genai` 2.28 types): `response_format.mime_type` only accepts `image/jpeg` on the Interactions API, so don't request PNG; `store` defaults to `true` (kept 55 days on the paid tier), so send `store: false`; `generateContent` is "legacy" but "remains fully supported" (`config.responseModalities` + `config.imageConfig: { aspectRatio, imageSize }`, image in `inlineData`, skip `thought` parts). Nano Banana 2.1 has **no free tier**. Implemented in `web/src/lib/ai/providers/gemini.ts` (fallback provider since 2026-10-13).
+
+### 5.4 OpenAI direct (primary provider since 2026-10-13)
+
+```ts
+await openai.images.edit(
+  { model: "gpt-image-2.5-flare", image: await toFile(jpegBytes, "dog.jpg", { type: "image/jpeg" }),
+    prompt, n: 1, size: "1536x2048", quality: "high", background: "opaque", output_format: "png" },
+  { signal, timeout: 50_000, maxRetries: 0 },
+);
+// response: data[0].b64_json (GPT Image models always return base64)
+```
+
+- Sizes: GPT Image 2.x takes any `WIDTHxHEIGHT` (multiples of 16, edge ≤3840, 655,360–8,294,400 px, ratio ≤3:1; above 2560×1440 is "experimental"). gpt-image-1.x: `1024x1536` only for portrait.
+- `input_fidelity`: omit on GPT Image 2.x (always high fidelity; "the API doesn't allow changing it"); `"high"` on gpt-image-1 / 1.5.
+- Quality → output tokens (OpenAI's own calculator, 2.5 base factors low/medium/high/xhigh/max = 16/24/48/64/96): at 1536×2048, low 247 ($0.007), medium 556 ($0.017), **high 2,223 ($0.067)**, xhigh 3,952 ($0.119), max 8,892 ($0.267), at $30/M image output tokens; plus ~$0.01 of image-input tokens for the photo. Latency is proportional to output tokens: third-party timings for Flare at 1024² high are 17–25 s per edit (Sunburst ~1.5–2× slower).
+- Moderation blocks: HTTP 400, `error.code = "moderation_blocked"`, `moderation_details.moderation_stage` = input | output. `moderation` (auto|low) is listed only for generations, not in the edit endpoint's parameters (SDK 7.32), so we don't send it.
+- Rate limit at the Build tier: 20 images/min. "You may need to complete the API Organization Verification" before using GPT Image models.
+
 ---
 
 ## 6. Unit economics (AI only; excludes printing and shipping)

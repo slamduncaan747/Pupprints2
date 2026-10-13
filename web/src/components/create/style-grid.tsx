@@ -30,7 +30,7 @@ export function StyleGrid({
     "inline-flex min-h-11 items-center text-[13px] text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink";
 
   return (
-    <section className="mx-auto w-full max-w-6xl px-5 pt-8 pb-24 sm:px-8 sm:pt-14">
+    <section className="mx-auto w-full max-w-6xl px-5 pt-8 pb-24 sm:px-8 sm:pt-10">
       <h1 className="text-center font-display text-[2.6rem] leading-[1.02] sm:text-[3.5rem]">
         {name ? `How should we paint ${name}?` : "Pick a style."}
       </h1>

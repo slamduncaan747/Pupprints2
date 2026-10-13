@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PROMISES } from "@/lib/catalog";
+import { PROMISES, STYLE_MAP } from "@/lib/catalog";
+import { BEFORE_AFTER } from "@/lib/samples";
+import { SampleImage } from "@/components/ui/sample-image";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Note, Rows, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
@@ -87,6 +89,8 @@ const FAQS = [
 ];
 
 export default function HowItWorksPage() {
+  const pair = BEFORE_AFTER[0];
+  const style = pair ? STYLE_MAP[pair.style] : undefined;
   return (
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
@@ -94,9 +98,36 @@ export default function HowItWorksPage() {
         eyebrow="How it works"
         title="From photo to portrait, in four steps"
         lede="See it now. Give it now. Hang it in days. Here's exactly what happens, from the photo on your phone to the portrait on your wall."
+        media={
+          pair &&
+          style && (
+            <div className="mx-auto grid max-w-[520px] grid-cols-2 gap-4 sm:gap-6">
+              <figure>
+                <SampleImage
+                  src={pair.before}
+                  alt={`Phone photo of a ${pair.dog}`}
+                  swatch="#d8d2c4"
+                  priority
+                  sizes="(max-width: 640px) 45vw, 250px"
+                />
+                <figcaption className="mt-3 text-[13px] text-ink-3">The photo</figcaption>
+              </figure>
+              <figure>
+                <SampleImage
+                  src={pair.after}
+                  alt={`${style.name} portrait of the same ${pair.dog}`}
+                  swatch={style.swatch}
+                  priority
+                  sizes="(max-width: 640px) 45vw, 250px"
+                />
+                <figcaption className="mt-3 text-[13px] text-ink-3">The portrait, in {style.name}</figcaption>
+              </figure>
+            </div>
+          )
+        }
       />
 
-      <Block title="Four steps">
+      <Block title="Step by step">
         <Rows numbered items={STEPS} />
       </Block>
 

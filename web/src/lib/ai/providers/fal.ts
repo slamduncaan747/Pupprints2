@@ -5,9 +5,10 @@ import { dataUri, fetchImageBytes } from "../http";
 import { ProviderError, type ModelFamily, type PortraitProvider, type ProviderInput } from "../types";
 
 /**
- * fal.ai adapters (verified against fal's live API pages, Oct 2026).
+ * fal.ai adapters (verified against fal's live API pages, Oct 2026). Optional: used only when FAL_KEY
+ * is set, after the direct OpenAI and Gemini providers in the default AI_PROVIDER_ORDER.
  *
- * - `fal`     → `google/nano-banana-2.1/edit` (Nano Banana 2.1, primary; ~$0.06 per 2K image)
+ * - `fal`     → `google/nano-banana-2.1/edit` (Nano Banana 2.1; ~$0.06 per 2K image)
  * - `fal-gpt` → `openai/gpt-image-2.5/flare/edit` (different vendor, survives Google refusals/outages)
  *
  * Override with FAL_IMAGE_MODEL / FAL_FALLBACK_MODEL. Input shapes for Nano Banana, GPT Image,

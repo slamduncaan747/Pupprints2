@@ -1,6 +1,10 @@
 import "server-only";
 
-/** Per-provider ceiling; routes allow up to 120s so one fallback provider fits. */
+/**
+ * Per-provider ceiling. Typical previews: GPT Image 2.5 Flare (high, 1536x2048) ~20–30 s, Nano Banana 2.1
+ * (2K) ~15–25 s. Routes allow 120 s with a 105 s AI budget, so a stalled first provider still leaves
+ * room for the fallback.
+ */
 export const PROVIDER_TIMEOUT_MS = 50_000;
 
 /** Fetch a remote image (provider CDN URL or data URI) as bytes. */

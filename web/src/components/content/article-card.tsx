@@ -47,7 +47,7 @@ export function ArticleCard({
       <div className="min-w-0">
         <p className="text-[13px] text-ink-3">
           {article.categoryLabel} · <time dateTime={article.date}>{formatArticleDate(article.date, "short")}</time> ·{" "}
-          {article.readingMinutes} min read
+          <span className="whitespace-nowrap">{article.readingMinutes} min read</span>
         </p>
         <Heading className="mt-2 font-display text-[1.55rem] leading-[1.12] text-ink sm:text-[1.9rem]">
           <Link

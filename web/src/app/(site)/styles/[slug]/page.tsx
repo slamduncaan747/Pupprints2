@@ -16,6 +16,7 @@ import { Block, Facts, Note, Rows, textLink } from "@/components/marketing/block
 import { StyleCard } from "@/components/marketing/style-card";
 import { GOOD_FOR_LABELS, honestDescription, styleContent, stylesFor } from "@/components/marketing/style-content";
 import { fromPrice, shipWindow, toPrice, FRAME_LABELS } from "@/components/marketing/commerce";
+import { firstSentences } from "@/components/marketing/honest";
 import { breedsForStyle } from "@/content/breeds";
 
 export const dynamicParams = false;
@@ -115,7 +116,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ href: "/styles", label: "Styles" }, { href: `/styles/${style.slug}`, label: style.name }]} />}
         title={c.h1}
-        lede={<p>{honestDescription(style)}</p>}
+        lede={<p>{firstSentences(honestDescription(style))}</p>}
         media={
           <figure className="mx-auto w-full max-w-[460px]">
             <FramedArt style={style.slug} finish={c.frame} priority sizes="(max-width: 1024px) 85vw, 440px" />

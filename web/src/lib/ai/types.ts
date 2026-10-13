@@ -4,8 +4,8 @@ import type { StyleSlug } from "@/lib/catalog";
 export type ProviderId = "fal" | "replicate" | "fal-gpt" | "gemini" | "openai" | "mock";
 
 /**
- * Who actually runs the model. fal and Replicate both proxy Google for Nano Banana, so a
- * Google safety refusal will repeat on both; after one, we skip to a different family.
+ * Who actually makes the model. gemini (direct), fal and Replicate all run Google's Nano Banana by
+ * default, so a Google safety refusal will repeat on each; after one, we skip to a different family.
  */
 export type ModelFamily = "google" | "openai" | "bfl" | "mock";
 

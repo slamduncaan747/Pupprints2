@@ -65,7 +65,7 @@ export default async function PartnerGiftPage({ params }: PageProps<"/admin/part
         }
       />
       {!aiAvailable() && (
-        <ErrorNote message="No AI image provider is configured yet (GEMINI_API_KEY, FAL_KEY, OPENAI_API_KEY or REPLICATE_API_TOKEN). Gift portraits can't be created until one is set." />
+        <ErrorNote message="No AI image provider is configured yet (OPENAI_API_KEY, GEMINI_API_KEY, FAL_KEY or REPLICATE_API_TOKEN). Gift portraits can't be created until one is set." />
       )}
       {error && <ErrorNote message={error} />}
 

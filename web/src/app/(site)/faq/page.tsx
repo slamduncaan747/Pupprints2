@@ -38,7 +38,7 @@ export default function FaqPage() {
       </PageHero>
 
       {FAQ_GROUPS.map((g) => (
-        <Block key={g.id} id={g.id} title={g.title}>
+        <Block key={g.id} id={g.id} title={g.title} compact>
           <FaqList items={g.items} />
         </Block>
       ))}

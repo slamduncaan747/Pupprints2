@@ -79,7 +79,7 @@ export function UploadStep({
   const continueLabel = style ? `Paint ${dogName || "my dog"} as ${style.name}` : "Continue";
 
   return (
-    <section className="mx-auto w-full max-w-md px-5 pt-6 pb-16 sm:max-w-lg sm:px-8 sm:pt-14">
+    <section className="mx-auto w-full max-w-md px-5 pt-6 pb-16 sm:max-w-lg sm:px-8 sm:pt-10">
       <h1 className="text-center font-display text-[2.6rem] leading-[1.02] sm:text-[3.5rem]">Start with a photo you love.</h1>
       <p className="mx-auto mt-4 max-w-sm text-center text-[15px] leading-relaxed text-ink-2">
         {style ? (
@@ -104,7 +104,7 @@ export function UploadStep({
 
         {displayUrl ? (
           <div className="flex flex-col items-center">
-            <div className="relative w-full max-w-[200px] sm:max-w-[260px]">
+            <div className="relative w-full max-w-[200px] sm:max-w-[220px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={displayUrl}
@@ -143,29 +143,29 @@ export function UploadStep({
           </div>
         ) : (
           <>
-          <label
-            htmlFor={inputId}
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDragging(true);
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={onDrop}
-            className={cn(
-              "flex aspect-[5/4] cursor-pointer flex-col items-center justify-center gap-3 rounded-[3px] border px-6 text-center transition-colors",
-              dragging ? "border-ink bg-paper-2" : "border-line bg-white hover:border-ink/40",
-            )}
-          >
-            <Upload className="h-5 w-5 text-ink-2" strokeWidth={1.5} aria-hidden />
-            <span>
-              <span className="block text-[16px] font-medium text-ink">Choose a photo</span>
-              <span className="mt-1 block text-[13px] text-ink-3">
-                <span className="sm:hidden">From your camera roll</span>
-                <span className="hidden sm:inline">or drag it here</span>
+            <label
+              htmlFor={inputId}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragging(true);
+              }}
+              onDragLeave={() => setDragging(false)}
+              onDrop={onDrop}
+              className={cn(
+                "flex aspect-[5/4] cursor-pointer flex-col items-center justify-center gap-3 rounded-[3px] border px-6 text-center transition-colors",
+                dragging ? "border-ink bg-paper-2" : "border-line bg-white hover:border-ink/40",
+              )}
+            >
+              <Upload className="h-5 w-5 text-ink-2" strokeWidth={1.5} aria-hidden />
+              <span>
+                <span className="block text-[16px] font-medium text-ink">Choose a photo</span>
+                <span className="mt-1 block text-[13px] text-ink-3">
+                  <span className="sm:hidden">From your camera roll</span>
+                  <span className="hidden sm:inline">or drag it here</span>
+                </span>
               </span>
-            </span>
-          </label>
-          <PhotoTips className="mt-6" />
+            </label>
+            <PhotoTips className="mt-6" />
           </>
         )}
 

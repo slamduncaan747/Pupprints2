@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { after } from "next/server";
 import type Stripe from "stripe";
-import { Download, HeartHandshake, Truck } from "lucide-react";
 import { Container, Eyebrow } from "@/components/ui/container";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink, buttonClasses } from "@/components/ui/button";
 import { FramedPortrait, finishFor } from "@/components/order/framed-portrait";
 import { GiftRevealCard } from "@/components/order/gift-reveal-card";
 import { InviteCard } from "@/components/order/invite-card";
@@ -129,11 +128,11 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
   if (!order) {
     return (
       <Container className="py-24 text-center sm:py-32">
-        <h1 className="font-display text-4xl sm:text-5xl">We couldn&apos;t find that order</h1>
-        <p className="mx-auto mt-5 max-w-md text-lg text-ink-2">
+        <h1 className="font-display text-[2.75rem] leading-[1.02] sm:text-6xl">We couldn&apos;t find that order</h1>
+        <p className="mx-auto mt-5 max-w-md text-[16px] leading-relaxed text-ink-2">
           If you just paid, check your inbox for a confirmation email. You can also look it up by order number.
         </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
           <ButtonLink href="/track" variant="primary">
             Track an order
           </ButtonLink>
@@ -173,62 +172,60 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
   const purchase = purchaseEvent(order);
 
   return (
-    <div className="pb-20">
+    <div className="pb-24">
       {purchase && <PurchaseTracker {...purchase} />}
-      <Container className="pt-10 sm:pt-16">
-        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
-          {/* Portrait on a softly lit wall */}
-          <div className="relative flex items-center justify-center overflow-hidden rounded-card bg-paper-2 px-8 py-12 sm:py-16">
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_30%,rgb(255_255_255/0.85),transparent_70%)]"
-            />
-            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[16%] bg-paper-3/70" />
+      <Container className="pt-12 sm:pt-20">
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-24">
+          {/* The portrait, on white */}
+          <div className="flex flex-col items-center">
             {src ? (
               <FramedPortrait
                 src={src}
                 alt={pet ? `Portrait of ${pet}` : "Your portrait"}
                 finish={finishFor(main?.productType, main?.frameColor)}
-                className="relative w-[72%] max-w-[340px] animate-fade-up"
+                className="w-[78%] max-w-[380px] animate-fade-up"
                 priority
               />
             ) : (
-              <div className="relative aspect-[4/5] w-[72%] max-w-[340px] skeleton" />
+              <div className="skeleton aspect-[4/5] w-[78%] max-w-[380px]" />
             )}
-            {!clean && src && (
-              <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-ink-3">Preview shown; your file has no watermark.</p>
-            )}
+            {!clean && src && <p className="mt-5 text-center text-[12.5px] text-ink-3">Preview shown; your file has no watermark.</p>}
           </div>
 
-          <div className="lg:pt-6">
+          <div>
             <Eyebrow>Order {order.order_number} · Confirmed</Eyebrow>
-            <h1 className="mt-4 font-display text-[2.6rem] leading-[1.05] sm:text-6xl">
+            <h1 className="mt-4 font-display text-[2.75rem] leading-[1.02] sm:text-6xl">
               {hi ? `Thank you, ${hi}.` : "Thank you."}
             </h1>
-            <p className="mt-5 text-lg leading-relaxed text-ink-2">
+            <p className="mt-5 max-w-md text-[16px] leading-relaxed text-ink-2">
               {physical
                 ? `${pet ? `${pet}'s portrait` : "Your portrait"} is in good hands. A person on our team checks every piece before it's printed.`
                 : `${pet ? `${pet}'s portrait` : "Your portrait"} is ready to download, watermark-free.`}
               {order.email ? (
                 <>
                   {" "}
-                  We&apos;ve emailed your confirmation to <span className="font-medium text-ink">{order.email}</span>.
+                  We&apos;ve emailed your confirmation to <span className="text-ink">{order.email}</span>.
                 </>
               ) : null}
             </p>
+
+            <h2 className="mt-12 font-sans text-[12px] tracking-[0.14em] text-ink-3 uppercase">
+              {physical ? "What happens next" : "Your order"}
+            </h2>
+            <OrderTimeline steps={steps} className="mt-3" />
             {physical && arrival && (
-              <p className="mt-6 inline-flex items-center gap-2.5 rounded-full bg-sage-soft px-4 py-2 text-[15px] text-moss">
-                <Truck className="h-4 w-4" aria-hidden="true" />
-                Estimated arrival <span className="font-semibold">{arrival}</span>
+              <p className="flex items-baseline justify-between gap-4 border-b border-line py-3.5 text-[15px]">
+                <span className="text-ink-2">Estimated arrival</span>
+                <span className="text-ink">{arrival}</span>
               </p>
             )}
-
-            <h2 className="mt-10 font-display text-2xl">{physical ? "What happens next" : "Your order"}</h2>
-            <OrderTimeline steps={steps} className="mt-5" />
             {physical && (
-              <p className="mt-6 text-sm text-ink-3">
+              <p className="mt-5 text-[13px] leading-relaxed text-ink-3">
                 We&apos;ll email your tracking link the moment it ships. You can also{" "}
-                <Link href={`/track?order=${encodeURIComponent(order.order_number)}`} className="text-clay underline underline-offset-2">
+                <Link
+                  href={`/track?order=${encodeURIComponent(order.order_number)}`}
+                  className="text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+                >
                   track your order
                 </Link>{" "}
                 any time.
@@ -238,8 +235,8 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
         </div>
       </Container>
 
-      <Container className="mt-14 sm:mt-20">
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+      <Container className="mt-24 sm:mt-32">
+        <div className="mx-auto max-w-3xl divide-y divide-line border-y border-line">
           <GiftRevealCard
             revealUrl={revealUrl(order.reveal_token)}
             sessionId={sessionId}
@@ -250,71 +247,70 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             emailEnabled={features.email}
           />
 
-          <div className="space-y-6">
-            <section aria-labelledby="digital-title" className="rounded-card bg-ink p-6 text-paper sm:p-8">
-              <h2 id="digital-title" className="font-display text-2xl">
-                {physical ? "Your hi-res file, free" : "Your hi-res file"}
-              </h2>
-              <p className="mt-2 text-paper/75">
+          <section aria-labelledby="digital-title" className="grid gap-4 py-10 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-10">
+            <h2 id="digital-title" className="font-display text-[1.75rem] leading-tight">
+              {physical ? "Your hi-res file, free" : "Your hi-res file"}
+            </h2>
+            <div>
+              <p className="text-[15px] leading-relaxed text-ink-2">
                 Full resolution, no watermark{physical ? ", included with your print" : ""}. Yours to print, post and share.
               </p>
-              <div className="mt-5 flex flex-col gap-2">
+              <div className="mt-5 flex flex-wrap gap-3">
                 {gens.map((g, n) => (
                   <a
                     key={g}
                     href={`/api/download/${order.reveal_token}/${g}`}
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-paper px-6 text-[15px] font-medium text-ink transition-colors hover:bg-white"
+                    className={buttonClasses(physical ? "secondary" : "primary", "md", "min-w-36")}
                   >
-                    <Download className="h-4 w-4" aria-hidden="true" />
                     {gens.length > 1 ? `Download portrait ${n + 1}` : "Download"}
                   </a>
                 ))}
               </div>
-            </section>
+            </div>
+          </section>
 
-            <section aria-labelledby="summary-title" className="rounded-card bg-white p-6 ring-1 ring-line sm:p-8">
-              <h2 id="summary-title" className="font-display text-xl">
-                Order summary
-              </h2>
-              <ul className="mt-4 divide-y divide-line text-[15px]">
+          <section aria-labelledby="summary-title" className="grid gap-4 py-10 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-10">
+            <h2 id="summary-title" className="font-display text-[1.75rem] leading-tight">
+              Order summary
+            </h2>
+            <div>
+              <ul className="text-[15px]">
                 {items.map((it, i) => (
-                  <li key={i} className="flex justify-between gap-4 py-3">
+                  <li key={i} className="flex justify-between gap-4 border-b border-line py-3 first:pt-0">
                     <span>
                       <span className="text-ink">
                         {it.label}
                         {it.quantity > 1 ? ` × ${it.quantity}` : ""}
                       </span>
-                      {it.detail && <span className="block text-sm text-ink-3">{it.detail}</span>}
+                      {it.detail && <span className="block text-[13px] text-ink-3">{it.detail}</span>}
                     </span>
-                    <span className="shrink-0 text-ink">{it.amount}</span>
+                    <span className="shrink-0 text-ink tabular-nums">{it.amount}</span>
                   </li>
                 ))}
               </ul>
-              <dl className="mt-2 space-y-1.5 border-t border-line pt-4 text-[15px]">
+              <dl className="mt-3 space-y-1.5 text-[15px]">
                 {totals.map((t) => (
-                  <div key={t.label} className={`flex justify-between ${t.strong ? "pt-1 font-semibold text-ink" : "text-ink-2"}`}>
+                  <div key={t.label} className={`flex justify-between ${t.strong ? "pt-1 text-ink" : "text-ink-2"}`}>
                     <dt>{t.label}</dt>
-                    <dd>{t.value}</dd>
+                    <dd className={t.strong ? "font-display text-[1.6rem] leading-none tabular-nums" : "tabular-nums"}>{t.value}</dd>
                   </div>
                 ))}
               </dl>
-            </section>
-          </div>
-        </div>
+            </div>
+          </section>
 
-        <div className="mt-6">
           <InviteCard siteUrl={site.url} instagramUrl={site.social.instagram} />
         </div>
 
-        <p className="mt-10 flex items-start justify-center gap-2 text-center text-[15px] text-ink-2">
-          <HeartHandshake className="mt-0.5 h-5 w-5 shrink-0 text-clay" aria-hidden="true" />
-          <span>
-            Love it or we&apos;ll remake or refund it. Questions? Reply to your confirmation email or write to{" "}
-            <a className="text-clay underline underline-offset-2" href={`mailto:${site.supportEmail}`}>
-              {site.supportEmail}
-            </a>
-            .
-          </span>
+        <p className="mx-auto mt-12 max-w-md text-center text-[13px] leading-relaxed text-ink-3">
+          Love it or we&apos;ll remake or refund it. Questions? Reply to your confirmation email or write to{" "}
+          <a
+            className="text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+            href={`mailto:${site.supportEmail}`}
+          >
+            {site.supportEmail}
+          </a>
+          .
         </p>
       </Container>
     </div>

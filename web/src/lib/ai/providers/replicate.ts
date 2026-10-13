@@ -5,7 +5,7 @@ import { dataUri, fetchImageBytes } from "../http";
 import { ProviderError, type PortraitProvider, type ProviderInput } from "../types";
 
 /**
- * Replicate — same Nano Banana 2.1 model as our primary, on a different provider
+ * Replicate (optional, only with REPLICATE_API_TOKEN): Nano Banana 2.1 on a different host than Google
  * (input schema per docs/research/ai-tech.md §5.2: `image_input[]`, `aspect_ratio`, `resolution`).
  * Override with REPLICATE_IMAGE_MODEL; FLUX.2 (`input_images[]`) and FLUX Kontext (`input_image`)
  * shapes are handled too.

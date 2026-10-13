@@ -44,7 +44,7 @@ export default function ShopPage() {
       />
 
       <Container className="pb-24 sm:pb-32">
-        <ul className="grid grid-cols-1 gap-x-8 gap-y-14 min-[480px]:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-8 lg:grid-cols-4">
           {PRODUCTS.map((p, i) => (
             <li key={p.type}>
               <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} priority={i < 2} />

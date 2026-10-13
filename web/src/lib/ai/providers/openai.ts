@@ -65,7 +65,7 @@ function toProviderError(err: unknown): ProviderError {
   if (err instanceof APIError) {
     const body = (err.error ?? {}) as { code?: string; type?: string; moderation_details?: { moderation_stage?: string } };
     const code = err.code ?? body.code ?? "";
-    const message = err.message.replace(/\s+/g, " ").slice(0, 300);
+    const message = err.message.replace(/\s+/g, " ").replace(/^\d{3} /, "").slice(0, 300);
     if (code === "moderation_blocked" || /moderation_blocked|safety system/i.test(message)) {
       const stage = body.moderation_details?.moderation_stage;
       return new ProviderError("openai", `content policy refusal${stage ? ` at ${stage}` : ""}: ${message}`, true);

@@ -424,7 +424,7 @@ function GiftOrder({
     <div className="flex min-h-full flex-col">
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 px-5 text-[13px] sm:px-8">
         <p className="py-2 text-ink-2">
-          Ordering your gift portrait{pet ? ` of ${pet}` : ""}. Digital file included with every print.
+          Ordering your gift portrait{pet ? ` of ${pet}` : ""}.
         </p>
         <button
           type="button"

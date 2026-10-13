@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, ExternalLink, Gift, Mail, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +15,8 @@ type Props = {
 };
 
 const input =
-  "mt-1.5 block h-11 w-full rounded-xl border border-line bg-white px-3.5 text-[15px] text-ink placeholder:text-ink-3 focus:border-clay focus:outline-none focus:ring-2 focus:ring-clay/20";
+  "mt-2 block h-12 w-full rounded-[3px] border border-line bg-white px-4 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink";
+const label = "text-[13px] text-ink-2";
 
 export function GiftRevealCard(p: Props) {
   const [copied, setCopied] = useState(false);
@@ -74,113 +74,108 @@ export function GiftRevealCard(p: Props) {
   }
 
   return (
-    <section aria-labelledby="gift-reveal-title" className="rounded-card bg-white p-6 shadow-soft ring-1 ring-line sm:p-8">
-      <div className="flex flex-col items-start gap-4 sm:flex-row">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-butter-soft text-[#7a5a12]">
-          <Gift className="h-5 w-5" aria-hidden="true" />
-        </span>
-        <div>
-          <h2 id="gift-reveal-title" className="font-display text-2xl leading-tight">
-            Your Gift Reveal is ready
-          </h2>
-          <p className="mt-1.5 text-ink-2">
-            A beautiful, shareable unveiling of the finished portrait, with no prices. Send it today; the print follows in days.
-          </p>
-        </div>
-      </div>
-
-      {sentTo && (
-        <p className="mt-5 flex items-center gap-2 rounded-xl bg-sage-soft px-4 py-3 text-sm text-moss" role="status">
-          <Check className="h-4 w-4 shrink-0" aria-hidden="true" /> Emailed to {sentTo}. You can also share the link yourself.
+    <section aria-labelledby="gift-reveal-title" className="grid gap-4 py-10 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-10">
+      <h2 id="gift-reveal-title" className="font-display text-[1.75rem] leading-tight">
+        Your Gift Reveal
+      </h2>
+      <div className="min-w-0">
+        <p className="text-[15px] leading-relaxed text-ink-2">
+          A shareable unveiling of the finished portrait, with no prices. Send it today; the print follows in days.
         </p>
-      )}
 
-      <div className="mt-5">
-        <label htmlFor="reveal-link" className="text-sm font-medium text-ink-2">
-          Reveal link
-        </label>
-        <div className="mt-1.5 flex gap-2">
-          <input
-            id="reveal-link"
-            readOnly
-            value={p.revealUrl}
-            onFocus={(e) => e.currentTarget.select()}
-            className="h-11 min-w-0 flex-1 truncate rounded-xl border border-line bg-paper px-3.5 font-mono text-[13px] text-ink-2"
-          />
-          <Button type="button" variant="secondary" onClick={copy} className="shrink-0 px-4" aria-live="polite">
-            {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
-            {copied ? "Copied" : "Copy"}
-          </Button>
-        </div>
-      </div>
-
-      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <Button type="button" variant="accent" onClick={share}>
-          <Share2 className="h-4 w-4" aria-hidden="true" /> Share
-        </Button>
-        {p.emailEnabled && (
-          <Button type="button" variant="secondary" onClick={() => setFormOpen((v) => !v)} aria-expanded={formOpen} aria-controls="reveal-email-form">
-            <Mail className="h-4 w-4" aria-hidden="true" /> Email it
-          </Button>
+        {sentTo && (
+          <p className="mt-4 text-[14px] text-ink" role="status">
+            Emailed to {sentTo}. You can also share the link yourself.
+          </p>
         )}
-        <a
-          href={p.revealUrl}
-          target="_blank"
-          rel="noreferrer"
-          className={cn(
-            "inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-medium text-ink hover:bg-ink/5",
-            !p.emailEnabled && "sm:col-span-2",
-          )}
-        >
-          <ExternalLink className="h-4 w-4" aria-hidden="true" /> Preview
-        </a>
-      </div>
 
-      {formOpen && (
-        <form id="reveal-email-form" onSubmit={send} className="mt-6 grid gap-4 border-t border-line pt-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="rv-name" className="text-sm font-medium text-ink-2">
-              Their name
-            </label>
-            <input id="rv-name" name="recipientName" defaultValue={p.recipientName ?? ""} maxLength={80} autoComplete="off" className={input} />
-          </div>
-          <div>
-            <label htmlFor="rv-email" className="text-sm font-medium text-ink-2">
-              Their email <span className="text-clay">*</span>
-            </label>
-            <input id="rv-email" name="recipientEmail" type="email" required maxLength={254} autoComplete="off" className={input} />
-          </div>
-          <div className="sm:col-span-2">
-            <label htmlFor="rv-from" className="text-sm font-medium text-ink-2">
-              From
-            </label>
-            <input id="rv-from" name="senderName" defaultValue={p.senderName ?? ""} maxLength={80} placeholder="Your name" className={input} />
-          </div>
-          <div className="sm:col-span-2">
-            <label htmlFor="rv-msg" className="text-sm font-medium text-ink-2">
-              A note for the reveal <span className="font-normal text-ink-3">(optional)</span>
-            </label>
-            <textarea
-              id="rv-msg"
-              name="message"
-              rows={3}
-              maxLength={500}
-              className={cn(input, "h-auto py-2.5")}
-              placeholder="Happy birthday! I couldn't resist."
+        <div className="mt-5">
+          <label htmlFor="reveal-link" className="sr-only">
+            Reveal link
+          </label>
+          <div className="flex gap-2">
+            <input
+              id="reveal-link"
+              readOnly
+              value={p.revealUrl}
+              onFocus={(e) => e.currentTarget.select()}
+              className="h-11 min-w-0 flex-1 truncate rounded-[3px] border border-line bg-white px-3.5 text-[13px] text-ink-2 outline-none focus:border-ink"
             />
-          </div>
-          <div className="sm:col-span-2">
-            <Button type="submit" variant="primary" disabled={state.status === "sending"} className="w-full sm:w-auto">
-              {state.status === "sending" ? "Sending…" : "Send the Gift Reveal"}
+            <Button type="button" variant="secondary" onClick={copy} className="shrink-0 px-5" aria-live="polite">
+              {copied ? "Copied" : "Copy"}
             </Button>
-            {state.status === "error" && (
-              <p className="mt-3 text-sm text-clay-dark" role="alert">
-                {state.message}
-              </p>
-            )}
           </div>
-        </form>
-      )}
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <Button type="button" variant="primary" onClick={share} className="min-w-32">
+            Share
+          </Button>
+          {p.emailEnabled && (
+            <button
+              type="button"
+              onClick={() => setFormOpen((v) => !v)}
+              aria-expanded={formOpen}
+              aria-controls="reveal-email-form"
+              className={textLink}
+            >
+              Email it
+            </button>
+          )}
+          <a href={p.revealUrl} target="_blank" rel="noreferrer" className={textLink}>
+            Preview
+          </a>
+        </div>
+
+        {formOpen && (
+          <form id="reveal-email-form" onSubmit={send} className="mt-6 grid gap-4 border-t border-line pt-6 sm:grid-cols-2">
+            <div>
+              <label htmlFor="rv-name" className={label}>
+                Their name
+              </label>
+              <input id="rv-name" name="recipientName" defaultValue={p.recipientName ?? ""} maxLength={80} autoComplete="off" className={input} />
+            </div>
+            <div>
+              <label htmlFor="rv-email" className={label}>
+                Their email <span aria-hidden="true">*</span>
+              </label>
+              <input id="rv-email" name="recipientEmail" type="email" required maxLength={254} autoComplete="off" className={input} />
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="rv-from" className={label}>
+                From
+              </label>
+              <input id="rv-from" name="senderName" defaultValue={p.senderName ?? ""} maxLength={80} placeholder="Your name" className={input} />
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="rv-msg" className={label}>
+                A note for the reveal <span className="text-ink-3">(optional)</span>
+              </label>
+              <textarea
+                id="rv-msg"
+                name="message"
+                rows={3}
+                maxLength={500}
+                className={cn(input, "h-auto resize-none py-3")}
+                placeholder="Happy birthday! I couldn't resist."
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Button type="submit" variant="primary" disabled={state.status === "sending"} className="w-full sm:w-auto">
+                {state.status === "sending" ? "Sending…" : "Send the Gift Reveal"}
+              </Button>
+              {state.status === "error" && (
+                <p className="mt-3 text-[14px] text-ink" role="alert">
+                  {state.message}
+                </p>
+              )}
+            </div>
+          </form>
+        )}
+      </div>
     </section>
   );
 }
+
+const textLink =
+  "inline-flex min-h-11 items-center text-[14px] text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink";

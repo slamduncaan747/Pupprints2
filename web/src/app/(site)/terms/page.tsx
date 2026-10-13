@@ -263,7 +263,7 @@ export default function TermsPage() {
         updated={UPDATED}
         sections={SECTIONS}
       />
-      <CtaBand tone="clay" eyebrow="Ready when you are" title="See your dog as a work of art" />
+      <CtaBand />
     </>
   );
 }

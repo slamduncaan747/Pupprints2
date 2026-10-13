@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { PawMark } from "@/components/ui/paw";
+import { useEffect, useRef, useState } from "react";
+import { MotionConfig, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import styles from "./reveal.module.css";
 
@@ -20,55 +20,17 @@ export type RevealViewProps = {
 
 type Phase = "sealed" | "opening" | "open";
 
-const PAW_COLORS = ["#f2d492", "#e8cc85", "#f7efe1", "#d9705a", "#c9a457"];
-
 function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
-/** Deterministic pseudo-random so the confetti layout is stable per render. */
-function rand(seed: number) {
-  const x = Math.sin(seed * 9301 + 49297) * 233280;
-  return x - Math.floor(x);
-}
-
-function PawConfetti() {
-  const paws = useMemo(
-    () =>
-      Array.from({ length: 22 }, (_, i) => ({
-        left: `${(rand(i + 1) * 100).toFixed(1)}%`,
-        size: 12 + Math.round(rand(i + 40) * 16),
-        style: {
-          "--dur": `${(4.2 + rand(i + 7) * 3).toFixed(2)}s`,
-          "--delay": `${(rand(i + 13) * 1.4).toFixed(2)}s`,
-          "--rot": `${Math.round(rand(i + 21) * 120 - 60)}deg`,
-          "--drift": `${Math.round(rand(i + 33) * 80 - 40)}px`,
-          "--alpha": (0.45 + rand(i + 55) * 0.45).toFixed(2),
-        } as CSSProperties,
-        color: PAW_COLORS[i % PAW_COLORS.length],
-      })),
-    [],
-  );
-  return (
-    <div className={styles.confetti} aria-hidden="true">
-      {paws.map((p, i) => (
-        <span key={i} className={styles.paw} style={{ ...p.style, left: p.left, color: p.color }}>
-          <svg viewBox="0 0 32 32" width={p.size} height={p.size} fill="currentColor">
-            <ellipse cx="16" cy="20.5" rx="6" ry="5" />
-            <ellipse cx="8.6" cy="13.6" rx="2.4" ry="3.1" />
-            <ellipse cx="13.2" cy="9.2" rx="2.4" ry="3.2" />
-            <ellipse cx="18.8" cy="9.2" rx="2.4" ry="3.2" />
-            <ellipse cx="23.4" cy="13.6" rx="2.4" ry="3.1" />
-          </svg>
-        </span>
-      ))}
-    </div>
-  );
-}
-
+/**
+ * Gift Reveal: a covered, framed artwork. One tap lifts the cover, the portrait fades in on
+ * white, then the frame settles and the note appears beneath it. Motion is minimal and
+ * prefers-reduced-motion skips it entirely.
+ */
 export function RevealExperience(p: RevealViewProps) {
   const [phase, setPhase] = useState<Phase>("sealed");
-  const [confetti, setConfetti] = useState(false);
   const pinged = useRef(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -103,11 +65,7 @@ export function RevealExperience(p: RevealViewProps) {
       return;
     }
     setPhase("opening");
-    window.setTimeout(() => {
-      setPhase("open");
-      setConfetti(true);
-      window.setTimeout(() => setConfetti(false), 9000);
-    }, 1350);
+    window.setTimeout(() => setPhase("open"), 1500);
   }
 
   const forWhom = p.recipientName ? `For ${p.recipientName}` : "A gift for you";
@@ -119,148 +77,147 @@ export function RevealExperience(p: RevealViewProps) {
       : p.styleName
         ? `as ${p.styleName}`
         : "as a work of art";
+  const sealed = phase === "sealed";
+  const isOpen = phase === "open";
 
   return (
-    <main className={styles.stage}>
-      {confetti && <PawConfetti />}
-      <div className="relative z-10 mx-auto flex min-h-dvh max-w-xl flex-col px-5 pb-12 pt-6 sm:px-8">
-        <header className="flex justify-center">
-          <span className="inline-flex items-center gap-2 text-[#f7efe1]/80">
-            <PawMark className="h-5 w-5 text-[#e8cc85]" />
-            <span className="font-display text-lg tracking-tight">Pup Prints</span>
-          </span>
+    <MotionConfig reducedMotion="user">
+      <main className="flex min-h-dvh flex-col bg-paper text-ink">
+        <header className="flex h-16 shrink-0 items-center justify-center">
+          <span className="font-display text-[22px] leading-none">Pup Prints</span>
         </header>
 
-        {phase !== "open" ? (
-          <section className="flex flex-1 flex-col items-center justify-center py-10 text-center" aria-label="Your gift">
-            <div className={cn("transition-opacity duration-300", phase === "opening" && "opacity-0")}>
-              <p className="font-display text-[1.65rem] italic leading-tight text-[#f7efe1] sm:text-3xl">{forWhom}</p>
-              {from && <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[#e8cc85]/80">{from}</p>}
-            </div>
-
-            <div className="mt-10 w-full">
-              <button
-                type="button"
-                onClick={open}
-                aria-label="Open your gift"
-                className={cn(styles.envelopeButton, phase === "opening" && styles.opening)}
-              >
-                <span className={styles.envelopeBack} />
-                <span className={styles.letter} />
-                <span className={styles.envelopeFront}>
-                  <span className={styles.foldLeft} />
-                  <span className={styles.foldRight} />
-                  <span className={styles.foldBottom} />
-                </span>
-                <span className={styles.flap}>
-                  <span className={styles.flapFace} />
-                  <span className={styles.flapBack} />
-                </span>
-                <span className={styles.seal}>
-                  <PawMark className="h-[58%] w-[58%]" />
-                </span>
-              </button>
-            </div>
-
-            <p className={cn("mt-12 text-[15px] text-[#f7efe1]/80", styles.tapHint)} aria-hidden={phase === "opening"}>
-              {phase === "opening" ? "Opening…" : "Tap the envelope to open"}
-            </p>
-          </section>
-        ) : (
-          <section className="flex flex-1 flex-col items-center py-8 text-center" aria-labelledby="reveal-title">
-            <div className={cn(styles.portraitWrap, styles.rise)}>
-              <span className={styles.glow} aria-hidden="true" />
-              <div className={styles.goldFrame}>
-                <div className={styles.goldInner}>
-                  {p.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL, already web-sized
-                    <img
-                      src={p.imageUrl}
-                      alt={p.petName ? `Portrait of ${p.petName}` : "Your portrait"}
-                      className="block aspect-[4/5] w-full object-cover"
-                      decoding="async"
-                    />
-                  ) : (
-                    <div className="flex aspect-[4/5] w-full items-center justify-center bg-[#efe6d6] px-6 text-[15px] text-[#4a443c]">
-                      Your portrait is being finished. Check back soon.
-                    </div>
+        <div
+          className={cn(
+            "mx-auto flex w-full max-w-xl flex-1 flex-col items-center px-5 sm:px-8",
+            isOpen ? "justify-start pt-4 pb-16 sm:pt-8" : "justify-center pb-24",
+          )}
+        >
+          <motion.div
+            layout
+            transition={{ layout: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } }}
+            className="w-[min(78vw,400px)] bg-[#161616] p-2 shadow-frame"
+          >
+            <div className="relative aspect-[4/5] overflow-hidden bg-[#fdfdfb]">
+              {p.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL, already web-sized
+                <img
+                  src={p.imageUrl}
+                  alt={p.petName ? `Portrait of ${p.petName}` : "Your portrait"}
+                  aria-hidden={sealed || undefined}
+                  className={cn(
+                    "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-out",
+                    sealed ? "opacity-0" : "opacity-100",
                   )}
-                </div>
+                  decoding="async"
+                />
+              ) : (
+                !sealed && (
+                  <div className="absolute inset-0 flex items-center justify-center px-8 text-center text-[15px] text-ink-2">
+                    Your portrait is being finished. Check back soon.
+                  </div>
+                )
+              )}
+
+              {!isOpen && (
+                <button
+                  type="button"
+                  onClick={open}
+                  aria-label="Open your gift"
+                  className={cn(
+                    "absolute inset-0 flex flex-col items-center justify-center bg-[#fdfdfb] px-6 text-center transition-opacity duration-500 ease-out focus-visible:outline-offset-[-6px]",
+                    phase === "opening" && "pointer-events-none opacity-0",
+                  )}
+                >
+                  <span className="font-display text-[2.1rem] leading-tight italic sm:text-[2.6rem]">{forWhom}</span>
+                  {from && <span className="mt-3 text-[12px] tracking-[0.14em] text-ink-3 uppercase">{from}</span>}
+                  <span className={cn("absolute inset-x-0 bottom-7 text-[13px] text-ink-2", styles.breathe)}>
+                    Tap to reveal
+                  </span>
+                </button>
+              )}
+            </div>
+          </motion.div>
+
+          {isOpen && (
+            <section className="mt-12 flex w-full flex-col items-center text-center" aria-labelledby="reveal-title">
+              <div className={styles.fadeUp}>
+                <p className="text-[12px] tracking-[0.14em] text-ink-3 uppercase">
+                  {p.kind === "gift" && p.recipientName ? `A gift for ${p.recipientName}` : forWhom}
+                </p>
+                <h1
+                  id="reveal-title"
+                  ref={headingRef}
+                  tabIndex={-1}
+                  className="mt-3 font-display text-[2.6rem] leading-[1.02] outline-none sm:text-[3.5rem]"
+                >
+                  {p.kind === "gift" ? subtitle : petTitle}
+                </h1>
+                {p.kind === "order" && <p className="mt-2 font-display text-[1.35rem] text-ink-2 italic">{subtitle}</p>}
               </div>
-            </div>
 
-            <div className={cn("mt-10", styles.fadeUp)} style={{ animationDelay: "0.35s" }}>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e8cc85]">
-                {p.kind === "gift" && p.recipientName ? `A gift for ${p.recipientName}` : forWhom}
-              </p>
-              <h1
-                id="reveal-title"
-                ref={headingRef}
-                tabIndex={-1}
-                className="mt-3 font-display text-[2.75rem] leading-[1.02] text-[#fbf6ec] outline-none sm:text-6xl"
+              {(p.message || from) && (
+                <figure className={cn("mt-10 w-full max-w-md", styles.fadeUp)} style={{ animationDelay: "0.25s" }}>
+                  {p.message && (
+                    <blockquote className="font-display text-[1.35rem] leading-relaxed whitespace-pre-line text-ink italic">
+                      {p.message}
+                    </blockquote>
+                  )}
+                  {from && (
+                    <figcaption className={cn("text-[13px] text-ink-3", p.message && "mt-4")}>— {from}</figcaption>
+                  )}
+                </figure>
+              )}
+
+              {p.productNote && (
+                <p
+                  className={cn("mt-8 max-w-xs text-[14px] leading-relaxed text-ink-2", styles.fadeUp)}
+                  style={{ animationDelay: "0.4s" }}
+                >
+                  {p.productNote}
+                </p>
+              )}
+
+              <div
+                className={cn("mt-12 w-full max-w-sm border-t border-line pt-10", styles.fadeUp)}
+                style={{ animationDelay: "0.55s" }}
               >
-                {p.kind === "gift" ? subtitle : petTitle}
-              </h1>
-              {p.kind === "order" && <p className="mt-2 font-display text-xl italic text-[#f7efe1]/75">{subtitle}</p>}
-            </div>
-
-            {(p.message || from) && (
-              <figure
-                className={cn("mt-8 w-full max-w-md rounded-2xl bg-[#fbf6ec] px-6 py-6 text-left text-[#1b1814] shadow-[0_24px_48px_-20px_rgb(0_0_0/0.7)]", styles.fadeUp)}
-                style={{ animationDelay: "0.6s" }}
-              >
-                {p.message && (
-                  <blockquote className="whitespace-pre-line font-display text-[1.2rem] italic leading-relaxed text-[#2a241d]">
-                    {p.message}
-                  </blockquote>
-                )}
-                {from && <figcaption className={cn("text-[15px] font-medium text-[#8a6a2b]", p.message && "mt-4")}>— {from}</figcaption>}
-              </figure>
-            )}
-
-            {p.productNote && (
-              <p className={cn("mt-7 max-w-xs text-[15px] leading-relaxed text-[#f7efe1]/85", styles.fadeUp)} style={{ animationDelay: "0.8s" }}>
-                <span aria-hidden="true" className="mr-1.5 text-[#e8cc85]">
-                  ✦
-                </span>
-                {p.productNote}
-              </p>
-            )}
-
-            <div className={cn("mt-14 w-full max-w-sm", styles.fadeUp)} style={{ animationDelay: "1s" }}>
-              {p.ctas.map((cta) =>
-                cta.primary ? (
-                  <div key={cta.label} className="mb-3">
-                    {cta.note && <p className="mb-3 font-display text-xl text-[#fbf6ec]">{cta.note}</p>}
+                {p.ctas.map((cta) =>
+                  cta.primary ? (
+                    <div key={cta.label} className="mb-2">
+                      {cta.note && <p className="mb-5 font-display text-[1.6rem] leading-tight">{cta.note}</p>}
+                      <a
+                        href={cta.href}
+                        className={cn(
+                          "flex h-13 w-full items-center justify-center rounded-[3px] px-6 text-[15px] font-medium transition-colors",
+                          p.kind === "gift"
+                            ? "bg-ink text-paper hover:bg-ink/85"
+                            : "text-ink ring-1 ring-ink/25 ring-inset hover:ring-ink",
+                        )}
+                      >
+                        {cta.label}
+                      </a>
+                    </div>
+                  ) : (
                     <a
+                      key={cta.label}
                       href={cta.href}
-                      className={cn(
-                        "flex h-13 w-full items-center justify-center rounded-full px-6 text-base font-medium transition-colors",
-                        p.kind === "gift"
-                          ? "bg-clay text-white shadow-[0_10px_30px_-8px_rgb(200_85_61/0.7)] hover:bg-clay-dark"
-                          : "bg-[#f7efe1]/10 text-[#fbf6ec] ring-1 ring-[#f7efe1]/30 hover:bg-[#f7efe1]/15",
-                      )}
+                      className="inline-flex min-h-11 items-center justify-center px-2 text-[14px] text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
                     >
                       {cta.label}
                     </a>
-                  </div>
-                ) : (
-                  <a
-                    key={cta.label}
-                    href={cta.href}
-                    className="mt-1 inline-flex h-11 items-center justify-center px-4 text-[15px] text-[#f7efe1]/80 underline decoration-[#f7efe1]/30 underline-offset-4 hover:text-[#fbf6ec]"
-                  >
-                    {cta.label}
-                  </a>
-                ),
-              )}
-              <p className="mt-8 text-xs text-[#f7efe1]/45">
-                {p.kind === "order" ? "Made with Pup Prints · Every portrait is checked by a person" : "Made by the Pup Prints studio"}
-              </p>
-            </div>
-          </section>
-        )}
-      </div>
-    </main>
+                  ),
+                )}
+                <p className="mt-10 text-[12px] text-ink-3">
+                  {p.kind === "order"
+                    ? "Made with Pup Prints · Every portrait is checked by a person"
+                    : "Made by the Pup Prints studio"}
+                </p>
+              </div>
+            </section>
+          )}
+        </div>
+      </main>
+    </MotionConfig>
   );
 }

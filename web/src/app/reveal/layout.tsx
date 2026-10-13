@@ -5,7 +5,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#17130f",
+  themeColor: "#fbfbf9",
 };
 
 /** Standalone gift experience: no site header or footer. */

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Camera, Check, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { socialHandle } from "@/lib/config";
 
@@ -31,35 +30,36 @@ export function InviteCard({ siteUrl, instagramUrl }: { siteUrl: string; instagr
   }
 
   return (
-    <div className={handle ? "grid gap-4 sm:grid-cols-2" : "grid gap-4"}>
-      <section className="rounded-card bg-paper-2 p-6" aria-labelledby="invite-title">
-        <h2 id="invite-title" className="font-display text-xl">
-          Know another dog who deserves a portrait?
-        </h2>
-        <p className="mt-2 text-[15px] text-ink-2">Their preview is free, so it&apos;s an easy thing to share.</p>
-        <Button type="button" variant="secondary" size="sm" className="mt-4" onClick={invite}>
-          {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}
-          {copied ? "Link copied" : "Invite a friend"}
-        </Button>
-      </section>
-      {instagramUrl && handle ? (
-      <section className="rounded-card bg-blush/60 p-6" aria-labelledby="ig-title">
-        <h2 id="ig-title" className="font-display text-xl">
-          Show us on the wall
-        </h2>
-        <p className="mt-2 text-[15px] text-ink-2">
-          Follow along and tag <span className="font-medium text-ink">{handle}</span> when it arrives. We love seeing the real dog next to the art.
+    <section className="grid gap-4 py-10 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-10" aria-labelledby="invite-title">
+      <h2 id="invite-title" className="font-display text-[1.75rem] leading-tight">
+        Know another dog?
+      </h2>
+      <div>
+        <p className="text-[15px] leading-relaxed text-ink-2">
+          Their preview is free, so it&apos;s an easy thing to share.
+          {instagramUrl && handle ? (
+            <>
+              {" "}
+              And tag <span className="text-ink">{handle}</span> when yours is on the wall.
+            </>
+          ) : null}
         </p>
-        <a
-          href={instagramUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-4 inline-flex h-9 items-center gap-2 rounded-full bg-ink px-4 text-sm font-medium text-paper hover:bg-ink/90"
-        >
-          <Camera className="h-4 w-4" aria-hidden="true" /> Follow {handle}
-        </a>
-      </section>
-      ) : null}
-    </div>
+        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <Button type="button" variant="secondary" onClick={invite} aria-live="polite">
+            {copied ? "Link copied" : "Invite a friend"}
+          </Button>
+          {instagramUrl && handle ? (
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-11 items-center text-[14px] text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+            >
+              Follow {handle}
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </section>
   );
 }

@@ -214,7 +214,7 @@ export async function POST(req: Request) {
         ok: false,
         error: "ai_unavailable",
         message:
-          "No AI image provider is configured yet. Add GEMINI_API_KEY, FAL_KEY, OPENAI_API_KEY or REPLICATE_API_TOKEN to the environment (or AI_MOCK=1 in development), then try again.",
+          "No AI image provider is configured yet. Add OPENAI_API_KEY (and GEMINI_API_KEY as the fallback) to the environment (or AI_MOCK=1 in development), then try again.",
       },
       { status: 503 },
     );

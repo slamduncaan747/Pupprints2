@@ -21,14 +21,12 @@ export function ProductCard({
     <article className={cn("group", className)}>
       <Link href={`/shop/${product.type}`} className="block">
         <ProductArt type={product.type} style={style} priority={priority} />
-        <div className="mt-5 flex items-baseline justify-between gap-4">
-          <h3 className="font-display text-[22px] leading-tight sm:text-2xl">{product.name}</h3>
-          <p className="shrink-0 text-[15px] text-ink">
-            {product.variants.length > 1 && <span className="text-ink-3">from </span>}
-            {formatPrice(fromPrice(product))}
-          </p>
-        </div>
-        <p className="mt-1 text-[14px] text-ink-3">
+        <h3 className="mt-4 font-display text-[21px] leading-tight sm:text-2xl">{product.name}</h3>
+        <p className="mt-1 text-[15px] text-ink">
+          {product.variants.length > 1 && <span className="text-ink-3">from </span>}
+          {formatPrice(fromPrice(product))}
+        </p>
+        <p className="mt-0.5 text-[14px] leading-snug text-ink-3">
           {instant ? "Delivered instantly by email" : `Arrives in ${shipWindow(product)}`}
         </p>
       </Link>

@@ -16,3 +16,11 @@ export function honestText(text: string) {
     .filter((sentence) => !UNVERIFIABLE.test(sentence))
     .join(" ");
 }
+
+/** The first `count` sentences of a text, for page intros that should stay short. */
+export function firstSentences(text: string, count = 2) {
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .slice(0, count)
+    .join(" ");
+}

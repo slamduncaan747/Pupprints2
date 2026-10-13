@@ -15,6 +15,7 @@ import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Facts, Note, textLink } from "@/components/marketing/blocks";
 import { ProductCard } from "@/components/marketing/product-card";
 import { PRODUCT_CONTENT } from "@/components/marketing/product-content";
+import { firstSentences } from "@/components/marketing/honest";
 import { SizeTable } from "@/components/marketing/size-table";
 import {
   CANADA_SHIPPING_LABEL,
@@ -161,7 +162,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ href: "/shop", label: "Shop" }, { href: `/shop/${product.type}`, label: product.name }]} />}
         title={c.h1}
-        lede={<p>{c.intro}</p>}
+        lede={<p>{firstSentences(c.intro)}</p>}
         media={media}
       >
         <p className="font-display text-[2rem] leading-none">
@@ -255,7 +256,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
       </Block>
 
       <Block title="Other ways to hang it" layout="stack">
-        <ul className="grid grid-cols-1 gap-x-8 gap-y-14 min-[480px]:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-8 lg:grid-cols-3">
           {others.map((p) => (
             <li key={p.type}>
               <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} />

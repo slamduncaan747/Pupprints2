@@ -303,7 +303,7 @@ export default function PrivacyPage() {
         updated={UPDATED}
         sections={SECTIONS}
       />
-      <CtaBand tone="clay" eyebrow="Your photos stay yours" title="See your dog as a work of art" />
+      <CtaBand />
     </>
   );
 }

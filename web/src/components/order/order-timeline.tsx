@@ -1,47 +1,35 @@
-import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TimelineStep } from "./timeline";
 
-/** Vertical progress timeline (server-safe, no client JS). */
+/** Order progress as quiet text rows (server-safe, no client JS). */
 export function OrderTimeline({ steps, className }: { steps: TimelineStep[]; className?: string }) {
   return (
-    <ol className={cn("relative", className)}>
-      {steps.map((step, i) => {
-        const last = i === steps.length - 1;
-        return (
-          <li key={step.key} className="relative flex gap-4 pb-6 last:pb-0">
-            {!last && (
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "absolute left-[15px] top-8 bottom-0 w-px",
-                  step.state === "done" ? "bg-moss/40" : "bg-line",
-                )}
-              />
+    <ol className={cn("border-t border-line", className)}>
+      {steps.map((step) => (
+        <li key={step.key} className="flex items-baseline gap-3 border-b border-line py-3.5">
+          <span
+            aria-hidden="true"
+            className={cn(
+              "relative top-[-1px] h-1.5 w-1.5 shrink-0 rounded-full",
+              step.state === "done" && "bg-ink-2",
+              step.state === "current" && "bg-ink outline-1 outline-offset-2 outline-ink",
+              step.state === "upcoming" && "border border-ink/25",
             )}
-            <span
-              aria-hidden="true"
-              className={cn(
-                "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold",
-                step.state === "done" && "bg-moss text-paper",
-                step.state === "current" && "bg-clay text-white ring-4 ring-clay-soft",
-                step.state === "upcoming" && "bg-paper-2 text-ink-3 ring-1 ring-line",
-              )}
-            >
-              {step.state === "done" ? <Check className="h-4 w-4" strokeWidth={3} /> : i + 1}
+          />
+          <p
+            className={cn(
+              "min-w-0 flex-1 text-[15px] leading-snug",
+              step.state === "current" ? "text-ink" : step.state === "done" ? "text-ink-2" : "text-ink-3",
+            )}
+          >
+            {step.label}
+            <span className="sr-only">
+              {step.state === "done" ? " (done)" : step.state === "current" ? " (in progress)" : " (upcoming)"}
             </span>
-            <div className="pt-1">
-              <p className={cn("font-medium leading-snug", step.state === "upcoming" ? "text-ink-2" : "text-ink")}>
-                {step.label}
-                <span className="sr-only">
-                  {step.state === "done" ? " (done)" : step.state === "current" ? " (in progress)" : " (upcoming)"}
-                </span>
-              </p>
-              <p className="mt-0.5 text-sm text-ink-3">{step.detail}</p>
-            </div>
-          </li>
-        );
-      })}
+          </p>
+          <p className="max-w-[55%] text-right text-[13px] leading-snug text-ink-3">{step.detail}</p>
+        </li>
+      ))}
     </ol>
   );
 }
