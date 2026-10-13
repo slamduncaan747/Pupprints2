@@ -19,6 +19,7 @@ export function BreedCard({ breed, className, priority }: { breed: Breed; classN
           src={sample.src}
           alt={sample.alt}
           priority={priority}
+          showLabel={false}
           sizes="(max-width: 640px) 32vw, (max-width: 1024px) 20vw, 13vw"
           className="relative w-[58%] transition-transform duration-500 group-hover:-translate-y-1"
         />

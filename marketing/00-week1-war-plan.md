@@ -22,18 +22,24 @@ Related docs: [README](README.md) (start here) · [Creator playbook](creators/ou
 | Fine-art print 12×16 | $45 | $38.25 | $26 | ~$19 | ~$13 |
 | Digital file only | $29 | $24.65 | $26 | ~$23 | ~$19 |
 
-**So the target is ~30 orders, not 20–25.** Most early orders will use a 15% code: the launch code, a creator link or WELCOME10 at 10%. That pulls the blended profit down to about $38 per order.
+**So the target is 30–35 orders, not 20–25.** Most early orders will use a code: the 15% launch code, a 15% creator link, or WELCOME10 at 10%. That pulls the blended profit down to about $36–38 per order.
 
 | Line | Base case | Goal case |
 |---|---|---|
-| Orders | 15 | **30** |
-| Mix | 8 canvas, 3 framed, 2 print, 2 digital | 15 canvas, 6 framed, 4 print, 5 digital |
-| Gross profit after the code | ~$560 | ~$1,170 |
-| Creator commissions (~1 order in 5) | −$30 | −$70 |
+| Orders | 15 | **33** |
+| Mix | 8 canvas, 3 framed, 2 print, 2 digital | 16 canvas, 7 framed, 5 print, 5 digital |
+| Gross profit (about 3 in 4 orders use a 15% code) | ~$565 | ~$1,210 |
+| Add-on bumps (ornament $19 / mug $25, roughly +$10–14 profit each, on ~1 in 4 orders) | +$40 | +$100 |
+| Creator commissions (~1 order in 5) | −$30 | −$75 |
 | Paid spend | −$100 | −$100 |
 | Gifted prints for creators (max 5 × ~$16) | −$48 | −$80 |
-| Remake/refund reserve (3%) | −$40 | −$80 |
-| **Profit** | **≈ $340** | **≈ $840–1,000** |
+| Remake/refund reserve (3% of revenue) | −$40 | −$85 |
+| **Profit** | **≈ $390** | **≈ $970** (one more canvas gets you to $1,000) |
+
+**Levers that raise profit per order without fake discounts:**
+- Default to the **16×20 canvas** (it's already preselected).
+- Mention the **ornament or mug add-on** in every personal follow-up ("want [Dog] on an ornament too? +$19").
+- Offer **two-dog portraits** to multi-dog homes.
 
 **How likely is $1,000?** Not very. With zero reviews, zero followers and $100, our honest odds of $1,000 profit this week are about 1 in 4. The base case is 12–18 orders and $300–600 profit. Two things change the odds:
 1. **The warm network.** People who already know you, seeing *their own dog* as a portrait, buy at 15–30%. Strangers buy at 1–2%.
@@ -122,8 +128,8 @@ Shift every block if you start later. **The order matters more than the clock.**
 
 | Time | Block | Do this | Output |
 |---|---|---|---|
-| **10:00–11:00** | **Start-here checklist** | Run [README → First 60 minutes](README.md#start-here-first-60-minutes) in full: site URL env, one real test order, the FOUNDING100 code, partner CSV import, pixel check | Site sells, links point to the right domain |
-| 11:00–11:40 | Claim handles + bios | IG + TikTok only today ([social-setup.md](content/social-setup.md)). Post the "We're open" pinned intro. | 2 live profiles with a bio link |
+| **10:00–11:00** | **Start-here checklist** | Run [README → First 60 minutes](README.md#start-here-first-60-minutes) in full: site URL env, one real test order, the FOUNDING100 + INTERNAL100 codes, partner CSV import, gift-flow test, handles | Site sells, links point to the right domain |
+| 11:00–11:40 | Finish profiles + first post | If the handles weren't claimed in the first hour, claim IG + TikTok now ([social-setup.md](content/social-setup.md)). Post the "We're open" carousel (grid post #1) and a 3-frame story. | 2 live profiles with a bio link and a first post |
 | **11:40–13:00** | **Warm network, batch 1 (biggest cash lever)** | Scroll your phone contacts, FB and IG and list **50 people with dogs**. For the first **15**: grab a photo of their dog (their public post, or text "send me your favorite pic of Biscuit 🙏") → Admin → **Gifts** → generate → copy the reveal link → send the text from [community-posts.md §2](channels/community-posts.md#2-text-to-friends--family) | 15 gift reveals sent |
 | 13:00–13:30 | Personal launch posts | FB + IG feed + LinkedIn ([community-posts.md §1](channels/community-posts.md#1-founders-personal-launch-posts)). Use a real portrait of *your* dog, or a friend's (with their OK). | 3 posts live |
 | **13:30–15:30** | **Creator gift batch 1** | The first **15 P1 creators** from the [prospects CSV](creators/prospects.csv). Use the flow in [outreach-playbook §2](creators/outreach-playbook.md). Budget about 8 minutes each. | 15 gift DMs |
@@ -170,7 +176,7 @@ Shift every block if you start later. **The order matters more than the clock.**
 - **Warm network "second ring":** ask your 5 happiest buyers to forward the reveal to one friend ([community-posts.md §2c](channels/community-posts.md#2c-the-second-ring-ask-friday-to-friends-who-loved-theirs)).
 - **Comment-to-portrait:** make 10 portraits of dogs from comments (with permission) and reply with the reveal link.
 - **3 videos** (#7, #14, #21).
-- **Targets:** 1,000 sessions cumulative, 350 previews, **15–20 orders cumulative**.
+- **Targets:** 1,000 sessions cumulative, 350 previews, **~21 orders cumulative**.
 
 ### Sat Oct 17: weekend gift-shopping traffic
 - **Paid nano post #2 goes live.**
@@ -181,7 +187,7 @@ Shift every block if you start later. **The order matters more than the clock.**
   - Follow park rules. No hard selling.
 - **3 videos** (#9, #13, #20). Keep making comment portraits all day.
 - **Creator affiliates:** send each active creator a one-line nudge with an asset ("here's a 9:16 of Bodhi's portrait if you want to post it 💛").
-- **Targets:** **20–25 orders cumulative**.
+- **Targets:** **~28 orders cumulative**.
 
 ### Sun Oct 18: close the week cleanly
 - **Thank-you post** with a real count ("We made 412 free portraits and 27 of you ordered. Thank you."). Use real numbers only.
@@ -192,7 +198,7 @@ Shift every block if you start later. **The order matters more than the clock.**
   - kill the rest;
   - import new prospects;
   - schedule creator posts for Nov 16 – Dec 8.
-- **Target: 25–30 orders, about $1,000 profit.**
+- **Target: 30–35 orders, about $1,000 profit.**
 
 ---
 
@@ -207,8 +213,8 @@ Shift every block if you start later. **The order matters more than the clock.**
 | Own videos posted (per platform) | 3 | 3 | 3 | 3 | 3 | 3 | **18** |
 | Sessions | 150 | 200 | 250 | 500 | 500 | 400 | **2,000** |
 | Previews generated | 40 | 60 | 80 | 150 | 150 | 120 | **600** |
-| Orders | 4 | 4 | 5 | 6 | 6 | 5 | **30** |
-| Profit (running total) | $150 | $300 | $480 | $680 | $880 | **$900–1,000** | |
+| Orders | 4 | 5 | 5 | 7 | 7 | 5 | **33** |
+| Profit (running total, after costs to date) | $150 | $340 | $450 | $620 | $850 | **≈ $1,000** | |
 
 **Funnel health checks** (fix the leak before adding traffic):
 
@@ -264,3 +270,18 @@ Shift every block if you start later. **The order matters more than the clock.**
    - If Thursday ends below 8 orders, pull the dog-park blitz forward to Friday.
    - Double the warm-network second ring.
    - Put the full $40 into a 3rd nano post instead of the boost.
+
+---
+
+## 9. How this fits the 90-day strategy (`docs/strategy.md`)
+
+- **This week = strategy W1 (launch blockers) + early selling.** Founding 100 starts now rather than in W2. It's the honest offer and runs to Oct 31, so W2's soft launch keeps it unchanged.
+- **Creator terms match strategy §8.2:**
+  - 15% commission (20% Founding Partner rate for the first 25 creators who post by Dec 8)
+  - 15% audience discount
+  - commission locks 30 days after delivery, paid on the 15th via PayPal
+  - **The one exception is the attribution window.** The site currently tracks partner clicks for **30 days**, against the strategy's 60. Our agreement says 30 until engineering changes it.
+- **Strategy §8.4's wave-1 list is merged into [prospects.csv](creators/prospects.csv).**
+  - Micro and nano accounts (`P1`/`P2`, e.g. @novathegoldengal, @littlecooperbear, @jerrybichon, @titotherescue, @kumapupper, @styledwithpaws) get gift-first DMs this week.
+  - `P3-mid` and `LATER-macro` accounts get manager outreach from week 2, so seeds ship by **Nov 6** and posts land Nov 16 – Dec 8.
+- **Budget:** the strategy's $11.5K / 90-day plan assumes Meta at $40–60/day from W2. Fund that only if this week shows a cost per order under ~$25 on at least one channel. The Sunday retro decides.

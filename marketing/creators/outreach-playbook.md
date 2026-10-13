@@ -11,7 +11,7 @@
 
 Our cost per gift is about $0.06 and 8 minutes of your time. A paid post from the same person costs $30–300.
 
-Inputs: [prospects.csv](prospects.csv) (166 creators, verified 2026-10-13) · [creator-brief.md](creator-brief.md) (send after a yes) · [partner-agreement.md](partner-agreement.md) · strategy terms in `docs/strategy.md` §8
+Inputs: [prospects.csv](prospects.csv) (167 creators; TikTok/YouTube verified live 2026-10-13, IG from dated snapshots) · [creator-brief.md](creator-brief.md) (send after a yes) · [partner-agreement.md](partner-agreement.md) · strategy terms in `docs/strategy.md` §8
 
 ---
 
@@ -35,7 +35,7 @@ Inputs: [prospects.csv](prospects.csv) (166 creators, verified 2026-10-13) · [c
 |---|---|---|
 | 1. Find the photo | Open their profile. Pick a **recent, sharp, front-facing photo** of the dog alone: eyes visible, good light, no heavy filter or costume. Screenshot it and crop to the dog. | 1 min |
 | 2. Log it | Admin → **Partners** → find them (the CSV is already imported). Set status to **contacted**. Add a note on which photo you used and the date. | 30 s |
-| 3. Generate | Admin → **Gifts** (or the creator's partner page → Gift Studio). **Photo:** upload the screenshot, or on desktop paste the image address. **Style:** pick with the guide below. **Pet name** and **recipient name** from their bio. **Message:** one specific line, e.g. "We loved Rufus's 'CEO of Chaos' era." Tap **Generate** (~30 s). | 1 min |
+| 3. Generate | Open the creator's partner page → **Gift** (`/admin/partners/[id]/gift`, which links the gift to their record), or Admin → **Gifts** for non-partners. **Photo:** upload the screenshot, or on desktop paste the image address. **Style:** pick with the guide below. **Pet name** and **recipient name** from their bio. **Message:** one specific line, e.g. "We loved Rufus's 'CEO of Chaos' era." Tap **Generate** (~30 s). | 1 min |
 | 4. QA (non-negotiable) | Zoom in and check: same markings, eye color, ear shape and coat. No extra legs or paws, no text, no warped face. **If it isn't instantly "that's MY dog", tap Regenerate or switch style.** Never send a weak one. | 1–2 min |
 | 5. Send | Copy the **reveal link** and send [template A](#template-a-gift-first-dm). Send it from **@pupprints**, not your personal account. Use their listed email only if DMs are closed. | 1 min |
 | 6. Track | The Gift list shows **opened / view count**. Set a 48-hour reminder for [template B](#template-b-48h-follow-up). | 10 s |
@@ -218,7 +218,7 @@ This is the law (FTC Endorsement Guides, 16 CFR Part 255), and our partner terms
 
 **Creating a partner:**
 1. Partner page → **Generate code** (e.g. `RUFUS15`). Set commission: 0.15, or 0.20 for Founding Partners.
-2. **Copy link** gives their share link: `https://pup-prints.vercel.app/?ref=RUFUS15`. The discount applies automatically at checkout, and attribution lasts 30 days from the click.
+2. **Copy share link** gives their link: `https://pup-prints.vercel.app/?ref=RUFUS15`. The discount applies automatically at checkout, and attribution lasts 30 days from the click.
 3. **Copy stats link** gives their private page with live clicks, orders and commission.
 
 **Important: typed codes don't work out of the box.**
