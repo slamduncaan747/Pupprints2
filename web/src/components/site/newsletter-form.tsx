@@ -56,7 +56,7 @@ export function NewsletterForm({
   return (
     <form onSubmit={onSubmit} className={cn("flex w-full max-w-md gap-2", className)}>
       <label htmlFor={`nl-${source}`} className="sr-only">Email address</label>
-      <input
+      <input size={1}
         id={`nl-${source}`}
         type="email"
         required

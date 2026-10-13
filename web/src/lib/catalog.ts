@@ -119,7 +119,7 @@ export const STYLES: ArtStyle[] = [
     name: "Botanical",
     blurb: "Framed in vintage flowers.",
     description:
-      "Your dog surrounded by a wreath of hand-painted botanical flowers and leaves, like a page from a vintage naturalist's journal. A gentle favorite for remembering a best friend.",
+      "Your dog surrounded by a wreath of painterly botanical flowers and leaves, like a page from a vintage naturalist's journal. A gentle favorite for remembering a best friend.",
     prompt: `A vintage botanical illustration portrait of the dog surrounded by a soft wreath of hand-painted wildflowers, roses, eucalyptus leaves and ferns, muted cream parchment background, fine detailed naturalist illustration style, gentle and serene. ${IDENTITY}`,
     swatch: "#8a9a6c",
     goodFor: ["memorial", "gift", "decor"],
@@ -137,7 +137,7 @@ export const STYLES: ArtStyle[] = [
   {
     slug: "charcoal",
     name: "Charcoal Study",
-    blurb: "An expressive hand-drawn sketch.",
+    blurb: "An expressive charcoal sketch.",
     description:
       "A soulful charcoal and graphite study with expressive smudges and fine detail in the eyes. Timeless, monochrome, and surprisingly emotional.",
     prompt: `An expressive charcoal and graphite portrait drawing of the dog on toned cream paper, rich blacks, soft smudged shading, fine detail in the eyes and nose, loose gestural strokes fading out at the edges, fine-art academic drawing. ${IDENTITY}`,

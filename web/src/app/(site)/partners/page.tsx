@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Rows, textLink } from "@/components/marketing/blocks";
 import { FaqList } from "@/components/marketing/faq";
+import { FramedArt } from "@/components/marketing/framed-art";
 import { PartnerApplyForm } from "@/components/partners/apply-form";
 import { PROGRAM } from "@/components/partners/program";
 import { site } from "@/lib/config";
@@ -127,8 +128,21 @@ export default function PartnersPage() {
     <>
       <PageHero
         eyebrow="Creators & affiliates"
-        title="Your dog, as art. Your audience, delighted."
+        title={
+          <>
+            Your dog, as art. <br className="hidden sm:block" />
+            Your audience, delighted.
+          </>
+        }
         lede={`We make a fine-art portrait of your dog for your content, your followers get ${DISCOUNT} off, and you earn ${COMMISSION} on every order. For creators of every size.`}
+        media={
+          <FramedArt
+            style="royal"
+            priority
+            sizes="(max-width: 1024px) 85vw, 400px"
+            className="mx-auto w-full max-w-[400px]"
+          />
+        }
       >
         <p className="text-[15px]">
           <a href="#apply" className={textLink}>

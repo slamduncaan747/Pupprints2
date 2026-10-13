@@ -5,8 +5,9 @@ import { CtaBand } from "@/components/marketing/cta-band";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Prose } from "@/components/marketing/blocks";
 import { breadcrumbJsonLd, itemListJsonLd, pageMetadata } from "@/lib/seo";
-import { BREEDS_SORTED, getBreed } from "@/content/breeds";
-import { BreedCard } from "@/components/content/breed-card";
+import { STYLE_MAP } from "@/lib/catalog";
+import { BREEDS_SORTED, breedSample, getBreed } from "@/content/breeds";
+import { SampleImage } from "@/components/ui/sample-image";
 import { ContentBreadcrumbs } from "@/components/content/breadcrumbs";
 import { JsonLd } from "@/components/content/json-ld";
 
@@ -18,6 +19,10 @@ export const metadata: Metadata = pageMetadata({
 
 export default function BreedsIndexPage() {
   const mixed = getBreed("mixed-breed");
+  // Only portraits that actually show the breed, so the picture never claims a breed it doesn't depict.
+  const shown = BREEDS_SORTED.map((b) => ({ breed: b, sample: breedSample(b) }))
+    .filter((x) => x.sample.breedSpecific)
+    .slice(0, 3);
 
   return (
     <>
@@ -35,6 +40,27 @@ export default function BreedsIndexPage() {
         breadcrumbs={<ContentBreadcrumbs items={[{ name: "Breeds", path: "/breeds" }]} />}
         title="Every breed has its best angle"
         lede="Bat ears, beards, merle coats and mismatched eyes: the details that make your dog yours are the ones a portrait has to get right. Find your breed for photo tips and the styles we'd pick."
+        media={
+          shown.length > 0 && (
+            <ul className="mx-auto grid max-w-[520px] grid-cols-3 gap-3 sm:gap-5">
+              {shown.map(({ breed, sample }, i) => (
+                <li key={breed.slug}>
+                  <Link href={`/breeds/${breed.slug}`} className="group block">
+                    <SampleImage
+                      src={sample.src}
+                      alt={sample.alt}
+                      swatch={STYLE_MAP[sample.style].swatch}
+                      priority={i === 0}
+                      sizes="(max-width: 640px) 30vw, 170px"
+                      className="transition-opacity duration-300 group-hover:opacity-90"
+                    />
+                    <p className="mt-3 text-[13px] leading-snug text-ink-3">{breed.name}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )
+        }
       />
 
       <section aria-labelledby="all-breeds" className="pb-24 sm:pb-32">
@@ -42,10 +68,15 @@ export default function BreedsIndexPage() {
           <h2 id="all-breeds" className="sr-only">
             All breeds
           </h2>
-          <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-4">
-            {BREEDS_SORTED.map((b, i) => (
-              <li key={b.slug}>
-                <BreedCard breed={b} priority={i < 4} />
+          <ul className="grid grid-cols-2 gap-x-5 border-t border-line sm:gap-x-8 lg:grid-cols-3">
+            {BREEDS_SORTED.map((b) => (
+              <li key={b.slug} className="border-b border-line">
+                <Link
+                  href={`/breeds/${b.slug}`}
+                  className="block py-4 font-display text-[19px] leading-tight sm:text-[22px] hover:underline hover:decoration-ink/30 hover:decoration-1 hover:underline-offset-4"
+                >
+                  {b.name}
+                </Link>
               </li>
             ))}
           </ul>

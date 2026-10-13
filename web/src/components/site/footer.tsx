@@ -22,8 +22,8 @@ const LINKS = [
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-line">
-      <Container className="grid gap-12 py-16 md:grid-cols-[1fr_1fr]">
-        <div className="max-w-sm">
+      <Container className="grid grid-cols-1 gap-12 py-16 md:grid-cols-2">
+        <div className="min-w-0 max-w-sm">
           <p className="font-display text-2xl">10% off your first portrait.</p>
           <NewsletterForm source="footer" className="mt-5" />
         </div>

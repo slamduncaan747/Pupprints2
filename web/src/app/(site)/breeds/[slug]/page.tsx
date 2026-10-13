@@ -207,7 +207,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
         }
       />
 
-      <Block title={isMixed ? "Painting a one-of-a-kind dog" : `Painting a ${breed.name}`}>
+      <Block title={isMixed ? "Portraits of one-of-a-kind dogs" : `Portraits of ${breed.plural}`}>
         <Prose>
           {breed.intro.map((p) => (
             <p key={p.slice(0, 24)}>{p}</p>

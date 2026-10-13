@@ -71,11 +71,18 @@ export function Rows({ items, numbered = false, className }: { items: RowItem[];
           key={item.key ?? (typeof item.title === "string" ? item.title : i)}
           className="grid gap-1.5 border-b border-line py-5 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] sm:gap-8 sm:py-6"
         >
-          <h3 className="font-sans text-[16px] font-medium leading-snug tracking-normal text-ink">
-            {numbered && <span className="mr-3 tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>}
-            {item.title}
+          <h3
+            className={cn(
+              "font-sans text-[16px] font-medium leading-snug tracking-normal text-ink",
+              numbered && "grid grid-cols-[2rem_minmax(0,1fr)]",
+            )}
+          >
+            {numbered && <span className="font-normal tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>}
+            <span>{item.title}</span>
           </h3>
-          {item.body && <div className="text-[16px] leading-relaxed text-ink-2">{item.body}</div>}
+          {item.body && (
+            <div className={cn("text-[16px] leading-relaxed text-ink-2", numbered && "pl-8 sm:pl-0")}>{item.body}</div>
+          )}
         </li>
       ))}
     </List>

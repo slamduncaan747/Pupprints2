@@ -68,8 +68,8 @@ export default function JournalIndexPage() {
               <FramedArt
                 style={featured.heroStyle}
                 priority
-                sizes="(max-width: 1024px) 80vw, 420px"
-                className="mx-auto w-full max-w-[420px]"
+                sizes="(max-width: 1024px) 80vw, 380px"
+                className="mx-auto w-full max-w-[380px] lg:mx-0"
               />
               <div>
                 <p className="text-[13px] text-ink-3">
