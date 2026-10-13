@@ -1,15 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Instrument_Serif, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { site } from "@/lib/config";
 import { Tracking } from "@/components/site/tracking";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const serif = Instrument_Serif({
+  variable: "--font-serif-display",
   subsets: ["latin"],
-  axes: ["SOFT", "opsz"],
+  weight: "400",
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#faf6ef",
+  themeColor: "#fbfbf9",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${serif.variable} ${inter.variable} antialiased`}>
       <body className="min-h-dvh flex flex-col bg-paper text-ink">
         {children}
         <Tracking />

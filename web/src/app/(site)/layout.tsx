@@ -1,11 +1,9 @@
-import { AnnouncementBar } from "@/components/site/announcement";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AnnouncementBar />
       <Header />
       <main id="main" className="flex-1">
         {children}

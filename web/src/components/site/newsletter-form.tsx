@@ -65,7 +65,7 @@ export function NewsletterForm({
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className={cn(
-          "h-11 min-w-0 flex-1 rounded-full px-5 text-[15px] outline-none ring-1 transition",
+          "h-11 min-w-0 flex-1 rounded-[3px] px-4 text-[15px] outline-none ring-1 ring-inset transition",
           dark
             ? "bg-white/10 text-paper placeholder:text-paper/50 ring-white/20 focus:ring-paper"
             : "bg-white text-ink placeholder:text-ink-3 ring-line focus:ring-ink",
@@ -75,7 +75,7 @@ export function NewsletterForm({
         type="submit"
         disabled={state === "loading"}
         className={cn(
-          "inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full px-5 text-[15px] font-medium transition",
+          "inline-flex h-11 shrink-0 items-center gap-1.5 rounded-[3px] px-5 text-[15px] font-medium transition",
           dark ? "bg-paper text-ink hover:bg-white" : "bg-ink text-paper hover:bg-ink/90",
         )}
       >
