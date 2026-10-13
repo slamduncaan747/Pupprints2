@@ -106,6 +106,25 @@ export async function fetchGenerations(): Promise<GenerationsResponse> {
   return parse<GenerationsResponse>(res);
 }
 
+export type GiftPortraitResponse = {
+  generationId: string;
+  style: string;
+  petName: string | null;
+  previewUrl: string;
+  createdAt: string;
+};
+
+/** GET /api/gift-portrait: the portrait behind a gift reveal link, ready to order. */
+export async function fetchGiftPortrait(token: string): Promise<GiftPortraitResponse> {
+  let res: Response;
+  try {
+    res = await fetch(`/api/gift-portrait?token=${encodeURIComponent(token)}`, { cache: "no-store" });
+  } catch {
+    throw new ApiError("network", NETWORK_MESSAGE, 0);
+  }
+  return parse<GiftPortraitResponse>(res);
+}
+
 export type CheckoutItem = { generationId: string; variantId: string; frameColor?: string; quantity: number };
 
 export type CheckoutRequest = {
@@ -115,6 +134,8 @@ export type CheckoutRequest = {
   giftSenderName?: string;
   giftRecipientName?: string;
   giftRecipientEmail?: string;
+  /** Reveal token when buying a gift portrait from its reveal page. */
+  giftToken?: string;
 };
 
 export function startCheckout(body: CheckoutRequest) {

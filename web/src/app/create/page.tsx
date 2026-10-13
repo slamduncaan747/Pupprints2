@@ -13,5 +13,8 @@ export default async function CreatePage({ searchParams }: PageProps<"/create">)
   const params = await searchParams;
   const raw = Array.isArray(params.style) ? params.style[0] : params.style;
   const initialStyle = raw ? getStyle(raw)?.slug : undefined;
-  return <CreateFlow initialStyle={initialStyle} />;
+  // ?gift=<reveal token>: order the gift portrait from a reveal link.
+  const rawGift = Array.isArray(params.gift) ? params.gift[0] : params.gift;
+  const giftToken = rawGift && /^[a-f0-9]{16,64}$/i.test(rawGift) ? rawGift : undefined;
+  return <CreateFlow initialStyle={initialStyle} giftToken={giftToken} />;
 }

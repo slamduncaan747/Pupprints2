@@ -51,6 +51,15 @@ const Body = z.object({
     .pipe(z.email().optional()),
   /** Email the Gift Reveal to the recipient as soon as payment clears (default when an email is given). */
   giftSendNow: z.boolean().optional(),
+  /**
+   * Reveal token of a gift portrait (creator outreach) the visitor is buying from its reveal page.
+   * Lets them order that portrait although it wasn't made in their browser session.
+   */
+  giftToken: z
+    .string()
+    .trim()
+    .regex(/^[a-f0-9]{16,64}$/i)
+    .optional(),
   email: z
     .string()
     .trim()
@@ -147,7 +156,21 @@ export async function POST(req: Request) {
   }
   const shipCountry = body.shipCountry ?? "US";
 
-  // --- Verify portraits belong to this browser ---------------------------------------
+  // --- Gift portrait being bought from its reveal page (optional) --------------------
+  let gift: { revealToken: string; generationId: string; partnerId: string | null } | null = null;
+  if (body.giftToken) {
+    const { data: giftRow, error: giftError } = await supabase
+      .from("gifts")
+      .select("reveal_token, generation_id, partner_id")
+      .eq("reveal_token", body.giftToken)
+      .maybeSingle<{ reveal_token: string; generation_id: string | null; partner_id: string | null }>();
+    if (giftError) console.error("[checkout] gift lookup failed", giftError.message);
+    if (giftRow?.generation_id) {
+      gift = { revealToken: giftRow.reveal_token, generationId: giftRow.generation_id, partnerId: giftRow.partner_id };
+    }
+  }
+
+  // --- Verify portraits belong to this browser (or to the gift being bought) ---------
   const sessionId = await getSessionId();
   const generationIds = [...new Set(lines.map((l) => l.input.generationId))];
   const { data: gens, error: genError } = await supabase
@@ -164,7 +187,8 @@ export async function POST(req: Request) {
     if (!g || g.status !== "succeeded" || !g.full_path) {
       return json({ error: "portrait_not_found", message: "We couldn't find that portrait. Please create it again." }, 404);
     }
-    if (!sessionId || g.session_id !== sessionId) {
+    const ownedHere = Boolean(sessionId) && g.session_id === sessionId;
+    if (!ownedHere && gift?.generationId !== g.id) {
       return json({ error: "forbidden", message: "That portrait belongs to a different browser session." }, 403);
     }
   }
@@ -206,7 +230,16 @@ export async function POST(req: Request) {
 
   // --- Attribution -------------------------------------------------------------------
   const store = await cookies();
-  const referralCode = normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
+  let referralCode = normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
+  // A gift from a creator credits that creator when the visitor has no other referral.
+  if (!referralCode && gift?.partnerId) {
+    const { data: partner } = await supabase
+      .from("partners")
+      .select("code")
+      .eq("id", gift.partnerId)
+      .maybeSingle<{ code: string | null }>();
+    referralCode = normalizeCode(partner?.code);
+  }
   const utm = parseUtm(store.get("pp_utm")?.value);
 
   // --- Create the pending order first -----------------------------------------------
@@ -290,8 +323,11 @@ export async function POST(req: Request) {
       metadata,
       payment_intent_data: { metadata: { orderId: order.id, orderNumber: order.order_number } },
       success_url: `${siteUrl()}/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl()}/create?step=product`,
+      cancel_url: gift ? `${siteUrl()}/create?gift=${gift.revealToken}` : `${siteUrl()}/create?step=piece`,
       billing_address_collection: "auto",
+      // Without a Customer, Stripe rejects promotion codes restricted to first-time customers
+      // (WELCOME10 and the personal nurture codes), so always create one.
+      customer_creation: "always",
       ...(body.email ? { customer_email: body.email } : {}),
       ...(discounts ? { discounts } : { allow_promotion_codes: true }),
       ...(automaticTax ? { automatic_tax: { enabled: true } } : {}),

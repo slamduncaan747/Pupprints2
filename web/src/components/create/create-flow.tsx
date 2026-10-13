@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CircleAlert, Clock, Coffee, RefreshCw } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { CircleAlert, Clock, Coffee, Gift, RefreshCw } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { getStyle, type StyleSlug } from "@/lib/catalog";
-import { ApiError, fetchGenerations, generatePortrait } from "./api";
+import { ApiError, fetchGenerations, fetchGiftPortrait, generatePortrait } from "./api";
 import { EmailCapture } from "./email-capture";
 import { GeneratingView } from "./generating-view";
 import { ProductStep } from "./product-step";
@@ -21,6 +22,9 @@ import {
   type Generation,
   type Step,
 } from "./store";
+
+/** Ordering a gift portrait from its reveal link (/create?gift=<reveal token>). */
+type GiftState = { status: "loading" } | { status: "ready"; gen: Generation } | { status: "error"; message: string };
 
 type Job =
   | { kind: "idle" }
@@ -47,8 +51,9 @@ function urlForStep(step: Step) {
   return url;
 }
 
-export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
+export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSlug; giftToken?: string }) {
   const flow = useFlow();
+  const [gift, setGift] = useState<GiftState | null>(giftToken ? { status: "loading" } : null);
   const [job, setJob] = useState<Job>({ kind: "idle" });
   const [styleView, setStyleView] = useState<"grid" | "result">("result");
   const [preselected, setPreselected] = useState<StyleSlug | undefined>(initialStyle);
@@ -70,6 +75,49 @@ export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Gift link: load that portrait and go straight to choosing the piece.
+  useEffect(() => {
+    if (!giftToken) return;
+    let cancelled = false;
+    fetchGiftPortrait(giftToken)
+      .then((res) => {
+        if (cancelled) return;
+        const style = getStyle(res.style);
+        if (!style) throw new ApiError("gift_not_found", "We couldn't find that gift portrait.", 404);
+        setGift({
+          status: "ready",
+          gen: {
+            generationId: res.generationId,
+            style: style.slug,
+            previewUrl: res.previewUrl,
+            createdAt: res.createdAt,
+            uploadId: null,
+            petName: res.petName,
+          },
+        });
+        track("ViewContent", { content: "gift_portrait", style: style.slug });
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setGift({
+          status: "error",
+          message: err instanceof ApiError ? err.message : "We couldn't load that gift portrait. Please try again.",
+        });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [giftToken]);
+
+  /** Leave the gift portrait and make one of your own dog (keeps ?ref= and other params). */
+  const leaveGift = useCallback(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("gift");
+    window.history.replaceState(null, "", url);
+    setGift(null);
+    scrollTop();
   }, []);
 
   // Restore from the server (fresh signed photo URL + previews made on this browser session).
@@ -197,6 +245,17 @@ export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
   if (step === "product" && !active) step = flow.upload ? "style" : "upload";
   if (step === "style" && !flow.upload) step = "upload";
 
+  if (gift && giftToken) {
+    return (
+      <GiftOrder
+        gift={gift}
+        flow={flow}
+        giftToken={giftToken}
+        onLeave={leaveGift}
+      />
+    );
+  }
+
   let content: React.ReactNode;
   if (step === "upload") {
     content = (
@@ -313,6 +372,79 @@ export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
           </button>
         </div>
       )}
+    </div>
+  );
+}
+
+function GiftOrder({
+  gift,
+  flow,
+  giftToken,
+  onLeave,
+}: {
+  gift: GiftState;
+  flow: ReturnType<typeof useFlow>;
+  giftToken: string;
+  onLeave: () => void;
+}) {
+  const router = useRouter();
+  if (gift.status === "loading") {
+    return (
+      <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-6 pb-20 sm:px-8 sm:pt-10 lg:grid-cols-[1.1fr_0.9fr]" aria-busy="true">
+        <p className="sr-only" role="status">
+          Loading your gift portrait…
+        </p>
+        <div className="skeleton aspect-[4/5] w-full rounded-card" />
+        <div className="space-y-4">
+          <div className="skeleton h-10 w-3/4 rounded-lg" />
+          <div className="skeleton h-16 w-full rounded-xl" />
+          <div className="skeleton h-28 w-full rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
+  if (gift.status === "error") {
+    return (
+      <div className="mx-auto w-full max-w-xl px-4 py-16 text-center sm:py-24">
+        <h1 className="font-display text-3xl sm:text-4xl">We couldn&apos;t open that gift portrait.</h1>
+        <p className="mt-4 text-[15px] leading-relaxed text-ink-2">{gift.message}</p>
+        <button
+          type="button"
+          onClick={onLeave}
+          className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-clay px-6 text-[15px] font-medium text-white hover:bg-clay-dark"
+        >
+          Make a portrait of your dog
+        </button>
+      </div>
+    );
+  }
+
+  const pet = gift.gen.petName?.trim();
+  return (
+    <div className="flex min-h-full flex-col">
+      <div className="border-b border-line/70 bg-paper-2/70">
+        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 text-[13.5px] sm:px-8">
+          <p className="flex items-center gap-2 text-ink-2">
+            <Gift className="h-4 w-4 shrink-0 text-clay" aria-hidden />
+            Ordering your gift portrait{pet ? ` of ${pet}` : ""}. Digital file included with every print.
+          </p>
+          <button
+            type="button"
+            onClick={onLeave}
+            className="inline-flex min-h-11 items-center font-medium text-ink underline decoration-ink/25 underline-offset-4 hover:decoration-ink"
+          >
+            Make one of another dog
+          </button>
+        </div>
+      </div>
+      <ProductStep
+        flow={flow}
+        active={gift.gen}
+        giftToken={giftToken}
+        backLabel="to your gift"
+        onBack={() => router.push(`/reveal/${giftToken}`)}
+      />
     </div>
   );
 }

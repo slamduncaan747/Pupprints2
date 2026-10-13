@@ -109,11 +109,18 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
   }
 
   let styleName: string | null = null;
+  /** The recipient can order this exact portrait (finished, with a print master). */
+  let buyable = false;
   if (gift.generation_id) {
-    const { data: gen } = await c.from("generations").select("style").eq("id", gift.generation_id).maybeSingle<{ style: string }>();
+    const { data: gen } = await c
+      .from("generations")
+      .select("style, status, full_path")
+      .eq("id", gift.generation_id)
+      .maybeSingle<{ style: string; status: string; full_path: string | null }>();
     if (gen?.style) {
       const { getStyle } = await import("@/lib/catalog");
       styleName = getStyle(gen.style)?.name ?? null;
+      buyable = Boolean(styleName && gen.status === "succeeded" && gen.full_path);
     }
   }
 
@@ -132,6 +139,11 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
     }
   }
   const refQs = code ? `?ref=${encodeURIComponent(code)}` : "";
+  // Buying this portrait: /create?gift=<token> opens it straight at "choose your piece"; the
+  // ref param (when the gift went to a creator) sets the referral cookie so their code applies.
+  const buyQs = new URLSearchParams();
+  buyQs.set("gift", token);
+  if (code) buyQs.set("ref", code);
 
   return {
     kind: "gift",
@@ -146,12 +158,19 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
     productNote: null,
     frame: "gold",
     ctas: [
-      {
-        href: `${base()}/create${refQs}`,
-        label: discount > 0 ? `Get ${discount}% off a canvas or framed print` : "Order it as a canvas or framed print",
-        note: "Want it on your wall?",
-        primary: true,
-      },
+      buyable
+        ? {
+            href: `${base()}/create?${buyQs.toString()}`,
+            label: `Put ${gift.pet_name?.trim() || "them"} on your wall`,
+            note: discount > 0 ? `Want it on your wall? Take ${discount}% off.` : "Want it on your wall?",
+            primary: true,
+          }
+        : {
+            href: `${base()}/create${refQs}`,
+            label: discount > 0 ? `Get ${discount}% off a canvas or framed print` : "Order it as a canvas or framed print",
+            note: "Want it on your wall?",
+            primary: true,
+          },
       { href: `${base()}/create${refQs}`, label: "Make one for another dog" },
     ],
   };

@@ -29,6 +29,7 @@ import {
 import { cn, formatPrice } from "@/lib/utils";
 import { Eyebrow } from "@/components/ui/container";
 import { FrameMockup } from "@/components/product/frame-mockup";
+import { shipWindow } from "@/components/order/timeline";
 import { ApiError, startCheckout, type CheckoutRequest } from "./api";
 import { EmailCapture, isEmail } from "./email-capture";
 import { updateFlow, type FlowState, type Generation, type ShipCountry } from "./store";
@@ -78,7 +79,21 @@ const fmtDate = (d: Date) => d.toLocaleDateString("en-US", { weekday: "short", m
 
 type CheckoutState = { kind: "idle" } | { kind: "loading" } | { kind: "unavailable" } | { kind: "error"; message: string };
 
-export function ProductStep({ flow, active, onBack }: { flow: FlowState; active: Generation; onBack: () => void }) {
+export function ProductStep({
+  flow,
+  active,
+  onBack,
+  giftToken,
+  backLabel = "to styles",
+}: {
+  flow: FlowState;
+  active: Generation;
+  onBack: () => void;
+  /** Set when ordering a gift portrait from its reveal link (not made in this browser). */
+  giftToken?: string;
+  /** Shown after "Back" on wider screens. */
+  backLabel?: string;
+}) {
   const { selection, gift } = flow;
   const product = PRODUCT_MAP[selection.productType];
   const variant = product.variants.find((v) => v.id === selection.variantId) ?? product.variants[0];
@@ -88,7 +103,7 @@ export function ProductStep({ flow, active, onBack }: { flow: FlowState; active:
   const subtotal = variant.price + chosenAddons.reduce((sum, a) => sum + a.price, 0);
   const total = subtotal + shipping;
   const style = getStyle(active.style);
-  const name = flow.petName.trim();
+  const name = (giftToken ? (active.petName ?? "") : flow.petName).trim();
 
   const [view, setView] = useState<"room" | "closeup">("room");
   const [checkout, setCheckout] = useState<CheckoutState>({ kind: "idle" });
@@ -140,6 +155,7 @@ export function ProductStep({ flow, active, onBack }: { flow: FlowState; active:
         ...chosenAddons.map((a) => ({ generationId: active.generationId, variantId: a.id, quantity: 1 })),
       ],
       shipCountry: physical ? selection.shipCountry : undefined,
+      ...(giftToken ? { giftToken } : {}),
     };
     if (gift.enabled) {
       body.giftSenderName = gift.senderName.trim() || undefined;
@@ -190,9 +206,10 @@ export function ProductStep({ flow, active, onBack }: { flow: FlowState; active:
   if (!physical) {
     delivery = "Delivered to your inbox right after checkout";
   } else if (today !== null) {
-    const extra = selection.shipCountry === "CA" ? 3 : 0;
-    const from = addBusinessDays(today, product.shipDays[0] + extra);
-    const to = addBusinessDays(today, product.shipDays[1] + extra);
+    // Same window Stripe shows at checkout (catalog days + the country's extra transit days).
+    const [minDays, maxDays] = shipWindow(product.shipDays, selection.shipCountry);
+    const from = addBusinessDays(today, minDays);
+    const to = addBusinessDays(today, maxDays);
     delivery = `Estimated delivery ${fmtDate(from)} – ${fmtDate(to)}`;
   } else {
     delivery = `Delivered in ${product.shipDays[0]}–${product.shipDays[1]} business days`;
@@ -213,7 +230,7 @@ export function ProductStep({ flow, active, onBack }: { flow: FlowState; active:
           >
             <ArrowLeft className="h-4 w-4" aria-hidden />
             <span>
-              Back<span className="hidden sm:inline"> to styles</span>
+              Back<span className="hidden sm:inline"> {backLabel}</span>
             </span>
           </button>
           {physical && (
@@ -288,8 +305,10 @@ export function ProductStep({ flow, active, onBack }: { flow: FlowState; active:
 
       {/* ---------------- Configurator ---------------- */}
       <div className="min-w-0">
-        <Eyebrow className="hidden sm:block">Step 3 of 3 · Your piece</Eyebrow>
-        <h1 className="font-display text-[2.15rem] leading-[1.05] sm:mt-3 sm:text-[2.75rem]">Choose your piece.</h1>
+        <Eyebrow className="hidden sm:block">{giftToken ? "Your gift portrait" : "Step 3 of 3 · Your piece"}</Eyebrow>
+        <h1 className="font-display text-[2.15rem] leading-[1.05] sm:mt-3 sm:text-[2.75rem]">
+          {giftToken ? `Put ${name || "them"} on your wall.` : "Choose your piece."}
+        </h1>
 
         {/* Product tabs */}
         <div role="radiogroup" aria-label="Product" className="mt-6 grid grid-cols-4 gap-2">
