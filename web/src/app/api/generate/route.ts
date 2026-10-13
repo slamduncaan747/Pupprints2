@@ -9,10 +9,10 @@ import { ensureSessionId, getIpHash } from "@/lib/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 /** Leave room after the AI call for storing the master + watermarked preview. */
-const AI_BUDGET_MS = 50_000;
+const AI_BUDGET_MS = 105_000;
 
 const Body = z.object({
   uploadId: z.string().uuid(),

@@ -1,6 +1,6 @@
 import "server-only";
 
-/** Per-provider ceiling; the route's own `maxDuration` is 60s. */
+/** Per-provider ceiling; routes allow up to 120s so one fallback provider fits. */
 export const PROVIDER_TIMEOUT_MS = 50_000;
 
 /** Fetch a remote image (provider CDN URL or data URI) as bytes. */

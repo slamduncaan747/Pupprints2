@@ -232,7 +232,7 @@ This is the law (FTC Endorsement Guides, 16 CFR Part 255), and our partner terms
    - Per gift, add a **single-use** promotion code, e.g. `GIFT-RUFUS` (max redemptions 1).
    - Stripe supports $0 "no-cost" Checkout orders, and our webhook treats them as paid.
 2. Open the site in a **private window**, with no `?ref=` link, so the code box shows.
-3. Upload the creator's dog photo at `/create` → same style → 12×16 fine-art print.
+3. Upload the creator's dog photo at `/create` → same style → QA → 12×16 fine-art print. It's a fresh generation, so check that it's as good as the gift; regenerate if not.
 4. At checkout, enter **the creator's shipping address and *your* email**, so they don't get our customer emails, and apply `GIFT-RUFUS`.
 5. Log the ~$16 cost in the war-plan tracking table. Add a note on their partner record.
 

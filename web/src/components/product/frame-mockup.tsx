@@ -27,7 +27,7 @@ export type FrameMockupProps = {
   room?: boolean;
   /** Physical size: sets the crop aspect ratio and the scale in the room scene. Default 3:4 (12×16). */
   printSize?: { widthIn: number; heightIn: number };
-  /** Framed only: white mat around the art. Default true. */
+  /** Framed only: white mat around the art. Default false (Printful framed posters have no mat). */
   mat?: boolean;
   /** Wall color for the room scene. */
   wall?: string;
@@ -51,7 +51,7 @@ export function FrameMockup({
   size = "md",
   room = false,
   printSize,
-  mat = true,
+  mat = false,
   wall,
   priority,
   className,

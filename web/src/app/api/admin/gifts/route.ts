@@ -13,10 +13,10 @@ import { giftImagePath, giftRevealUrl, type GiftRow } from "@/components/admin/g
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 /** Leave room after the AI call for the image variants + storage writes. */
-const AI_BUDGET_MS = 48_000;
+const AI_BUDGET_MS = 105_000;
 const MAX_IMAGE_BYTES = 15 * 1024 * 1024;
 const GIFT_WEB_EDGE = 1600;
 

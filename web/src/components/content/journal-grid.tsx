@@ -46,7 +46,7 @@ export function JournalGrid({ articles, categories }: { articles: ArticleSummary
       <p className="sr-only" aria-live="polite">
         Showing {visible.length} {visible.length === 1 ? "article" : "articles"}
       </p>
-      <ul className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-8 grid gap-x-8 gap-y-8 sm:mt-10 sm:grid-cols-2 sm:gap-y-14 lg:grid-cols-3">
         {visible.map((a) => (
           <li key={a.slug}>
             <ArticleCard article={a} headingLevel="h3" />
