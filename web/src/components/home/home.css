@@ -1,6 +1,7 @@
 /*
  * Home-page-only styles: keyframes and effects that are awkward as Tailwind utilities.
- * Theme tokens are hardcoded here on purpose (CSS modules don't see unused @theme vars).
+ * Global stylesheet (CSS Modules are not processed as modules by this project's turbopack
+ * CSS rule), so every class and keyframe is namespaced with "ph-".
  */
 
 /* ------------------------------------------------------------------ */
@@ -8,15 +9,15 @@
 /* ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .reveal {
-      animation: reveal-up linear both;
+    .ph-reveal {
+      animation: ph-reveal-up linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 30%;
     }
   }
 }
 
-@keyframes reveal-up {
+@keyframes ph-reveal-up {
   from {
     opacity: 0;
     transform: translateY(32px);
@@ -30,7 +31,7 @@
 /* ------------------------------------------------------------------ */
 /* Frames                                                              */
 /* ------------------------------------------------------------------ */
-.frameOak {
+.ph-frame-oak {
   background:
     repeating-linear-gradient(92deg, rgb(255 255 255 / 0.05) 0 2px, rgb(0 0 0 / 0.03) 2px 5px),
     linear-gradient(135deg, #a47b4b, #d2ad7b 38%, #b88c58 64%, #8f6a3c);
@@ -44,13 +45,13 @@
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
-.drift {
-  animation: drift 9s ease-in-out infinite;
+.ph-drift {
+  animation: ph-kf-drift 9s ease-in-out infinite;
 }
-.driftSlow {
-  animation: drift 11s ease-in-out -4s infinite;
+.ph-drift-slow {
+  animation: ph-kf-drift 11s ease-in-out -4s infinite;
 }
-@keyframes drift {
+@keyframes ph-kf-drift {
   0%,
   100% {
     transform: translateY(0);
@@ -63,10 +64,10 @@
 /* ------------------------------------------------------------------ */
 /* Guarantee seal                                                      */
 /* ------------------------------------------------------------------ */
-.spin {
-  animation: spin 40s linear infinite;
+.ph-spin {
+  animation: ph-kf-spin 40s linear infinite;
 }
-@keyframes spin {
+@keyframes ph-kf-spin {
   to {
     transform: rotate(360deg);
   }
@@ -76,30 +77,30 @@
 /* Gift Reveal phone: envelope opens, portrait rises, confetti pops.   */
 /* One 8s loop; reduced motion shows the final (opened) state.         */
 /* ------------------------------------------------------------------ */
-.envelope {
+.ph-envelope {
   position: relative;
   perspective: 600px;
 }
-.flap {
+.ph-flap {
   transform-origin: 50% 0%;
-  animation: flap 8s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+  animation: ph-kf-flap 8s cubic-bezier(0.6, 0, 0.3, 1) infinite;
   z-index: 4;
 }
-.card {
-  animation: card 8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+.ph-card {
+  animation: ph-kf-card 8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
   z-index: 2;
 }
-.pocket {
+.ph-pocket {
   z-index: 3;
 }
-.confetti {
-  animation: confetti 8s ease-out infinite;
+.ph-confetti {
+  animation: ph-kf-confetti 8s ease-out infinite;
 }
-.revealCaption {
-  animation: caption 8s ease-out infinite;
+.ph-caption {
+  animation: ph-kf-caption 8s ease-out infinite;
 }
 
-@keyframes flap {
+@keyframes ph-kf-flap {
   0%,
   12% {
     transform: rotateX(0deg);
@@ -118,7 +119,7 @@
     z-index: 4;
   }
 }
-@keyframes card {
+@keyframes ph-kf-card {
   0%,
   24% {
     transform: translateY(0) scale(0.96);
@@ -132,7 +133,7 @@
     transform: translateY(0) scale(0.96);
   }
 }
-@keyframes confetti {
+@keyframes ph-kf-confetti {
   0%,
   40% {
     opacity: 0;
@@ -150,7 +151,7 @@
     opacity: 0;
   }
 }
-@keyframes caption {
+@keyframes ph-kf-caption {
   0%,
   42% {
     opacity: 0;
@@ -168,31 +169,31 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .drift,
-  .driftSlow,
-  .spin {
+  .ph-drift,
+  .ph-drift-slow,
+  .ph-spin {
     animation: none;
   }
-  .flap {
+  .ph-flap {
     animation: none;
     transform: rotateX(180deg);
     z-index: 1;
   }
-  .card {
+  .ph-card {
     animation: none;
     transform: translateY(-64%);
   }
-  .confetti,
-  .revealCaption {
+  .ph-confetti,
+  .ph-caption {
     animation: none;
     opacity: 1;
   }
 }
 
 /* Hide the scrollbar on the mobile style carousel (still scrollable). */
-.noScrollbar {
+.ph-no-scrollbar {
   scrollbar-width: none;
 }
-.noScrollbar::-webkit-scrollbar {
+.ph-no-scrollbar::-webkit-scrollbar {
   display: none;
 }

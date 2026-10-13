@@ -8,7 +8,6 @@ import { STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 import { Framed, type FrameKind } from "./framed";
 import { Accent } from "./typography";
-import styles from "./home.module.css";
 
 const WALL: { slug: StyleSlug; frame: FrameKind; cls: string }[] = [
   { slug: "pop-art", frame: "white", cls: "left-[3%] top-[18%] w-[11%] -rotate-[5deg]" },
@@ -32,7 +31,7 @@ export function FinalCta() {
       </div>
 
       <Container className="relative py-24 text-center sm:py-32">
-        <div className={styles.reveal}>
+        <div className="ph-reveal">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-butter">Your turn</p>
           <h2
             id="final-title"
@@ -57,7 +56,7 @@ export function FinalCta() {
         <div
           className={cn(
             "mx-auto mt-16 flex max-w-2xl flex-col items-center gap-5 border-t border-white/10 pt-12 sm:mt-20",
-            styles.reveal,
+            "ph-reveal",
           )}
         >
           <div>

@@ -6,7 +6,6 @@ import { Upload } from "lucide-react";
 import { adminButton, inputClass, labelClass } from "@/components/admin/ui";
 import { IMPORT_HEADER } from "@/components/admin/constants";
 
-
 type Result = { inserted: number; updated: number; skipped: number; errors: { line: number; error: string }[] };
 
 export function PartnerImport() {

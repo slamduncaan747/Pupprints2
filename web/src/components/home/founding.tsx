@@ -8,7 +8,6 @@ import { site } from "@/lib/config";
 import { GALLERY } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 const handle = `@${site.social.instagram.replace(/\/+$/, "").split("/").pop()}`;
 
@@ -20,7 +19,7 @@ export function Founding() {
   return (
     <Section aria-labelledby="founding-title" className="bg-paper-2">
       <Container className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
-        <div className={styles.reveal}>
+        <div className="ph-reveal">
           <HomeHeading
             id="founding-title"
             eyebrow="Founding customers"
@@ -51,7 +50,7 @@ export function Founding() {
           </div>
         </div>
 
-        <div className={cn("rounded-[1.75rem] bg-paper p-4 shadow-soft ring-1 ring-line sm:p-6", styles.reveal)}>
+        <div className={cn("rounded-[1.75rem] bg-paper p-4 shadow-soft ring-1 ring-line sm:p-6", "ph-reveal")}>
           {/* Profile-style header (no follower counts: we don't fabricate numbers) */}
           <div className="flex items-center justify-between gap-4 px-1 pb-4 sm:pb-5">
             <div className="flex items-center gap-3">

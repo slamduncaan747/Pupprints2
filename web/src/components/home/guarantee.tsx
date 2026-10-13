@@ -5,7 +5,6 @@ import { Container, Section } from "@/components/ui/container";
 import { PawMark } from "@/components/ui/paw";
 import { cn } from "@/lib/utils";
 import { Accent } from "./typography";
-import styles from "./home.module.css";
 
 const PROMISE_ITEMS = [
   {
@@ -33,7 +32,7 @@ const PROMISE_ITEMS = [
 function Seal() {
   return (
     <div className="relative h-36 w-36 shrink-0 sm:h-44 sm:w-44" aria-hidden="true">
-      <svg viewBox="0 0 200 200" className={cn("absolute inset-0 h-full w-full text-ink", styles.spin)}>
+      <svg viewBox="0 0 200 200" className={cn("absolute inset-0 h-full w-full text-ink", "ph-spin")}>
         <defs>
           <path id="seal-ring" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0" />
         </defs>
@@ -57,7 +56,7 @@ export function Guarantee() {
         <div
           className={cn(
             "grid gap-12 rounded-[1.75rem] bg-butter-soft/70 p-7 ring-1 ring-[#efdfb4] sm:p-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:p-16",
-            styles.reveal,
+            "ph-reveal",
           )}
         >
           <div className="flex flex-col items-start">

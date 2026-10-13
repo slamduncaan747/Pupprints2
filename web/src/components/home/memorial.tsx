@@ -7,7 +7,6 @@ import { STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 import { Framed } from "./framed";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 /** Gentle styles suited to remembrance (all tagged "memorial" in the catalog). */
 const MEMORIAL: StyleSlug[] = ["watercolor", "botanical", "oil-classic", "charcoal"];
@@ -36,7 +35,7 @@ export function Memorial() {
   return (
     <Section aria-labelledby="memorial-title" className="relative overflow-hidden bg-sage-soft">
       <Container className="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
-        <div className={styles.reveal}>
+        <div className="ph-reveal">
           <HomeHeading
             id="memorial-title"
             tone="sage"
@@ -78,7 +77,7 @@ export function Memorial() {
           </div>
         </div>
 
-        <div className={cn("relative", styles.reveal)}>
+        <div className={cn("relative", "ph-reveal")}>
           <ul className="mx-auto grid max-w-[520px] grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 sm:gap-y-10">
             {items.map((s, i) => (
               <li key={s.slug} className={cn(i % 2 === 1 && "translate-y-8 sm:translate-y-12")}>

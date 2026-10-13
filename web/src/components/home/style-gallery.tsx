@@ -8,7 +8,6 @@ import { STYLES, STYLE_MAP, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 /** Curated order for the home page (seasonal pick included); names/blurbs come from the catalog. */
 const FEATURED: StyleSlug[] = ["royal", "watercolor", "admiral", "oil-classic", "holiday", "pop-art", "fine-line", "botanical"];
@@ -19,7 +18,7 @@ export function StyleGallery() {
   return (
     <Section id="styles" aria-labelledby="styles-title" className="scroll-mt-16 overflow-hidden bg-paper">
       <Container>
-        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", styles.reveal)}>
+        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", "ph-reveal")}>
           <HomeHeading
             id="styles-title"
             eyebrow="The styles"
@@ -41,13 +40,13 @@ export function StyleGallery() {
         <ul
           className={cn(
             "-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12 lg:overflow-visible lg:px-0 lg:pb-0",
-            styles.noScrollbar,
+            "ph-no-scrollbar",
           )}
           aria-label="Portrait styles"
         >
           {featured.map((s) => (
             <li key={s.slug} className="w-[68%] shrink-0 snap-start sm:w-[40%] lg:w-auto">
-              <article className="group">
+              <article className="group relative">
                 <Link
                   href={`/styles/${s.slug}`}
                   tabIndex={-1}
@@ -100,7 +99,7 @@ export function StyleGallery() {
           </li>
         </ul>
 
-        <div className={cn("mt-12 flex flex-col items-center gap-3 text-center lg:mt-16", styles.reveal)}>
+        <div className={cn("mt-12 flex flex-col items-center gap-3 text-center lg:mt-16", "ph-reveal")}>
           <ButtonLink href="/create" size="lg" className="group w-full sm:w-auto">
             Try every style on your dog
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

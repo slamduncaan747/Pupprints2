@@ -4,6 +4,7 @@ import type { FrameColor, Product, StyleSlug } from "@/lib/catalog";
 import { formatPrice, cn } from "@/lib/utils";
 import { ProductScene } from "@/components/marketing/framed-art";
 import { FRAME_LABELS, fromPrice, shipWindow } from "@/components/marketing/commerce";
+import { honestText } from "@/components/marketing/honest";
 
 const SWATCH: Record<FrameColor, string> = {
   black: "#151311",
@@ -54,7 +55,7 @@ export function ProductCard({
             <span className="font-medium text-ink">{formatPrice(fromPrice(product))}</span>
           </p>
         </div>
-        <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">{product.tagline}</p>
+        <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">{honestText(product.tagline)}</p>
         {product.frameColors && <FrameSwatches colors={product.frameColors} className="mt-3" />}
         <p className="mt-3 flex items-center gap-1.5 text-sm text-ink-3">
           <Clock className="h-4 w-4" aria-hidden="true" />

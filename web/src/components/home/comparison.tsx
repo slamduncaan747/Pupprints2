@@ -4,7 +4,6 @@ import { Container, Section } from "@/components/ui/container";
 import { PawMark } from "@/components/ui/paw";
 import { cn } from "@/lib/utils";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 const ROWS = [
   {
@@ -54,10 +53,10 @@ export function Comparison() {
             </>
           }
           subtitle="Typical portrait shops make you pay first, wait for a proof and hope for the best. We thought that was backwards."
-          className={styles.reveal}
+          className="ph-reveal"
         />
 
-        <div className={cn("mx-auto mt-12 max-w-5xl sm:mt-16", styles.reveal)}>
+        <div className={cn("mx-auto mt-12 max-w-5xl sm:mt-16", "ph-reveal")}>
           {/* Column headers (desktop) */}
           <div className="hidden grid-cols-[1fr_1.25fr_1.25fr] gap-6 px-6 pb-4 md:grid">
             <span />
@@ -103,7 +102,7 @@ export function Comparison() {
           </ul>
         </div>
 
-        <div className={cn("mt-12 flex flex-col items-center gap-3 text-center", styles.reveal)}>
+        <div className={cn("mt-12 flex flex-col items-center gap-3 text-center", "ph-reveal")}>
           <ButtonLink href="/create" variant="light" size="lg" className="group w-full sm:w-auto">
             See yours before you pay
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

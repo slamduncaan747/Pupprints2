@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import styles from "./home.module.css";
+import "./home.css";
 
 export type FrameKind = "black" | "white" | "oak" | "walnut" | "gold";
 
 const FRAME: Record<FrameKind, string> = {
   black: "frame-black",
   white: "frame-white",
-  oak: styles.frameOak,
+  oak: "ph-frame-oak",
   walnut: "frame-wood",
   gold: "frame-gold",
 };

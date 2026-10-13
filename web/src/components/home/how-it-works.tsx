@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { SHIP_WINDOW } from "./data";
 import { Framed } from "./framed";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 const FAN: StyleSlug[] = ["watercolor", "royal", "pop-art"];
 
@@ -103,7 +102,7 @@ export function HowItWorks() {
   return (
     <Section id="how-it-works" aria-labelledby="how-title" className="bg-paper-2">
       <Container>
-        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", styles.reveal)}>
+        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", "ph-reveal")}>
           <HomeHeading
             id="how-title"
             eyebrow="How it works"
@@ -123,7 +122,7 @@ export function HowItWorks() {
           {STEPS.map((step, i) => (
             <li
               key={step.title}
-              className={cn("flex flex-col overflow-hidden rounded-card bg-paper ring-1 ring-line", styles.reveal)}
+              className={cn("flex flex-col overflow-hidden rounded-card bg-paper ring-1 ring-line", "ph-reveal")}
             >
               <div className="relative h-56 bg-[radial-gradient(120%_100%_at_50%_0%,var(--color-paper),var(--color-paper-3))] sm:h-60">
                 {step.visual}
@@ -145,7 +144,7 @@ export function HowItWorks() {
           ))}
         </ol>
 
-        <div className={cn("mt-12 flex flex-col items-center gap-3 text-center", styles.reveal)}>
+        <div className={cn("mt-12 flex flex-col items-center gap-3 text-center", "ph-reveal")}>
           <ButtonLink href="/create" size="lg" className="group w-full sm:w-auto">
             Start with a photo
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

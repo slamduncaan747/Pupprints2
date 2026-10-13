@@ -8,7 +8,6 @@ import { PRODUCT_MAP, STYLE_MAP } from "@/lib/catalog";
 import { BEFORE_AFTER } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 const POINTS = [
   { icon: Send, text: "Send it by text or email the moment you order, or save the link for the big day." },
@@ -48,23 +47,23 @@ function Phone() {
 
           {/* Envelope */}
           <div className="absolute inset-x-0 bottom-[23%] flex justify-center">
-            <div className={cn("relative h-[112px] w-[74%]", styles.envelope)}>
+            <div className={cn("relative h-[112px] w-[74%]", "ph-envelope")}>
               {/* Back */}
               <div className="absolute inset-0 rounded-[3px] bg-[#9a3c29]" />
               {/* Card that rises (clipped at the envelope's bottom edge) */}
               <div className="absolute inset-x-[7%] bottom-0 top-[-260px] overflow-hidden">
-                <div className={cn("absolute inset-x-0 top-[268px] bg-white p-[7px] shadow-soft", styles.card)}>
+                <div className={cn("absolute inset-x-0 top-[268px] bg-white p-[7px] shadow-soft", "ph-card")}>
                   <SampleImage src={pair.after} alt="" swatch={style.swatch} sizes="180px" />
                 </div>
               </div>
               {/* Confetti */}
               <div className="pointer-events-none absolute inset-x-[-12%] top-[-150px] z-[5] h-[150px]">
                 {CONFETTI.map((c, i) => (
-                  <span key={i} className={cn("absolute", c.cls, styles.confetti)} style={{ animationDelay: c.delay }} />
+                  <span key={i} className={cn("absolute", c.cls, "ph-confetti")} style={{ animationDelay: c.delay }} />
                 ))}
               </div>
               {/* Front pocket with folds */}
-              <div className={cn("absolute inset-0 overflow-hidden rounded-[3px]", styles.pocket)}>
+              <div className={cn("absolute inset-0 overflow-hidden rounded-[3px]", "ph-pocket")}>
                 <div className="absolute inset-0 bg-[#c8553d]" />
                 <div className="absolute inset-0 bg-[#b94c35] [clip-path:polygon(0_0,52%_56%,0_100%)]" />
                 <div className="absolute inset-0 bg-[#b94c35] [clip-path:polygon(100%_0,48%_56%,100%_100%)]" />
@@ -74,14 +73,14 @@ function Phone() {
               <div
                 className={cn(
                   "absolute inset-x-0 top-0 h-[62%] bg-[#ad4731] [backface-visibility:visible] [clip-path:polygon(0_0,100%_0,50%_100%)]",
-                  styles.flap,
+                  "ph-flap",
                 )}
               />
             </div>
           </div>
 
           {/* Caption */}
-          <div className={cn("absolute inset-x-0 bottom-[14%] text-center", styles.revealCaption)}>
+          <div className={cn("absolute inset-x-0 bottom-[14%] text-center", "ph-caption")}>
             <p className="font-display text-[15px] text-ink">
               Biscuit, as {style.name}
             </p>
@@ -104,7 +103,7 @@ export function GiftReveal() {
       className="relative overflow-hidden bg-[linear-gradient(180deg,var(--color-paper-2),#f5e3d8)]"
     >
       <Container className="grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
-        <div className={cn("relative order-2 lg:order-1", styles.reveal)}>
+        <div className={cn("relative order-2 lg:order-1", "ph-reveal")}>
           <div
             aria-hidden="true"
             className="absolute left-1/2 top-1/2 h-[118%] w-[118%] max-w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(255_255_255/0.85),rgb(255_255_255/0))]"
@@ -112,7 +111,7 @@ export function GiftReveal() {
           <Phone />
         </div>
 
-        <div className={cn("order-1 lg:order-2", styles.reveal)}>
+        <div className={cn("order-1 lg:order-2", "ph-reveal")}>
           <HomeHeading
             id="gift-title"
             eyebrow="Instant Gift Reveal"

@@ -103,6 +103,12 @@ export async function getTrackablePartner(code: string): Promise<RedeemablePartn
   return row ? toRedeemable(row) : null;
 }
 
+/** Any-status lookup (e.g. for the partner's own stats page). */
+export async function getPartnerSummary(code: string): Promise<RedeemablePartner | null> {
+  const row = await findPartnerByCode(code);
+  return row ? toRedeemable(row) : null;
+}
+
 /**
  * Records an attributed order for a partner code: a `referral_events` row of type `order`
  * with commission_cents = round(amountCents * partner.commission_rate).
@@ -220,6 +226,8 @@ export type PartnerStats = {
   recentOrders: { createdAt: string; amountCents: number; commissionCents: number }[];
 };
 
+const VOID_ORDER_STATUSES = ["refunded", "canceled"];
+
 export const EMPTY_STATS: PartnerStats = { clicks: 0, orders: 0, revenueCents: 0, commissionCents: 0, recentOrders: [] };
 
 /** Aggregates referral_events for one code (clicks counted server-side, orders summed). */
@@ -237,7 +245,7 @@ export async function getPartnerStats(code: string, sinceIso?: string): Promise<
 
   let ordersQ = c
     .from("referral_events")
-    .select("created_at, amount_cents, commission_cents")
+    .select("created_at, amount_cents, commission_cents, orders(status)")
     .ilike("code", normalized)
     .eq("type", "order")
     .order("created_at", { ascending: false })
@@ -245,7 +253,17 @@ export async function getPartnerStats(code: string, sinceIso?: string): Promise<
   if (sinceIso) ordersQ = ordersQ.gte("created_at", sinceIso);
 
   const [clicksRes, ordersRes] = await Promise.all([clicksQ, ordersQ]);
-  const rows = (ordersRes.data ?? []) as { created_at: string; amount_cents: number | null; commission_cents: number | null }[];
+  type OrderEvent = {
+    created_at: string;
+    amount_cents: number | null;
+    commission_cents: number | null;
+    orders: { status: string } | { status: string }[] | null;
+  };
+  // Refunded / canceled orders don't count toward revenue or commission.
+  const rows = ((ordersRes.data ?? []) as OrderEvent[]).filter((r) => {
+    const o = Array.isArray(r.orders) ? r.orders[0] : r.orders;
+    return !o || !VOID_ORDER_STATUSES.includes(o.status);
+  });
   return {
     clicks: clicksRes.count ?? 0,
     orders: rows.length,

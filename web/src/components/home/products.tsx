@@ -11,7 +11,6 @@ import { cn, formatPrice } from "@/lib/utils";
 import { fromPrice, shipCopy, sizeRange } from "./data";
 import { Framed } from "./framed";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 const FRAME_SWATCH: Record<string, string> = {
   black: "#151311",
@@ -46,7 +45,7 @@ function FeatureCard({
   extra?: ReactNode;
 }) {
   return (
-    <article className={cn("group flex flex-col overflow-hidden rounded-card bg-white ring-1 ring-line", styles.reveal)}>
+    <article className={cn("group flex flex-col overflow-hidden rounded-card bg-white ring-1 ring-line", "ph-reveal")}>
       <Link
         href={`/shop/${product.type}`}
         tabIndex={-1}
@@ -104,7 +103,7 @@ function CompactCard({ product, visual, wall, note }: { product: Product; visual
     <article
       className={cn(
         "group grid grid-cols-[38%_1fr] overflow-hidden rounded-card bg-white ring-1 ring-line sm:grid-cols-[42%_1fr]",
-        styles.reveal,
+        "ph-reveal",
       )}
     >
       <Link
@@ -147,7 +146,7 @@ export function Products() {
   return (
     <Section aria-labelledby="products-title" className="bg-paper">
       <Container>
-        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", styles.reveal)}>
+        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", "ph-reveal")}>
           <HomeHeading
             id="products-title"
             eyebrow="Canvas, prints & frames"
@@ -240,7 +239,7 @@ export function Products() {
         <div
           className={cn(
             "mt-6 flex flex-col items-start gap-5 rounded-card bg-paper-2 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8",
-            styles.reveal,
+            "ph-reveal",
           )}
         >
           <div className="flex gap-4">

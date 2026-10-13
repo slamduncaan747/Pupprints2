@@ -1,6 +1,7 @@
 import { Fraunces } from "next/font/google";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import "./home.css";
 
 /**
  * Fraunces italic for editorial accent words in headlines. The root layout only loads the

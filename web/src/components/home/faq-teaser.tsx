@@ -7,7 +7,6 @@ import { site } from "@/lib/config";
 import { cn, formatPrice } from "@/lib/utils";
 import { fromPrice } from "./data";
 import { Accent, HomeHeading } from "./typography";
-import styles from "./home.module.css";
 
 const days = (t: "poster" | "framed" | "canvas") => PRODUCT_MAP[t].shipDays.join("–");
 
@@ -38,7 +37,7 @@ export function FaqTeaser() {
   return (
     <Section aria-labelledby="faq-title" className="bg-paper">
       <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-        <div className={cn("lg:sticky lg:top-28 lg:self-start", styles.reveal)}>
+        <div className={cn("lg:sticky lg:top-28 lg:self-start", "ph-reveal")}>
           <HomeHeading
             id="faq-title"
             eyebrow="Good questions"
@@ -70,7 +69,7 @@ export function FaqTeaser() {
           </ButtonLink>
         </div>
 
-        <div className={styles.reveal}>
+        <div className="ph-reveal">
           <div className="divide-y divide-line border-y border-line">
             {FAQS.map((f, i) => (
               <details key={f.q} className="group" open={i === 0}>
