@@ -6,16 +6,18 @@ import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { ButtonLink } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
+import { CampaignImage, ProductLayout, ProductShot, ProductTitle } from "@/components/marketing/campaign";
+import { ProductCard } from "@/components/marketing/product-card";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd, type FaqItem } from "@/components/marketing/faq";
 import { FramedArt } from "@/components/marketing/framed-art";
 import { JsonLd } from "@/components/marketing/json-ld";
-import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Facts, Note, Rows, textLink } from "@/components/marketing/blocks";
 import { StyleCard } from "@/components/marketing/style-card";
 import { GOOD_FOR_LABELS, honestDescription, styleContent, stylesFor } from "@/components/marketing/style-content";
-import { fromPrice, shipWindow, toPrice, FRAME_LABELS } from "@/components/marketing/commerce";
+import { fromPrice, toPrice, FRAME_LABELS } from "@/components/marketing/commerce";
 import { firstSentences } from "@/components/marketing/honest";
 import { breedsForStyle } from "@/content/breeds";
 
@@ -113,51 +115,83 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
       />
       <JsonLd data={faqJsonLd(faqs)} />
 
-      <PageHero
-        breadcrumbs={<Breadcrumbs items={[{ href: "/styles", label: "Styles" }, { href: `/styles/${style.slug}`, label: style.name }]} />}
-        title={c.h1}
-        lede={<p>{firstSentences(honestDescription(style))}</p>}
-        media={
-          <figure className="mx-auto w-full max-w-[460px]">
-            <FramedArt style={style.slug} finish={c.frame} priority sizes="(max-width: 1024px) 85vw, 440px" />
-            <figcaption className="mt-5 text-center text-[13px] text-ink-3">
-              Example in a {FRAME_LABELS[c.frame].toLowerCase()} frame. Yours is made from your photo.
-            </figcaption>
-          </figure>
-        }
+      <ProductLayout
+        galleryLabel={`${style.name} examples`}
+        gallery={[
+          <CampaignImage
+            key="plain"
+            src={STYLE_SAMPLES[style.slug]}
+            alt={`Example ${style.name} portrait of a dog`}
+            swatch={style.swatch}
+            priority
+            sizes="(max-width: 640px) 86vw, (max-width: 1024px) 70vw, 58vw"
+          />,
+          <ProductShot key="framed">
+            <FramedArt style={style.slug} finish={c.frame} sizes="(max-width: 1024px) 50vw, 34vw" showLabel={false} />
+          </ProductShot>,
+        ]}
       >
-        <Note>Good for {style.goodFor.map((g) => GOOD_FOR_LABELS[g].toLowerCase()).join(", ")}</Note>
-      </PageHero>
+        <ProductTitle
+          kicker={<Breadcrumbs items={[{ href: "/styles", label: "Styles" }, { href: `/styles/${style.slug}`, label: style.name }]} />}
+          title={style.name}
+          price={`From ${formatPrice(lowest)}`}
+        />
+        <p className="mt-7 max-w-md text-[15px] leading-relaxed text-ink-2">{firstSentences(honestDescription(style))}</p>
+        <Facts
+          className="mt-9"
+          items={[
+            { label: "Suits", value: style.goodFor.map((g) => GOOD_FOR_LABELS[g]).join(", ") },
+            {
+              label: "Best on",
+              value: best.map((p, i) => (
+                <span key={p.type}>
+                  <Link href={`/shop/${p.type}`} className="underline-offset-4 hover:underline">
+                    {p.shortName}
+                  </Link>
+                  {i < best.length - 1 && ", "}
+                </span>
+              )),
+            },
+            { label: "Shown in", value: `${FRAME_LABELS[c.frame]} frame` },
+            { label: "Preview", value: "Free" },
+          ]}
+        />
+        <ButtonLink href={`/create?style=${style.slug}`} size="lg" className="mt-9 w-full">
+          Commission in this style
+        </ButtonLink>
+        <p className="label mt-5 text-center text-ink-3">Pay only if you love it</p>
+        <Note className="mt-9 border-t border-line pt-6">Photo tip: {c.photoTip}</Note>
+      </ProductLayout>
 
       {c.points.length > 0 && (
-        <Block title={`Why ${style.name}`} intro={style.blurb}>
+        <Block eyebrow={`Why ${style.name}`} title={c.h1} intro={style.blurb}>
           <Rows items={c.points.map((p) => ({ title: p.title, body: p.body }))} />
-          <Note className="mt-6">Photo tip: {c.photoTip}</Note>
         </Block>
       )}
 
-      <Block title="Where it looks best" intro="Every style works on every product. These are the ones we think suit it best.">
-        <Facts
-          items={best.map((p) => ({
-            key: p.type,
-            label: (
-              <Link href={`/shop/${p.type}`} className={textLink}>
-                {p.name}
-              </Link>
-            ),
-            note: p.shipDays[1] === 0 ? "Delivered instantly by email" : `Arrives in ${shipWindow(p)}`,
-            value: `${p.variants.length > 1 ? "from " : ""}${formatPrice(fromPrice(p))}`,
-          }))}
-        />
+      <Block
+        eyebrow="Available as"
+        title="Made to hang"
+        intro="Every style works on every piece. These suit it best."
+        layout="stack"
+      >
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-4 lg:grid-cols-3">
+          {best.map((p) => (
+            <li key={p.type}>
+              <ProductCard product={p} style={style.slug} sizes="(max-width: 640px) 50vw, 30vw" />
+            </li>
+          ))}
+        </ul>
       </Block>
 
       <Block
-        title="Good to know"
+        titleStyle="label"
+        title="Client services"
         intro={
           <>
-            More answers in our{" "}
+            More answers in{" "}
             <Link href="/faq" className={textLink}>
-              FAQ
+              Client Services
             </Link>
             .
           </>
@@ -167,36 +201,36 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
       </Block>
 
       {(others.length > 0 || breeds.length > 0) && (
-        <Block title="Styles that pair well" layout="stack">
+        <Block eyebrow="Pairs well with" title="From the collection" layout="stack">
           {others.length > 0 && (
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 sm:gap-x-8">
+            <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-4 sm:gap-x-4">
               {others.map((s) => (
                 <li key={s.slug}>
-                  <StyleCard style={s} compact sizes="(max-width: 640px) 45vw, 260px" />
+                  <StyleCard style={s} compact sizes="(max-width: 640px) 50vw, 25vw" />
                 </li>
               ))}
             </ul>
           )}
-          <div className="mt-12 space-y-2 text-[15px] text-ink-2">
+          <div className="mt-16 grid gap-8 border-t border-line pt-8 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-10">
             {breeds.length > 0 && (
-              <p>
-                <span className="text-ink-3">{style.name} by breed: </span>
-                {breeds.map((b, i) => (
-                  <span key={b.slug}>
-                    <Link href={`/breeds/${b.slug}`} className={textLink}>
-                      {b.name}
-                    </Link>
-                    {i < breeds.length - 1 ? ", " : ""}
-                  </span>
-                ))}
-              </p>
+              <>
+                <p className="label text-ink-3">{style.name} by breed</p>
+                <ul className="flex flex-wrap gap-x-6 gap-y-3">
+                  {breeds.map((b) => (
+                    <li key={b.slug}>
+                      <Link href={`/breeds/${b.slug}`} className="label text-ink transition-opacity hover:opacity-60">
+                        {b.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
-            <p>
-              <Link href="/styles" className={textLink}>
-                All styles
+            <p className="flex flex-wrap gap-x-8 gap-y-3 sm:col-start-2">
+              <Link href="/styles" className="link-cta">
+                The collection
               </Link>
-              <span className="text-ink-3"> · </span>
-              <Link href="/breeds" className={textLink}>
+              <Link href="/breeds" className="link-cta">
                 All breeds
               </Link>
             </p>
@@ -204,7 +238,12 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
         </Block>
       )}
 
-      <CtaBand title={`See your dog in ${style.name}`} href={`/create?style=${style.slug}`} cta={`Try ${style.name} free`} />
+      <CtaBand
+        eyebrow={style.name}
+        title={`See your dog in ${style.name}`}
+        href={`/create?style=${style.slug}`}
+        cta="Commission in this style"
+      />
     </>
   );
 }

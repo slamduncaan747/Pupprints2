@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { socialHandle } from "@/lib/config";
 
 /** "Invite a friend" share + Instagram follow nudge (no incentives promised). */
@@ -30,31 +29,26 @@ export function InviteCard({ siteUrl, instagramUrl }: { siteUrl: string; instagr
   }
 
   return (
-    <section className="grid gap-4 py-10 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-10" aria-labelledby="invite-title">
-      <h2 id="invite-title" className="font-display text-[1.75rem] leading-tight">
+    <section className="grid gap-5 py-12 sm:grid-cols-[220px_minmax(0,1fr)] sm:gap-12 sm:py-14" aria-labelledby="invite-title">
+      <h2 id="invite-title" className="font-display text-[30px] leading-[1.08] sm:text-[34px]">
         Know another dog?
       </h2>
       <div>
-        <p className="text-[15px] leading-relaxed text-ink-2">
-          Their preview is free, so it&apos;s an easy thing to share.
+        <p className="max-w-md text-[14px] leading-relaxed text-ink-2">
+          Their preview is complimentary, so it&apos;s an easy thing to share.
           {instagramUrl && handle ? (
             <>
               {" "}
-              And tag <span className="text-ink">{handle}</span> when yours is on the wall.
+              And tag <span className="text-ink">{handle}</span> once yours is on the wall.
             </>
           ) : null}
         </p>
-        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
-          <Button type="button" variant="secondary" onClick={invite} aria-live="polite">
+        <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-1">
+          <button type="button" onClick={invite} aria-live="polite" className="link-cta inline-flex min-h-11 items-center">
             {copied ? "Link copied" : "Invite a friend"}
-          </Button>
+          </button>
           {instagramUrl && handle ? (
-            <a
-              href={instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-11 items-center text-[14px] text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
-            >
+            <a href={instagramUrl} target="_blank" rel="noreferrer" className="link-cta inline-flex min-h-11 items-center text-ink-3">
               Follow {handle}
             </a>
           ) : null}

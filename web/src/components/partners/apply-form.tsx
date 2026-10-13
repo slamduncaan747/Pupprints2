@@ -16,9 +16,9 @@ const CHANNELS = [
 type Platform = (typeof CHANNELS)[number]["platform"];
 
 const field =
-  "h-12 w-full rounded-[3px] bg-white px-4 text-[16px] text-ink outline-none ring-1 ring-inset ring-line transition placeholder:text-ink-3 focus:ring-ink";
-const label = "mb-2 block text-[14px] text-ink-2";
-const legend = "font-display text-[1.6rem] leading-tight";
+  "h-12 w-full rounded-none border-0 border-b border-ink/25 bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)] focus-visible:outline-none";
+const label = "label mb-1 block text-ink-3";
+const legend = "label text-ink";
 
 function parseCount(v: string): number | null {
   const s = v.trim().toLowerCase().replace(/[,\s]/g, "");
@@ -96,13 +96,14 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
 
   if (state === "done") {
     return (
-      <div role="status" className="border-y border-line py-10">
-        <h3 className="font-display text-[2rem] leading-tight">Thank you{firstName ? `, ${firstName}` : ""}!</h3>
-        <p className="mt-4 max-w-md text-[17px] leading-relaxed text-ink-2">
+      <div role="status" className="border-y border-line py-12">
+        <p className="label text-ink-3">Application received</p>
+        <h3 className="mt-5 font-display text-[36px] leading-[1.05] sm:text-[44px]">Thank you{firstName ? `, ${firstName}` : ""}.</h3>
+        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-2">
           Your application is in. A real person on our team reads every one, and we&apos;ll reply by email within about a
           week.
         </p>
-        <p className="mt-6 text-[14px] text-ink-3">
+        <p className="mt-6 text-[13px] text-ink-3">
           Questions in the meantime?{" "}
           <a href={`mailto:${partnersEmail}`} className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
             {partnersEmail}
@@ -120,8 +121,8 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
         <input id="pa-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <fieldset className="grid gap-5 sm:grid-cols-2">
-        <legend className={cn(legend, "mb-5")}>About you</legend>
+      <fieldset className="grid gap-8 border-t border-line pt-8 sm:grid-cols-2 sm:gap-x-10">
+        <legend className={cn(legend, "float-left mb-2 w-full sm:col-span-2")}>About you</legend>
         <div>
           <label htmlFor="pa-name" className={label}>
             Your name
@@ -136,13 +137,13 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
         </div>
       </fieldset>
 
-      <fieldset className="mt-10">
-        <legend className={legend}>Where you post</legend>
-        <p className="mt-2 text-[14px] text-ink-3">Add at least one. Rough audience numbers are fine; we look at engagement, not just size.</p>
-        <div className="mt-5 space-y-3">
+      <fieldset className="mt-14 border-t border-line pt-8">
+        <legend className={cn(legend, "float-left w-full")}>Where you post</legend>
+        <p className="clear-both pt-3 text-[13px] text-ink-3">Add at least one. Rough audience numbers are fine; we look at engagement, not just size.</p>
+        <div className="mt-6 space-y-5">
           {CHANNELS.map((c) => (
-            <div key={c.platform} className="grid grid-cols-[minmax(0,1fr)_8.5rem] gap-2 sm:grid-cols-[8.5rem_minmax(0,1fr)_10rem] sm:items-center sm:gap-3">
-              <label htmlFor={`ch-${c.platform}`} className="col-span-2 text-[14px] text-ink-2 sm:col-span-1">
+            <div key={c.platform} className="grid grid-cols-[minmax(0,1fr)_7.5rem] gap-x-5 sm:grid-cols-[8.5rem_minmax(0,1fr)_9rem] sm:items-end sm:gap-x-6">
+              <label htmlFor={`ch-${c.platform}`} className="label col-span-2 text-ink-3 sm:col-span-1 sm:pb-4">
                 {c.label}
               </label>
               <input
@@ -175,8 +176,8 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
         </div>
       </fieldset>
 
-      <fieldset className="mt-10 grid gap-5 sm:grid-cols-2">
-        <legend className={cn(legend, "mb-5")}>Your dog (the real star)</legend>
+      <fieldset className="mt-14 grid gap-8 border-t border-line pt-8 sm:grid-cols-2 sm:gap-x-10">
+        <legend className={cn(legend, "float-left mb-2 w-full sm:col-span-2")}>Your dog</legend>
         <div>
           <label htmlFor="pa-dog" className={label}>
             Dog&apos;s name
@@ -185,16 +186,16 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
         </div>
         <div>
           <label htmlFor="pa-breed" className={label}>
-            Breed <span className="text-ink-3">(or best guess)</span>
+            Breed <span className="normal-case tracking-normal">(or best guess)</span>
           </label>
           <input id="pa-breed" name="dogBreed" maxLength={120} className={field} />
         </div>
       </fieldset>
 
-      <div className="mt-10 grid gap-5">
+      <div className="mt-14 grid gap-8 border-t border-line pt-8">
         <div>
           <label htmlFor="pa-links" className={label}>
-            Links to 1–3 posts you&apos;re proud of <span className="text-ink-3">(optional)</span>
+            Links to 1–3 posts you&apos;re proud of <span className="normal-case tracking-normal">(optional)</span>
           </label>
           <textarea
             id="pa-links"
@@ -207,7 +208,7 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
         </div>
         <div>
           <label htmlFor="pa-why" className={label}>
-            What would you make with your portrait? <span className="text-ink-3">(optional)</span>
+            What would you make with your portrait? <span className="normal-case tracking-normal">(optional)</span>
           </label>
           <textarea id="pa-why" name="why" rows={4} maxLength={2000} className={cn(field, "h-auto py-3")} />
         </div>
@@ -226,8 +227,8 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
             className={field}
           />
         </div>
-        <label className="flex items-start gap-3 border-y border-line py-5 text-[15px] leading-relaxed text-ink-2">
-          <input type="checkbox" name="consent" required className="mt-1 h-5 w-5 shrink-0 accent-[#111111]" />
+        <label className="flex items-start gap-4 border-y border-line py-6 text-[14px] leading-relaxed text-ink-2">
+          <input type="checkbox" name="consent" required className="mt-0.5 h-4 w-4 shrink-0 rounded-none accent-[#0a0a0a]" />
           <span>
             I&apos;ll clearly disclose every partnered or gifted post (<strong className="font-medium text-ink">#ad</strong> or the
             platform&apos;s <strong className="font-medium text-ink">Paid partnership</strong> label), and Pup Prints may email me about the
@@ -237,13 +238,13 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
       </div>
 
       {error && (
-        <p role="alert" className="mt-6 border-l border-ink pl-4 text-[15px] text-ink">
+        <p role="alert" className="mt-8 border-l border-ink pl-4 text-[14px] text-ink">
           {error}
         </p>
       )}
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-[14px] text-ink-3">Takes about two minutes. We reply to everyone.</p>
+      <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-[13px] text-ink-3">Takes about two minutes. We reply to everyone.</p>
         <Button type="submit" size="lg" disabled={state === "sending"} className="w-full sm:w-auto">
           {state === "sending" ? "Sending…" : "Send application"}
         </Button>

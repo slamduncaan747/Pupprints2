@@ -3,29 +3,34 @@ import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
 
 /**
- * Building blocks for the quiet secondary pages: hairline-separated sections, plain text rows,
- * definition lists and tables. No backgrounds, icons or cards; whitespace does the work.
+ * Building blocks for the maison's secondary pages: hairline-ruled sections, `.label` rows,
+ * definition lists and tables. No backgrounds, icons or cards; type, rules and space do the work.
  */
 
 /**
- * One page section: a hairline, a serif title and its content. On desktop the title sits in the
- * left margin and the content in a ~680px column ("split"); "stack" puts wide content (image grids)
- * under the title instead.
+ * One page section. A hairline rule, then the title in the left third (Bodoni, or a small `.label`
+ * with `titleStyle="label"`) and the content in a ~680px column on the right ("split"). "stack" puts
+ * wide content (image grids) under the title instead.
  */
 export function Block({
   id,
+  eyebrow,
   title,
   intro,
   children,
   layout = "split",
+  titleStyle = "display",
   compact = false,
   className,
 }: {
   id?: string;
+  /** Small `.label` line above a display title. */
+  eyebrow?: ReactNode;
   title?: ReactNode;
   intro?: ReactNode;
   children: ReactNode;
   layout?: "split" | "stack";
+  titleStyle?: "display" | "label";
   /** Less vertical space, for runs of similar sections (FAQ groups, journal categories). */
   compact?: boolean;
   className?: string;
@@ -33,26 +38,35 @@ export function Block({
   const headingId = id && title ? `${id}-title` : undefined;
   const split = layout === "split";
   return (
-    <section id={id} aria-labelledby={headingId} className={cn("scroll-mt-20", className)}>
+    <section id={id} aria-labelledby={headingId} className={cn("scroll-mt-24", className)}>
       <Container>
         <div
           className={cn(
             "border-t border-line",
-            compact ? "py-12 sm:py-16" : "py-16 sm:py-24",
-            split && "lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,680px)] lg:gap-16",
+            compact ? "pb-14 pt-8 sm:pb-20 sm:pt-10" : "pb-20 pt-8 sm:pb-28 sm:pt-10",
+            split && "lg:grid lg:grid-cols-12 lg:gap-x-10",
           )}
         >
-          {(title || intro) && (
-            <div className={cn("mb-10 sm:mb-12", split && "lg:mb-0 lg:pr-4")}>
-              {title && (
-                <h2 id={headingId} className="max-w-xl font-display text-[2rem] leading-[1.08] sm:text-[2.5rem]">
-                  {title}
-                </h2>
-              )}
-              {intro && <div className="mt-4 max-w-md text-[16px] leading-relaxed text-ink-2">{intro}</div>}
-            </div>
+          {(eyebrow || title || intro) && (
+            <header className={cn("mb-10 sm:mb-14", split && "lg:col-span-4 lg:mb-0 lg:pr-6")}>
+              {eyebrow && <p className="label mb-5 text-ink-3">{eyebrow}</p>}
+              {title &&
+                (titleStyle === "label" ? (
+                  <h2 id={headingId} className="label text-ink">
+                    {title}
+                  </h2>
+                ) : (
+                  <h2
+                    id={headingId}
+                    className="max-w-xl font-display text-[30px] leading-[1.06] sm:text-[40px]"
+                  >
+                    {title}
+                  </h2>
+                ))}
+              {intro && <div className="mt-5 max-w-sm text-[14px] leading-relaxed text-ink-2">{intro}</div>}
+            </header>
           )}
-          <div className="min-w-0">{children}</div>
+          <div className={cn("min-w-0", split && "lg:col-span-7 lg:col-start-6")}>{children}</div>
         </div>
       </Container>
     </section>
@@ -61,7 +75,7 @@ export function Block({
 
 export type RowItem = { title: ReactNode; body?: ReactNode; key?: string };
 
-/** Hairline-separated rows: a short title and a line or two of text. `numbered` for steps. */
+/** Hairline rows: a `.label` title and a line or two of text. `numbered` for steps (01, 02…). */
 export function Rows({ items, numbered = false, className }: { items: RowItem[]; numbered?: boolean; className?: string }) {
   const List = numbered ? "ol" : "ul";
   return (
@@ -69,20 +83,13 @@ export function Rows({ items, numbered = false, className }: { items: RowItem[];
       {items.map((item, i) => (
         <li
           key={item.key ?? (typeof item.title === "string" ? item.title : i)}
-          className="grid gap-1.5 border-b border-line py-5 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] sm:gap-8 sm:py-6"
+          className="grid gap-2.5 border-b border-line py-6 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-10 sm:py-7"
         >
-          <h3
-            className={cn(
-              "font-sans text-[16px] font-medium leading-snug tracking-normal text-ink",
-              numbered && "grid grid-cols-[2rem_minmax(0,1fr)]",
-            )}
-          >
-            {numbered && <span className="font-normal tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>}
+          <h3 className="label flex gap-4 text-ink">
+            {numbered && <span className="tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>}
             <span>{item.title}</span>
           </h3>
-          {item.body && (
-            <div className={cn("text-[16px] leading-relaxed text-ink-2", numbered && "pl-8 sm:pl-0")}>{item.body}</div>
-          )}
+          {item.body && <div className="text-[15px] leading-relaxed text-ink-2">{item.body}</div>}
         </li>
       ))}
     </List>
@@ -91,7 +98,7 @@ export function Rows({ items, numbered = false, className }: { items: RowItem[];
 
 export type Fact = { label: ReactNode; value: ReactNode; note?: ReactNode; key?: string };
 
-/** Label / value pairs on hairlines, values right-aligned (prices, dates, delivery times). */
+/** `.label` / value pairs on hairlines, values right-aligned (prices, dates, delivery times). */
 export function Facts({ items, className }: { items: Fact[]; className?: string }) {
   return (
     <dl className={cn("border-t border-line", className)}>
@@ -100,26 +107,27 @@ export function Facts({ items, className }: { items: Fact[]; className?: string 
           key={f.key ?? (typeof f.label === "string" ? f.label : i)}
           className="flex items-baseline justify-between gap-6 border-b border-line py-4"
         >
-          <dt className="min-w-0 text-[16px] text-ink">
+          <dt className="label min-w-0 text-ink">
             {f.label}
-            {f.note && <span className="mt-0.5 block text-[14px] text-ink-3">{f.note}</span>}
+            {f.note && (
+              <span className="mt-1.5 block font-sans text-[13px] font-normal normal-case leading-snug tracking-normal text-ink-3">
+                {f.note}
+              </span>
+            )}
           </dt>
-          <dd className="shrink-0 text-right text-[16px] tabular-nums text-ink">{f.value}</dd>
+          <dd className="label shrink-0 text-right tabular-nums text-ink">{f.value}</dd>
         </div>
       ))}
     </dl>
   );
 }
 
-/** A plain list with quiet dashes. */
+/** A plain list on hairlines (materials, care, what's included). */
 export function Bullets({ items, className }: { items: ReactNode[]; className?: string }) {
   return (
-    <ul className={cn("space-y-2.5 text-[16px] leading-relaxed text-ink-2", className)}>
+    <ul className={cn("border-t border-line text-[15px] leading-relaxed text-ink-2", className)}>
       {items.map((item, i) => (
-        <li key={i} className="relative pl-5">
-          <span aria-hidden="true" className="absolute left-0 text-ink-3">
-            –
-          </span>
+        <li key={i} className="border-b border-line py-3.5">
           {item}
         </li>
       ))}
@@ -128,8 +136,9 @@ export function Bullets({ items, className }: { items: ReactNode[]; className?: 
 }
 
 /**
- * Plain text table with hairlines. The first column is the row header; the other columns are
- * right-aligned (prices, dates). Scrolls sideways inside itself if it ever outgrows a phone.
+ * Plain text table with hairlines and `.label` headers. The first column is the row header; the
+ * other columns are right-aligned (prices, dates). Scrolls sideways inside itself if it ever
+ * outgrows a phone.
  */
 export function DataTable({
   caption,
@@ -144,19 +153,12 @@ export function DataTable({
 }) {
   return (
     <div className={cn("overflow-x-auto", className)}>
-      <table className="w-full border-collapse text-left text-[16px]">
+      <table className="w-full border-collapse text-left">
         <caption className="sr-only">{caption}</caption>
         <thead>
           <tr className="border-b border-line">
             {head.map((h, i) => (
-              <th
-                key={i}
-                scope="col"
-                className={cn(
-                  "pb-3 pr-4 text-[12px] font-medium uppercase tracking-[0.14em] text-ink-3 last:pr-0",
-                  i > 0 && "text-right",
-                )}
-              >
+              <th key={i} scope="col" className={cn("label pb-4 pr-3 font-medium text-ink-3 last:pr-0", i > 0 && "text-right")}>
                 {h}
               </th>
             ))}
@@ -167,11 +169,11 @@ export function DataTable({
             <tr key={r.key} className="border-b border-line">
               {r.cells.map((c, i) =>
                 i === 0 ? (
-                  <th key={i} scope="row" className="py-4 pr-4 align-top font-normal text-ink">
+                  <th key={i} scope="row" className="label py-4 pr-3 align-top font-medium text-ink">
                     {c}
                   </th>
                 ) : (
-                  <td key={i} className="py-4 pl-4 text-right align-top tabular-nums text-ink last:pr-0">
+                  <td key={i} className="py-4 pl-3 text-right align-top text-[14px] tabular-nums text-ink last:pr-0">
                     {c}
                   </td>
                 ),
@@ -189,7 +191,7 @@ export function Prose({ children, className }: { children: ReactNode; className?
   return (
     <div
       className={cn(
-        "space-y-5 text-[17px] leading-[1.75] text-ink-2 [&_a]:text-ink [&_a]:underline [&_a]:decoration-ink/30 [&_a]:underline-offset-[3px] hover:[&_a]:decoration-ink [&_strong]:font-medium [&_strong]:text-ink",
+        "space-y-5 text-[16px] leading-[1.8] text-ink-2 [&_a]:text-ink [&_a]:underline [&_a]:decoration-ink/30 [&_a]:decoration-1 [&_a]:underline-offset-4 hover:[&_a]:decoration-ink [&_strong]:font-medium [&_strong]:text-ink",
         className,
       )}
     >
@@ -200,9 +202,34 @@ export function Prose({ children, className }: { children: ReactNode; className?
 
 /** One grey line (promises, footnotes). */
 export function Note({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={cn("text-[14px] leading-relaxed text-ink-3", className)}>{children}</p>;
+  return <p className={cn("text-[13px] leading-relaxed text-ink-3", className)}>{children}</p>;
+}
+
+/** A large Bodoni statement, centered, for the one line a page should be remembered by. */
+export function Statement({
+  eyebrow,
+  children,
+  body,
+  className,
+}: {
+  eyebrow?: ReactNode;
+  children: ReactNode;
+  body?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={cn("py-24 sm:py-36", className)}>
+      <Container className="text-center">
+        {eyebrow && <p className="label mb-8 text-ink-3">{eyebrow}</p>}
+        <p className="mx-auto max-w-5xl font-display text-[34px] leading-[1.08] tracking-[-0.015em] text-balance sm:text-[56px] lg:text-[72px]">
+          {children}
+        </p>
+        {body && <div className="mx-auto mt-8 max-w-md text-[15px] leading-relaxed text-ink-2">{body}</div>}
+      </Container>
+    </section>
+  );
 }
 
 /** Standard inline text link. */
 export const textLink =
-  "text-ink underline decoration-ink/30 underline-offset-[3px] transition-colors hover:decoration-ink";
+  "text-ink underline decoration-ink/30 decoration-1 underline-offset-4 transition-colors hover:decoration-ink";

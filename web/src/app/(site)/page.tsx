@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { site } from "@/lib/config";
 import { DEFAULT_OG_IMAGE, jsonLdProps, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import { Hero } from "@/components/home/hero";
-import { StyleIndex } from "@/components/home/style-index";
-import { HowItWorks } from "@/components/home/how-it-works";
-import { Products } from "@/components/home/products";
-import { Promises } from "@/components/home/promises";
+import { Statement } from "@/components/home/statement";
+import { Collection } from "@/components/home/collection";
+import { Objects } from "@/components/home/objects";
+import { Process } from "@/components/home/process";
+import { Closing } from "@/components/home/closing";
 
 const TITLE = "Custom Dog Portraits from Your Photo — See Yours Free";
 const DESCRIPTION =
@@ -32,15 +33,20 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * The home page as a fashion-house campaign: triptych, editorial diptych, the collection,
+ * the pieces as objects, the process, and one closing line.
+ */
 export default function HomePage() {
   return (
     <>
       <script {...jsonLdProps([organizationJsonLd({ logo: "/logo.png" }), websiteJsonLd()])} />
       <Hero />
-      <StyleIndex />
-      <HowItWorks />
-      <Products />
-      <Promises />
+      <Statement />
+      <Collection />
+      <Objects />
+      <Process />
+      <Closing />
     </>
   );
 }

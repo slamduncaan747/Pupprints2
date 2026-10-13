@@ -9,19 +9,19 @@ import type { Crumb } from "@/lib/seo";
 export function ContentBreadcrumbs({ items, className }: { items: Crumb[]; className?: string }) {
   const all = [{ name: "Home", path: "/" }, ...items];
   return (
-    <nav aria-label="Breadcrumb" className={cn("text-[13px] text-ink-3", className)}>
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
+    <nav aria-label="Breadcrumb" className={cn("label text-ink-3", className)}>
+      <ol className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         {all.map((c, i) => {
           const last = i === all.length - 1;
           return (
-            <li key={c.path} className={cn("flex items-center gap-2", last && "min-w-0 max-w-full")}>
+            <li key={c.path} className={cn("flex items-center gap-3", last && "min-w-0 max-w-full")}>
               {last ? (
-                <span aria-current="page" className="truncate text-ink-2">
+                <span aria-current="page" className="truncate text-ink">
                   {c.name}
                 </span>
               ) : (
                 <>
-                  <Link href={c.path} className="hover:text-ink">
+                  <Link href={c.path} className="transition-colors hover:text-ink">
                     {c.name}
                   </Link>
                   <span aria-hidden="true">/</span>

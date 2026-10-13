@@ -3,6 +3,7 @@
 import { useId, useState, type FormEvent } from "react";
 import { LoaderCircle } from "lucide-react";
 import { track } from "@/lib/analytics";
+import { buttonClasses } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { saveLead, type LeadSource } from "./api";
 
@@ -73,7 +74,7 @@ export function EmailCapture({
       <label htmlFor={id} className="sr-only">
         Email address
       </label>
-      <div className="flex gap-2">
+      <div className="flex items-end gap-4">
         <input
           id={id}
           type="email"
@@ -85,21 +86,17 @@ export function EmailCapture({
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${id}-err` : undefined}
           className={cn(
-            "h-12 min-w-0 flex-1 rounded-[3px] border border-line px-4 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink",
-            tone === "light" ? "bg-white" : "bg-paper",
+            "h-12 min-w-0 flex-1 rounded-none border-0 border-b border-line bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none",
+            tone === "paper" && "bg-transparent",
           )}
         />
-        <button
-          type="submit"
-          disabled={state === "sending"}
-          className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-[3px] bg-ink px-5 text-[15px] font-medium text-paper transition-colors hover:bg-ink/85 disabled:opacity-60"
-        >
-          {state === "sending" ? <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden /> : null}
+        <button type="submit" disabled={state === "sending"} className={buttonClasses("primary", "md", "shrink-0 px-6")}>
+          {state === "sending" ? <LoaderCircle className="h-3.5 w-3.5 animate-spin" aria-hidden /> : null}
           {cta}
         </button>
       </div>
       {error && (
-        <p id={`${id}-err`} role="alert" className="mt-2 text-[13px] text-ink">
+        <p id={`${id}-err`} role="alert" className="mt-2.5 text-[13px] text-ink">
           {error}
         </p>
       )}

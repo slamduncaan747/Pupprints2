@@ -3,10 +3,10 @@ import type { FrameColor, ProductType } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 
 /**
- * Quiet, pure-CSS product mockups for a portrait: framed print (thin flat moulding), gallery
+ * Quiet, pure-CSS product mockups for a portrait: framed print (a fine flat moulding), gallery
  * canvas (shallow wrapped edges), fine-art print (paper with a white border) and digital file.
  * Everything is sized in container-query units, so a mockup looks identical at thumbnail size
- * and full width.
+ * and full width. The room scene is a flat ivory wall with the piece hung to scale: no furniture.
  *
  * Works in Server and Client Components (no hooks).
  *
@@ -22,13 +22,13 @@ export type FrameMockupProps = {
   frameColor?: FrameColor;
   /** Max width preset. Mockups are fluid up to this width. Default "md". */
   size?: "sm" | "md" | "lg";
-  /** Show the piece hanging above a sofa, drawn to scale for `printSize`. Ignored for digital. */
+  /** Show the piece hanging on a flat ivory wall, drawn to scale for `printSize`. Ignored for digital. */
   room?: boolean;
   /** Physical size: sets the crop aspect ratio and the scale in the room scene. Default 3:4 (12×16). */
   printSize?: { widthIn: number; heightIn: number };
   /** Framed only: white mat around the art. Default false (Printful framed posters have no mat). */
   mat?: boolean;
-  /** Wall color for the room scene. */
+  /** Wall color for the room scene. Default warm ivory. */
   wall?: string;
   /** Eager-load the image (above the fold). */
   priority?: boolean;
@@ -40,10 +40,10 @@ export type FrameMockupProps = {
 };
 
 const MAX_W = { sm: "max-w-[220px]", md: "max-w-[340px]", lg: "max-w-[480px]" } as const;
-const ROOM_MAX_W = { sm: "max-w-[380px]", md: "max-w-[580px]", lg: "max-w-[780px]" } as const;
+const ROOM_MAX_W = { sm: "max-w-[320px]", md: "max-w-[480px]", lg: "max-w-[640px]" } as const;
 
-/** A soft, close shadow: the piece sits on the wall, it doesn't float above it. */
-const HANG_SHADOW = "0 0.2cqw 0.5cqw rgb(0 0 0 / 0.10), 0 2.4cqw 4.4cqw -2cqw rgb(0 0 0 / 0.22)";
+/** A soft campaign shadow, close to the wall: the piece hangs, it doesn't float. */
+const HANG_SHADOW = "0 0.25cqw 0.6cqw rgb(0 0 0 / 0.08), 0 3cqw 5cqw -2.4cqw rgb(0 0 0 / 0.24)";
 
 export function FrameMockup({
   src,
@@ -123,7 +123,7 @@ function Artwork({
   children?: ReactNode;
 }) {
   return (
-    <div className="relative w-full overflow-hidden bg-paper-3" style={{ aspectRatio: String(ratio) }}>
+    <div className="relative w-full overflow-hidden bg-paper-2" style={{ aspectRatio: String(ratio) }}>
       {/* Arbitrary sources (Supabase previews, blob: URLs, /samples) — plain img keeps this component universal. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -144,13 +144,14 @@ function Artwork({
 /* Framed print                                                        */
 /* ------------------------------------------------------------------ */
 
-/** Thin moulding: about 8px on a 340px-wide piece. */
-const FRAME_W = "2.4cqw";
+/** A fine moulding: about 6px on a 340px-wide piece. */
+const FRAME_W = "1.8cqw";
+const FRAME_FRACTION = 0.018;
 
 const MOULDING: Record<FrameColor, string> = {
-  black: "#161616",
-  white: "#fbfbfa",
-  oak: "#c9a77f",
+  black: "#121212",
+  white: "#fcfcfb",
+  oak: "#c4a582",
 };
 
 function Framed({ color, mat, children }: { color: FrameColor; mat: boolean; children: ReactNode }) {
@@ -161,7 +162,7 @@ function Framed({ color, mat, children }: { color: FrameColor; mat: boolean; chi
         padding: FRAME_W,
         background: MOULDING[color],
         // White needs a hairline to read against a pale wall.
-        boxShadow: color === "white" ? `inset 0 0 0 1px rgb(0 0 0 / 0.08), ${HANG_SHADOW}` : HANG_SHADOW,
+        boxShadow: color === "white" ? `inset 0 0 0 1px rgb(0 0 0 / 0.09), ${HANG_SHADOW}` : HANG_SHADOW,
       }}
     >
       <div className="relative" style={{ padding: mat ? "8cqw" : 0, background: mat ? "#fdfdfb" : undefined }}>
@@ -177,7 +178,7 @@ function Framed({ color, mat, children }: { color: FrameColor; mat: boolean; chi
 /* Gallery canvas                                                      */
 /* ------------------------------------------------------------------ */
 
-const DEPTH = "1.4cqw";
+const DEPTH = "1.2cqw";
 
 function Canvas({ src, ratio, children }: { src: string; ratio: number; children: ReactNode }) {
   return (
@@ -257,25 +258,24 @@ function Paper({ children }: { children: ReactNode }) {
 /* ------------------------------------------------------------------ */
 
 function Digital({ children }: { children: ReactNode }) {
-  return <div className="relative overflow-hidden rounded-[3px] ring-1 ring-ink/10">{children}</div>;
+  return <div className="relative overflow-hidden ring-1 ring-ink/10">{children}</div>;
 }
 
 /* ------------------------------------------------------------------ */
 /* Room scene                                                          */
 /* ------------------------------------------------------------------ */
 
-// Scene coordinates in inches. The view spans 78" of wall, from 20" to 84" above the floor.
-const SCENE_W = 78;
-const VIEW_BOTTOM = 20;
-const VIEW_TOP = 84;
-const SCENE_H = VIEW_TOP - VIEW_BOTTOM;
-const SOFA_BACK = 33;
-const HANG_GAP = 7;
+// Scene coordinates in inches: a 40"-wide stretch of wall, 50" tall (4:5, like a campaign image).
+// Wide enough for the largest piece (24×36) with air around it; small pieces read as small.
+const SCENE_W = 40;
+const SCENE_H = 50;
+/** The piece is centered a little above the middle of the view, at gallery eye level. */
+const CENTER_FROM_TOP = 0.46;
 
-/** How much wider the hanging piece is than the print itself (frame + mat, canvas depth...). */
+/** How much larger the hanging piece is than the print itself (frame + mat, canvas depth...). */
 function outerScale(type: ProductType, mat: boolean) {
-  if (type === "framed") return 1 / (1 - 2 * (mat ? 0.104 : 0.024));
-  if (type === "canvas") return 1.014;
+  if (type === "framed") return 1 / (1 - 2 * (mat ? FRAME_FRACTION + 0.08 : FRAME_FRACTION));
+  if (type === "canvas") return 1.012;
   return 1 / (1 - 2 * 0.04);
 }
 
@@ -283,7 +283,7 @@ function RoomScene({
   productType,
   printSize,
   mat,
-  wall = "#efeeea",
+  wall = "#f6f4ef",
   className,
   children,
 }: {
@@ -294,52 +294,23 @@ function RoomScene({
   className?: string;
   children: ReactNode;
 }) {
-  const outerW = printSize.widthIn * outerScale(productType, mat);
-  const bottomPct = ((SOFA_BACK + HANG_GAP - VIEW_BOTTOM) / SCENE_H) * 100;
-  const y = (h: number) => VIEW_TOP - h; // inches above floor → SVG y
+  const scale = outerScale(productType, mat);
+  const outerW = printSize.widthIn * scale;
+  const outerH = printSize.heightIn + (outerW - printSize.widthIn);
+  const topPct = Math.max(2, ((SCENE_H * CENTER_FROM_TOP - outerH / 2) / SCENE_H) * 100);
 
   return (
     <div
       className={cn("relative w-full overflow-hidden", className)}
       style={{ aspectRatio: `${SCENE_W} / ${SCENE_H}`, backgroundColor: wall }}
     >
-      {/* Artwork, to scale */}
+      {/* Artwork, to scale on a flat wall */}
       <div
-        className="@container absolute left-1/2 -translate-x-1/2 transition-[width] duration-500 ease-out"
-        style={{ width: `${(outerW / SCENE_W) * 100}%`, bottom: `${bottomPct}%` }}
+        className="@container absolute left-1/2 -translate-x-1/2 transition-[width,top] duration-700 ease-out motion-reduce:transition-none"
+        style={{ width: `${(outerW / SCENE_W) * 100}%`, top: `${topPct}%` }}
       >
         {children}
       </div>
-
-      {/* A 6-ft sofa as a hairline drawing, so the piece reads to scale without a furnished room. */}
-      <svg
-        aria-hidden
-        viewBox={`0 0 ${SCENE_W} ${SCENE_H}`}
-        preserveAspectRatio="xMidYMax meet"
-        className="absolute inset-x-0 bottom-0 h-full w-full"
-        fill="none"
-        stroke="rgb(0 0 0 / 0.22)"
-        strokeWidth={1}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {/* back */}
-        <path
-          vectorEffect="non-scaling-stroke"
-          d={`M 10 ${y(26)} L 10 ${y(SOFA_BACK - 3)} Q 10 ${y(SOFA_BACK)} 13 ${y(SOFA_BACK)} L 65 ${y(SOFA_BACK)} Q 68 ${y(SOFA_BACK)} 68 ${y(SOFA_BACK - 3)} L 68 ${y(26)}`}
-        />
-        {/* arms */}
-        <path
-          vectorEffect="non-scaling-stroke"
-          d={`M 4 ${y(VIEW_BOTTOM)} L 4 ${y(23.5)} Q 4 ${y(26)} 6.5 ${y(26)} L 12.5 ${y(26)} Q 15 ${y(26)} 15 ${y(23.5)} L 15 ${y(VIEW_BOTTOM)}`}
-        />
-        <path
-          vectorEffect="non-scaling-stroke"
-          d={`M 63 ${y(VIEW_BOTTOM)} L 63 ${y(23.5)} Q 63 ${y(26)} 65.5 ${y(26)} L 71.5 ${y(26)} Q 74 ${y(26)} 74 ${y(23.5)} L 74 ${y(VIEW_BOTTOM)}`}
-        />
-        {/* seat */}
-        <path vectorEffect="non-scaling-stroke" d={`M 15 ${y(21.5)} L 63 ${y(21.5)}`} />
-      </svg>
     </div>
   );
 }

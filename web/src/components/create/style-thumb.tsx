@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export function StyleThumb({
   style,
   src,
-  sizes = "(min-width: 1024px) 220px, (min-width: 640px) 30vw, 45vw",
+  sizes = "(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw",
   className,
 }: {
   style: ArtStyle;
@@ -25,7 +25,7 @@ export function StyleThumb({
   const failed = failedUrl === url;
 
   return (
-    <div className={cn("relative overflow-hidden bg-paper-3", className)}>
+    <div className={cn("relative overflow-hidden bg-paper-2", className)}>
       {failed ? (
         <Placeholder style={style} />
       ) : (
@@ -34,7 +34,7 @@ export function StyleThumb({
           alt=""
           fill
           sizes={sizes}
-          className="object-cover transition-opacity duration-300 group-hover:opacity-90"
+          className="object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           onError={() => setFailedUrl(url)}
         />
       )}
@@ -44,8 +44,8 @@ export function StyleThumb({
 
 function Placeholder({ style }: { style: ArtStyle }) {
   return (
-    <div aria-hidden className="absolute inset-0 flex items-center justify-center bg-paper-3">
-      <span className="font-display text-5xl text-ink-3">{style.name.replace(/^The /, "")[0]}</span>
+    <div aria-hidden className="absolute inset-0 flex items-center justify-center bg-paper-2">
+      <span className="font-display text-[56px] text-ink-3">{style.name.replace(/^The /, "")[0]}</span>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { buttonClasses } from "@/components/ui/button";
 import { site } from "@/lib/config";
 
 const MAX_TRIES = 8;
@@ -23,20 +23,26 @@ export function PaymentPending() {
   }, [tries, done, router]);
 
   return (
-    <div className="mx-auto max-w-md text-center" role="status" aria-live="polite">
+    <div className="mx-auto max-w-lg text-center" role="status" aria-live="polite">
       {!done ? (
         <>
-          <Loader2 className="mx-auto h-5 w-5 animate-spin text-ink-3" strokeWidth={1.5} aria-hidden="true" />
-          <h1 className="mt-8 font-display text-[2.6rem] leading-[1.04] sm:text-5xl">Confirming your payment…</h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-ink-2">This usually takes a few seconds. Please keep this page open.</p>
+          <p className="label text-ink-3">One moment</p>
+          <h1 className="mt-5 font-display text-[44px] leading-[1.02] sm:text-[64px]">Confirming your payment.</h1>
+          <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2">
+            This usually takes a few seconds. Please keep this page open.
+          </p>
+          <div className="mx-auto mt-10 h-px w-40 overflow-hidden bg-line" aria-hidden="true">
+            <div className="h-full w-1/3 animate-pulse bg-ink" />
+          </div>
         </>
       ) : (
         <>
-          <h1 className="font-display text-[2.6rem] leading-[1.04] sm:text-5xl">Still confirming</h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-ink-2">
-            Some payment methods take a little longer. You&apos;ll get a confirmation email as soon as it clears. Questions?
+          <p className="label text-ink-3">Client services</p>
+          <h1 className="mt-5 font-display text-[44px] leading-[1.02] sm:text-[64px]">Still confirming.</h1>
+          <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2">
+            Some payment methods take a little longer. Your confirmation email arrives as soon as it clears. Questions?
             Write to{" "}
-            <a className="text-ink underline decoration-ink/25 underline-offset-4 hover:decoration-ink" href={`mailto:${site.supportEmail}`}>
+            <a className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink" href={`mailto:${site.supportEmail}`}>
               {site.supportEmail}
             </a>
             .
@@ -47,7 +53,7 @@ export function PaymentPending() {
               setTries(0);
               router.refresh();
             }}
-            className="mt-8 inline-flex h-11 items-center rounded-[3px] px-6 text-[15px] font-medium ring-1 ring-inset ring-ink/25 transition-colors hover:ring-ink"
+            className={buttonClasses("secondary", "lg", "mt-10")}
           >
             Check again
           </button>

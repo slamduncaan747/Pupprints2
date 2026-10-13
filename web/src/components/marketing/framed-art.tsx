@@ -55,7 +55,7 @@ export function FramedArt({
 
   if (f === "plain") return <div className={className}>{art}</div>;
   if (f === "canvas") return <div className={cn("canvas-wrap overflow-hidden", className)}>{art}</div>;
-  if (f === "print") return <div className={cn("bg-white p-[6%] shadow-soft ring-1 ring-black/5", className)}>{art}</div>;
+  if (f === "print") return <div className={cn("bg-white p-[6%] shadow-frame", className)}>{art}</div>;
   return (
     <div className={cn(FRAME_CLASS[f], className)}>
       <div className={cn(mat && "mat")}>{art}</div>
@@ -71,13 +71,13 @@ export const FINISH_FOR_PRODUCT: Record<ProductType, Finish> = {
   canvas: "canvas",
 };
 
-/** A product's example art, centered in a fixed 4:5 box so product tiles line up. */
+/** A product's example art on a 4:5 ivory backdrop, like a product photograph, so tiles line up. */
 export function ProductArt({
   type,
   style,
   finish,
   className,
-  sizes = "(max-width: 640px) 70vw, 22vw",
+  sizes = "(max-width: 640px) 50vw, 22vw",
   priority,
 }: {
   type: ProductType;
@@ -88,13 +88,13 @@ export function ProductArt({
   priority?: boolean;
 }) {
   return (
-    <div className={cn("flex aspect-[4/5] items-center justify-center", className)}>
+    <div className={cn("flex aspect-[4/5] items-center justify-center bg-paper-2", className)}>
       <FramedArt
         style={style}
         finish={finish ?? FINISH_FOR_PRODUCT[type]}
         priority={priority}
         sizes={sizes}
-        className="w-[82%]"
+        className="w-[58%]"
       />
     </div>
   );

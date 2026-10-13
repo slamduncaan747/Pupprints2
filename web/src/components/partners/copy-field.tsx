@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /** Read-only value with a copy button (share link, discount code). */
@@ -10,17 +9,17 @@ export function CopyField({ label, value, mono = false }: { label: string; value
   const id = `copy-${label.toLowerCase().replace(/\W+/g, "-")}`;
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-[14px] text-ink-2">
+      <label htmlFor={id} className="label mb-1 block text-ink-3">
         {label}
       </label>
-      <div className="flex gap-2">
+      <div className="flex items-end gap-5 border-b border-ink/25 focus-within:border-ink">
         <input
           id={id}
           readOnly
           value={value}
           onFocus={(e) => e.currentTarget.select()}
           className={cn(
-            "h-12 min-w-0 flex-1 rounded-[3px] bg-white px-4 text-[15px] text-ink outline-none ring-1 ring-inset ring-line focus:ring-ink",
+            "h-12 min-w-0 flex-1 rounded-none border-0 bg-transparent px-0 text-[15px] text-ink outline-none focus-visible:outline-none",
             mono && "font-mono tracking-wide",
           )}
         />
@@ -35,9 +34,8 @@ export function CopyField({ label, value, mono = false }: { label: string; value
               document.getElementById(id)?.focus();
             }
           }}
-          className="inline-flex h-12 shrink-0 items-center gap-2 rounded-[3px] bg-ink px-5 text-[14px] font-medium text-paper transition hover:bg-ink/85"
+          className="link-cta h-12 shrink-0 text-ink"
         >
-          {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
           <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
         </button>
       </div>

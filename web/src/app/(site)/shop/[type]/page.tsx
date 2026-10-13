@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PRODUCT_MAP, PRODUCTS, PROMISES, type ProductType } from "@/lib/catalog";
+import { PRODUCT_MAP, PRODUCTS, PROMISES, STYLE_MAP, type ProductType } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { ButtonLink } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
+import { CampaignImage, ProductLayout, ProductShot, ProductTitle } from "@/components/marketing/campaign";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd, type FaqItem } from "@/components/marketing/faq";
-import { FramedArt, ProductArt } from "@/components/marketing/framed-art";
+import { FINISH_FOR_PRODUCT, FramedArt } from "@/components/marketing/framed-art";
 import { JsonLd } from "@/components/marketing/json-ld";
-import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Facts, Note, textLink } from "@/components/marketing/blocks";
 import { ProductCard } from "@/components/marketing/product-card";
 import { PRODUCT_CONTENT } from "@/components/marketing/product-content";
@@ -112,29 +113,40 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
     },
   ];
 
-  const media = product.frameColors ? (
-    <ul className="mx-auto grid max-w-[520px] grid-cols-3 items-end gap-4 sm:gap-6" aria-label="Frame colors">
-      {product.frameColors.map((f, i) => (
-        <li key={f}>
-          <FramedArt
-            style={FRAME_EXAMPLES[i % FRAME_EXAMPLES.length]}
-            finish={f}
-            priority={i === 0}
-            sizes="(max-width: 1024px) 28vw, 160px"
-          />
-          <p className="mt-4 text-center text-[13px] text-ink-3">{FRAME_LABELS[f]}</p>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <ProductArt
-      type={product.type}
-      style={c.exampleStyle}
-      priority
-      sizes="(max-width: 1024px) 80vw, 400px"
-      className="mx-auto max-w-[460px]"
-    />
-  );
+  const fallbackFinish = FINISH_FOR_PRODUCT[product.type];
+  const gallery = product.frameColors
+    ? product.frameColors.map((f, i) => (
+        <figure key={f}>
+          <ProductShot>
+            <FramedArt
+              style={FRAME_EXAMPLES[i % FRAME_EXAMPLES.length]}
+              finish={f}
+              priority={i === 0}
+              showLabel={false}
+              sizes="(max-width: 1024px) 50vw, 34vw"
+            />
+          </ProductShot>
+          <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">{FRAME_LABELS[f]} frame</figcaption>
+        </figure>
+      ))
+    : [
+        <ProductShot key="piece">
+          <FramedArt style={c.exampleStyle} finish={fallbackFinish} priority showLabel={false} sizes="(max-width: 1024px) 50vw, 34vw" />
+        </ProductShot>,
+        <CampaignImage
+          key="art"
+          src={STYLE_SAMPLES[c.exampleStyle]}
+          alt={`Example ${STYLE_MAP[c.exampleStyle].name} portrait of a dog`}
+          swatch={STYLE_MAP[c.exampleStyle].swatch}
+          sizes="(max-width: 640px) 86vw, (max-width: 1024px) 70vw, 58vw"
+        />,
+      ];
+
+  const details = [
+    { title: physical ? "Materials" : "The file", items: product.details },
+    { title: "Included", items: included },
+    { title: physical ? "Care" : "Keeping it safe", items: c.care },
+  ];
 
   return (
     <>
@@ -159,53 +171,50 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
       />
       <JsonLd data={faqJsonLd(faqs)} />
 
-      <PageHero
-        breadcrumbs={<Breadcrumbs items={[{ href: "/shop", label: "Shop" }, { href: `/shop/${product.type}`, label: product.name }]} />}
-        title={c.h1}
-        lede={<p>{firstSentences(c.intro)}</p>}
-        media={media}
-      >
-        <p className="font-display text-[2rem] leading-none">
-          {multi && <span className="text-[1.25rem] text-ink-3">from </span>}
-          {formatPrice(fromPrice(product))}
-        </p>
-        <Note className="mt-3">
-          {physical ? `Free US shipping · Arrives in ${shipWindow(product)}` : "Delivered instantly by email · Free with any print"}
-        </Note>
-      </PageHero>
+      <ProductLayout gallery={gallery} galleryLabel={`${product.name} examples`}>
+        <ProductTitle
+          kicker={<Breadcrumbs items={[{ href: "/shop", label: "Shop" }, { href: `/shop/${product.type}`, label: product.name }]} />}
+          title={product.name}
+          price={`${multi ? "From " : ""}${formatPrice(fromPrice(product))}`}
+        />
+        <p className="mt-7 max-w-md text-[15px] leading-relaxed text-ink-2">{firstSentences(c.intro)}</p>
 
-      <Block
-        title={multi ? "Sizes & prices" : "Price"}
-        intro={
-          physical
-            ? "Prices include free US shipping and the hi-res digital file. What you see is what you pay at checkout."
-            : "The digital file is free with every print, framed print and canvas, so buy it on its own only if you don't want a physical piece."
-        }
-      >
-        <SizeTable product={product} />
-        {physical && (
-          <Note className="mt-6">
-            Measure the wall space first: art above furniture usually looks best at about two-thirds of its width.
-          </Note>
+        <div className="mt-10">
+          <p className="label mb-4 text-ink-3">{multi ? "Sizes" : "Format"}</p>
+          <SizeTable product={product} />
+        </div>
+        {product.frameColors && (
+          <Facts
+            className="mt-6 border-t-0"
+            items={[{ label: "Frames", value: product.frameColors.map((f) => FRAME_LABELS[f]).join(" · ") }]}
+          />
         )}
-      </Block>
 
-      <Block title="The details">
-        <div className="space-y-10">
-          {[
-            { title: physical ? "Materials & specs" : "The file", items: product.details },
-            { title: "What's included", items: included },
-            { title: physical ? "Care" : "Keeping it safe", items: c.care },
-          ].map((g) => (
+        <ButtonLink href="/create" size="lg" className="mt-9 w-full">
+          Commission yours
+        </ButtonLink>
+        <p className="label mt-5 text-center text-ink-3">
+          {physical ? `Free US shipping · Arrives in ${shipWindow(product)}` : "Delivered instantly · Free with any print"}
+        </p>
+        <Note className="mt-9 border-t border-line pt-6">
+          {physical
+            ? "Prices include free US shipping and the hi-res digital file. Art above furniture looks best at about two-thirds of its width."
+            : "The digital file is free with every print, framed print and canvas. Buy it alone only if you don't want a physical piece."}
+        </Note>
+      </ProductLayout>
+
+      <Block eyebrow="The details" title={c.h1} layout="stack">
+        <div className="grid gap-12 md:grid-cols-3 md:gap-10">
+          {details.map((g) => (
             <div key={g.title}>
-              <h3 className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ink-3">{g.title}</h3>
-              <Bullets items={g.items} className="mt-4" />
+              <h3 className="label text-ink">{g.title}</h3>
+              <Bullets items={g.items} className="mt-5" />
             </div>
           ))}
         </div>
       </Block>
 
-      <Block title="Delivery">
+      <Block titleStyle="label" title="Delivery">
         <Facts
           items={[
             {
@@ -237,16 +246,17 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
       </Block>
 
       <Block
-        title={`About the ${product.name.toLowerCase()}`}
+        titleStyle="label"
+        title="Client services"
         intro={
           <>
-            Still wondering? Read the{" "}
+            Still wondering? Read{" "}
             <Link href="/faq" className={textLink}>
-              full FAQ
+              Client Services
             </Link>{" "}
             or{" "}
             <Link href="/contact" className={textLink}>
-              ask us
+              write to us
             </Link>
             .
           </>
@@ -255,19 +265,20 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         <FaqList items={faqs} />
       </Block>
 
-      <Block title="Other ways to hang it" layout="stack">
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-8 lg:grid-cols-3">
+      <Block eyebrow="Also available" title="Other ways to hang it" layout="stack">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-4 lg:grid-cols-3">
           {others.map((p) => (
             <li key={p.type}>
-              <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} />
+              <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} sizes="(max-width: 640px) 50vw, 30vw" />
             </li>
           ))}
         </ul>
       </Block>
 
       <CtaBand
+        eyebrow="Begin here"
         title="First, meet your portrait"
-        body="Every order starts with your photo. See your portrait free in about a minute, then choose your size and finish."
+        body="See your portrait free in about a minute, then choose your size and finish."
       />
     </>
   );

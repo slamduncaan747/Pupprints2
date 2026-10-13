@@ -8,19 +8,19 @@ export type Crumb = { href: string; label: string };
 export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: string }) {
   const all = [{ href: "/", label: "Home" }, ...items];
   return (
-    <nav aria-label="Breadcrumb" className={cn("text-[13px] text-ink-3", className)}>
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
+    <nav aria-label="Breadcrumb" className={cn("label text-ink-3", className)}>
+      <ol className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         {all.map((c, i) => {
           const last = i === all.length - 1;
           return (
-            <li key={c.href} className="flex min-w-0 items-center gap-2">
+            <li key={c.href} className="flex min-w-0 items-center gap-3">
               {last ? (
-                <span aria-current="page" className="truncate text-ink-2">
+                <span aria-current="page" className="truncate text-ink">
                   {c.label}
                 </span>
               ) : (
                 <>
-                  <Link href={c.href} className="hover:text-ink">
+                  <Link href={c.href} className="transition-colors hover:text-ink">
                     {c.label}
                   </Link>
                   <span aria-hidden="true">/</span>

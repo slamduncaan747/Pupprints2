@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 import { getStyle, PROMISES } from "@/lib/catalog";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { FrameMockup } from "@/components/product/frame-mockup";
 import { EmailCapture } from "./email-capture";
 import type { Generation } from "./store";
 
-const textLink =
-  "inline-flex min-h-11 items-center text-[14px] text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink";
+const textLink = "link-cta inline-flex min-h-11 items-center";
 
 export function ResultView({
   active,
@@ -34,41 +34,40 @@ export function ResultView({
   const strip = [...generations].reverse(); // oldest → newest, reads left to right
 
   return (
-    <section className="mx-auto grid w-full max-w-6xl gap-10 px-5 pt-8 pb-20 sm:px-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center lg:gap-20">
-      {/* The portrait, large, in a thin frame */}
-      <div className="flex min-w-0 flex-col items-center">
-        <FrameMockup
-          key={active.generationId}
-          src={active.previewUrl}
-          alt={`${name || "Your dog"} painted as ${style?.name ?? "a portrait"} (watermarked preview)`}
-          productType="framed"
-          frameColor="black"
-          size="lg"
-          priority
-          className="max-w-[310px] animate-fade-up sm:max-w-[400px] lg:max-w-[440px]"
-        />
-        <p className="mt-6 text-center text-[12.5px] text-ink-3">Free preview · no watermark on your order</p>
-      </div>
+    <section className="mx-auto grid w-full max-w-[1440px] gap-10 pt-4 pb-24 sm:px-10 sm:pt-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center lg:gap-20 xl:gap-28">
+      {/* The portrait, as a campaign image: large, on white, unframed. */}
+      <figure className="min-w-0">
+        <div className="relative mx-auto w-full bg-paper-2 sm:max-w-[520px] lg:max-w-[min(100%,calc((100dvh_-_190px)_*_0.75))]">
+          <motion.img
+            key={active.generationId}
+            src={active.previewUrl}
+            alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"} (watermarked preview)`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.1, ease: "easeOut" }}
+            className="aspect-[3/4] w-full object-cover"
+          />
+        </div>
+        <figcaption className="label mt-4 px-5 text-center text-ink-3 sm:px-0">
+          Preview only. No watermark on your piece.
+        </figcaption>
+      </figure>
 
       {/* Caption + actions */}
-      <div className="min-w-0 text-center lg:text-left">
-        <h1 className="font-display text-[2.4rem] leading-[1.04] sm:text-[3rem]">
-          {name || "Your dog"}, as <span className="italic">{style?.name}</span>.
+      <div className="min-w-0 px-5 text-center sm:px-0 lg:max-w-md lg:text-left">
+        <h1 className="font-display text-[40px] leading-[1.04] sm:text-[56px]">
+          {name || "Your dog"}, as {style?.name}.
         </h1>
-        <p className="mx-auto mt-3 max-w-xs text-[15px] leading-relaxed text-ink-2 lg:mx-0">
+        <p className="mx-auto mt-4 max-w-xs text-[14px] leading-relaxed text-ink-2 lg:mx-0">
           Love it? Choose a size and finish next.
         </p>
 
-        <button
-          type="button"
-          onClick={onLoveIt}
-          className="mt-7 inline-flex h-14 w-full items-center justify-center rounded-[3px] bg-ink px-8 text-[15px] font-medium text-paper transition-colors hover:bg-ink/85 sm:mx-auto sm:max-w-sm lg:max-w-none"
-        >
+        <Button type="button" size="lg" onClick={onLoveIt} className="mt-9 w-full sm:max-w-sm lg:max-w-none">
           Choose your piece
-        </button>
-        <div className="mt-2 flex items-center justify-center gap-6 lg:justify-start">
+        </Button>
+        <div className="mt-3 flex items-center justify-center gap-10 lg:justify-start">
           <button type="button" onClick={onTryAnother} className={textLink}>
-            Try another style
+            Another style
           </button>
           <button type="button" onClick={onRegenerate} className={textLink}>
             Redo
@@ -76,11 +75,11 @@ export function ResultView({
         </div>
 
         {strip.length > 1 && (
-          <div className="mt-10 border-t border-line pt-6">
-            <h2 className="font-sans text-[12px] tracking-[0.14em] text-ink-3 uppercase">
+          <div className="mt-12 border-t border-line pt-7">
+            <h2 className="label text-ink-3">
               Your portraits <span className="tabular-nums">({strip.length})</span>
             </h2>
-            <div className="-mx-5 mt-4 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0">
+            <div className="-mx-5 mt-5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0">
               <ul className="mx-auto flex w-max snap-x gap-3 lg:mx-0">
                 {strip.map((g) => {
                   const gs = getStyle(g.style);
@@ -92,25 +91,24 @@ export function ResultView({
                         onClick={() => onSelect(g.generationId)}
                         aria-pressed={isActive}
                         aria-label={`Show ${gs?.name ?? g.style} preview`}
-                        className="group flex w-[60px] flex-col items-center gap-1.5 pt-1"
+                        className="group flex w-[56px] flex-col gap-2 pt-1"
                       >
-                        <span
-                          className={cn(
-                            "block aspect-[3/4] w-full overflow-hidden outline-1 outline-offset-[3px] transition-[outline-color]",
-                            isActive ? "outline-ink" : "outline-transparent group-hover:outline-line",
-                          )}
-                        >
+                        <span className="block aspect-[3/4] w-full overflow-hidden bg-paper-2">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={g.previewUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
+                          <img
+                            src={g.previewUrl}
+                            alt=""
+                            loading="lazy"
+                            className={cn(
+                              "h-full w-full object-cover transition-opacity duration-500",
+                              isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100",
+                            )}
+                          />
                         </span>
                         <span
-                          className={cn(
-                            "w-full truncate text-center text-[11px]",
-                            isActive ? "text-ink" : "text-ink-3",
-                          )}
-                        >
-                          {gs?.name.replace(/^The /, "") ?? g.style}
-                        </span>
+                          aria-hidden
+                          className={cn("h-px w-full transition-colors", isActive ? "bg-ink" : "bg-transparent")}
+                        />
                       </button>
                     </li>
                   );
@@ -120,28 +118,29 @@ export function ResultView({
           </div>
         )}
 
-        <div className={cn("mt-8", strip.length > 1 ? "" : "border-t border-line pt-6")}>
+        <div className={cn("mt-10", strip.length > 1 ? "" : "border-t border-line pt-7")}>
           {showEmail ? (
             <div className="text-left">
-              <p className="mb-3 text-[14px] text-ink-2">
-                We&apos;ll email you this preview so you can come back to it.
+              <p className="text-[13px] leading-relaxed text-ink-2">
+                We&apos;ll email you this preview so you can return to it.
               </p>
               <EmailCapture
+                className="mt-2"
                 source="save_preview"
                 generationId={active.generationId}
                 petName={name || undefined}
-                cta="Email it"
-                doneMessage="Sent! Your preview is on its way."
+                cta="Send"
+                doneMessage="Sent. Your preview is on its way."
               />
             </div>
           ) : (
-            <button type="button" onClick={() => setShowEmail(true)} className={textLink}>
-              Not ready? Email me this preview
+            <button type="button" onClick={() => setShowEmail(true)} className={cn(textLink, "text-ink-3")}>
+              Email me this preview
             </button>
           )}
         </div>
 
-        <p className="mt-4 text-[12.5px] leading-snug text-ink-3">{PROMISES.guarantee}.</p>
+        <p className="label mt-6 text-ink-3">{PROMISES.guarantee}</p>
       </div>
     </section>
   );

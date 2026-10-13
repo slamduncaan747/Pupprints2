@@ -31,7 +31,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur-sm">
-      <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center px-5 sm:h-20 sm:px-10">
+      <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 sm:h-20 sm:px-10">
         <div className="flex items-center gap-8">
           <button
             type="button"

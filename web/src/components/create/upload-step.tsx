@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type DragEvent } from "react";
-import { Upload } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { getStyle, type StyleSlug } from "@/lib/catalog";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ApiError, uploadPhoto } from "./api";
 import { PhotoTips } from "./photo-tips";
@@ -76,22 +76,21 @@ export function UploadStep({
     void handleFile(e.dataTransfer.files?.[0]);
   }
 
-  const continueLabel = style ? `Paint ${dogName || "my dog"} as ${style.name}` : "Continue";
+  const continueLabel = style ? `Continue with ${style.name}` : "Continue";
+  const fieldLabel = "label text-ink-3";
 
   return (
-    <section className="mx-auto w-full max-w-md px-5 pt-6 pb-16 sm:max-w-lg sm:px-8 sm:pt-10">
-      <h1 className="text-center font-display text-[2.6rem] leading-[1.02] sm:text-[3.5rem]">Start with a photo you love.</h1>
-      <p className="mx-auto mt-4 max-w-sm text-center text-[15px] leading-relaxed text-ink-2">
+    <section className="mx-auto w-full max-w-[560px] px-5 pt-8 pb-20 sm:px-10 sm:pt-14">
+      <h1 className="text-center font-display text-[44px] leading-[1.02] sm:text-[68px]">Begin with a photograph.</h1>
+      <p className="mx-auto mt-5 max-w-[20rem] text-center text-[14px] leading-relaxed text-balance text-ink-2 sm:max-w-md sm:text-[15px]">
         {style ? (
-          <>
-            We&apos;ll paint your dog as {style.name}. Free preview in about a minute.
-          </>
+          <>Your dog, as {style.name}. A complimentary preview in about a minute.</>
         ) : (
-          <>See your dog as a fine-art portrait in about a minute. Free, no card needed.</>
+          <>A complimentary preview in about a minute. No card required.</>
         )}
       </p>
 
-      <div className="mt-7 sm:mt-10">
+      <div className="mt-10 sm:mt-14">
         <input
           ref={inputRef}
           id={inputId}
@@ -104,40 +103,43 @@ export function UploadStep({
 
         {displayUrl ? (
           <div className="flex flex-col items-center">
-            <div className="relative w-full max-w-[200px] sm:max-w-[220px]">
+            <div className="relative w-full max-w-[240px] sm:max-w-[280px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={displayUrl}
-                alt="Your uploaded photo"
-                className={cn("aspect-[4/5] w-full bg-paper-3 object-cover transition-opacity duration-300", busy && "opacity-50")}
+                alt="Your uploaded photograph"
+                className={cn(
+                  "aspect-[4/5] w-full bg-paper-2 object-cover transition-opacity duration-700",
+                  busy && "opacity-40",
+                )}
               />
               {busy && (
-                <div className="absolute inset-x-0 -bottom-3 h-px bg-line" aria-hidden>
+                <div className="absolute inset-x-0 -bottom-4 h-px bg-line" aria-hidden>
                   <div
-                    className="h-full bg-ink transition-[width] duration-200"
+                    className="h-full bg-ink transition-[width] duration-300"
                     style={{ width: `${phase === "preparing" ? 8 : Math.max(8, Math.round(progress * 100))}%` }}
                   />
                 </div>
               )}
             </div>
-            <div className="mt-4 flex items-center gap-4 text-[13px]">
-              <p className="text-ink-2" role="status" aria-live="polite">
-                {busy ? (phase === "preparing" ? "Preparing your photo…" : "Uploading…") : "Looking good."}
+            <div className="mt-6 flex items-center gap-6">
+              <p className="label text-ink-3" role="status" aria-live="polite">
+                {busy ? (phase === "preparing" ? "Preparing…" : "Uploading…") : "Received"}
               </p>
               <label
                 htmlFor={inputId}
                 className={cn(
-                  "inline-flex min-h-11 cursor-pointer items-center text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink",
+                  "link-cta inline-flex min-h-11 cursor-pointer items-center",
                   busy && "pointer-events-none opacity-40",
                 )}
               >
-                Change photo
+                Change photograph
               </label>
             </div>
             {smallWarning && !busy && (
-              <p className="max-w-xs text-center text-[13px] leading-snug text-ink-3">
-                This photo is on the small side, so large prints may look soft. The original from your camera roll
-                works best.
+              <p className="mt-2 max-w-xs text-center text-[13px] leading-snug text-ink-3">
+                This photograph is on the small side, so large prints may look soft. The original from your camera
+                roll works best.
               </p>
             )}
           </div>
@@ -152,62 +154,59 @@ export function UploadStep({
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               className={cn(
-                "flex aspect-[5/4] cursor-pointer flex-col items-center justify-center gap-3 rounded-[3px] border px-6 text-center transition-colors",
-                dragging ? "border-ink bg-paper-2" : "border-line bg-white hover:border-ink/40",
+                "group flex aspect-square cursor-pointer flex-col items-center justify-center gap-4 border px-6 text-center transition-colors duration-300 sm:aspect-[4/3]",
+                dragging ? "border-ink bg-paper-2" : "border-line hover:border-ink-3",
               )}
             >
-              <Upload className="h-5 w-5 text-ink-2" strokeWidth={1.5} aria-hidden />
-              <span>
-                <span className="block text-[16px] font-medium text-ink">Choose a photo</span>
-                <span className="mt-1 block text-[13px] text-ink-3">
-                  <span className="sm:hidden">From your camera roll</span>
-                  <span className="hidden sm:inline">or drag it here</span>
-                </span>
+              <span className="link-cta text-ink group-hover:opacity-60">Select a photograph</span>
+              <span className="label text-ink-3">
+                <span className="sm:hidden">From your camera roll</span>
+                <span className="hidden sm:inline">Or drop it here</span>
               </span>
             </label>
-            <PhotoTips className="mt-6" />
+            <PhotoTips className="mt-9" />
           </>
         )}
 
         {error && (
-          <p role="alert" className="mt-4 text-center text-[14px] leading-snug text-ink">
+          <p role="alert" className="mt-5 text-center text-[14px] leading-snug text-ink">
             {error}
           </p>
         )}
       </div>
 
-      <div className={displayUrl ? "mt-4" : "mt-8"}>
-        <label htmlFor={nameId} className="text-[13px] text-ink-2">
-          Your dog&apos;s name <span className="text-ink-3">(optional)</span>
-        </label>
+      <div className={displayUrl ? "mt-10" : "mt-12"}>
+        <div className="flex items-baseline justify-between gap-4">
+          <label htmlFor={nameId} className="label text-ink">
+            Your dog&apos;s name
+          </label>
+          <span className={fieldLabel}>Optional</span>
+        </div>
         <input
           id={nameId}
           type="text"
           maxLength={40}
           autoComplete="off"
           autoCapitalize="words"
-          placeholder="e.g. Biscuit"
+          placeholder="Biscuit"
           value={flow.petName}
           onChange={(e) => {
             const petName = e.target.value;
             updateFlow((s) => ({ ...s, petName }));
           }}
-          className="mt-2 h-12 w-full rounded-[3px] border border-line bg-white px-4 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink"
+          className="mt-1 h-12 w-full rounded-none border-0 border-b border-line bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none"
         />
-        <p className="mt-2 text-[12.5px] text-ink-3">It never appears on the art.</p>
+        <p className="mt-2.5 text-[12px] text-ink-3">It never appears on the art.</p>
       </div>
 
       {displayUrl && (
-        <div className="mt-6">
-          <button
-            type="button"
-            onClick={onContinue}
-            disabled={!ready}
-            className="inline-flex h-14 w-full items-center justify-center rounded-[3px] bg-ink px-6 text-[15px] font-medium text-paper transition-colors hover:bg-ink/85 disabled:bg-ink/15 disabled:text-ink-3"
-          >
+        <div className="mt-10">
+          <Button type="button" size="lg" onClick={onContinue} disabled={!ready} className="w-full">
             {continueLabel}
-          </button>
-          <p className="mt-3 text-center text-[12.5px] text-ink-3">Your photo stays private and is only used for your portrait.</p>
+          </Button>
+          <p className="mt-4 text-center text-[12px] text-ink-3">
+            Your photograph stays private and is used only for your portrait.
+          </p>
         </div>
       )}
     </section>

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ADDONS, PRODUCT_MAP, PRODUCTS, STARTING_PHYSICAL_PRICE } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
-import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, DataTable, Facts, Note, Rows, textLink } from "@/components/marketing/blocks";
 import { ProductCard } from "@/components/marketing/product-card";
@@ -38,29 +37,38 @@ export default function ShopPage() {
   return (
     <>
       <PageHero
-        eyebrow="Prints, frames & canvas"
-        title="Honest prices, gallery-quality pieces"
-        lede="Every portrait starts with a free preview of your dog. US shipping is free, and the hi-res digital file comes with every physical piece."
+        eyebrow="The Shop"
+        title="Made to hang"
+        lede="Canvas, framed and fine art prints, each made to order from your portrait. Every one begins with a free preview."
       />
 
-      <Container className="pb-24 sm:pb-32">
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-8 lg:grid-cols-4">
-          {PRODUCTS.map((p, i) => (
-            <li key={p.type}>
-              <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} priority={i < 2} />
-            </li>
-          ))}
-        </ul>
-        <Note className="mt-12">
-          Every style works on every product.{" "}
-          <Link href="/styles" className={textLink}>
-            Browse styles
-          </Link>
-        </Note>
-      </Container>
+      <section aria-label="Products" className="pb-24 sm:pb-36">
+        <div className="mx-auto max-w-[1440px] sm:px-10">
+          <ul className="grid grid-cols-2 gap-x-0.5 gap-y-12 sm:gap-x-4 lg:grid-cols-4">
+            {PRODUCTS.map((p, i) => (
+              <li key={p.type}>
+                <ProductCard
+                  product={p}
+                  style={PRODUCT_CONTENT[p.type].exampleStyle}
+                  priority={i < 2}
+                  bleed
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                />
+              </li>
+            ))}
+          </ul>
+          <p className="mt-14 px-5 text-[13px] text-ink-3 sm:px-0">
+            Every style works on every piece.{" "}
+            <Link href="/styles" className={textLink}>
+              The collection
+            </Link>
+          </p>
+        </div>
+      </section>
 
       <Block
         id="prices"
+        eyebrow="The price list"
         title="The price you see is the price you pay"
         intro={`No fake "compare at" prices, no countdown timers, no pre-checked add-ons. US shipping is included in every price.`}
       >
@@ -69,7 +77,7 @@ export default function ShopPage() {
           head={[
             "Size",
             ...PHYSICAL_PRODUCTS.map((p) => (
-              <Link key={p.type} href={`/shop/${p.type}`} className="hover:text-ink">
+              <Link key={p.type} href={`/shop/${p.type}`} className="transition-colors hover:text-ink">
                 {p.shortName}
               </Link>
             )),
@@ -95,7 +103,7 @@ export default function ShopPage() {
               key: "arrives",
               cells: [
                 <span key="a" className="text-ink-3">
-                  Arrives in (days)
+                  Arrives (days)
                 </span>,
                 ...PHYSICAL_PRODUCTS.map((p) => (
                   <span key={p.type} className="text-ink-3">
@@ -107,11 +115,11 @@ export default function ShopPage() {
           ]}
         />
         <Facts
-          className="mt-10"
+          className="mt-12"
           items={[
             {
               label: (
-                <Link href="/shop/digital" className={textLink}>
+                <Link href="/shop/digital" className="underline-offset-4 hover:underline">
                   {digital.name}
                 </Link>
               ),
@@ -129,22 +137,25 @@ export default function ShopPage() {
         </Note>
       </Block>
 
-      <Block title="Included with every physical piece">
+      <Block eyebrow="Included" title="With every physical piece">
         <Rows items={INCLUDED} />
       </Block>
 
       {ADDONS.length > 0 && (
         <Block
-          title="Optional extras"
-          intro="When you order a print, framed print or canvas, you can add matching pieces. They're never pre-checked."
+          eyebrow="Optional"
+          title="Small companions"
+          intro="With a print, framed print or canvas, you can add matching pieces. They're never pre-checked."
         >
           <Facts items={ADDONS.map((a) => ({ key: a.id, label: a.name, note: a.description, value: formatPrice(a.price) }))} />
         </Block>
       )}
 
       <CtaBand
+        eyebrow="Begin here"
         title="Meet the portrait first"
-        body="Upload a photo of your dog and see your portrait free in about a minute. Then choose a print, frame or canvas."
+        body="See your portrait free in about a minute. Then choose a print, frame or canvas."
+        image="oil-classic"
       />
     </>
   );

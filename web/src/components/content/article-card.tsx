@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { STYLE_MAP, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
-import { SampleImage } from "@/components/ui/sample-image";
+import { ZoomImage } from "@/components/marketing/campaign";
 import { cn } from "@/lib/utils";
 
 /** Serializable article summary (safe to pass to client components without shipping article bodies). */
@@ -25,7 +25,10 @@ export function formatArticleDate(iso: string, style: "short" | "long" = "long")
   }).format(new Date(`${iso}T12:00:00Z`));
 }
 
-/** One article in a hairline list: meta line, serif title, dek, and a small portrait on the right. */
+/**
+ * One story in a magazine grid: the portrait, a `.label` section, the Bodoni headline and a `.label`
+ * date line. On phones it collapses to a row with a small portrait on the left.
+ */
 export function ArticleCard({
   article,
   className,
@@ -38,33 +41,30 @@ export function ArticleCard({
   const Heading = headingLevel;
   const style = STYLE_MAP[article.heroStyle];
   return (
-    <article
-      className={cn(
-        "group relative grid grid-cols-[minmax(0,1fr)_4.5rem] items-start gap-5 border-b border-line py-6 sm:grid-cols-[minmax(0,1fr)_7rem] sm:gap-10 sm:py-8",
-        className,
-      )}
-    >
-      <div className="min-w-0">
-        <p className="text-[13px] text-ink-3">
-          {article.categoryLabel} · <time dateTime={article.date}>{formatArticleDate(article.date, "short")}</time> ·{" "}
-          <span className="whitespace-nowrap">{article.readingMinutes} min read</span>
-        </p>
-        <Heading className="mt-2 font-display text-[1.55rem] leading-[1.12] text-ink sm:text-[1.9rem]">
+    <article className={cn("group relative grid grid-cols-[6.5rem_minmax(0,1fr)] items-start gap-5 sm:block", className)}>
+      <ZoomImage
+        src={STYLE_SAMPLES[article.heroStyle]}
+        alt=""
+        swatch={style.swatch}
+        sizes="(max-width: 640px) 104px, (max-width: 1024px) 45vw, 440px"
+      />
+      <div className="min-w-0 sm:mt-6">
+        <p className="label text-ink-3">{article.categoryLabel}</p>
+        <Heading className="mt-3 font-display text-[22px] leading-[1.1] text-ink sm:text-[28px]">
           <Link
             href={`/journal/${article.slug}`}
-            className="after:absolute after:inset-0 group-hover:underline group-hover:decoration-ink/30 group-hover:decoration-1 group-hover:underline-offset-4"
+            className="after:absolute after:inset-0 group-hover:underline group-hover:decoration-ink/30 group-hover:decoration-1 group-hover:underline-offset-[6px]"
           >
             {article.title}
           </Link>
         </Heading>
-        <p className="mt-2 hidden max-w-xl text-[15px] leading-relaxed text-ink-2 sm:line-clamp-2">{article.description}</p>
+        <p className="mt-3 hidden max-w-md text-[14px] leading-relaxed text-ink-2 sm:line-clamp-2">{article.description}</p>
+        <p className="label mt-3 text-ink-3 sm:mt-4">
+          <time dateTime={article.date}>{formatArticleDate(article.date, "short")}</time>
+          <span aria-hidden="true"> · </span>
+          <span className="whitespace-nowrap">{article.readingMinutes} min read</span>
+        </p>
       </div>
-      <SampleImage
-        src={STYLE_SAMPLES[article.heroStyle]}
-        alt=""
-        swatch={style.swatch}
-        sizes="(max-width: 640px) 72px, 112px"
-      />
     </article>
   );
 }

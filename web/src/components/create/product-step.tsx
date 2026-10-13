@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, useSyncExternalStore } from "react";
-import { ArrowLeft, LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { track } from "@/lib/analytics";
 import {
   ADDONS,
@@ -14,6 +14,7 @@ import {
   type Product,
   type ProductType,
 } from "@/lib/catalog";
+import { buttonClasses } from "@/components/ui/button";
 import { cn, formatPrice } from "@/lib/utils";
 import { FrameMockup } from "@/components/product/frame-mockup";
 import { shipWindow } from "@/components/order/timeline";
@@ -22,7 +23,7 @@ import { EmailCapture, isEmail } from "./email-capture";
 import { updateFlow, type FlowState, type Generation, type ShipCountry } from "./store";
 
 const FRAME_LABEL: Record<FrameColor, string> = { black: "Black", white: "White", oak: "Natural oak" };
-const FRAME_SWATCH: Record<FrameColor, string> = { black: "#161616", white: "#fbfbfa", oak: "#c9a77f" };
+const FRAME_SWATCH: Record<FrameColor, string> = { black: "#121212", white: "#fcfcfb", oak: "#c4a582" };
 const COUNTRY_LABEL: Record<ShipCountry, string> = { US: "United States", CA: "Canada" };
 const GIFT_MESSAGE_MAX = 300;
 
@@ -197,106 +198,106 @@ export function ProductStep({
     delivery = `Delivered in ${product.shipDays[0]}–${product.shipDays[1]} business days`;
   }
 
-  const checkoutLabel = `Checkout — ${formatPrice(total)}`;
+  const checkoutLabel = `Proceed to checkout, ${formatPrice(total)}`;
   const loading = checkout.kind === "loading";
+  /** Close-up: the piece's width inside the 4:5 ivory field, so tall pieces still fit its height. */
+  const pieceRatio = printSize ? printSize.widthIn / printSize.heightIn : 3 / 4;
+  const closeupWidth = Math.min(70, 92 * pieceRatio);
 
   return (
-    <section className="mx-auto grid w-full max-w-6xl gap-10 px-5 pt-6 pb-32 sm:px-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16 lg:pb-24">
+    <section className="mx-auto grid w-full max-w-[1440px] gap-10 pt-2 pb-36 sm:px-10 sm:pt-6 sm:pb-28 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16 xl:grid-cols-[minmax(0,1fr)_420px] xl:gap-28">
       {/* ---------------- Preview ---------------- */}
-      <div className="min-w-0 lg:sticky lg:top-8 lg:self-start">
-        <div className="mb-3 flex items-center justify-between gap-3">
-          <button
-            type="button"
-            onClick={onBack}
-            className="-ml-1 inline-flex min-h-11 items-center gap-1.5 px-1 text-[13px] text-ink-2 transition-colors hover:text-ink"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-            <span>
-              Back<span className="hidden sm:inline"> {backLabel}</span>
-            </span>
-          </button>
-          {physical && (
-            <div role="group" aria-label="Preview view" className="flex items-center gap-4 text-[13px]">
-              {(
-                [
-                  { id: "room", label: "On the wall" },
-                  { id: "closeup", label: "Close-up" },
-                ] as const
-              ).map(({ id, label }) => (
-                <button
-                  key={id}
-                  type="button"
-                  aria-pressed={view === id}
-                  onClick={() => setView(id)}
-                  className={cn(
-                    "inline-flex min-h-11 items-center transition-colors",
-                    view === id ? "text-ink underline decoration-1 underline-offset-[6px]" : "text-ink-3 hover:text-ink-2",
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
+      <div className="min-w-0 lg:sticky lg:top-4 lg:self-start">
+        <div className="mx-auto w-full sm:max-w-[560px] lg:max-w-[min(100%,calc((100dvh_-_250px)_*_0.8))]">
+          <div className="mb-1 flex items-center justify-between gap-3 px-3 sm:mb-3 sm:px-0">
+            <button type="button" onClick={onBack} className={cn(TOGGLE, "text-ink-3 hover:text-ink sm:-ml-2")}>
+              Back<span className="hidden sm:inline">&nbsp;{backLabel}</span>
+            </button>
+            {physical && (
+              <div role="group" aria-label="Preview view" className="flex items-center gap-2 sm:-mr-2 sm:gap-4">
+                {(
+                  [
+                    { id: "room", label: "On the wall" },
+                    { id: "closeup", label: "Close-up" },
+                  ] as const
+                ).map(({ id, label }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    aria-pressed={view === id}
+                    onClick={() => setView(id)}
+                    className={cn(
+                      TOGGLE,
+                      view === id ? "text-ink underline underline-offset-[6px]" : "text-ink-3 hover:text-ink",
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {showRoom ? (
+            <FrameMockup
+              src={active.previewUrl}
+              alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, shown to scale as a ${variant.label} ${product.name.toLowerCase()} on a wall`}
+              productType={product.type}
+              frameColor={selection.frameColor}
+              printSize={printSize}
+              room
+              size="lg"
+              priority
+              className="max-w-none"
+            />
+          ) : (
+            <div className="@container flex aspect-[4/5] w-full items-center justify-center bg-paper-2">
+              <div style={{ width: `${closeupWidth}cqw` }}>
+                <FrameMockup
+                  src={active.previewUrl}
+                  alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, ${product.name}`}
+                  productType={product.type}
+                  frameColor={selection.frameColor}
+                  printSize={printSize}
+                  size="lg"
+                  priority
+                  className="max-w-none"
+                />
+              </div>
             </div>
           )}
         </div>
-
-        {showRoom ? (
-          <FrameMockup
-            src={active.previewUrl}
-            alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, shown as a ${variant.label} ${product.name.toLowerCase()} above a sofa`}
-            productType={product.type}
-            frameColor={selection.frameColor}
-            printSize={printSize}
-            room
-            size="lg"
-            priority
-            className="mx-auto"
-          />
-        ) : (
-          <div className="flex justify-center bg-paper-2 px-8 py-10 sm:px-12 sm:py-14">
-            {/* Cap by viewport height so tall 2:3 pieces stay fully visible in the sticky column. */}
-            <div
-              className="flex w-full justify-center"
-              style={{ maxWidth: `min(420px, calc((100dvh - 300px) * ${printSize ? printSize.widthIn / printSize.heightIn : 0.75}))` }}
-            >
-              <FrameMockup
-                src={active.previewUrl}
-                alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, ${product.name}`}
-                productType={product.type}
-                frameColor={selection.frameColor}
-                printSize={printSize}
-                size="lg"
-                priority
-              />
-            </div>
-          </div>
-        )}
-        <p className="mt-3 text-center text-[12px] text-ink-3">
-          {showRoom
-            ? `${variant.label} shown to scale above a 6-ft sofa. The preview watermark is not printed.`
-            : "The watermark appears on previews only, never on your print or file."}
+        <p className="label mt-4 px-5 text-center text-ink-3 sm:px-0">
+          {physical
+            ? showRoom
+              ? `${variant.label} — shown to scale`
+              : `${variant.label} — close-up`
+            : "High-resolution file — no watermark"}
         </p>
+        <p className="mt-1.5 px-5 text-center text-[12px] text-ink-3 sm:px-0">The preview watermark is never printed.</p>
       </div>
 
       {/* ---------------- Configurator ---------------- */}
-      <div className="min-w-0">
-        <h1 className="font-display text-[2.4rem] leading-[1.04] sm:text-[3rem]">
-          {giftToken ? `Put ${name || "them"} on your wall.` : "Choose your piece."}
-        </h1>
-
+      <div className="min-w-0 px-5 sm:px-0 lg:pt-14">
         {/* Product */}
-        <div role="radiogroup" aria-label="Product" className="mt-8 grid grid-cols-4 border-b border-line">
+        <div role="radiogroup" aria-label="Product" className="flex gap-6 border-b border-line sm:gap-8">
           {PRODUCTS.map((p) => (
             <ProductTab key={p.type} product={p} selected={p.type === product.type} onSelect={() => selectProduct(p.type)} />
           ))}
         </div>
-        <p className="mt-4 text-[14px] leading-relaxed text-ink-2">{product.tagline}</p>
-        <details className="group mt-1">
-          <summary className="inline-flex min-h-11 cursor-pointer list-none items-center text-[13px] text-ink-3 underline decoration-ink/20 underline-offset-4 transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
+
+        <p className="label mt-9 text-ink-3">
+          {name || "Your dog"}, as {style?.name ?? "a portrait"}
+        </p>
+        <h1 className="mt-3 font-display text-[40px] leading-[1.04] sm:text-[52px]">{product.name}</h1>
+        <p className="mt-4 font-display text-[26px] leading-none tabular-nums">{formatPrice(variant.price)}</p>
+        <p className="mt-6 text-[14px] leading-relaxed text-ink-2">{product.tagline}</p>
+        <details className="group mt-2">
+          <summary className="link-cta inline-flex min-h-11 cursor-pointer list-none items-center text-ink-3 [&::-webkit-details-marker]:hidden">
             <span className="group-open:hidden">Details</span>
             <span className="hidden group-open:inline">Hide details</span>
           </summary>
-          <ul className="space-y-1 pb-1 text-[13px] leading-relaxed text-ink-2">
+          <ul className="space-y-1.5 pt-1 pb-2 text-[13px] leading-relaxed text-ink-2">
             {product.details.map((d) => (
               <li key={d}>{d}</li>
             ))}
@@ -305,9 +306,9 @@ export function ProductStep({
 
         {/* Sizes */}
         {product.variants.length > 1 && (
-          <fieldset className="mt-7">
+          <fieldset className="mt-8">
             <legend className={LEGEND}>Size</legend>
-            <div className="mt-2 border-t border-line">
+            <div className="mt-3 border-t border-line">
               {product.variants.map((v) => {
                 const sel = v.id === variant.id;
                 return (
@@ -319,9 +320,12 @@ export function ProductStep({
                     onClick={() => selectVariant(v.id)}
                     className={ROW}
                   >
-                    <Dot on={sel} />
-                    <span className={cn("flex-1 tabular-nums", sel ? "text-ink" : "text-ink-2")}>{v.label}</span>
-                    <span className={cn("tabular-nums", sel ? "text-ink" : "text-ink-2")}>{formatPrice(v.price)}</span>
+                    <span className={cn("tabular-nums", sel ? "text-ink underline underline-offset-[6px]" : "text-ink-3 group-hover:text-ink")}>
+                      {v.label}
+                    </span>
+                    <span className={cn("tabular-nums", sel ? "text-ink" : "text-ink-3 group-hover:text-ink")}>
+                      {formatPrice(v.price)}
+                    </span>
                   </button>
                 );
               })}
@@ -329,13 +333,11 @@ export function ProductStep({
           </fieldset>
         )}
 
-        {/* Frame color */}
+        {/* Frame finish */}
         {product.frameColors && (
-          <fieldset className="mt-7">
-            <legend className={LEGEND}>
-              Frame <span className="tracking-normal normal-case">· {FRAME_LABEL[selection.frameColor]}</span>
-            </legend>
-            <div className="mt-2 -ml-2.5 flex">
+          <fieldset className="mt-10">
+            <legend className={LEGEND}>Frame</legend>
+            <div className="mt-4 flex gap-7">
               {product.frameColors.map((c) => {
                 const sel = c === selection.frameColor;
                 return (
@@ -346,16 +348,17 @@ export function ProductStep({
                     aria-checked={sel}
                     aria-label={`${FRAME_LABEL[c]} frame`}
                     onClick={() => setSelection({ frameColor: c })}
-                    className="group flex h-11 w-11 items-center justify-center"
+                    className="group flex min-h-11 flex-col items-start gap-3 pt-1"
                   >
                     <span
                       aria-hidden
                       className={cn(
-                        "h-6 w-6 shadow-[inset_0_0_0_1px_rgb(0_0_0/0.12)] outline-1 outline-offset-[3px] transition-[outline-color]",
+                        "h-8 w-8 shadow-[inset_0_0_0_1px_rgb(0_0_0/0.12)] outline-1 outline-offset-[3px] transition-[outline-color]",
                         sel ? "outline-ink" : "outline-transparent group-hover:outline-line",
                       )}
                       style={{ background: FRAME_SWATCH[c] }}
                     />
+                    <span className={cn("label", sel ? "text-ink" : "text-ink-3 group-hover:text-ink")}>{FRAME_LABEL[c]}</span>
                   </button>
                 );
               })}
@@ -365,9 +368,9 @@ export function ProductStep({
 
         {/* Ship to */}
         {physical && (
-          <fieldset className="mt-7">
+          <fieldset className="mt-10">
             <legend className={LEGEND}>Ship to</legend>
-            <div className="mt-2 border-t border-line">
+            <div className="mt-3 border-t border-line">
               {(Object.keys(SHIPPING_RATES) as ShipCountry[]).map((c) => {
                 const sel = selection.shipCountry === c;
                 const rate = SHIPPING_RATES[c];
@@ -380,10 +383,11 @@ export function ProductStep({
                     onClick={() => setSelection({ shipCountry: c })}
                     className={ROW}
                   >
-                    <Dot on={sel} />
-                    <span className={cn("flex-1", sel ? "text-ink" : "text-ink-2")}>{COUNTRY_LABEL[c]}</span>
-                    <span className={cn("tabular-nums", sel ? "text-ink" : "text-ink-2")}>
-                      {rate === 0 ? "Free shipping" : `${formatPrice(rate)} flat`}
+                    <span className={cn(sel ? "text-ink underline underline-offset-[6px]" : "text-ink-3 group-hover:text-ink")}>
+                      {COUNTRY_LABEL[c]}
+                    </span>
+                    <span className={cn("tabular-nums", sel ? "text-ink" : "text-ink-3 group-hover:text-ink")}>
+                      {rate === 0 ? "Complimentary" : `${formatPrice(rate)} flat`}
                     </span>
                   </button>
                 );
@@ -394,27 +398,24 @@ export function ProductStep({
 
         {/* Add-ons */}
         {physical && (
-          <fieldset className="mt-7">
-            <legend className={LEGEND}>
-              Add a matching gift <span className="tracking-normal normal-case">(optional)</span>
-            </legend>
-            <div className="mt-2 border-t border-line">
+          <fieldset className="mt-9">
+            <legend className="sr-only">Add a matching piece (optional)</legend>
+            <div className="space-y-1">
               {ADDONS.map((a) => {
                 const checked = selection.addons.includes(a.id);
                 return (
-                  <label key={a.id} className="flex min-h-14 cursor-pointer items-start gap-3 border-b border-line py-3.5">
+                  <label key={a.id} className="flex min-h-11 cursor-pointer items-start gap-3.5 py-2">
                     <input
                       type="checkbox"
                       checked={checked}
                       onChange={() => toggleAddon(a.id)}
-                      className="mt-0.5 h-4 w-4 shrink-0 accent-[#111111]"
+                      className="mt-[3px] h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-none border border-ink-3 bg-paper transition-colors checked:border-ink checked:bg-ink checked:shadow-[inset_0_0_0_3px_var(--color-paper)] hover:border-ink"
                     />
-                    <span className="flex-1">
-                      <span className={cn("block text-[15px]", checked ? "text-ink" : "text-ink-2")}>{a.name}</span>
-                      <span className="mt-0.5 block text-[13px] leading-snug text-ink-3">{a.description}</span>
-                    </span>
-                    <span className={cn("text-[15px] tabular-nums", checked ? "text-ink" : "text-ink-2")}>
-                      +{formatPrice(a.price)}
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[14px] text-ink">
+                        Add a {a.name.charAt(0).toLowerCase() + a.name.slice(1)} — {formatPrice(a.price)}
+                      </span>
+                      <span className="mt-1 block text-[12px] leading-snug text-ink-3">{a.description}</span>
                     </span>
                   </label>
                 );
@@ -424,40 +425,38 @@ export function ProductStep({
         )}
 
         {/* Gift */}
-        <div className={cn("mt-7 border-b border-line", !physical && "border-t")}>
-          <label htmlFor={ids.gift} className="flex min-h-16 cursor-pointer items-center gap-4 py-3">
-            <span className="flex-1">
-              <span className="block text-[15px] text-ink">This is a gift</span>
-              <span className="mt-0.5 block text-[13px] text-ink-3">Add a note and send an instant Gift Reveal</span>
+        <div className="mt-8 border-y border-line">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={gift.enabled}
+            aria-controls={ids.gift}
+            onClick={() => setGift({ enabled: !gift.enabled })}
+            className="group flex min-h-14 w-full items-center justify-between gap-4 text-left"
+          >
+            <span>
+              <span className="link-cta block group-hover:opacity-60">Send as a gift</span>
+              <span className="mt-2 block text-[12px] text-ink-3">A note and an instant Gift Reveal, sent today.</span>
             </span>
-            <input
-              id={ids.gift}
-              type="checkbox"
-              role="switch"
-              checked={gift.enabled}
-              onChange={(e) => setGift({ enabled: e.target.checked })}
-              className="peer sr-only"
-            />
-            <span
-              aria-hidden
-              className="relative h-6 w-10 shrink-0 rounded-full border border-ink/25 bg-paper transition-colors peer-checked:border-ink peer-checked:bg-ink peer-focus-visible:outline-[1.5px] peer-focus-visible:outline-offset-[3px] peer-focus-visible:outline-ink after:absolute after:top-[3px] after:left-[3px] after:h-4 after:w-4 after:rounded-full after:bg-ink/35 after:transition-[transform,background-color] peer-checked:after:translate-x-4 peer-checked:after:bg-paper"
-            />
-          </label>
+            <span aria-hidden className="label w-4 text-center text-[15px] text-ink">
+              {gift.enabled ? "−" : "+"}
+            </span>
+          </button>
           {gift.enabled && (
-            <div className="grid gap-4 pt-1 pb-6 sm:grid-cols-2">
+            <div id={ids.gift} className="grid gap-x-6 gap-y-6 pt-3 pb-8 sm:grid-cols-2">
               <Field id={ids.from} label="From" placeholder="Your name" value={gift.senderName} onChange={(v) => setGift({ senderName: v })} autoComplete="name" />
               <Field id={ids.to} label="To" placeholder="Their name" value={gift.recipientName} onChange={(v) => setGift({ recipientName: v })} />
               <div className="sm:col-span-2">
                 <Field
                   id={ids.email}
-                  label="Their email (optional)"
+                  label="Their email — optional"
                   type="email"
                   placeholder="them@email.com"
                   value={gift.recipientEmail}
                   onChange={(v) => setGift({ recipientEmail: v })}
                   invalid={Boolean(giftError)}
                 />
-                <p className="mt-2 text-[12.5px] leading-snug text-ink-3">
+                <p className="mt-2.5 text-[12px] leading-snug text-ink-3">
                   We&apos;ll email them a Gift Reveal right after checkout; the print follows. Leave blank to keep it a
                   surprise.
                 </p>
@@ -468,7 +467,7 @@ export function ProductStep({
                 )}
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor={ids.msg} className="text-[13px] text-ink-2">
+                <label htmlFor={ids.msg} className="label text-ink-3">
                   Message
                 </label>
                 <textarea
@@ -477,10 +476,10 @@ export function ProductStep({
                   maxLength={GIFT_MESSAGE_MAX}
                   value={gift.message}
                   onChange={(e) => setGift({ message: e.target.value })}
-                  placeholder="Happy birthday! I thought Biscuit deserved a royal portrait…"
-                  className="mt-2 w-full resize-none rounded-[3px] border border-line bg-white px-4 py-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink"
+                  placeholder="Happy birthday. I thought Biscuit deserved a royal portrait."
+                  className="mt-2.5 w-full resize-none rounded-none border border-line bg-transparent px-3.5 py-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus-visible:outline-none"
                 />
-                <p className="mt-1 text-right text-[12px] text-ink-3 tabular-nums">
+                <p className="label mt-1.5 text-right text-ink-3 tabular-nums">
                   {gift.message.length}/{GIFT_MESSAGE_MAX}
                 </p>
               </div>
@@ -488,20 +487,15 @@ export function ProductStep({
           )}
         </div>
 
-        {/* Promises */}
-        <ul className="mt-7 space-y-1 text-[13px] leading-relaxed text-ink-2">
-          <li>
-            {delivery}
-            {physical && selection.shipCountry === "US" && <span className="text-ink-3"> · {PROMISES.shipping}</span>}
-          </li>
-          {physical && <li>{PROMISES.digital}</li>}
-          {physical && <li>Checked by a person before it&apos;s printed</li>}
-          <li>{PROMISES.guarantee}</li>
-        </ul>
+        {/* Delivery */}
+        <p className="mt-6 text-[13px] leading-relaxed text-ink-3">
+          {delivery}
+          {physical && selection.shipCountry === "US" && <> · {PROMISES.shipping}</>}
+        </p>
 
         {/* Summary */}
-        <div className="mt-8 border-t border-line pt-5" aria-live="polite">
-          <dl className="space-y-2 text-[14px]">
+        <div className="mt-8" aria-live="polite">
+          <dl className="space-y-2 text-[13px]">
             <SummaryRow
               label={`${product.name}${variant.widthIn ? ` · ${variant.label}` : ""}${product.type === "framed" ? ` · ${FRAME_LABEL[selection.frameColor]}` : ""}`}
               value={formatPrice(variant.price)}
@@ -513,20 +507,20 @@ export function ProductStep({
             {physical && (
               <SummaryRow
                 label={`Shipping to ${COUNTRY_LABEL[selection.shipCountry]}`}
-                value={shipping === 0 ? "Free" : formatPrice(shipping)}
+                value={shipping === 0 ? "Complimentary" : formatPrice(shipping)}
               />
             )}
             <div className="flex items-baseline justify-between border-t border-line pt-4">
-              <dt className="text-[15px] text-ink">Total</dt>
-              <dd className="font-display text-[2rem] leading-none tabular-nums">{formatPrice(total)}</dd>
+              <dt className="label text-ink">Total</dt>
+              <dd className="font-display text-[30px] leading-none tabular-nums">{formatPrice(total)}</dd>
             </div>
           </dl>
-          <p className="mt-2 text-[12.5px] text-ink-3">No hidden fees. Sales tax, if any, is shown before you pay.</p>
+          <p className="mt-3 text-[12px] text-ink-3">No hidden fees. Sales tax, if any, is shown before you pay.</p>
 
           {checkout.kind === "unavailable" ? (
-            <div className="mt-6 border-t border-line pt-5">
-              <p className="text-[15px] text-ink">Checkout is taking a short break.</p>
-              <p className="mt-1 text-[13.5px] leading-snug text-ink-2">
+            <div className="mt-8 border-t border-line pt-7">
+              <p className="font-display text-[26px] leading-tight">Checkout is paused for a moment.</p>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-2">
                 Leave your email and we&apos;ll send a secure checkout link for this exact portrait and size. Your
                 preview is saved.
               </p>
@@ -536,7 +530,7 @@ export function ProductStep({
                 generationId={active.generationId}
                 petName={name || undefined}
                 cta="Send link"
-                doneMessage="Got it! We'll email your checkout link shortly."
+                doneMessage="Thank you. We'll email your checkout link shortly."
               />
             </div>
           ) : (
@@ -545,13 +539,14 @@ export function ProductStep({
                 type="button"
                 onClick={onCheckout}
                 disabled={loading}
-                className="mt-6 hidden h-14 w-full items-center justify-center gap-2 rounded-[3px] bg-ink text-[15px] font-medium text-paper transition-colors hover:bg-ink/85 disabled:opacity-70 sm:inline-flex"
+                aria-label={loading ? "Opening secure checkout" : checkoutLabel}
+                className={buttonClasses("primary", "lg", "mt-7 hidden w-full disabled:opacity-70 sm:inline-flex")}
               >
-                {loading && <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden />}
-                {loading ? "Opening secure checkout…" : checkoutLabel}
+                {loading && <LoaderCircle className="h-3.5 w-3.5 animate-spin" aria-hidden />}
+                {loading ? "Opening secure checkout…" : "Proceed to checkout"}
               </button>
               {checkout.kind === "error" && (
-                <p role="alert" className="mt-3 text-[13.5px] text-ink">
+                <p role="alert" className="mt-3 text-[13px] text-ink">
                   {checkout.message}
                 </p>
               )}
@@ -559,17 +554,23 @@ export function ProductStep({
             </>
           )}
         </div>
+
+        {/* Promises */}
+        <ul className="label mt-10 space-y-2.5 border-t border-line pt-7 text-ink-3">
+          {physical && <li>{PROMISES.digital}</li>}
+          {physical && <li>Checked by a person before printing</li>}
+          <li>{PROMISES.guarantee}</li>
+        </ul>
       </div>
 
       {/* Mobile sticky checkout */}
       {checkout.kind !== "unavailable" && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper/95 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md sm:hidden">
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:hidden">
           <div className="flex items-center gap-4">
             <div className="min-w-0 flex-1" aria-hidden>
-              <p className="font-display text-[1.75rem] leading-none tabular-nums">{formatPrice(total)}</p>
-              <p className="mt-1 truncate text-[12px] text-ink-3">
-                {product.shortName} · {variant.widthIn ? variant.label : "High-res file"}
-                {physical ? " · file included" : ""}
+              <p className="font-display text-[26px] leading-none tabular-nums">{formatPrice(total)}</p>
+              <p className="label mt-1.5 truncate text-ink-3">
+                {product.shortName} · {variant.widthIn ? variant.label : "Hi-res file"}
               </p>
             </div>
             <button
@@ -577,9 +578,9 @@ export function ProductStep({
               onClick={onCheckout}
               disabled={loading}
               aria-label={loading ? "Opening secure checkout" : checkoutLabel}
-              className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-[3px] bg-ink px-8 text-[15px] font-medium text-paper transition-colors active:bg-ink/85 disabled:opacity-70"
+              className={buttonClasses("primary", "md", "shrink-0 px-7 disabled:opacity-70")}
             >
-              {loading && <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden />}
+              {loading && <LoaderCircle className="h-3.5 w-3.5 animate-spin" aria-hidden />}
               {loading ? "Opening…" : "Checkout"}
             </button>
           </div>
@@ -589,24 +590,12 @@ export function ProductStep({
   );
 }
 
-const LEGEND = "text-[12px] tracking-[0.14em] text-ink-3 uppercase";
-const ROW = "flex min-h-12 w-full items-center gap-3 border-b border-line py-2 text-left text-[15px] transition-colors hover:bg-paper-2/60";
-
-/** Radio indicator: a hollow circle, filled when chosen. */
-function Dot({ on }: { on: boolean }) {
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        "h-4 w-4 shrink-0 rounded-full border transition-colors",
-        on ? "border-ink bg-ink shadow-[inset_0_0_0_3px_var(--color-paper)]" : "border-ink/30",
-      )}
-    />
-  );
-}
+const LEGEND = "label text-ink";
+const TOGGLE = "label inline-flex min-h-11 items-center px-2 transition-colors";
+const ROW =
+  "group label flex min-h-12 w-full items-center justify-between gap-4 border-b border-line text-left transition-colors";
 
 function ProductTab({ product, selected, onSelect }: { product: Product; selected: boolean; onSelect: () => void }) {
-  const from = Math.min(...product.variants.map((v) => v.price));
   return (
     <button
       type="button"
@@ -614,15 +603,12 @@ function ProductTab({ product, selected, onSelect }: { product: Product; selecte
       aria-checked={selected}
       onClick={onSelect}
       className={cn(
-        "relative flex min-h-14 flex-col items-center justify-center gap-0.5 pt-1 pb-2.5 text-center transition-colors",
-        selected ? "text-ink" : "text-ink-3 hover:text-ink-2",
+        "label relative inline-flex min-h-12 items-center transition-colors",
+        selected ? "text-ink" : "text-ink-3 hover:text-ink",
       )}
     >
-      <span className="text-[15px]">{product.shortName}</span>
-      <span className="text-[12px] text-ink-3 tabular-nums">
-        {product.variants.length > 1 ? `from ${formatPrice(from)}` : formatPrice(from)}
-      </span>
-      {selected && <span aria-hidden className="absolute inset-x-1 -bottom-px h-px bg-ink" />}
+      {product.shortName}
+      {selected && <span aria-hidden className="absolute inset-x-0 -bottom-px h-px bg-ink" />}
     </button>
   );
 }
@@ -648,7 +634,7 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-[13px] text-ink-2">
+      <label htmlFor={id} className="label text-ink-3">
         {label}
       </label>
       <input
@@ -661,7 +647,7 @@ function Field({
         autoComplete={autoComplete ?? "off"}
         aria-invalid={invalid || undefined}
         className={cn(
-          "mt-2 h-12 w-full rounded-[3px] border bg-white px-4 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink",
+          "mt-1 h-11 w-full rounded-none border-0 border-b bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none",
           invalid ? "border-ink" : "border-line",
         )}
       />

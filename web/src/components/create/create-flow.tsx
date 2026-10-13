@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { track } from "@/lib/analytics";
 import { getStyle, type StyleSlug } from "@/lib/catalog";
+import { buttonClasses } from "@/components/ui/button";
 import { ApiError, fetchGenerations, fetchGiftPortrait, generatePortrait } from "./api";
 import { EmailCapture } from "./email-capture";
 import { GeneratingView } from "./generating-view";
@@ -357,7 +358,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
       />
       {content}
       {flow.upload && step === "upload" && (
-        <div className="mx-auto -mt-10 w-full max-w-md px-5 pb-12 text-center sm:max-w-lg sm:px-8">
+        <div className="mx-auto -mt-8 w-full max-w-[560px] px-5 pb-16 text-center sm:px-10">
           <button
             type="button"
             onClick={() => {
@@ -365,9 +366,9 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
               setJob({ kind: "idle" });
               resetFlow();
             }}
-            className="inline-flex min-h-11 items-center text-[13px] text-ink-3 underline decoration-ink/20 underline-offset-4 transition-colors hover:text-ink"
+            className="link-cta inline-flex min-h-11 items-center text-ink-3"
           >
-            Start over with a new dog
+            Start over with another dog
           </button>
         </div>
       )}
@@ -389,15 +390,18 @@ function GiftOrder({
   const router = useRouter();
   if (gift.status === "loading") {
     return (
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 pt-10 pb-20 sm:px-8 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16" aria-busy="true">
+      <div
+        className="mx-auto grid w-full max-w-[1440px] gap-10 pt-4 pb-20 sm:px-10 sm:pt-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-20"
+        aria-busy="true"
+      >
         <p className="sr-only" role="status">
           Loading your gift portrait…
         </p>
-        <div className="skeleton aspect-[4/5] w-full" />
-        <div className="space-y-4">
-          <div className="skeleton h-12 w-3/4" />
-          <div className="skeleton h-14 w-full" />
-          <div className="skeleton h-40 w-full" />
+        <div className="aspect-[4/5] w-full animate-pulse bg-paper-2 lg:aspect-[5/4]" />
+        <div className="space-y-5 px-5 sm:px-0">
+          <div className="h-3 w-1/2 bg-paper-2" />
+          <div className="h-12 w-3/4 bg-paper-2" />
+          <div className="h-40 w-full bg-paper-2" />
         </div>
       </div>
     );
@@ -405,15 +409,11 @@ function GiftOrder({
 
   if (gift.status === "error") {
     return (
-      <div className="mx-auto w-full max-w-md px-5 py-20 text-center sm:py-28">
-        <h1 className="font-display text-[2.4rem] leading-[1.04] sm:text-5xl">We couldn&apos;t open that gift portrait.</h1>
-        <p className="mt-4 text-[15px] leading-relaxed text-ink-2">{gift.message}</p>
-        <button
-          type="button"
-          onClick={onLeave}
-          className="mt-8 inline-flex h-12 items-center justify-center rounded-[3px] bg-ink px-7 text-[15px] font-medium text-paper transition-colors hover:bg-ink/85"
-        >
-          Make a portrait of your dog
+      <div className="mx-auto w-full max-w-md px-5 py-20 text-center sm:py-32">
+        <h1 className="font-display text-[40px] leading-[1.04] sm:text-[56px]">We couldn&apos;t open that gift portrait.</h1>
+        <p className="mt-5 text-[14px] leading-relaxed text-ink-2">{gift.message}</p>
+        <button type="button" onClick={onLeave} className={buttonClasses("primary", "lg", "mt-10")}>
+          Commission your own
         </button>
       </div>
     );
@@ -422,16 +422,10 @@ function GiftOrder({
   const pet = gift.gen.petName?.trim();
   return (
     <div className="flex min-h-full flex-col">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 px-5 text-[13px] sm:px-8">
-        <p className="py-2 text-ink-2">
-          Ordering your gift portrait{pet ? ` of ${pet}` : ""}.
-        </p>
-        <button
-          type="button"
-          onClick={onLeave}
-          className="inline-flex min-h-11 items-center text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
-        >
-          Make one of another dog
+      <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-x-6 border-b border-line px-5 sm:px-10">
+        <p className="label py-3 text-ink-2">Your gift portrait{pet ? ` of ${pet}` : ""}</p>
+        <button type="button" onClick={onLeave} className="link-cta inline-flex min-h-11 items-center text-ink-3">
+          Another dog
         </button>
       </div>
       <ProductStep
@@ -461,29 +455,26 @@ function JobError({
   onViewPreviews: () => void;
 }) {
   const style = getStyle(job.style);
-  const box = "mx-auto mt-8 w-[calc(100%-2.5rem)] max-w-xl border-y border-line py-8 text-center sm:mt-12 sm:w-[calc(100%-4rem)]";
-  const title = "font-display text-[1.75rem] leading-tight sm:text-[2rem]";
-  const body = "mx-auto mt-2 max-w-md text-[14.5px] leading-relaxed text-ink-2";
-  const primary =
-    "inline-flex h-12 items-center justify-center rounded-[3px] bg-ink px-6 text-[15px] font-medium text-paper transition-colors hover:bg-ink/85";
-  const link =
-    "inline-flex min-h-11 items-center px-2 text-[14px] text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink";
+  const box = "mx-auto mt-10 w-[calc(100%-2.5rem)] max-w-xl border-y border-line py-10 text-center sm:mt-14 sm:w-[calc(100%-5rem)]";
+  const title = "font-display text-[30px] leading-[1.08] sm:text-[38px]";
+  const body = "mx-auto mt-3 max-w-md text-[14px] leading-relaxed text-ink-2";
+  const link = "link-cta inline-flex min-h-11 items-center";
 
   if (job.code === "ai_unavailable") {
     return (
       <div role="alert" className={box}>
-        <p className={title}>Our studio is busy right now.</p>
+        <p className={title}>The studio is busy right now.</p>
         <p className={body}>
           Leave your email and we&apos;ll send you {petName.trim() ? `${petName.trim()}'s` : "your"} portrait
-          {style ? ` in ${style.name}` : ""} as soon as it&apos;s painted. Your photo is saved.
+          {style ? ` as ${style.name}` : ""} the moment it&apos;s ready. Your photograph is saved.
         </p>
         <EmailCapture
-          className="mx-auto mt-5 max-w-md text-left"
+          className="mx-auto mt-7 max-w-md text-left"
           source="ai_unavailable"
           generationId={job.generationId}
           petName={petName.trim() || undefined}
           cta="Notify me"
-          doneMessage="Thank you! We'll email your preview as soon as it's painted."
+          doneMessage="Thank you. We'll email your preview as soon as it's ready."
         />
       </div>
     );
@@ -492,11 +483,11 @@ function JobError({
   if (job.code === "rate_limited") {
     return (
       <div role="alert" className={box}>
-        <p className={title}>That&apos;s a lot of masterpieces for one day!</p>
+        <p className={title}>That&apos;s a full day of portraits.</p>
         <p className={body}>{job.message}</p>
         {hasPreviews && (
-          <button type="button" onClick={onViewPreviews} className={`${primary} mt-5`}>
-            See the portraits you made
+          <button type="button" onClick={onViewPreviews} className={buttonClasses("primary", "lg", "mt-7")}>
+            View your portraits
           </button>
         )}
       </div>
@@ -505,14 +496,14 @@ function JobError({
 
   return (
     <div role="alert" className={box}>
-      <p className={title}>{job.code === "network" ? "We lost the connection." : "That one didn't come out right."}</p>
+      <p className={title}>{job.code === "network" ? "The connection was lost." : "That one didn't come out right."}</p>
       <p className={body}>{job.message}</p>
-      <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <button type="button" onClick={onRetry} className={primary}>
+      <div className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        <button type="button" onClick={onRetry} className={buttonClasses("primary", "lg")}>
           {style ? `Try ${style.name} again` : "Try again"}
         </button>
         <button type="button" onClick={onDismiss} className={link}>
-          Pick another style
+          Another style
         </button>
       </div>
     </div>

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { after } from "next/server";
 import type Stripe from "stripe";
-import { Container, Eyebrow } from "@/components/ui/container";
-import { ButtonLink, buttonClasses } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { ButtonLink } from "@/components/ui/button";
 import { FramedPortrait, finishFor } from "@/components/order/framed-portrait";
 import { GiftRevealCard } from "@/components/order/gift-reveal-card";
 import { InviteCard } from "@/components/order/invite-card";
@@ -127,18 +127,21 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
 
   if (!order) {
     return (
-      <Container className="py-24 text-center sm:py-32">
-        <h1 className="font-display text-[2.75rem] leading-[1.02] sm:text-6xl">We couldn&apos;t find that order</h1>
-        <p className="mx-auto mt-5 max-w-md text-[16px] leading-relaxed text-ink-2">
-          If you just paid, check your inbox for a confirmation email. You can also look it up by order number.
+      <Container className="py-24 text-center sm:py-36">
+        <p className="label text-ink-3">Client services</p>
+        <h1 className="mx-auto mt-5 max-w-2xl font-display text-[44px] leading-[1.02] sm:text-[72px]">
+          We couldn&apos;t find that order.
+        </h1>
+        <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
+          If you just paid, your confirmation email is on its way. You can also look it up by order number.
         </p>
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <ButtonLink href="/track" variant="primary">
+        <div className="mt-12 flex flex-col items-center gap-5">
+          <ButtonLink href="/track" variant="primary" size="lg" className="w-full max-w-xs">
             Track an order
           </ButtonLink>
-          <ButtonLink href={`mailto:${site.supportEmail}`} variant="secondary">
-            Contact us
-          </ButtonLink>
+          <a href={`mailto:${site.supportEmail}`} className="link-cta inline-flex min-h-11 items-center">
+            Write to us
+          </a>
         </div>
       </Container>
     );
@@ -146,7 +149,7 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
 
   if (order.status === "pending") {
     return (
-      <Container className="py-24 sm:py-32">
+      <Container className="py-24 sm:py-36">
         <PaymentPending />
       </Container>
     );
@@ -171,72 +174,78 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
   const sentTo = order.reveal_sent_at && order.gift_recipient_email ? order.gift_recipient_name || order.gift_recipient_email : null;
   const purchase = purchaseEvent(order);
 
+  const section = "grid gap-5 py-12 sm:grid-cols-[220px_minmax(0,1fr)] sm:gap-12 sm:py-14";
+  const sectionTitle = "font-display text-[30px] leading-[1.08] sm:text-[34px]";
+
   return (
-    <div className="pb-24">
+    <div className="pb-24 sm:pb-36">
       {purchase && <PurchaseTracker {...purchase} />}
-      <Container className="pt-12 sm:pt-20">
-        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-24">
-          {/* The portrait, on white */}
-          <div className="flex flex-col items-center">
+      <Container className="pt-10 sm:pt-20">
+        <div className="grid gap-12 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-24 lg:gap-y-14 xl:gap-x-32">
+          {/* Thank you */}
+          <div className="text-center lg:col-start-2 lg:row-start-1 lg:self-end lg:text-left">
+            <p className="label text-ink-3">
+              Order {order.order_number} — Confirmed
+            </p>
+            <h1 className="mt-5 font-display text-[48px] leading-[1.02] sm:text-[80px]">
+              {hi ? `Thank you, ${hi}.` : "Thank you."}
+            </h1>
+            <p className="mx-auto mt-6 max-w-md text-[14px] leading-relaxed text-ink-2 sm:text-[15px] lg:mx-0">
+              {physical
+                ? `${pet ? `${pet}'s portrait` : "Your portrait"} is in good hands. A person on our team checks every piece before it is printed.`
+                : `${pet ? `${pet}'s portrait` : "Your portrait"} is ready to download, without a watermark.`}
+              {order.email ? (
+                <>
+                  {" "}
+                  Your confirmation is on its way to <span className="text-ink">{order.email}</span>.
+                </>
+              ) : null}
+            </p>
+          </div>
+
+          {/* The portrait, large, on white */}
+          <div className="flex flex-col items-center lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:justify-center">
             {src ? (
               <FramedPortrait
                 src={src}
                 alt={pet ? `Portrait of ${pet}` : "Your portrait"}
                 finish={finishFor(main?.productType, main?.frameColor)}
-                className="w-[78%] max-w-[380px] animate-fade-up"
+                className="w-[86%] max-w-[480px] animate-fade-up"
                 priority
               />
             ) : (
-              <div className="skeleton aspect-[4/5] w-[78%] max-w-[380px]" />
+              <div className="aspect-[3/4] w-[86%] max-w-[480px] bg-paper-2" />
             )}
-            {!clean && src && <p className="mt-5 text-center text-[12.5px] text-ink-3">Preview shown; your file has no watermark.</p>}
+            {!clean && src && <p className="label mt-6 text-center text-ink-3">Preview shown. Your file has no watermark.</p>}
           </div>
 
-          <div>
-            <Eyebrow>Order {order.order_number} · Confirmed</Eyebrow>
-            <h1 className="mt-4 font-display text-[2.75rem] leading-[1.02] sm:text-6xl">
-              {hi ? `Thank you, ${hi}.` : "Thank you."}
-            </h1>
-            <p className="mt-5 max-w-md text-[16px] leading-relaxed text-ink-2">
-              {physical
-                ? `${pet ? `${pet}'s portrait` : "Your portrait"} is in good hands. A person on our team checks every piece before it's printed.`
-                : `${pet ? `${pet}'s portrait` : "Your portrait"} is ready to download, watermark-free.`}
-              {order.email ? (
-                <>
-                  {" "}
-                  We&apos;ve emailed your confirmation to <span className="text-ink">{order.email}</span>.
-                </>
-              ) : null}
-            </p>
-
-            <h2 className="mt-12 font-sans text-[12px] tracking-[0.14em] text-ink-3 uppercase">
-              {physical ? "What happens next" : "Your order"}
-            </h2>
-            <OrderTimeline steps={steps} className="mt-3" />
+          {/* What happens next */}
+          <div className="lg:col-start-2 lg:row-start-2">
+            <h2 className="label text-ink">{physical ? "What happens next" : "Your order"}</h2>
+            <OrderTimeline steps={steps} className="mt-4" />
             {physical && arrival && (
-              <p className="flex items-baseline justify-between gap-4 border-b border-line py-3.5 text-[15px]">
-                <span className="text-ink-2">Estimated arrival</span>
-                <span className="text-ink">{arrival}</span>
+              <p className="flex items-baseline justify-between gap-4 border-b border-line py-4">
+                <span className="label text-ink-3">Estimated arrival</span>
+                <span className="label text-ink">{arrival}</span>
               </p>
             )}
             {physical && (
-              <p className="mt-5 text-[13px] leading-relaxed text-ink-3">
-                We&apos;ll email your tracking link the moment it ships. You can also{" "}
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+                <p className="text-[13px] leading-relaxed text-ink-3">We&apos;ll email your tracking link when it ships.</p>
                 <Link
                   href={`/track?order=${encodeURIComponent(order.order_number)}`}
-                  className="text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+                  className="link-cta inline-flex min-h-11 items-center"
                 >
-                  track your order
-                </Link>{" "}
-                any time.
-              </p>
+                  Track your order
+                </Link>
+              </div>
             )}
           </div>
         </div>
       </Container>
 
-      <Container className="mt-24 sm:mt-32">
-        <div className="mx-auto max-w-3xl divide-y divide-line border-y border-line">
+      <Container className="mt-24 sm:mt-36">
+        <div className="mx-auto max-w-4xl divide-y divide-line border-y border-line">
           <GiftRevealCard
             revealUrl={revealUrl(order.reveal_token)}
             sessionId={sessionId}
@@ -247,20 +256,20 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             emailEnabled={features.email}
           />
 
-          <section aria-labelledby="digital-title" className="grid gap-4 py-10 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-10">
-            <h2 id="digital-title" className="font-display text-[1.75rem] leading-tight">
-              {physical ? "Your hi-res file, free" : "Your hi-res file"}
+          <section aria-labelledby="digital-title" className={section}>
+            <h2 id="digital-title" className={sectionTitle}>
+              {physical ? "Your hi-res file, included" : "Your hi-res file"}
             </h2>
             <div>
-              <p className="text-[15px] leading-relaxed text-ink-2">
-                Full resolution, no watermark{physical ? ", included with your print" : ""}. Yours to print, post and share.
+              <p className="max-w-md text-[14px] leading-relaxed text-ink-2">
+                Full resolution, no watermark{physical ? ", included with your piece" : ""}. Yours to print, post and share.
               </p>
-              <div className="mt-5 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-wrap gap-x-10 gap-y-1">
                 {gens.map((g, n) => (
                   <a
                     key={g}
                     href={`/api/download/${order.reveal_token}/${g}`}
-                    className={buttonClasses(physical ? "secondary" : "primary", "md", "min-w-36")}
+                    className="link-cta inline-flex min-h-11 items-center"
                   >
                     {gens.length > 1 ? `Download portrait ${n + 1}` : "Download"}
                   </a>
@@ -269,30 +278,33 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             </div>
           </section>
 
-          <section aria-labelledby="summary-title" className="grid gap-4 py-10 sm:grid-cols-[200px_minmax(0,1fr)] sm:gap-10">
-            <h2 id="summary-title" className="font-display text-[1.75rem] leading-tight">
-              Order summary
+          <section aria-labelledby="summary-title" className={section}>
+            <h2 id="summary-title" className={sectionTitle}>
+              Your order
             </h2>
             <div>
-              <ul className="text-[15px]">
+              <ul className="border-t border-line">
                 {items.map((it, i) => (
-                  <li key={i} className="flex justify-between gap-4 border-b border-line py-3 first:pt-0">
-                    <span>
-                      <span className="text-ink">
+                  <li key={i} className="flex justify-between gap-6 border-b border-line py-4">
+                    <span className="min-w-0">
+                      <span className="block text-[14px] text-ink">
                         {it.label}
                         {it.quantity > 1 ? ` × ${it.quantity}` : ""}
                       </span>
-                      {it.detail && <span className="block text-[13px] text-ink-3">{it.detail}</span>}
+                      {it.detail && <span className="label mt-1.5 block text-ink-3">{it.detail}</span>}
                     </span>
-                    <span className="shrink-0 text-ink tabular-nums">{it.amount}</span>
+                    <span className="shrink-0 text-[14px] text-ink tabular-nums">{it.amount}</span>
                   </li>
                 ))}
               </ul>
-              <dl className="mt-3 space-y-1.5 text-[15px]">
+              <dl className="mt-4 space-y-2 text-[14px]">
                 {totals.map((t) => (
-                  <div key={t.label} className={`flex justify-between ${t.strong ? "pt-1 text-ink" : "text-ink-2"}`}>
-                    <dt>{t.label}</dt>
-                    <dd className={t.strong ? "font-display text-[1.6rem] leading-none tabular-nums" : "tabular-nums"}>{t.value}</dd>
+                  <div
+                    key={t.label}
+                    className={t.strong ? "flex items-baseline justify-between pt-2" : "flex justify-between text-ink-2"}
+                  >
+                    <dt className={t.strong ? "label text-ink" : undefined}>{t.label}</dt>
+                    <dd className={t.strong ? "font-display text-[30px] leading-none tabular-nums" : "tabular-nums"}>{t.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -302,10 +314,10 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
           <InviteCard siteUrl={site.url} instagramUrl={site.social.instagram} />
         </div>
 
-        <p className="mx-auto mt-12 max-w-md text-center text-[13px] leading-relaxed text-ink-3">
-          Love it or we&apos;ll remake or refund it. Questions? Reply to your confirmation email or write to{" "}
+        <p className="mx-auto mt-14 max-w-md text-center text-[13px] leading-relaxed text-ink-3">
+          Love it, or we&apos;ll remake or refund it. Questions? Reply to your confirmation email or write to{" "}
           <a
-            className="text-ink-2 underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+            className="text-ink-2 underline decoration-ink/30 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
             href={`mailto:${site.supportEmail}`}
           >
             {site.supportEmail}
