@@ -1,7 +1,7 @@
 import "server-only";
 import type Stripe from "stripe";
 import { findAddon, findVariant, getStyle, PRODUCT_MAP, type FrameColor, type ProductType } from "@/lib/catalog";
-import { site } from "@/lib/config";
+import { site, socialHandle } from "@/lib/config";
 import { features } from "@/lib/env";
 import { db, previewUrl, requireDb } from "@/lib/supabase/server";
 import { formatPrice } from "@/lib/utils";
@@ -353,6 +353,21 @@ export function sessionIsPaid(session: Stripe.Checkout.Session) {
   return session.payment_status === "paid" || session.payment_status === "no_payment_required";
 }
 
+/** The redeemable partner code among the promotion codes a session used, if any. Never throws. */
+async function partnerCodeFromSession(session: Stripe.Checkout.Session): Promise<string | null> {
+  if (!session.discounts?.some((d) => d.promotion_code)) return null;
+  try {
+    const [{ sessionPromotionCodes }, { getPartnerByCode }] = await Promise.all([import("@/lib/stripe"), import("@/lib/partners")]);
+    for (const code of await sessionPromotionCodes(session)) {
+      const partner = await getPartnerByCode(code);
+      if (partner) return partner.code;
+    }
+  } catch (err) {
+    console.warn("[orders] promotion code attribution failed", err instanceof Error ? err.message : err);
+  }
+  return null;
+}
+
 /**
  * Apply a completed Checkout Session to its order. Idempotent: only the first call moves the
  * order from `pending` to `paid` (`transitioned: true`); later calls return the current row.
@@ -388,6 +403,14 @@ export async function applyCheckoutSession(
     // Async payment methods (e.g. bank debits): keep the details, wait for async_payment_succeeded.
     if (order.status === "pending") order = (await updateOrder(order.id, details)) ?? order;
     return { order, transitioned: false, paid: false };
+  }
+
+  // A creator code typed into Stripe's promo box (e.g. RUFUS15) attributes the order to that
+  // creator, so runPostPaymentTasks records their commission. (Additive: the ?ref= cookie path
+  // already set referral_code and applied the discount itself.)
+  if (order.status === "pending") {
+    const typed = await partnerCodeFromSession(session);
+    if (typed && typed !== order.referral_code) details.referral_code = typed;
   }
 
   const c = requireDb();
@@ -497,6 +520,7 @@ export async function sendShippedEmail(order: OrderRow) {
     arrival: orderArrivalText(order),
     trackUrl: trackUrl(order.order_number),
     portraitUrl: main ? downloadUrl(order.reveal_token, main.generationId, true) : null,
+    socialHandle: socialHandle(site.social.instagram),
   });
   const res = await sendEmail({ to: order.email, ...email, tag: "shipped", idempotencyKey: `shipped-${order.id}` });
   if (!res.ok && !res.skipped) await releaseClaim(order.id, "shipped_email_sent_at");

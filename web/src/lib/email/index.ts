@@ -3,8 +3,72 @@ import { Resend } from "resend";
 import { env, features } from "@/lib/env";
 import { site } from "@/lib/config";
 
+import { FOUNDING } from "@/lib/launch";
+import { ensureWelcomePromo, foundingOfferAvailable, WELCOME } from "@/lib/stripe";
+import { welcomeEmail, type EmailCtx } from "./templates";
+import { unsubscribeHeaders, unsubscribeUrl } from "./unsubscribe";
+
 export * from "./templates";
 export { unsubscribeUrl, unsubscribeHeaders, verifyUnsubscribeToken, normalizeEmail } from "./unsubscribe";
+
+/** Context for transactional emails (always sent when Resend is configured). */
+export function transactionalCtx(): EmailCtx {
+  return { siteUrl: site.url.replace(/\/$/, ""), supportEmail: site.supportEmail };
+}
+
+/**
+ * Context for marketing emails (welcome, nurture, review request). CAN-SPAM requires a physical
+ * postal address in every one, so this returns null (and logs a warning) while
+ * BUSINESS_POSTAL_ADDRESS is unset; callers must then skip the send.
+ */
+export function marketingCtx(kind: string): EmailCtx | null {
+  if (!env.businessPostalAddress) {
+    console.warn(`[email] BUSINESS_POSTAL_ADDRESS not set; skipping marketing email (${kind}). Required by CAN-SPAM.`);
+    return null;
+  }
+  return { ...transactionalCtx(), postalAddress: env.businessPostalAddress };
+}
+
+/** Lead sources that get the preview nurture series instead of the newsletter welcome. */
+export const NURTURE_SOURCES = ["save_preview", "ai_unavailable", "checkout_unavailable"] as const;
+
+/** Newsletter-type sign-ups (footer, home, gift_cards, …) get one welcome email. */
+export function isNewsletterSource(source: string): boolean {
+  return !(NURTURE_SOURCES as readonly string[]).includes(source) && source !== "unsubscribe";
+}
+
+/**
+ * Welcome email for a new newsletter sign-up, with the WELCOME10 first-order code (only when it
+ * really exists in Stripe) and, while it's open, a note about FOUNDING100. Silently skipped
+ * without RESEND_API_KEY; skipped with a warning without BUSINESS_POSTAL_ADDRESS. Never throws.
+ */
+export async function sendWelcomeEmail(email: string, source: string): Promise<SendResult> {
+  if (!features.email || !isNewsletterSource(source)) return { ok: false, skipped: true };
+  const ctx = marketingCtx("welcome");
+  if (!ctx) return { ok: false, skipped: true };
+  try {
+    const [welcomeReady, foundingOpen] = await Promise.all([ensureWelcomePromo(), foundingOfferAvailable()]);
+    const rendered = welcomeEmail({
+      ctx,
+      source,
+      welcome: welcomeReady ? { code: WELCOME.code, percentOff: WELCOME.percentOff } : null,
+      founding: foundingOpen ? { code: FOUNDING.code, percentOff: FOUNDING.percentOff } : null,
+      createUrl: `${ctx.siteUrl}/create?utm_source=email&utm_medium=lifecycle&utm_campaign=welcome`,
+      unsubscribeUrl: unsubscribeUrl(email),
+    });
+    return await sendEmail({
+      to: email,
+      ...rendered,
+      headers: unsubscribeHeaders(email),
+      tag: "welcome",
+      idempotencyKey: `welcome-${email.toLowerCase()}`,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] welcome failed", message);
+    return { ok: false, error: message };
+  }
+}
 
 let resend: Resend | null = null;
 

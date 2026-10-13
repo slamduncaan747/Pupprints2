@@ -1,6 +1,6 @@
 import "server-only";
 import { env } from "@/lib/env";
-import { site } from "@/lib/config";
+import { site, socialHandle } from "@/lib/config";
 import {
   appendNote,
   getOrder,
@@ -93,7 +93,9 @@ export function buildPrintfulOrder(order: OrderRow, files: FileUrls): PfOrderInp
     packing_slip: {
       email: site.supportEmail,
       store_name: "Pup Prints",
-      message: "Checked by a person, printed with care. Love it or we'll remake or refund it. Show us on the wall: @pupprints",
+      message: `Checked by a person, printed with care. Love it or we'll remake or refund it.${
+        socialHandle(site.social.instagram) ? ` Show us on the wall: ${socialHandle(site.social.instagram)}` : ""
+      }`,
       custom_order_id: order.order_number,
       ...(process.env.PRINTFUL_PACKING_SLIP_LOGO_URL ? { logo_url: process.env.PRINTFUL_PACKING_SLIP_LOGO_URL } : {}),
     },

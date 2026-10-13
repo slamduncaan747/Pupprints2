@@ -1,11 +1,12 @@
 import type Stripe from "stripe";
 import { cookies } from "next/headers";
+import { after } from "next/server";
 import { z } from "zod";
 import { ADDONS, findAddon, findVariant, PRODUCT_MAP, SHIPPING_RATES, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site } from "@/lib/config";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { getSessionId } from "@/lib/session";
-import { ensurePartnerCoupon, ensureWelcomePromo, getStripe } from "@/lib/stripe";
+import { ensureFoundingPromo, ensurePartnerCoupon, ensurePartnerPromotionCode, ensureWelcomePromo, getStripe } from "@/lib/stripe";
 import { itemLabel, styleNameOf, type OrderItem } from "@/lib/orders";
 import { shipWindow } from "@/components/order/timeline";
 import { normalizeCode } from "@/components/partners/program";
@@ -240,8 +241,11 @@ export async function POST(req: Request) {
       const couponPromise = partner && partner.discountPercent > 0 ? ensurePartnerCoupon(partner.discountPercent) : null;
       const coupon = couponPromise ? await couponPromise.catch(() => null) : null;
       if (coupon) discounts = [{ coupon }];
+      // Lazily make their code typeable too (cached per instance; never blocks checkout).
+      if (partner && partner.discountPercent > 0) after(() => ensurePartnerPromotionCode(partner.code, partner.discountPercent));
     }
-    if (!discounts) await ensureWelcomePromo();
+    // Promo-code box: make sure WELCOME10 and FOUNDING100 exist (idempotent, cached per instance).
+    if (!discounts) await Promise.all([ensureWelcomePromo(), ensureFoundingPromo()]);
 
     // --- Line items ------------------------------------------------------------------
     const automaticTax = process.env.STRIPE_AUTOMATIC_TAX === "1";

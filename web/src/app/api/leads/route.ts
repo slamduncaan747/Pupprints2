@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
+import { isNewsletterSource, sendWelcomeEmail } from "@/lib/email";
+import { features } from "@/lib/env";
 import { db } from "@/lib/supabase/server";
 import { escapeLike, normalizeCode } from "@/components/partners/program";
 
@@ -148,6 +150,8 @@ export async function POST(req: Request) {
       return ok();
     }
     if (error) throw new Error(error.message);
+    // New newsletter-type sign-up: one welcome email (WELCOME10), sent after the response.
+    if (features.email && isNewsletterSource(source)) after(() => sendWelcomeEmail(email, source));
     return ok();
   } catch (err) {
     console.error("[leads] upsert failed", err);

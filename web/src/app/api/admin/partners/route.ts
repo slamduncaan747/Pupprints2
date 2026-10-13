@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { db } from "@/lib/supabase/server";
+import { syncPartnerPromo } from "@/lib/partners";
 import { adminApiGuard, jsonError } from "@/components/admin/guard";
 import { PartnerCreate, partnerPatchFrom } from "@/components/admin/partner-schema";
 import { profileUrlFor } from "@/components/partners/program";
@@ -35,5 +36,7 @@ export async function POST(req: Request) {
     );
   }
   if (error) return jsonError(error.message, 500);
+  const created = data as { code: string | null; status: string; discount_percent: number | null };
+  if (created.code) after(() => syncPartnerPromo(created));
   return NextResponse.json({ ok: true, partner: data });
 }

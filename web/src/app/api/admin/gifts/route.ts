@@ -3,14 +3,14 @@ import { lookup as dnsLookup, type LookupAddress } from "node:dns";
 import http, { type IncomingMessage } from "node:http";
 import https from "node:https";
 import { BlockList, isIP } from "node:net";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import sharp from "sharp";
 import { z } from "zod";
 import { getStyle, type StyleSlug } from "@/lib/catalog";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { ImageError, makeWatermarkedPreview, normalizeUpload, toPrintMaster } from "@/lib/image";
 import { BUCKETS, db, signedUrl } from "@/lib/supabase/server";
-import { uniquePartnerCode } from "@/lib/partners";
+import { syncPartnerPromo, uniquePartnerCode } from "@/lib/partners";
 import { adminApiGuard, jsonError } from "@/components/admin/guard";
 import { GIFT_SESSION, giftDm } from "@/components/admin/constants";
 import { giftImagePath, giftRevealUrl, type GiftRow } from "@/components/admin/gifts";
@@ -412,6 +412,11 @@ export async function POST(req: Request) {
       }
       const { error: pErr } = await c.from("partners").update(patch).eq("id", partnerId);
       if (pErr) console.error("[admin/gifts] partner update failed", pErr.message);
+      else if (p) {
+        // Their code becomes typeable at checkout (Stripe promotion code), not just a ?ref= link.
+        const synced = { code: (patch.code as string | undefined) ?? p.code, status: (patch.status as string | undefined) ?? p.status, discount_percent: p.discount_percent };
+        after(() => syncPartnerPromo(synced));
+      }
     }
 
     const revealUrl = giftRevealUrl(gift.reveal_token);
@@ -423,7 +428,7 @@ export async function POST(req: Request) {
       model: result.model,
       imageUrl: await signedUrl("portraits", giftImagePath(gift.id), 60 * 60),
       revealUrl,
-      dm: giftDm({ name: gift.recipient_name, pet: gift.pet_name, link: revealUrl }),
+      dm: giftDm({ name: gift.recipient_name, pet: gift.pet_name, link: revealUrl, partnered: Boolean(gift.partner_id) }),
       durationMs: Date.now() - started,
     });
   } catch (err) {

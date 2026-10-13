@@ -114,6 +114,8 @@ export type ShellOptions = {
   unsubscribeUrl?: string;
   /** Extra line in the footer (e.g. why you're receiving this). */
   footerNote?: string;
+  /** Physical postal address (CAN-SPAM: required in marketing emails). */
+  postalAddress?: string;
 };
 
 export function shell(o: ShellOptions): string {
@@ -149,6 +151,7 @@ ${o.body}
 <tr><td align="center" style="padding:26px 18px 0;font-family:${SANS};font-size:12px;line-height:1.7;color:${C.ink3};">
 Love it or we'll remake or refund it. Questions? Reply to this email or write to ${link(`mailto:${o.supportEmail}`, o.supportEmail)}.<br />
 ${o.footerNote ? `${esc(o.footerNote)}<br />` : ""}
+${o.postalAddress ? `${esc(o.postalAddress)}<br />` : ""}
 Pup Prints &middot; <a href="${esc(o.siteUrl)}" target="_blank" style="color:${C.ink3};">${esc(host)}</a>${
     o.unsubscribeUrl
       ? ` &middot; <a href="${esc(o.unsubscribeUrl)}" target="_blank" style="color:${C.ink3};">Unsubscribe</a>`
@@ -163,12 +166,19 @@ Pup Prints &middot; <a href="${esc(o.siteUrl)}" target="_blank" style="color:${C
 }
 
 /** Plain-text footer that mirrors the HTML one. */
-export function textFooter(o: { supportEmail: string; siteUrl: string; unsubscribeUrl?: string; footerNote?: string }) {
+export function textFooter(o: {
+  supportEmail: string;
+  siteUrl: string;
+  unsubscribeUrl?: string;
+  footerNote?: string;
+  postalAddress?: string;
+}) {
   return [
     "—",
     "Love it or we'll remake or refund it.",
     `Questions? Reply to this email or write to ${o.supportEmail}.`,
     o.footerNote,
+    o.postalAddress,
     `Pup Prints · ${o.siteUrl}`,
     o.unsubscribeUrl ? `Unsubscribe: ${o.unsubscribeUrl}` : undefined,
   ]

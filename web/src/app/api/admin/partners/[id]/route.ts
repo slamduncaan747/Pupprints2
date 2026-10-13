@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/supabase/server";
-import { uniquePartnerCode } from "@/lib/partners";
+import { syncPartnerPromo, uniquePartnerCode } from "@/lib/partners";
 import { adminApiGuard, jsonError } from "@/components/admin/guard";
 import { PartnerPatch, partnerPatchFrom } from "@/components/admin/partner-schema";
 
@@ -29,6 +29,7 @@ export async function PATCH(req: Request, ctx: RouteContext<"/api/admin/partners
 
   const now = new Date().toISOString();
   let patch: Record<string, unknown>;
+  let previousCode: string | null = null;
 
   if (body.action === "generate_code" || body.action === "log_contact") {
     const { data: current, error } = await c
@@ -38,6 +39,7 @@ export async function PATCH(req: Request, ctx: RouteContext<"/api/admin/partners
       .maybeSingle();
     if (error) return jsonError(error.message, 500);
     if (!current) return jsonError("Partner not found", 404);
+    previousCode = current.code ?? null;
     if (body.action === "generate_code") {
       const seed = current.handle || current.name || "PUP";
       patch = { code: await uniquePartnerCode(seed, Number(current.discount_percent ?? 15), id) };
@@ -50,6 +52,10 @@ export async function PATCH(req: Request, ctx: RouteContext<"/api/admin/partners
     if (!parsed.success) return jsonError(parsed.error.issues[0]?.message ?? "Invalid request");
     patch = partnerPatchFrom(body, parsed.data);
     if (Object.keys(patch).length === 0) return jsonError("Nothing to update");
+    if ("code" in patch) {
+      const { data: prev } = await c.from("partners").select("code").eq("id", id).maybeSingle<{ code: string | null }>();
+      previousCode = prev?.code ?? null;
+    }
   }
 
   patch.updated_at = now;
@@ -62,6 +68,11 @@ export async function PATCH(req: Request, ctx: RouteContext<"/api/admin/partners
   }
   if (error) return jsonError(error.message, 500);
   if (!data) return jsonError("Partner not found", 404);
+  // Keep the typeable Stripe promotion code (e.g. RUFUS15) in step with code/status/discount.
+  if ("code" in patch || "status" in patch || "discount_percent" in patch) {
+    const partner = data as { code: string | null; status: string; discount_percent: number | null };
+    after(() => syncPartnerPromo(partner, "code" in patch ? previousCode : null));
+  }
   return NextResponse.json({ ok: true, partner: data });
 }
 

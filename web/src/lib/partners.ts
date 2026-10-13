@@ -3,6 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { db } from "@/lib/supabase/server";
 import { env } from "@/lib/env";
 import { site } from "@/lib/config";
+import { deactivatePartnerPromotionCode, ensurePartnerPromotionCode } from "@/lib/stripe";
 import {
   PROGRAM,
   REDEEMABLE_STATUSES,
@@ -188,6 +189,30 @@ export async function uniquePartnerCode(
     if (!hit || hit.length === 0) return cand;
   }
   return `${base}${Date.now().toString(36).toUpperCase().slice(-4)}`;
+}
+
+/**
+ * Keep a creator's typeable Stripe promotion code in step with their CRM row: active or gifted
+ * partners with a code get it (on PP_PARTNER_<discount>); any other status deactivates it, and a
+ * renamed code retires the old one. Never throws (run it in `after()` from admin routes).
+ */
+export async function syncPartnerPromo(
+  partner: { code: string | null; status: string; discount_percent?: number | null },
+  previousCode?: string | null,
+): Promise<void> {
+  try {
+    const code = normalizeCode(partner.code);
+    const prev = normalizeCode(previousCode);
+    if (prev && prev !== code) await deactivatePartnerPromotionCode(prev);
+    if (!code) return;
+    if ((REDEEMABLE_STATUSES as readonly string[]).includes(partner.status)) {
+      await ensurePartnerPromotionCode(code, Number(partner.discount_percent ?? PROGRAM.discountPercent), { force: true });
+    } else {
+      await deactivatePartnerPromotionCode(code);
+    }
+  } catch (err) {
+    console.error("[partners] syncPartnerPromo failed", err instanceof Error ? err.message : err);
+  }
 }
 
 function statsSecret(): string {

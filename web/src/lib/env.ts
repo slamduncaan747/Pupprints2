@@ -38,6 +38,8 @@ export const env = {
   // Email
   resendApiKey: process.env.RESEND_API_KEY ?? "",
   emailFrom: process.env.EMAIL_FROM?.trim() || "Pup Prints <hello@pupprints.shop>",
+  /** Physical mailing address printed in marketing emails (CAN-SPAM). Unset → marketing emails are skipped. */
+  businessPostalAddress: process.env.BUSINESS_POSTAL_ADDRESS?.trim() || "",
 
   // Admin
   adminPassword: process.env.ADMIN_PASSWORD ?? "",
@@ -60,5 +62,9 @@ export const features = {
   },
   get email() {
     return Boolean(env.resendApiKey);
+  },
+  /** Marketing emails (welcome, nurture, review request) also need a postal address (CAN-SPAM). */
+  get marketingEmail() {
+    return Boolean(env.resendApiKey && env.businessPostalAddress);
   },
 };

@@ -1,7 +1,18 @@
 import { timingSafeEqual } from "node:crypto";
 import { site } from "@/lib/config";
 import { features } from "@/lib/env";
-import { nurtureEmail, reviewRequestEmail, sendEmail, unsubscribeHeaders, unsubscribeUrl } from "@/lib/email";
+import {
+  marketingCtx,
+  NURTURE_SOURCES,
+  nurtureEmail,
+  reviewRequestEmail,
+  sendEmail,
+  unsubscribeHeaders,
+  unsubscribeUrl,
+  type EmailCtx,
+} from "@/lib/email";
+import { FOUNDING } from "@/lib/launch";
+import { syncPartnerPromo } from "@/lib/partners";
 import {
   claimOnce,
   downloadUrl,
@@ -11,16 +22,15 @@ import {
   sendShippedEmail,
   type OrderRow,
 } from "@/lib/orders";
-import { createPersonalWelcomeCode, WELCOME } from "@/lib/stripe";
+import { createPersonalWelcomeCode, foundingOfferAvailable, WELCOME } from "@/lib/stripe";
 import { db, previewUrl } from "@/lib/supabase/server";
-import { escapeLike } from "@/components/partners/program";
+import { escapeLike, REDEEMABLE_STATUSES } from "@/components/partners/program";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 const HOUR = 60 * 60 * 1000;
-const NURTURE_SOURCES = ["save_preview", "ai_unavailable", "checkout_unavailable"];
 /** Leads older than this are never nurtured (avoids emailing stale leads). */
 const NURTURE_MAX_AGE_DAYS = 10;
 const BATCH = 100;
@@ -45,7 +55,6 @@ type LeadRow = {
   last_nurture_at: string | null;
 };
 
-const ctx = () => ({ siteUrl: site.url.replace(/\/$/, ""), supportEmail: site.supportEmail });
 
 async function unsubscribedEmails(emails: string[]): Promise<Set<string>> {
   const c = db();
@@ -55,14 +64,24 @@ async function unsubscribedEmails(emails: string[]): Promise<Set<string>> {
 }
 
 /** Preview nurture: step 1 at ~2h, step 2 at ~24h, step 3 at ~72h (one step per lead per run). */
-async function runNurture() {
+async function runNurture(ctx: EmailCtx) {
   const c = db()!;
+  // Step 3 offers FOUNDING100 while it can really be redeemed, else a personal WELCOME10 code.
+  let founding: Promise<boolean> | null = null;
+  const step3Offer = async (email: string) => {
+    founding ??= foundingOfferAvailable();
+    if (await founding) {
+      return { code: FOUNDING.code, expiresAt: FOUNDING.expiresAt, percentOff: FOUNDING.percentOff, kind: "founding" as const };
+    }
+    const personal = await createPersonalWelcomeCode(email, 48);
+    return personal ? { ...personal, percentOff: WELCOME.percentOff, kind: "personal" as const } : null;
+  };
   const now = Date.now();
   const stats = { considered: 0, sent: 0, skipped: 0, converted: 0, failed: 0 };
   const { data, error } = await c
     .from("leads")
     .select("id, created_at, email, source, pet_name, generation_id, referral_code, nurture_step, last_nurture_at")
-    .in("source", NURTURE_SOURCES)
+    .in("source", [...NURTURE_SOURCES])
     .is("unsubscribed_at", null)
     .is("converted_order_id", null)
     .eq("consent", true)
@@ -119,18 +138,18 @@ async function runNurture() {
       preview = gen?.preview_path ? previewUrl(gen.preview_path) : null;
       lead.pet_name ??= gen?.pet_name ?? null;
     }
-    const createUrl = `${ctx().siteUrl}/create${lead.referral_code ? `?ref=${encodeURIComponent(lead.referral_code)}` : ""}`;
-    const offer = next === 3 ? await createPersonalWelcomeCode(lead.email, 48) : null;
+    const createUrl = `${ctx.siteUrl}/create${lead.referral_code ? `?ref=${encodeURIComponent(lead.referral_code)}` : ""}`;
+    const offer = next === 3 ? await step3Offer(lead.email) : null;
 
     const email = nurtureEmail({
-      ctx: ctx(),
+      ctx,
       step: next,
       source: lead.source ?? "save_preview",
       petName: lead.pet_name,
       previewUrl: preview,
       createUrl,
       unsubscribeUrl: unsubscribeUrl(lead.email),
-      offer: offer ? { ...offer, percentOff: WELCOME.percentOff } : null,
+      offer,
     });
     const res = await sendEmail({
       to: lead.email,
@@ -150,10 +169,13 @@ async function runNurture() {
   return stats;
 }
 
-/** Shipped emails for orders marked shipped by hand, then review requests 7 days after shipping. */
+/**
+ * Shipped emails (transactional, always) for orders marked shipped by hand, then review requests
+ * (marketing: only with a postal address) 7 days after shipping.
+ */
 async function runOrderEmails() {
   const c = db()!;
-  const stats = { shippedEmails: 0, reviewRequests: 0, failed: 0 };
+  const stats: { shippedEmails: number; reviewRequests: number | string; failed: number } = { shippedEmails: 0, reviewRequests: 0, failed: 0 };
 
   const { data: shippedNoEmail } = await c
     .from("orders")
@@ -169,6 +191,13 @@ async function runOrderEmails() {
     stats.shippedEmails++;
   }
 
+  const ctx = marketingCtx("review_request");
+  if (!ctx) {
+    // Left unclaimed, so they go out once BUSINESS_POSTAL_ADDRESS is set.
+    stats.reviewRequests = "skipped: BUSINESS_POSTAL_ADDRESS not set";
+    return stats;
+  }
+  let reviewsSent = 0;
   const reviewUrlBase = process.env.REVIEW_URL || `mailto:${site.supportEmail}?subject=${encodeURIComponent("My Pup Prints review")}`;
   const { data: due } = await c
     .from("orders")
@@ -190,7 +219,7 @@ async function runOrderEmails() {
     if (!(await claimOnce(order.id, "review_request_sent_at"))) continue;
     const main = primaryItem(order);
     const email = reviewRequestEmail({
-      ctx: ctx(),
+      ctx,
       customerName: order.customer_name,
       petName: orderPetName(order),
       reviewUrl: reviewUrlBase,
@@ -204,13 +233,28 @@ async function runOrderEmails() {
       tag: "review_request",
       idempotencyKey: `review-${order.id}`,
     });
-    if (res.ok) stats.reviewRequests++;
+    if (res.ok) reviewsSent++;
     else {
       stats.failed++;
       if (!res.skipped) await releaseClaim(order.id, "review_request_sent_at");
     }
   }
+  stats.reviewRequests = reviewsSent;
   return stats;
+}
+
+/** Backfill/repair: every active or gifted creator's code exists as a typeable Stripe promotion code. */
+async function syncPartnerPromos() {
+  const { data, error } = await db()!
+    .from("partners")
+    .select("code, status, discount_percent")
+    .in("status", [...REDEEMABLE_STATUSES])
+    .not("code", "is", null)
+    .limit(500);
+  if (error) throw new Error(`partners query failed: ${error.message}`);
+  const rows = (data ?? []) as { code: string | null; status: string; discount_percent: number | null }[];
+  for (const p of rows) await syncPartnerPromo(p);
+  return { partners: rows.length };
 }
 
 /** Abandoned checkouts: counted only (we never chase them with fake urgency). */
@@ -231,15 +275,19 @@ export async function GET(req: Request) {
   const result: Record<string, unknown> = { ok: true, emailEnabled: features.email, ranAt: new Date().toISOString() };
   // Without an email provider, leave leads/orders untouched so nothing is marked as sent.
   const skip = Promise.resolve({ skipped: "RESEND_API_KEY not set" });
-  const [nurture, orders, stalePending] = await Promise.allSettled([
-    features.email ? runNurture() : skip,
+  // Marketing emails need a postal address (CAN-SPAM); leads stay untouched until it's set.
+  const nurtureCtx = features.email ? marketingCtx("nurture") : null;
+  const [nurture, orders, stalePending, partnerPromos] = await Promise.allSettled([
+    !features.email ? skip : nurtureCtx ? runNurture(nurtureCtx) : Promise.resolve({ skipped: "BUSINESS_POSTAL_ADDRESS not set" }),
     features.email ? runOrderEmails() : skip,
     countStalePending(),
+    features.stripe ? syncPartnerPromos() : Promise.resolve({ skipped: "STRIPE_SECRET_KEY not set" }),
   ]);
   result.nurture = nurture.status === "fulfilled" ? nurture.value : { error: String(nurture.reason) };
   result.orders = orders.status === "fulfilled" ? orders.value : { error: String(orders.reason) };
   result.stalePendingOrders = stalePending.status === "fulfilled" ? stalePending.value : null;
-  if ([nurture, orders, stalePending].some((r) => r.status === "rejected")) result.ok = false;
+  result.partnerPromos = partnerPromos.status === "fulfilled" ? partnerPromos.value : { error: String(partnerPromos.reason) };
+  if ([nurture, orders, stalePending, partnerPromos].some((r) => r.status === "rejected")) result.ok = false;
   console.info("[cron/lifecycle]", JSON.stringify(result));
   return Response.json(result, { headers: { "Cache-Control": "no-store" } });
 }
