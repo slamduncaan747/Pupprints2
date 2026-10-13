@@ -3,13 +3,18 @@
 Goal: the first paid order from a stranger, then a repeatable loop that produces one sale a day.
 Engine: **the gift-first loop.** A free portrait of someone's *own* dog, delivered as a private reveal link with a one-tap "Put {pet} on your wall" button, converts far better than any ad. Every channel below just feeds dogs into that loop.
 
-Site: https://pup-prints.vercel.app · Admin: /admin · Launch code: `FOUNDING100` (15% off, first 100 orders, ends Oct 31; created in Stripe automatically).
+Site: https://pup-prints.vercel.app (moving to pupprints.shop) · Admin: /admin · Launch code: `FOUNDING100` (15% off, first 100 orders, ends Oct 31; created in Stripe automatically).
+Portraits: OpenAI's GPT Image model (primary) with Google Gemini as automatic fallback. Cost ≈ $0.04–0.25 per portrait depending on quality, so 20 gifts a day is roughly $1–5/day.
 
 ---
 
 ## Phase 0 — Turn it on (Day 1 morning, ~45 min, do in order)
 
-1. **fal.ai**: sign up → add $10 credit → create API key → Vercel env `FAL_KEY`.
+All keys go in **Vercel → pup-prints → Settings → Environment Variables** (Production + Preview).
+
+1. **Portrait engine — OpenAI (ChatGPT's image model), primary**: platform.openai.com → Settings → Organization → **verify your organization** (required for GPT Image models; takes a few minutes with an ID) → Billing: add ~$10 → API keys → create → `OPENAI_API_KEY`.
+   **Fallback — Google Gemini**: aistudio.google.com → Get API key → enable billing on the linked Google Cloud project → `GEMINI_API_KEY`. If OpenAI refuses or times out, the site retries with Gemini automatically.
+   Verify the key in one command (from `web/`): `npx tsx scripts/ai-smoke.ts <dog-photo.jpg> royal` → opens a finished portrait PNG. If it looks off, tell us before driving traffic.
 2. **Stripe**: activate the account (business details, bank). Secret key → `STRIPE_SECRET_KEY`. Webhook `https://pup-prints.vercel.app/api/webhooks/stripe` (events `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `charge.refunded`) → `STRIPE_WEBHOOK_SECRET`. In Settings → Payment methods turn on Apple Pay, Google Pay, Link. Statement descriptor: `PUPPRINTS`.
 3. **Printful**: create account, add a billing card, Settings → API → token → `PRINTFUL_API_KEY`; set `FULFILLMENT_PROVIDER=printful`.
 4. **Resend** (order + gift emails): API key → `RESEND_API_KEY`; set `BUSINESS_POSTAL_ADDRESS` (PO box is fine) or marketing emails stay off.
@@ -19,7 +24,7 @@ Site: https://pup-prints.vercel.app · Admin: /admin · Launch code: `FOUNDING10
 
 ## Phase 1 — Prove the pipeline (Day 1, 20 min) — do not skip
 
-1. Upload a photo of any dog on /create → confirm a preview appears in under ~60s.
+1. Upload a photo of any dog on /create → confirm a preview appears in under ~60s and actually looks like the dog. Try 3 styles. Likeness is the product; if it's weak, stop and fix it first.
 2. Buy the cheapest physical item ($35 print) with your own card, using `FOUNDING100`.
 3. Confirm: success page shows the order → confirmation email arrives → order appears in /admin/orders as **paid** → click **Approve & send to print** → it appears in Printful (as a draft unless `PRINTFUL_CONFIRM=1`).
 4. Open your Gift Reveal link from the success page on your phone.
@@ -51,6 +56,7 @@ If any step fails, stop and fix it before driving traffic. Every visitor before 
 4. With their permission, their dog becomes tomorrow's video ("Round 2"). That's the flywheel: every gift is both a lead and new content.
 
 ### Loop C — Content (45 min, 3 posts per day across TikTok/Reels/Shorts)
+- Match the site's look: clean white backgrounds, the portrait large, one line of text on screen. Screen-record the real flow on pup-prints.vercel.app (photo → portrait in about a minute) — the speed is the hook.
 - 1 comment-to-enter round (Loop B), 1 transformation reveal (photo → portrait), 1 rotating format (style quiz, "which style is your dog?", memorial tribute). All link to the site in bio.
 - Always use permission for dogs shown. Never claim hand-painted; if asked: "our AI artist creates it, our team finishes and checks it."
 
@@ -86,6 +92,7 @@ Diagnose in funnel order and change one thing at a time:
 1. **Reveals not opened** → DM copy too long or salesy; lead with the image and the dog's name.
 2. **Opened, no click to buy** → test style choice and portrait quality (likeness first); add a second style for the same dog.
 3. **Clicked, no checkout** → price shock; push the $35 print and the $29 digital file in the DM, not the canvas.
+   Also check likeness: compare 5 recent previews in /admin/generations to the source photos. If the dogs don't look like themselves, switch `AI_PROVIDER_ORDER` to `gemini,openai` (or raise `OPENAI_IMAGE_QUALITY`) and compare again.
 4. **Checkout started, not paid** → look at Stripe's incomplete payments for errors; check that Apple Pay shows on iPhone.
 5. **No traffic at all** → move effort from Loop C to Loop A/B; volume of personal gifts is the lever.
 
