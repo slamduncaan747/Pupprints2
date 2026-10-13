@@ -1,4 +1,8 @@
 import { randomUUID } from "node:crypto";
+import { lookup as dnsLookup, type LookupAddress } from "node:dns";
+import http, { type IncomingMessage } from "node:http";
+import https from "node:https";
+import { BlockList, isIP } from "node:net";
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import { z } from "zod";
@@ -39,19 +43,85 @@ const Fields = z.object({
   message: optText(1000),
 });
 
-function isPrivateHost(host: string) {
-  const h = host.replace(/^\[|\]$/g, "").toLowerCase();
-  return (
-    h === "localhost" ||
-    h.endsWith(".localhost") ||
-    h.endsWith(".internal") ||
-    h === "::1" ||
-    /^(127\.|10\.|0\.|169\.254\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(h) ||
-    /^f[cd][0-9a-f]{2}:/.test(h)
-  );
+/** Non-public address space: loopback, private, link-local (cloud metadata), CGNAT, multicast… */
+const BLOCKED_NETS = new BlockList();
+for (const [net, prefix] of [
+  ["0.0.0.0", 8],
+  ["10.0.0.0", 8],
+  ["100.64.0.0", 10],
+  ["127.0.0.0", 8],
+  ["169.254.0.0", 16],
+  ["172.16.0.0", 12],
+  ["192.0.0.0", 24],
+  ["192.0.2.0", 24],
+  ["192.168.0.0", 16],
+  ["198.18.0.0", 15],
+  ["198.51.100.0", 24],
+  ["203.0.113.0", 24],
+  ["224.0.0.0", 3],
+] as const) {
+  BLOCKED_NETS.addSubnet(net, prefix, "ipv4");
+}
+for (const [net, prefix] of [
+  ["::", 96], // unspecified, loopback, IPv4-compatible
+  ["::ffff:0:0", 96], // IPv4-mapped
+  ["64:ff9b::", 96], // NAT64
+  ["64:ff9b:1::", 48],
+  ["100::", 64],
+  ["2001::", 23],
+  ["2001:db8::", 32],
+  ["2002::", 16], // 6to4
+  ["fc00::", 7], // unique local
+  ["fe80::", 10], // link-local
+  ["ff00::", 8], // multicast
+] as const) {
+  BLOCKED_NETS.addSubnet(net, prefix, "ipv6");
 }
 
-/** Download a pasted image URL (admin-only, but still refuse internal hosts and non-images). */
+function isBlockedIp(address: string): boolean {
+  const family = isIP(address);
+  if (family === 0) return true;
+  return BLOCKED_NETS.check(address, family === 6 ? "ipv6" : "ipv4");
+}
+
+const BLOCKED_HOST = new ImageError("unreadable", "Only public http(s) image URLs are allowed.");
+
+/**
+ * DNS lookup that refuses non-public addresses. Used as the socket's `lookup`, so the address
+ * we validate is the one we connect to (no DNS-rebinding window between check and connect).
+ */
+const publicOnlyLookup = ((hostname: string, options: { all?: boolean }, callback: (...args: unknown[]) => void) => {
+  dnsLookup(hostname, { ...options, all: true }, (err, addresses: LookupAddress[]) => {
+    if (err) return callback(err);
+    if (!addresses.length || addresses.some((a) => isBlockedIp(a.address))) return callback(BLOCKED_HOST);
+    if (options.all) return callback(null, addresses);
+    callback(null, addresses[0].address, addresses[0].family);
+  });
+}) as unknown as http.RequestOptions["lookup"];
+
+function getOnce(url: URL, signal: AbortSignal): Promise<IncomingMessage> {
+  return new Promise((resolve, reject) => {
+    const req = (url.protocol === "https:" ? https : http).get(url, {
+      lookup: publicOnlyLookup,
+      signal,
+      headers: {
+        "user-agent": "Mozilla/5.0 (compatible; PupPrintsGiftTool/1.0)",
+        accept: "image/*",
+        "accept-encoding": "identity",
+      },
+    });
+    req.on("response", resolve);
+    req.on("error", reject);
+  });
+}
+
+const MAX_REDIRECTS = 3;
+
+/**
+ * Download a pasted image URL (admin-only). SSRF-hardened: http(s) on default ports only,
+ * every hop (redirects are followed by hand) must resolve to a public address, the body is
+ * streamed with a hard size cap, and the whole download has one 15s deadline.
+ */
 async function fetchRemoteImage(raw: string): Promise<Buffer> {
   let url: URL;
   try {
@@ -59,32 +129,72 @@ async function fetchRemoteImage(raw: string): Promise<Buffer> {
   } catch {
     throw new ImageError("unreadable", "That doesn't look like a valid URL.");
   }
-  if (!/^https?:$/.test(url.protocol) || isPrivateHost(url.hostname)) {
-    throw new ImageError("unreadable", "Only public http(s) image URLs are allowed.");
+  const signal = AbortSignal.timeout(15_000);
+  for (let hop = 0; ; hop++) {
+    const host = url.hostname.replace(/^\[|\]$/g, "").toLowerCase();
+    if (
+      !/^https?:$/.test(url.protocol) ||
+      url.username ||
+      url.password ||
+      (url.port && url.port !== "80" && url.port !== "443") ||
+      host === "localhost" ||
+      /\.(localhost|internal|local)$/.test(host) ||
+      (isIP(host) !== 0 && isBlockedIp(host))
+    ) {
+      throw BLOCKED_HOST;
+    }
+
+    let res: IncomingMessage;
+    try {
+      res = await getOnce(url, signal);
+    } catch (err) {
+      if (err === BLOCKED_HOST) throw err;
+      throw new ImageError("unreadable", "Couldn't download that image (timed out or blocked). Try uploading the file instead.");
+    }
+    const status = res.statusCode ?? 0;
+    if (status >= 300 && status < 400 && res.headers.location) {
+      res.destroy();
+      if (hop >= MAX_REDIRECTS) throw new ImageError("unreadable", "That URL redirects too many times. Try uploading the file instead.");
+      try {
+        url = new URL(res.headers.location, url);
+      } catch {
+        throw new ImageError("unreadable", "That URL redirects somewhere invalid. Try uploading the file instead.");
+      }
+      continue;
+    }
+    if (status < 200 || status >= 300) {
+      res.destroy();
+      throw new ImageError("unreadable", `Couldn't download that image (HTTP ${status}). Try uploading the file instead.`);
+    }
+    const type = String(res.headers["content-type"] ?? "");
+    if (!type.startsWith("image/")) {
+      res.destroy();
+      throw new ImageError(
+        "unsupported_type",
+        `That URL is a web page (${type.split(";")[0] || "unknown type"}), not an image. Right-click the photo → "Copy image address", or upload the file.`,
+      );
+    }
+    if (Number(res.headers["content-length"] ?? 0) > MAX_IMAGE_BYTES) {
+      res.destroy();
+      throw new ImageError("unreadable", "That image is over 15 MB.");
+    }
+    const chunks: Buffer[] = [];
+    let total = 0;
+    try {
+      for await (const chunk of res as AsyncIterable<Buffer>) {
+        total += chunk.length;
+        if (total > MAX_IMAGE_BYTES) {
+          res.destroy();
+          throw new ImageError("unreadable", "That image is over 15 MB.");
+        }
+        chunks.push(chunk);
+      }
+    } catch (err) {
+      if (err instanceof ImageError) throw err;
+      throw new ImageError("unreadable", "Couldn't download that image (timed out or blocked). Try uploading the file instead.");
+    }
+    return Buffer.concat(chunks);
   }
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      redirect: "follow",
-      cache: "no-store",
-      signal: AbortSignal.timeout(15_000),
-      headers: { "user-agent": "Mozilla/5.0 (compatible; PupPrintsGiftTool/1.0)", accept: "image/*" },
-    });
-  } catch {
-    throw new ImageError("unreadable", "Couldn't download that image (timed out or blocked). Try uploading the file instead.");
-  }
-  if (!res.ok) throw new ImageError("unreadable", `Couldn't download that image (HTTP ${res.status}). Try uploading the file instead.`);
-  const type = res.headers.get("content-type") ?? "";
-  if (!type.startsWith("image/")) {
-    throw new ImageError(
-      "unsupported_type",
-      `That URL is a web page (${type.split(";")[0] || "unknown type"}), not an image. Right-click the photo → "Copy image address", or upload the file.`,
-    );
-  }
-  if (Number(res.headers.get("content-length") ?? 0) > MAX_IMAGE_BYTES) throw new ImageError("unreadable", "That image is over 15 MB.");
-  const bytes = Buffer.from(await res.arrayBuffer());
-  if (bytes.length > MAX_IMAGE_BYTES) throw new ImageError("unreadable", "That image is over 15 MB.");
-  return bytes;
 }
 
 /**

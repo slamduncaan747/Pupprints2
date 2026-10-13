@@ -17,6 +17,6 @@ export function formatPrice(cents: number, currency = "USD") {
 }
 
 export function absoluteUrl(path = "/") {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pupprints.vercel.app";
+  const base = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://pup-prints.vercel.app";
   return new URL(path, base).toString();
 }

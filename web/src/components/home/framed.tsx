@@ -1,24 +1,25 @@
 import type { ReactNode } from "react";
+import type { FrameColor } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import "./home.css";
 
-export type FrameKind = "black" | "white" | "oak" | "walnut" | "gold";
+/** Only the frame colors we actually sell (catalog FrameColor), so mockups never promise a finish we don't offer. */
+export type FrameKind = FrameColor;
 
 const FRAME: Record<FrameKind, string> = {
   black: "frame-black",
   white: "frame-white",
   oak: "ph-frame-oak",
-  walnut: "frame-wood",
-  gold: "frame-gold",
 };
 
 /**
- * Lightweight gallery-frame presentation for the home page: moulding, optional mat with a
- * soft inner shadow, a bevel line around the art and a faint glazing glare.
+ * Lightweight gallery-frame presentation for the home page: moulding, a bevel line around the art
+ * and a faint glazing glare. Our framed prints have no mat, so `mat` is off by default; only use it
+ * for things that genuinely have one.
  */
 export function Framed({
   frame = "black",
-  mat = true,
+  mat = false,
   thin = false,
   className,
   children,

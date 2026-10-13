@@ -8,7 +8,7 @@
  */
 import type { Metadata } from "next";
 import { PRODUCTS, type Product, type ProductType } from "@/lib/catalog";
-import { site } from "@/lib/config";
+import { site, socialLinks } from "@/lib/config";
 
 type Json = Record<string, unknown>;
 
@@ -43,7 +43,7 @@ export function organizationJsonLd({ logo }: { logo?: string } = {}): Json {
     description: site.description,
     ...(logo ? { logo: siteUrl(logo) } : {}),
     email: site.supportEmail,
-    sameAs: Object.values(site.social),
+    ...(socialLinks.length ? { sameAs: socialLinks.map((s) => s.url) } : {}),
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",

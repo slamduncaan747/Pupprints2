@@ -91,7 +91,7 @@ export const OCCASIONS: Occasion[] = [
     card: "A gentle, lasting way to remember a best friend.",
     title: "Pet Memorial Portraits — Remember Your Dog",
     metaDescription:
-      "A gentle memorial portrait of the dog you miss, made from a photo you treasure. Older or blurry photos usually work. See it free before you decide, and we prioritize memorial orders.",
+      "A gentle memorial portrait of the dog you miss, made from a photo you treasure. Older or blurry photos usually work. See it free before you decide, and a person checks every print.",
     eyebrow: "Memorial portraits",
     h1: "A gentle way to remember them",
     lede: "When a dog has been part of your life, they stay part of it. A portrait made from a photo you love can bring a little of them back into the room. Take your time. You'll see it before you decide anything.",

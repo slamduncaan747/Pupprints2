@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/paw";
 import { Container } from "@/components/ui/container";
 import { NewsletterForm } from "@/components/site/newsletter-form";
-import { site } from "@/lib/config";
+import { site, socialLinks } from "@/lib/config";
 import { STYLES } from "@/lib/catalog";
 
 const COLUMNS = [
@@ -12,12 +12,14 @@ const COLUMNS = [
       { href: "/create", label: "Create a portrait" },
       { href: "/shop", label: "Prints & canvas" },
       { href: "/styles", label: "All styles" },
+      { href: "/breeds", label: "Shop by breed" },
       { href: "/gifts", label: "Gift ideas" },
       { href: "/gift-cards", label: "Gift cards" },
     ],
   },
   {
-    title: "Popular styles",
+    // "Featured", never "Popular": we have no sales data to back a popularity claim.
+    title: "Featured styles",
     links: STYLES.slice(0, 5).map((s) => ({ href: `/styles/${s.slug}`, label: s.name })),
   },
   {
@@ -79,9 +81,11 @@ export function Footer() {
         <Container className="flex flex-col items-center justify-between gap-3 py-6 text-sm text-ink-3 sm:flex-row">
           <p>© {new Date().getFullYear()} {site.legalName}. Made with love for dogs everywhere.</p>
           <div className="flex gap-5">
-            <a href={site.social.instagram} target="_blank" rel="noreferrer" className="hover:text-ink">Instagram</a>
-            <a href={site.social.tiktok} target="_blank" rel="noreferrer" className="hover:text-ink">TikTok</a>
-            <a href={site.social.pinterest} target="_blank" rel="noreferrer" className="hover:text-ink">Pinterest</a>
+            {socialLinks.map((s) => (
+              <a key={s.network} href={s.url} target="_blank" rel="noreferrer" className="hover:text-ink">
+                {s.label}
+              </a>
+            ))}
             <a href={`mailto:${site.supportEmail}`} className="hover:text-ink">{site.supportEmail}</a>
           </div>
         </Container>

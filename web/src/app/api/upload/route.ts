@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { BUCKETS, db, signedUrl } from "@/lib/supabase/server";
 import { ImageError, normalizeUpload } from "@/lib/image";
 import { storeObject } from "@/lib/image/storage";
-import { ensureSessionId, getIpHash } from "@/lib/session";
+import { ensureSessionId, getIpHash, sessionStorageFolder } from "@/lib/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,6 +25,11 @@ export async function POST(req: Request) {
   const supabase = db();
   if (!supabase) {
     return json({ error: "storage_unavailable", message: "Uploads are temporarily unavailable. Please try again soon." }, 503);
+  }
+
+  // Refuse oversized bodies before buffering them (multipart overhead is small).
+  if (Number(req.headers.get("content-length") ?? 0) > MAX_BYTES + 64 * 1024) {
+    return json({ error: "file_too_large", message: "That photo is too large. Please choose one under 12 MB." }, 413);
   }
 
   let form: FormData;
@@ -72,7 +77,7 @@ export async function POST(req: Request) {
 
   const sessionId = await ensureSessionId();
   const uploadId = randomUUID();
-  const path = `${sessionId}/${uploadId}.jpg`;
+  const path = `${sessionStorageFolder(sessionId)}/${uploadId}.jpg`;
 
   try {
     await storeObject(BUCKETS.uploads, path, normalized.bytes, {

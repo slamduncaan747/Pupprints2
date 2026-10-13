@@ -6,6 +6,7 @@ import { STYLE_MAP } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
@@ -45,7 +46,20 @@ export async function generateMetadata({ params }: PageProps<"/gifts/[occasion]"
       title: `${o.title} | ${site.name}`,
       description: o.metaDescription,
       url: `/gifts/${o.slug}`,
-      images: [{ url: STYLE_SAMPLES[o.feature], width: 960, height: 1200, alt: `${STYLE_MAP[o.feature]?.name} dog portrait` }],
+      type: "website",
+      siteName: site.name,
+      locale: "en_US",
+      // The featured style sample first; the site-wide card is the fallback while samples are still being generated.
+      images: [
+        { url: STYLE_SAMPLES[o.feature], width: 960, height: 1200, alt: `${STYLE_MAP[o.feature]?.name} dog portrait` },
+        DEFAULT_OG_IMAGE,
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${o.title} | ${site.name}`,
+      description: o.metaDescription,
+      images: [DEFAULT_OG_IMAGE.url],
     },
   };
 }

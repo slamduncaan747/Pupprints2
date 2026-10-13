@@ -5,7 +5,7 @@ import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedErro
 import { makeWatermarkedPreview, toPrintMaster } from "@/lib/image";
 import { BUCKETS, db, previewUrl, signedUrl } from "@/lib/supabase/server";
 import { storeObject } from "@/lib/image/storage";
-import { ensureSessionId, getIpHash } from "@/lib/session";
+import { ensureSessionId, getIpHash, sessionStorageFolder } from "@/lib/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -87,25 +87,8 @@ export async function POST(req: Request) {
     return json({ error: "ai_unavailable", message: "Our studio is busy right now.", generationId: pending?.id }, 503);
   }
 
-  // Per-IP daily limit (failed attempts don't count against the customer).
-  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  const { count } = await supabase
-    .from("generations")
-    .select("id", { count: "exact", head: true })
-    .eq("ip_hash", ipHash)
-    .neq("status", "failed")
-    .gte("created_at", since);
-  if ((count ?? 0) >= env.dailyGenerationLimitPerIp) {
-    return json(
-      {
-        error: "rate_limited",
-        message:
-          "You've reached today's limit for free previews. Your portraits are saved, and you can make more tomorrow.",
-      },
-      429,
-    );
-  }
-
+  // Insert this attempt *before* checking the limits, so parallel requests can't all pass the
+  // check at once (each one counts the others). A rejected attempt removes its own row.
   const { data: row, error: insertError } = await supabase
     .from("generations")
     .insert({
@@ -123,6 +106,46 @@ export async function POST(req: Request) {
     return json({ error: "generation_failed", message: "Something went wrong on our side. Please try again." }, 502);
   }
   const generationId: string = row.id;
+
+  // Per-IP daily limit + optional site-wide daily cap (GLOBAL_DAILY_GENERATION_LIMIT). Only
+  // attempts that reached the AI count: failed and queued (pending) ones cost nothing.
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const countAttempts = async (byIp: boolean) => {
+    let q = supabase
+      .from("generations")
+      .select("id", { count: "exact", head: true })
+      .in("status", ["processing", "succeeded"])
+      .gte("created_at", since);
+    if (byIp) q = q.eq("ip_hash", ipHash);
+    const { count, error } = await q;
+    if (error) console.error("[generate] limit count failed", error.message);
+    return count ?? 0;
+  };
+  const globalLimit = env.globalDailyGenerationLimit;
+  const [ipCount, globalCount] = await Promise.all([
+    countAttempts(true),
+    globalLimit > 0 ? countAttempts(false) : Promise.resolve(0),
+  ]);
+  if (ipCount > env.dailyGenerationLimitPerIp) {
+    await supabase.from("generations").delete().eq("id", generationId);
+    return json(
+      {
+        error: "rate_limited",
+        message:
+          "You've reached today's limit for free previews. Your portraits are saved, and you can make more tomorrow.",
+      },
+      429,
+    );
+  }
+  if (globalLimit > 0 && globalCount > globalLimit) {
+    // Cost backstop: queue it like an AI outage so the visitor can leave their email.
+    console.warn(`[generate] global daily generation limit reached (${globalCount}/${globalLimit})`);
+    await supabase
+      .from("generations")
+      .update({ status: "pending", error: "ai_unavailable: global_daily_limit" })
+      .eq("id", generationId);
+    return json({ error: "ai_unavailable", message: "Our studio is busy right now.", generationId }, 503);
+  }
 
   const fail = async (error: string) => {
     await supabase
@@ -147,8 +170,10 @@ export async function POST(req: Request) {
     });
 
     const [master, preview] = await Promise.all([toPrintMaster(result.bytes), makeWatermarkedPreview(result.bytes)]);
-    const fullPath = `${sessionId}/${generationId}.png`;
-    const previewPath = `${sessionId}/${generationId}.jpg`;
+    // Never put the raw session id in object paths: preview URLs are public.
+    const folder = sessionStorageFolder(sessionId);
+    const fullPath = `${folder}/${generationId}.png`;
+    const previewPath = `${folder}/${generationId}.jpg`;
 
     // The AI call already cost money: retry transient storage failures instead of discarding the result.
     await Promise.all([

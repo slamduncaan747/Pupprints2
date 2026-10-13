@@ -4,11 +4,13 @@ import { Container, Section } from "@/components/ui/container";
 import { PawMark } from "@/components/ui/paw";
 import { SampleImage } from "@/components/ui/sample-image";
 import { STYLE_MAP } from "@/lib/catalog";
-import { site } from "@/lib/config";
+import { site, socialHandle } from "@/lib/config";
 import { GALLERY } from "@/lib/samples";
 import { Accent, HomeHeading } from "./typography";
 
-const handle = `@${site.social.instagram.replace(/\/+$/, "").split("/").pop()}`;
+/** Only shown once NEXT_PUBLIC_INSTAGRAM_URL is set (we never link to a handle we don't own). */
+const instagramUrl = site.social.instagram;
+const handle = socialHandle(instagramUrl);
 
 /**
  * Launch-honest social proof: no reviews yet, so we say so, and show clearly-labelled
@@ -30,22 +32,30 @@ export function Founding() {
             subtitle="You won't find a wall of five-star quotes here yet, and we won't fake one. What you will find: every order personally checked before it prints, and a small team that makes things right."
           />
           <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-2">
-            Be one of our first customers, then tag <span className="font-medium text-ink">{handle}</span>. We&apos;d
-            love to see your dog on the wall (literally).
+            {handle ? (
+              <>
+                Be one of our first customers, then tag <span className="font-medium text-ink">{handle}</span>.
+              </>
+            ) : (
+              <>Be one of our first customers, then send us a photo.</>
+            )}{" "}
+            We&apos;d love to see your dog on the wall (literally).
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
             <ButtonLink href="/create" size="lg" className="group w-full sm:w-auto">
               Create your portrait
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
             </ButtonLink>
-            <a
-              href={site.social.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center gap-1 text-[15px] font-medium text-ink underline decoration-ink/25 underline-offset-[6px] transition hover:decoration-ink"
-            >
-              Follow {handle} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
+            {instagramUrl && handle ? (
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1 text-[15px] font-medium text-ink underline decoration-ink/25 underline-offset-[6px] transition hover:decoration-ink"
+              >
+                Follow {handle} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            ) : null}
           </div>
         </div>
 
@@ -59,18 +69,20 @@ export function Founding() {
                 </span>
               </span>
               <div>
-                <p className="text-[15px] font-semibold leading-tight">{handle}</p>
+                <p className="text-[15px] font-semibold leading-tight">{handle ?? site.name}</p>
                 <p className="text-[13px] text-ink-2/85">Example portraits</p>
               </div>
             </div>
-            <a
-              href={site.social.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper transition hover:bg-ink/90"
-            >
-              Follow
-            </a>
+            {instagramUrl ? (
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper transition hover:bg-ink/90"
+              >
+                Follow
+              </a>
+            ) : null}
           </div>
           <ul className="grid grid-cols-3 gap-1.5 overflow-hidden rounded-xl sm:gap-2">
             {GALLERY.map((g) => {

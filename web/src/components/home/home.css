@@ -34,7 +34,8 @@
 .ph-frame-oak {
   background:
     repeating-linear-gradient(92deg, rgb(255 255 255 / 0.05) 0 2px, rgb(0 0 0 / 0.03) 2px 5px),
-    linear-gradient(135deg, #a47b4b, #d2ad7b 38%, #b88c58 64%, #8f6a3c);
+    /* Light natural oak, matched to the configurator's oak mockup (not a honey/walnut tone). */
+    linear-gradient(135deg, #c9a374, #e2c9a0 38%, #cfac7e 64%, #b48d5f);
   padding: 14px;
   box-shadow:
     0 1px 1px rgb(27 24 20 / 0.04),

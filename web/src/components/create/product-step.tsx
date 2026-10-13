@@ -148,14 +148,28 @@ export function ProductStep({ flow, active, onBack }: { flow: FlowState; active:
       body.giftMessage = gift.message.trim().slice(0, GIFT_MESSAGE_MAX) || undefined;
     }
 
-    track("InitiateCheckout", {
+    // No cart: committing to checkout is the add-to-cart moment. Same item ids as the Purchase event.
+    const ecommerce = {
       value: total / 100,
       currency: "USD",
-      product: product.type,
-      variant: variant.id,
-      num_items: body.items.length,
-      gift: gift.enabled,
-    });
+      items: [
+        { id: variant.id, name: product.name, price: variant.price / 100, quantity: 1, category: product.type, variant: variant.id },
+        ...chosenAddons.map((a) => ({ id: a.id, name: a.name, price: a.price / 100, quantity: 1, category: "addon" })),
+      ],
+    };
+    track("AddToCart", { product: product.type, variant: variant.id }, ecommerce);
+    track(
+      "InitiateCheckout",
+      {
+        value: total / 100,
+        currency: "USD",
+        product: product.type,
+        variant: variant.id,
+        num_items: body.items.length,
+        gift: gift.enabled,
+      },
+      ecommerce,
+    );
 
     try {
       const { url } = await startCheckout(body);

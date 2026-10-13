@@ -5,7 +5,8 @@ import "server-only";
  * site always builds and degrades gracefully when a key is missing.
  */
 export const env = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://pupprints.vercel.app",
+  // NOTE: pupprints.vercel.app belongs to a different business; our fallback is pup-prints.
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://pup-prints.vercel.app",
 
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
   /** Publishable (anon) key. Only ever used server-side together with the server key header. */
@@ -36,13 +37,15 @@ export const env = {
 
   // Email
   resendApiKey: process.env.RESEND_API_KEY ?? "",
-  emailFrom: process.env.EMAIL_FROM ?? "Pup Prints <hello@pupprints.com>",
+  emailFrom: process.env.EMAIL_FROM?.trim() || "Pup Prints <hello@pupprints.shop>",
 
   // Admin
   adminPassword: process.env.ADMIN_PASSWORD ?? "",
 
   // Abuse / cost control
   dailyGenerationLimitPerIp: Number(process.env.DAILY_GENERATION_LIMIT_PER_IP ?? 12),
+  /** Site-wide AI generations per rolling 24h (cost backstop against IP rotation). 0/unset = off. */
+  globalDailyGenerationLimit: Math.max(0, Number(process.env.GLOBAL_DAILY_GENERATION_LIMIT ?? 0) || 0),
 };
 
 export const features = {

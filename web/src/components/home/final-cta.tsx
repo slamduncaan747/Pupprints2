@@ -11,9 +11,9 @@ import { Accent } from "./typography";
 
 const WALL: { slug: StyleSlug; frame: FrameKind; cls: string }[] = [
   { slug: "pop-art", frame: "white", cls: "left-[3%] top-[18%] w-[11%] -rotate-[5deg]" },
-  { slug: "oil-classic", frame: "gold", cls: "left-[9%] bottom-[12%] w-[9%] rotate-[4deg]" },
+  { slug: "oil-classic", frame: "oak", cls: "left-[9%] bottom-[12%] w-[9%] rotate-[4deg]" },
   { slug: "admiral", frame: "black", cls: "right-[4%] top-[14%] w-[10%] rotate-[5deg]" },
-  { slug: "botanical", frame: "oak", cls: "right-[10%] bottom-[10%] w-[10%] -rotate-[3deg]" },
+  { slug: "botanical", frame: "white", cls: "right-[10%] bottom-[10%] w-[10%] -rotate-[3deg]" },
 ];
 
 export function FinalCta() {

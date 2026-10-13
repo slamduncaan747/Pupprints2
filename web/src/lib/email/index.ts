@@ -14,6 +14,14 @@ function client(): Resend | null {
   return resend;
 }
 
+/** Subjects can carry customer-typed names: keep them to one line, without control characters. */
+function oneLine(s: string): string {
+  return Array.from(s, (ch) => (ch.charCodeAt(0) < 32 || ch.charCodeAt(0) === 127 ? " " : ch))
+    .join("")
+    .replace(/ {2,}/g, " ")
+    .trim();
+}
+
 export type SendResult = { ok: boolean; id?: string; skipped?: boolean; error?: string };
 
 export type EmailMessage = {
@@ -45,7 +53,7 @@ export async function sendEmail(msg: EmailMessage): Promise<SendResult> {
         from: env.emailFrom,
         to: [msg.to],
         replyTo: process.env.EMAIL_REPLY_TO || site.supportEmail,
-        subject: msg.subject,
+        subject: oneLine(msg.subject).slice(0, 200),
         html: msg.html,
         text: msg.text,
         headers: msg.headers,

@@ -88,12 +88,12 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: "Can I make a portrait of a dog who has passed away?",
-        a: "Yes, and we're so sorry for your loss. Any photo you treasure is a good place to start. We prioritize memorial orders, and you'll see the portrait before you pay anything.",
+        a: "Yes, and we're so sorry for your loss. Any photo you treasure is a good place to start, and you'll see the portrait before you pay anything. If you're unsure which photo to use, email us and we'll gladly help.",
         link: { href: "/gifts/memorial", label: "Memorial portraits" },
       },
       {
         q: "What file types can I upload?",
-        a: "JPG, PNG, WebP and HEIC (the default on iPhone), up to 15 MB. Photos straight from your camera roll are ideal.",
+        a: "JPG, PNG, WebP and HEIC (the default on iPhone). Photos straight from your camera roll are ideal, and large photos are fine: we resize them on your device before uploading.",
       },
       {
         q: "Can you change my dog's pose or background?",

@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { Camera, Check, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { socialHandle } from "@/lib/config";
 
 /** "Invite a friend" share + Instagram follow nudge (no incentives promised). */
-export function InviteCard({ siteUrl, instagramUrl }: { siteUrl: string; instagramUrl: string }) {
+export function InviteCard({ siteUrl, instagramUrl }: { siteUrl: string; instagramUrl?: string }) {
   const [copied, setCopied] = useState(false);
+  const handle = socialHandle(instagramUrl);
   const url = `${siteUrl.replace(/\/$/, "")}/?utm_source=customer&utm_medium=share&utm_campaign=invite`;
 
   async function invite() {
@@ -29,7 +31,7 @@ export function InviteCard({ siteUrl, instagramUrl }: { siteUrl: string; instagr
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className={handle ? "grid gap-4 sm:grid-cols-2" : "grid gap-4"}>
       <section className="rounded-card bg-paper-2 p-6" aria-labelledby="invite-title">
         <h2 id="invite-title" className="font-display text-xl">
           Know another dog who deserves a portrait?
@@ -40,12 +42,13 @@ export function InviteCard({ siteUrl, instagramUrl }: { siteUrl: string; instagr
           {copied ? "Link copied" : "Invite a friend"}
         </Button>
       </section>
+      {instagramUrl && handle ? (
       <section className="rounded-card bg-blush/60 p-6" aria-labelledby="ig-title">
         <h2 id="ig-title" className="font-display text-xl">
           Show us on the wall
         </h2>
         <p className="mt-2 text-[15px] text-ink-2">
-          Follow along and tag <span className="font-medium text-ink">@pupprints</span> when it arrives. We love seeing the real dog next to the art.
+          Follow along and tag <span className="font-medium text-ink">{handle}</span> when it arrives. We love seeing the real dog next to the art.
         </p>
         <a
           href={instagramUrl}
@@ -53,9 +56,10 @@ export function InviteCard({ siteUrl, instagramUrl }: { siteUrl: string; instagr
           rel="noreferrer"
           className="mt-4 inline-flex h-9 items-center gap-2 rounded-full bg-ink px-4 text-sm font-medium text-paper hover:bg-ink/90"
         >
-          <Camera className="h-4 w-4" aria-hidden="true" /> Follow @pupprints
+          <Camera className="h-4 w-4" aria-hidden="true" /> Follow {handle}
         </a>
       </section>
+      ) : null}
     </div>
   );
 }

@@ -10,6 +10,7 @@ import { GiftRevealCard } from "@/components/order/gift-reveal-card";
 import { InviteCard } from "@/components/order/invite-card";
 import { OrderTimeline } from "@/components/order/order-timeline";
 import { PaymentPending } from "@/components/order/payment-pending";
+import { PurchaseTracker } from "@/components/order/purchase-tracker";
 import { buildTimeline } from "@/components/order/timeline";
 import { site } from "@/lib/config";
 import { features } from "@/lib/env";
@@ -95,6 +96,26 @@ async function portraitSrc(order: OrderRow): Promise<{ src: string | null; clean
   return { src: previewImageUrl(main), clean: false };
 }
 
+/** Props for the one-time Purchase conversion event (dollars). Null for unpaid or $0 (internal/gift) orders. */
+function purchaseEvent(order: OrderRow) {
+  if (!isPaid(order) || !order.total_cents) return null;
+  return {
+    orderNumber: order.order_number,
+    value: order.total_cents / 100,
+    currency: (order.currency || "usd").toUpperCase(),
+    shipping: order.shipping_cents != null ? order.shipping_cents / 100 : undefined,
+    tax: order.tax_cents != null ? order.tax_cents / 100 : undefined,
+    items: (Array.isArray(order.items) ? order.items : []).map((i) => ({
+      id: i.variantId,
+      name: i.label,
+      price: (i.included ? 0 : i.unitAmount) / 100,
+      quantity: i.quantity,
+      category: i.productType,
+      variant: i.frameColor ?? undefined,
+    })),
+  };
+}
+
 function firstName(name: string | null) {
   const n = (name ?? "").trim().split(/\s+/)[0];
   return n ? n.charAt(0).toUpperCase() + n.slice(1) : null;
@@ -149,9 +170,11 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
   const gens = digitalGenerationIds(order);
   const hi = firstName(order.customer_name);
   const sentTo = order.reveal_sent_at && order.gift_recipient_email ? order.gift_recipient_name || order.gift_recipient_email : null;
+  const purchase = purchaseEvent(order);
 
   return (
     <div className="pb-20">
+      {purchase && <PurchaseTracker {...purchase} />}
       <Container className="pt-10 sm:pt-16">
         <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
           {/* Portrait on a softly lit wall */}

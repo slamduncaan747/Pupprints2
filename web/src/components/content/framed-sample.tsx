@@ -1,15 +1,16 @@
 import { SampleImage } from "@/components/ui/sample-image";
-import { STYLE_MAP, type StyleSlug } from "@/lib/catalog";
+import { STYLE_MAP, type FrameColor, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
-export type FrameFinish = "black" | "white" | "oak" | "walnut" | "gold" | "canvas";
+/** Only finishes we actually sell (catalog frame colors + canvas), so samples never show a frame we don't offer. */
+export type FrameFinish = FrameColor | "canvas";
 
 /** A sensible default frame for each style, so samples look the way they'd hang. */
 export const STYLE_FRAME: Record<StyleSlug, FrameFinish> = {
-  royal: "gold",
-  admiral: "oak",
-  "oil-classic": "walnut",
+  royal: "oak",
+  admiral: "black",
+  "oil-classic": "oak",
   watercolor: "white",
   "fine-line": "black",
   "pop-art": "black",
@@ -18,14 +19,12 @@ export const STYLE_FRAME: Record<StyleSlug, FrameFinish> = {
   astronaut: "black",
   charcoal: "white",
   "mid-century": "oak",
-  holiday: "walnut",
+  holiday: "white",
 };
 
 const FRAME_CLASS: Record<FrameFinish, string> = {
   black: "frame-black",
   white: "frame-white",
-  walnut: "frame-wood",
-  gold: "frame-gold",
   oak: "",
   canvas: "canvas-wrap overflow-hidden rounded-[2px]",
 };

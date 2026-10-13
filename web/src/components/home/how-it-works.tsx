@@ -93,7 +93,7 @@ const STEPS: { title: string; time: string; body: string; visual: ReactNode }[] 
   {
     title: "We print, frame & ship",
     time: `${SHIP_WINDOW[0]}–${SHIP_WINDOW[1]} business days`,
-    body: "A real person checks every portrait. Then it's printed on archival paper and sent to your door, ready to hang.",
+    body: "A real person checks every portrait. Then it's printed with archival, fade-resistant inks and sent to your door.",
     visual: <ShipVisual />,
   },
 ];

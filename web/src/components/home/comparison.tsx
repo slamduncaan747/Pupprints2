@@ -24,7 +24,7 @@ const ROWS = [
   {
     topic: "If it’s not right",
     us: "Love-it guarantee: free remake or full refund",
-    them: "No refunds on custom work",
+    them: "Custom work is often final sale",
   },
   {
     topic: "Gifting",
@@ -34,7 +34,7 @@ const ROWS = [
   {
     topic: "Quality",
     us: "Curated styles, every portrait checked by a person",
-    them: "Thousands of templates, nobody looking",
+    them: "Thousands of templates, results vary",
   },
 ];
 

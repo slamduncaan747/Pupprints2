@@ -161,12 +161,12 @@ Within a few hours of each of the first ~30 orders, reply to the customer from y
 - **Subject:** We painted [Pet] in a new style
 - **Preheader:** It's free to look. The holiday style just arrived.
 - **Body:**
-  > [Pet]'s first portrait is still saved, and from Nov 1 there's a brand-new **Holiday Cozy** style (knit scarf, fireplace, twinkle lights). Want to see [Pet] in it? It's free and takes 30 seconds.
+  > [Pet]'s first portrait is still saved, and there's a new **Holiday Cozy** style (knit scarf, fireplace, twinkle lights). Want to see [Pet] in it? It's free and takes 30 seconds.
   >
   > **[See [Pet] in Holiday Cozy →]**
   >
-  > Planning gifts? Physical orders placed by **Dec 10** arrive before Christmas (standard shipping), and a Gift Reveal can go out any day, including Christmas morning.
-- **Notes:** only send the Dec 10 date once ops confirms it (strategy cutoff). **No discount in W1.** The new style is the reason to come back.
+  > Planning gifts? We recommend ordering physical pieces by **Dec 12** for standard US delivery before Christmas (Dec 5 for Canada), and a Gift Reveal can go out any day, including Christmas morning.
+- **Notes:** these are the dates the site publishes (`CHRISTMAS_2026` in `web/src/components/marketing/commerce.ts`, shown on /shipping). It's guidance, not a guarantee, so don't word it as a promise; if ops moves the date, change it there and here together. **No discount in W1.** The new style is the reason to come back.
 
 ### W2: bought once, 45–60 days after delivery
 - **Subject:** Know a dog who deserves this too?
@@ -179,8 +179,8 @@ Within a few hours of each of the first ~30 orders, reply to the customer from y
   > Want [Pet] on a mug or ornament too? Reply and we'll set it up from your original portrait. No new photo needed.
 
 ### W3: lapsed leads before a real deadline (only when the deadline is real)
-- **Subject:** Ordering for Christmas? The real cutoff is [Dec 10]
-- **Body:** a plain, factual cutoff reminder, plus "the Gift Reveal works right up to Dec 24." No countdown timers, no fake "final hours."
+- **Subject:** Ordering for Christmas? Our recommended order-by date is Dec 12
+- **Body:** a plain, factual cutoff reminder (Dec 12 US, Dec 5 Canada, matching /shipping), plus "the Gift Reveal works right up to Christmas Day." No countdown timers, no fake "final hours."
 
 ---
 

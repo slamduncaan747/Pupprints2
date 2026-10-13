@@ -52,7 +52,8 @@ function normalizeChannel(ch: z.infer<typeof Channel>) {
     try {
       const url = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
       const host = url.hostname.replace(/^www\./, "");
-      if (!host.includes(".")) return null;
+      // `*` is a wildcard in PostgREST (i)like filters, which we match handles with below.
+      if (!host.includes(".") || /[*\\]/.test(`${host}${url.pathname}`)) return null;
       return {
         platform: "other",
         handle: `${host}${url.pathname.replace(/\/+$/, "")}`.slice(0, 80),

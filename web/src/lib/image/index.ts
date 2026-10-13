@@ -6,6 +6,11 @@ import { glyphMarkup, measureGlyphs } from "./glyphs";
 export const UPLOAD_MAX_EDGE = 2048;
 /** Smallest short edge we accept; below this a portrait can't look good. */
 export const UPLOAD_MIN_EDGE = 256;
+/**
+ * Largest decoded size we accept for an upload (~ a 48 MP phone photo with headroom). A few KB
+ * of PNG can declare 16k×16k pixels (≈1 GB decoded), so check the header before decoding.
+ */
+export const UPLOAD_MAX_PIXELS = 64_000_000;
 /** Longest edge of the public, watermarked preview. */
 export const PREVIEW_MAX_EDGE = 1100;
 
@@ -46,8 +51,11 @@ export async function normalizeUpload(input: Buffer): Promise<ImageResult & { or
   if (!DECODABLE.has(format) && format !== "heif") {
     throw new ImageError("unsupported_type", "Please upload a JPG, PNG or WebP photo.");
   }
+  if (!meta.width || !meta.height || meta.width * meta.height > UPLOAD_MAX_PIXELS) {
+    throw new ImageError("unreadable", "That image is too large to process. Please choose a regular photo (under 60 megapixels).");
+  }
 
-  const { data, info } = await sharp(input, { failOn: "none", animated: false })
+  const { data, info } = await sharp(input, { failOn: "none", animated: false, limitInputPixels: UPLOAD_MAX_PIXELS })
     .autoOrient()
     .resize({ width: UPLOAD_MAX_EDGE, height: UPLOAD_MAX_EDGE, fit: "inside", withoutEnlargement: true })
     .flatten({ background: "#ffffff" })

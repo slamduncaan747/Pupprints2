@@ -6,6 +6,7 @@ import { PRODUCT_MAP, PRODUCTS, STYLES, getStyle } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
@@ -20,6 +21,7 @@ import { FrameSwatches } from "@/components/marketing/product-card";
 import { GOOD_FOR_LABELS, honestDescription, styleContent, stylesFor } from "@/components/marketing/style-content";
 import { fromPrice, shipWindow, toPrice, FRAME_LABELS } from "@/components/marketing/commerce";
 import { honestText } from "@/components/marketing/honest";
+import { breedsForStyle } from "@/content/breeds";
 
 export const dynamicParams = false;
 
@@ -40,7 +42,20 @@ export async function generateMetadata({ params }: PageProps<"/styles/[slug]">):
       title: `${c.title} | ${site.name}`,
       description: c.metaDescription,
       url: `/styles/${style.slug}`,
-      images: [{ url: STYLE_SAMPLES[style.slug], width: 960, height: 1200, alt: `${style.name} dog portrait example` }],
+      type: "website",
+      siteName: site.name,
+      locale: "en_US",
+      // The style sample first; the site-wide card is the fallback while samples are still being generated.
+      images: [
+        { url: STYLE_SAMPLES[style.slug], width: 960, height: 1200, alt: `${style.name} dog portrait example` },
+        DEFAULT_OG_IMAGE,
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${c.title} | ${site.name}`,
+      description: c.metaDescription,
+      images: [DEFAULT_OG_IMAGE.url],
     },
   };
 }
@@ -54,6 +69,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
   const createHref = `/create?style=${style.slug}`;
   const best = c.bestOn.map((t) => PRODUCT_MAP[t]).filter(Boolean);
   const others = stylesFor(style.goodFor, 4, style.slug);
+  const breeds = breedsForStyle(style.slug, 8);
   const lowest = Math.min(...PRODUCTS.map(fromPrice));
   const highest = Math.max(...PRODUCTS.map(toPrice));
   const physicalFrom = Math.min(...PRODUCTS.filter((p) => p.type !== "digital").map(fromPrice));
@@ -232,7 +248,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
         </Container>
       </Section>
 
-      {others.length > 0 && (
+      {(others.length > 0 || breeds.length > 0) && (
         <Section className="bg-paper-2">
           <Container>
             <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
@@ -241,13 +257,42 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
                 All styles
               </ButtonLink>
             </div>
-            <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4">
-              {others.map((s) => (
-                <li key={s.slug}>
-                  <StyleCard style={s} showTags={false} />
-                </li>
-              ))}
-            </ul>
+            {others.length > 0 && (
+              <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4">
+                {others.map((s) => (
+                  <li key={s.slug}>
+                    <StyleCard style={s} showTags={false} />
+                  </li>
+                ))}
+              </ul>
+            )}
+            {breeds.length > 0 && (
+              <div className="mt-14 border-t border-line pt-8">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-3">
+                  {style.name} by breed
+                </h3>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {breeds.map((b) => (
+                    <li key={b.slug}>
+                      <Link
+                        href={`/breeds/${b.slug}`}
+                        className="inline-flex rounded-full bg-paper px-3.5 py-1.5 text-sm text-ink-2 ring-1 ring-line transition hover:text-ink hover:ring-ink/30"
+                      >
+                        {b.name}
+                      </Link>
+                    </li>
+                  ))}
+                  <li>
+                    <Link
+                      href="/breeds"
+                      className="inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-sm font-medium text-clay-dark underline-offset-4 hover:underline"
+                    >
+                      All breeds <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
           </Container>
         </Section>
       )}

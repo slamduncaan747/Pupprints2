@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { site } from "@/lib/config";
+import { site, socialLinks } from "@/lib/config";
 import { absoluteUrl } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { Hero } from "@/components/home/hero";
@@ -49,7 +49,7 @@ const jsonLd = {
       url: absoluteUrl("/"),
       description: site.description,
       email: site.supportEmail,
-      sameAs: Object.values(site.social),
+      ...(socialLinks.length ? { sameAs: socialLinks.map((s) => s.url) } : {}),
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",

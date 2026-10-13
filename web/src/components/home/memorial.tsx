@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Camera, Clock, Send } from "lucide-react";
+import { ArrowRight, Camera, HeartHandshake, Send } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
 import { SampleImage } from "@/components/ui/sample-image";
 import { STYLE_MAP, type StyleSlug } from "@/lib/catalog";
@@ -18,9 +18,9 @@ const POINTS = [
     body: "Upload the one you love, even if it's a little soft. You'll see the result before you pay.",
   },
   {
-    icon: Clock,
-    title: "Priority handling",
-    body: "Memorial orders move to the front of the line, at no extra cost.",
+    icon: HeartHandshake,
+    title: "Checked by a person, with care",
+    body: "Someone on our team checks every portrait before it's printed. Not sure which photo to use? Write to us and we'll help.",
   },
   {
     icon: Send,
