@@ -283,13 +283,11 @@ function Canvas({ src, ratio, children }: { src: string; ratio: number; children
         }}
       >
         {children}
-        {/* Canvas weave + face edge highlight */}
+        {/* Canvas tooth (film grain) + face edge highlight */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          className="grain pointer-events-none absolute inset-0"
           style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 3px), repeating-linear-gradient(-45deg, rgb(0 0 0 / 0.05) 0 1px, transparent 1px 3px)",
             boxShadow: "inset 0.15cqw 0.15cqw 0 rgb(255 255 255 / 0.18), inset -0.1cqw -0.1cqw 0 rgb(0 0 0 / 0.18)",
           }}
         />
@@ -392,7 +390,7 @@ function Digital({ children }: { children: ReactNode }) {
   return (
     <div className="relative">
       <div className="overflow-hidden rounded-[2.4cqw] shadow-frame ring-1 ring-ink/10">{children}</div>
-      <div className="absolute bottom-[4cqw] left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-ink/80 px-3 py-1.5 text-[11px] font-semibold tracking-wide whitespace-nowrap text-paper uppercase backdrop-blur">
+      <div className="absolute top-[4cqw] left-[4cqw] inline-flex items-center gap-1.5 rounded-full bg-ink/80 px-3 py-1.5 text-[11px] font-semibold tracking-wide whitespace-nowrap text-paper uppercase backdrop-blur @max-[13rem]:hidden">
         <Download className="h-3.5 w-3.5" aria-hidden />
         High-res digital file
       </div>
@@ -404,10 +402,10 @@ function Digital({ children }: { children: ReactNode }) {
 /* Room scene                                                          */
 /* ------------------------------------------------------------------ */
 
-// Scene coordinates in inches. The view spans 78" of wall, from 16" to 88" above the floor.
+// Scene coordinates in inches. The view spans 78" of wall, from 16" to 92" above the floor.
 const SCENE_W = 78;
 const VIEW_BOTTOM = 16;
-const VIEW_TOP = 88;
+const VIEW_TOP = 92;
 const SCENE_H = VIEW_TOP - VIEW_BOTTOM;
 const SOFA_BACK = 33;
 const HANG_GAP = 7;

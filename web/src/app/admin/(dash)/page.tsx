@@ -103,7 +103,7 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
       {data && (
         <>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <Kpi label="Revenue" value={fmtMoney(data.kpis.revenueCents)} sub={`${fmtNum(data.kpis.orders)} paid orders`} />
+            <Kpi label="Revenue" value={fmtMoney(data.kpis.revenueCents)} sub={`${fmtNum(data.kpis.orders)} paid order${data.kpis.orders === 1 ? "" : "s"}`} />
             <Kpi label="Orders" value={fmtNum(data.kpis.orders)} sub={`AOV ${fmtMoney(data.kpis.aovCents)}`} />
             <Kpi
               label="Preview → order"
@@ -125,11 +125,11 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
             <Kpi
               label="Partner link clicks"
               value={fmtNum(data.kpis.refClicks)}
-              sub={`${fmtNum(data.kpis.refOrders)} attributed orders`}
+              sub={`${fmtNum(data.kpis.refOrders)} attributed order${data.kpis.refOrders === 1 ? "" : "s"}`}
             />
           </div>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+          <div className="mt-6 grid items-start gap-6 lg:grid-cols-[1fr_1.4fr]">
             <Card title={`Funnel · ${rangeLabel.toLowerCase()}`}>
               <Funnel steps={data.funnel} />
             </Card>
@@ -176,7 +176,7 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
             </Card>
           </div>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <div className="mt-6 grid items-start gap-6 lg:grid-cols-[1.4fr_1fr]">
             <Card
               title={`Partner leaderboard · ${rangeLabel.toLowerCase()}`}
               actions={

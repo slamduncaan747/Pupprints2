@@ -10,7 +10,7 @@ const CHANNELS = [
   { platform: "tiktok", label: "TikTok", placeholder: "@yourdog", audience: "Followers" },
   { platform: "youtube", label: "YouTube", placeholder: "@yourchannel", audience: "Subscribers" },
   { platform: "pinterest", label: "Pinterest", placeholder: "yourprofile", audience: "Followers" },
-  { platform: "other", label: "Blog / other", placeholder: "yourblog.com", audience: "Monthly readers" },
+  { platform: "other", label: "Blog / other", placeholder: "yourblog.com", audience: "Readers/mo" },
 ] as const;
 
 type Platform = (typeof CHANNELS)[number]["platform"];

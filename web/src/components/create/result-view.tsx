@@ -35,7 +35,7 @@ export function ResultView({
   return (
     <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-6 pb-32 sm:px-8 sm:pt-10 lg:grid-cols-[1.12fr_0.88fr] lg:gap-14 lg:pb-20">
       <div className="min-w-0">
-        <div className="relative flex justify-center overflow-hidden rounded-card bg-paper-2 px-5 pt-7 pb-9 sm:px-12 sm:pt-12 sm:pb-14">
+        <div className="relative flex justify-center overflow-hidden rounded-card bg-paper-2 px-5 pt-6 pb-8 sm:px-12 sm:pt-12 sm:pb-14">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -53,13 +53,13 @@ export function ResultView({
         </div>
         <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[13px] text-ink-3">
           <Sparkles className="h-3.5 w-3.5 text-gold" aria-hidden />
-          Free preview · the watermark is removed on your print and file
+          Free preview · no watermark on your order
         </p>
       </div>
 
       <div className="min-w-0 lg:pt-4">
         <Eyebrow>Your free preview</Eyebrow>
-        <h1 className="mt-3 font-display text-[2.15rem] leading-[1.05] sm:text-5xl">
+        <h1 className="mt-2 font-display text-[2.15rem] leading-[1.05] sm:text-5xl">
           {name ? (
             <>
               {name}, as <span className="italic">{style?.name}</span>.
@@ -91,7 +91,7 @@ export function ResultView({
             className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-4 text-[15px] font-medium text-ink ring-1 ring-ink/15 transition hover:ring-ink/40"
           >
             <Palette className="h-4 w-4" aria-hidden />
-            Try another style
+            Another style
           </button>
           <button
             type="button"
@@ -99,13 +99,13 @@ export function ResultView({
             className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-4 text-[15px] font-medium text-ink ring-1 ring-ink/15 transition hover:ring-ink/40"
           >
             <RefreshCw className="h-4 w-4" aria-hidden />
-            Paint it again
+            Paint again
           </button>
         </div>
 
         {strip.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-[12px] font-semibold tracking-[0.14em] text-ink-3 uppercase">
+            <h2 className="font-sans text-[12px] font-semibold tracking-[0.14em] text-ink-3 uppercase">
               Your portraits <span className="tabular-nums">({strip.length})</span>
             </h2>
             <ul className="-mx-4 mt-3 flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:thin] sm:mx-0 sm:px-0">
@@ -157,7 +157,6 @@ export function ResultView({
                 source="save_preview"
                 generationId={active.generationId}
                 petName={name || undefined}
-                style={active.style}
                 cta="Email it"
                 doneMessage="Sent! Your preview is on its way."
               />

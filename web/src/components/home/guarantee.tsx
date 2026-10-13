@@ -3,7 +3,6 @@ import { ArrowRight, BadgeCheck, HeartHandshake, Lock, Palette } from "lucide-re
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
 import { PawMark } from "@/components/ui/paw";
-import { cn } from "@/lib/utils";
 import { Accent } from "./typography";
 
 const PROMISE_ITEMS = [
@@ -32,7 +31,7 @@ const PROMISE_ITEMS = [
 function Seal() {
   return (
     <div className="relative h-36 w-36 shrink-0 sm:h-44 sm:w-44" aria-hidden="true">
-      <svg viewBox="0 0 200 200" className={cn("absolute inset-0 h-full w-full text-ink", "ph-spin")}>
+      <svg viewBox="0 0 200 200" className="absolute inset-0 h-full w-full text-ink ph-spin">
         <defs>
           <path id="seal-ring" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0" />
         </defs>
@@ -54,10 +53,7 @@ export function Guarantee() {
     <Section aria-labelledby="guarantee-title" className="bg-paper">
       <Container>
         <div
-          className={cn(
-            "grid gap-12 rounded-[1.75rem] bg-butter-soft/70 p-7 ring-1 ring-[#efdfb4] sm:p-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:p-16",
-            "ph-reveal",
-          )}
+          className="grid gap-12 rounded-[1.75rem] bg-butter-soft/70 p-7 ring-1 ring-[#efdfb4] sm:p-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:p-16 ph-reveal"
         >
           <div className="flex flex-col items-start">
             <Seal />
@@ -85,12 +81,14 @@ export function Guarantee() {
             </div>
           </div>
 
-          <ul className="grid content-center gap-x-8 gap-y-8 sm:grid-cols-2">
+          <ul className="grid content-center gap-x-8 gap-y-6 sm:grid-cols-2 sm:gap-y-8">
             {PROMISE_ITEMS.map(({ icon: Icon, title, body }) => (
-              <li key={title} className="border-t border-ink/10 pt-6">
-                <Icon className="h-6 w-6 text-clay-dark" strokeWidth={1.6} aria-hidden="true" />
-                <p className="mt-4 font-display text-xl leading-snug">{title}</p>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">{body}</p>
+              <li key={title} className="flex gap-4 border-t border-ink/10 pt-5 sm:block sm:pt-6">
+                <Icon className="mt-0.5 h-6 w-6 shrink-0 text-clay-dark" strokeWidth={1.6} aria-hidden="true" />
+                <div>
+                  <p className="font-display text-xl leading-snug sm:mt-4">{title}</p>
+                  <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">{body}</p>
+                </div>
               </li>
             ))}
           </ul>

@@ -135,7 +135,7 @@ export default function PartnersPage() {
               <ButtonLink href="#apply" size="lg" className="w-full sm:w-auto">
                 Apply in two minutes <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </ButtonLink>
-              <ButtonLink href="#how" variant="ghost" size="lg" className="w-full sm:w-auto">
+              <ButtonLink href="#how" variant="secondary" size="lg" className="w-full sm:w-auto">
                 How it works
               </ButtonLink>
             </div>

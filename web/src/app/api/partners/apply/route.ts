@@ -36,6 +36,9 @@ const Body = z.object({
 type ExistingPartner = {
   id: string;
   platform: string | null;
+  name: string | null;
+  email: string | null;
+  tier: string | null;
   status: string;
   source: string | null;
   followers: number | null;
@@ -129,7 +132,7 @@ export async function POST(req: Request) {
     for (const ch of channels) {
       const { data: rows } = await c
         .from("partners")
-        .select("id, platform, status, source, followers, application")
+        .select("id, platform, name, email, tier, status, source, followers, application")
         .eq("platform", ch.platform)
         .ilike("handle", escapeLike(ch.handle))
         .limit(1);
@@ -141,16 +144,24 @@ export async function POST(req: Request) {
 
     const now = new Date().toISOString();
     if (existing) {
+      // Anyone can type any handle, so only fill blanks on an existing CRM row; the full
+      // submission is kept in `application` for a human to review.
+      const prev = existing.application ?? {};
       const { error } = await c
         .from("partners")
         .update({
-          name: data.name,
-          email: data.email,
-          followers: existing.matched.followers ?? existing.followers,
-          tier,
+          name: existing.name ?? data.name,
+          email: existing.email ?? data.email,
+          followers: existing.followers ?? existing.matched.followers,
+          tier: existing.tier ?? tier,
           status: existing.status === "prospect" ? "applied" : existing.status,
           source: existing.source ?? "application",
-          application: { ...(existing.application ?? {}), ...application },
+          application: {
+            ...prev,
+            ...application,
+            referredBy: (prev.referredBy as string | null | undefined) ?? application.referredBy,
+            firstSubmittedAt: (prev.firstSubmittedAt as string | undefined) ?? (prev.submittedAt as string | undefined) ?? application.submittedAt,
+          },
           updated_at: now,
         })
         .eq("id", existing.id);

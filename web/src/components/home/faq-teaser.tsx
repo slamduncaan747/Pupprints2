@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
 import { PRODUCT_MAP, SHIPPING_RATES } from "@/lib/catalog";
 import { site } from "@/lib/config";
-import { cn, formatPrice } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { fromPrice } from "./data";
 import { Accent, HomeHeading } from "./typography";
 
@@ -37,7 +37,7 @@ export function FaqTeaser() {
   return (
     <Section aria-labelledby="faq-title" className="bg-paper">
       <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-        <div className={cn("lg:sticky lg:top-28 lg:self-start", "ph-reveal")}>
+        <div className="lg:sticky lg:top-28 lg:self-start ph-reveal">
           <HomeHeading
             id="faq-title"
             eyebrow="Good questions"
@@ -63,10 +63,12 @@ export function FaqTeaser() {
               </>
             }
           />
-          <ButtonLink href="/create" className="group mt-8 hidden lg:inline-flex">
-            Try it free
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-          </ButtonLink>
+          <div className="mt-8 hidden lg:block">
+            <ButtonLink href="/create" className="group">
+              Try it free
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+            </ButtonLink>
+          </div>
         </div>
 
         <div className="ph-reveal">
@@ -90,10 +92,12 @@ export function FaqTeaser() {
             >
               All questions <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
-            <ButtonLink href="/create" className="group w-full sm:w-auto lg:hidden">
-              Try it free
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-            </ButtonLink>
+            <div className="lg:hidden">
+              <ButtonLink href="/create" className="group w-full sm:w-auto">
+                Try it free
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              </ButtonLink>
+            </div>
           </div>
         </div>
       </Container>

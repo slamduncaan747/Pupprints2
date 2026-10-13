@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Check } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { getStyle, type StyleSlug } from "@/lib/catalog";
@@ -65,9 +65,9 @@ export function GeneratingView({
           frameColor="oak"
           size="md"
           priority
-          imgClassName="scale-105 blur-[2px] saturate-[0.55] sepia-[0.35]"
+          imgClassName="grayscale contrast-[1.15] brightness-[1.12] blur-[0.6px]"
         >
-          <PaintOverlay color={swatch} animate={!reduce} />
+          <BrushReveal src={photoUrl} color={swatch} animate={!reduce} />
         </FrameMockup>
       </div>
 
@@ -127,35 +127,78 @@ export function GeneratingView({
   );
 }
 
-/** Brush strokes in the style's color sweep across the photo, plus a soft light sweep. */
-function PaintOverlay({ color, animate }: { color: string; animate: boolean }) {
+/**
+ * "Painting" reveal: the photo sits underneath as a soft pencil underdrawing, and loose brush
+ * strokes (an animated, roughened SVG mask) paint it back in, in color, row by row. Loops
+ * until the real portrait arrives.
+ */
+function BrushReveal({ src, color, animate }: { src: string; color: string; animate: boolean }) {
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
+  const rough = `pp-rough-${uid}`;
+  const mask = `pp-mask-${uid}`;
   const strokes = [
-    "M-10 18 C 20 10, 50 26, 110 14",
-    "M-10 36 C 30 46, 60 28, 110 40",
-    "M-10 56 C 25 48, 70 64, 110 54",
-    "M-10 76 C 35 84, 65 68, 110 78",
-    "M-10 96 C 20 88, 55 104, 110 94",
-    "M-10 116 C 30 124, 70 108, 110 120",
+    "M -30 28 C 70 6, 200 52, 330 22",
+    "M 330 82 C 230 104, 90 60, -30 92",
+    "M -30 148 C 90 126, 210 172, 330 140",
+    "M 330 204 C 210 228, 100 182, -30 212",
+    "M -30 266 C 80 246, 220 292, 330 262",
+    "M 330 326 C 220 348, 90 304, -30 334",
+    "M -30 388 C 90 366, 200 410, 330 384",
   ];
+  const T = 12; // seconds per loop
+  const per = 1.15; // seconds per stroke
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0">
-      <svg viewBox="0 0 100 133" preserveAspectRatio="none" className="absolute inset-0 h-full w-full mix-blend-multiply">
-        {strokes.map((d, i) => (
-          <motion.path
-            key={d}
-            d={d}
-            fill="none"
-            stroke={color}
-            strokeOpacity={0.42}
-            strokeWidth={17}
-            strokeLinecap="round"
-            initial={{ pathLength: animate ? 0 : 1 }}
-            animate={animate ? { pathLength: [0, 1, 1, 0], opacity: [1, 1, 0.9, 0] } : undefined}
-            transition={{ duration: 6.5, times: [0, 0.35, 0.85, 1], delay: i * 0.45, repeat: Infinity, repeatDelay: 0.6, ease: "easeInOut" }}
+      {/* paper wash over the underdrawing */}
+      <div className="absolute inset-0 bg-[#f6efe2]/45 mix-blend-screen" />
+      <svg viewBox="0 0 300 400" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+        <defs>
+          <filter id={rough} x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <mask id={mask} maskUnits="userSpaceOnUse" x="0" y="0" width="300" height="400">
+            <rect width="300" height="400" fill="black" />
+            <motion.g
+              filter={`url(#${rough})`}
+              initial={{ opacity: 1 }}
+              animate={animate ? { opacity: [1, 1, 0, 0] } : undefined}
+              transition={{ duration: T, times: [0, 0.86, 0.95, 1], repeat: Infinity, ease: "easeInOut" }}
+            >
+              {strokes.map((d, i) => {
+                const s0 = (i * per) / T;
+                const s1 = ((i + 1) * per) / T;
+                return (
+                  <motion.path
+                    key={d}
+                    d={d}
+                    fill="none"
+                    stroke="white"
+                    strokeWidth={74}
+                    strokeLinecap="round"
+                    initial={{ pathLength: animate ? 0 : i < 3 ? 1 : 0 }}
+                    animate={animate ? { pathLength: [0, 0, 1, 1, 0] } : undefined}
+                    transition={{ duration: T, times: [0, s0, s1, 0.97, 1], repeat: Infinity, ease: "easeInOut" }}
+                  />
+                );
+              })}
+            </motion.g>
+          </mask>
+        </defs>
+        <g mask={`url(#${mask})`}>
+          <image
+            href={src}
+            x="0"
+            y="0"
+            width="300"
+            height="400"
+            preserveAspectRatio="xMidYMid slice"
+            style={{ filter: "saturate(1.25) contrast(1.05) sepia(0.12) blur(0.4px)" }}
           />
-        ))}
+          <rect width="300" height="400" fill={color} opacity="0.28" style={{ mixBlendMode: "soft-light" }} />
+        </g>
       </svg>
-      <div className="absolute inset-0 animate-shimmer bg-[linear-gradient(110deg,transparent_30%,rgb(255_255_255/0.35)_50%,transparent_70%)] bg-[length:250%_100%]" />
+      <div className="absolute inset-0 animate-shimmer bg-[linear-gradient(110deg,transparent_35%,rgb(255_255_255/0.28)_50%,transparent_65%)] bg-[length:250%_100%]" />
     </div>
   );
 }

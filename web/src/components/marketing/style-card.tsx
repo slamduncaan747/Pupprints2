@@ -23,7 +23,7 @@ export function StyleCard({
     <article className={cn("group flex flex-col", className)}>
       <Link
         href={`/styles/${style.slug}`}
-        className="relative block rounded-card bg-paper-2 px-[14%] py-[12%] transition-colors duration-300 hover:bg-paper-3"
+        className="relative block rounded-2xl bg-paper-2 px-[13%] py-[12%] transition-colors duration-300 hover:bg-paper-3 sm:rounded-card"
       >
         <FramedArt
           style={style.slug}
@@ -33,21 +33,21 @@ export function StyleCard({
           className="transition-transform duration-500 group-hover:-translate-y-1"
         />
         {style.isNew && (
-          <Badge tone="butter" className="absolute left-4 top-4">
+          <Badge tone="butter" className="absolute left-2.5 top-2.5 sm:left-4 sm:top-4">
             New
           </Badge>
         )}
         <span className="sr-only">View the {style.name} style</span>
       </Link>
-      <div className="mt-5 flex flex-1 flex-col">
-        <h3 className="font-display text-2xl leading-tight">
+      <div className="mt-4 flex flex-1 flex-col sm:mt-5">
+        <h3 className="font-display text-xl leading-tight sm:text-2xl">
           <Link href={`/styles/${style.slug}`} className="hover:text-clay-dark">
             {style.name}
           </Link>
         </h3>
-        <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">{style.blurb}</p>
+        <p className="mt-1 text-sm leading-relaxed text-ink-2 sm:mt-1.5 sm:text-[15px]">{style.blurb}</p>
         {showTags && (
-          <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Good for">
+          <ul className="mt-3 hidden flex-wrap gap-1.5 sm:flex" aria-label="Good for">
             {style.goodFor.map((g) => (
               <li key={g} className="rounded-full bg-paper-2 px-2.5 py-1 text-xs text-ink-2">
                 {GOOD_FOR_LABELS[g]}
@@ -57,7 +57,7 @@ export function StyleCard({
         )}
         <Link
           href={`/create?style=${style.slug}`}
-          className="mt-4 inline-flex items-center gap-1.5 self-start text-[15px] font-medium text-clay-dark underline-offset-4 hover:underline"
+          className="mt-3 inline-flex items-center gap-1.5 self-start text-sm font-medium text-clay-dark underline-offset-4 hover:underline sm:mt-4 sm:text-[15px]"
         >
           Try with your dog <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>

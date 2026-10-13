@@ -147,7 +147,7 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/orde
                             .join(" · ") || "—"}
                         </p>
                         <p className="mt-1 tabular-nums text-ink-2">
-                          {it.quantity} × {fmtMoney(it.unitCents, cur)}
+                          {it.quantity} × {it.included ? "included" : fmtMoney(it.unitCents, cur)}
                         </p>
                         {it.variantId && <p className="mt-1 font-mono text-xs text-ink-3">{it.variantId}</p>}
                         <div className="mt-3 flex flex-wrap gap-2">

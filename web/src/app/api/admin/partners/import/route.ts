@@ -19,7 +19,7 @@ const PLATFORM_ALIASES: Record<string, string> = {
 };
 const MAX_ROWS = 2000;
 
-type ExistingRow = { id: string; platform: string | null; handle: string | null };
+type ExistingRow = { id: string; platform: string | null; handle: string | null; notes: string | null };
 
 /**
  * Bulk CSV import of researched creators. Columns (header row required, any order):
@@ -59,12 +59,12 @@ export async function POST(req: Request) {
   if (rows.length > MAX_ROWS) return jsonError(`Too many rows (max ${MAX_ROWS})`, 413);
 
   // Load existing (platform, handle) keys once.
-  const existing = new Map<string, string>();
+  const existing = new Map<string, ExistingRow>();
   for (let from = 0; ; from += 1000) {
-    const { data, error } = await c.from("partners").select("id, platform, handle").range(from, from + 999);
+    const { data, error } = await c.from("partners").select("id, platform, handle, notes").range(from, from + 999);
     if (error) return jsonError(error.message, 500);
     for (const r of (data ?? []) as ExistingRow[]) {
-      if (r.handle) existing.set(`${r.platform ?? ""}|${r.handle.toLowerCase()}`, r.id);
+      if (r.handle) existing.set(`${r.platform ?? ""}|${r.handle.toLowerCase()}`, r);
     }
     if (!data || data.length < 1000) break;
   }
@@ -114,10 +114,16 @@ export async function POST(req: Request) {
       notes: get("notes").slice(0, 5000) || null,
     };
 
-    const id = existing.get(key);
-    if (id) {
+    const match = existing.get(key);
+    if (match) {
       const patch = Object.fromEntries(Object.entries(fields).filter(([, v]) => v !== null && v !== ""));
-      updates.push({ id, line, patch: { ...patch, updated_at: now } });
+      // Never lose CRM notes: append research notes instead of replacing them.
+      if (patch.notes && match.notes && !match.notes.includes(String(patch.notes))) {
+        patch.notes = `${match.notes}\n${patch.notes}`.slice(0, 5000);
+      } else if (patch.notes && match.notes) {
+        delete patch.notes;
+      }
+      updates.push({ id: match.id, line, patch: { ...patch, updated_at: now } });
     } else {
       inserts.push({
         ...fields,

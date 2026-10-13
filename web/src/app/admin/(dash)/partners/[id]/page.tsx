@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { ExternalLink, Gift } from "lucide-react";
 import { z } from "zod";
 import { db } from "@/lib/supabase/server";
-import { getPartnerStats, partnerShareLink, partnerStatsLink, partnerStatsToken, type PartnerRow } from "@/lib/partners";
+import { daysAgoIso, getPartnerStats, partnerShareLink, partnerStatsLink, partnerStatsToken, type PartnerRow } from "@/lib/partners";
 import { PartnerForm } from "@/components/admin/partner-form";
 import { CopyButton, PartnerQuickActions } from "@/components/admin/partner-controls";
 import { REDEEMABLE_STATUSES } from "@/components/partners/program";
-import { Card, DbMissing, PageHeader, StatusPill, fmtDate, fmtMoney, fmtNum } from "@/components/admin/ui";
+import { Card, DbMissing, PageHeader, StatusPill, adminButton, fmtDate, fmtMoney, fmtNum } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Partner", robots: { index: false, follow: false } };
@@ -111,7 +112,7 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
   if (!data) notFound();
   const p = data;
 
-  const since30 = new Date(Date.now() - 30 * 86_400_000).toISOString();
+  const since30 = daysAgoIso(30);
   const [all, last30] = p.code ? await Promise.all([getPartnerStats(p.code), getPartnerStats(p.code, since30)]) : [null, null];
   const redeemable = (REDEEMABLE_STATUSES as readonly string[]).includes(p.status);
 
@@ -135,11 +136,16 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
           </>
         }
         actions={
-          p.profile_url ? (
-            <a href={p.profile_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-ink-2 hover:text-ink">
-              Profile <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          ) : undefined
+          <>
+            {p.profile_url && (
+              <a href={p.profile_url} target="_blank" rel="noreferrer" className={adminButton("secondary")}>
+                Profile <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            )}
+            <Link href={`/admin/partners/${p.id}/gift`} className={adminButton("accent")}>
+              <Gift className="h-4 w-4" /> Gift a portrait
+            </Link>
+          </>
         }
       />
 

@@ -12,7 +12,7 @@ export function Section({ className, ...props }: ComponentProps<"section">) {
 export function Eyebrow({ className, ...props }: ComponentProps<"p">) {
   return (
     <p
-      className={cn("text-xs font-semibold uppercase tracking-[0.18em] text-clay", className)}
+      className={cn("text-xs font-semibold uppercase tracking-[0.18em] text-clay-dark", className)}
       {...props}
     />
   );

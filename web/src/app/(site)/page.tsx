@@ -15,7 +15,7 @@ import { FinalCta } from "@/components/home/final-cta";
 
 const TITLE = "Custom Dog Portraits from Your Photo — See Yours Free";
 const DESCRIPTION =
-  "Turn your photo into a custom dog portrait. See it free in about a minute, then we print, frame and ship it in days. Hi-res file included. Love it, or it's on us.";
+  "Turn your photo into a custom dog portrait. See it free in about a minute, then we print, frame and ship it to your door. Love it, or it's on us.";
 
 export const metadata: Metadata = {
   title: { absolute: `${TITLE} | ${site.name}` },

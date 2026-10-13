@@ -45,7 +45,7 @@ export function PageHero({
           aside && "lg:grid-cols-[1.05fr_0.95fr]",
         )}
       >
-        <div className={cn(centered && "mx-auto max-w-3xl text-center")}>
+        <div className={cn("min-w-0", centered && "mx-auto max-w-3xl text-center")}>
           {breadcrumbs && <div className="mb-8 sm:mb-10">{breadcrumbs}</div>}
           {!breadcrumbs && <div className="h-4 sm:h-8 lg:h-10" />}
           {eyebrow && <Eyebrow className="mb-5">{eyebrow}</Eyebrow>}

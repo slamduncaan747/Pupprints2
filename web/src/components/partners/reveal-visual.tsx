@@ -18,7 +18,7 @@ export function RevealVisual() {
         <div className="absolute inset-x-[6%] bottom-[4%] top-0 rounded-t-full bg-gradient-to-b from-paper-2 to-paper-3/60" />
 
         {/* Framed portrait on the wall */}
-        <div className="absolute left-[2%] top-[8%] w-[50%] -rotate-[4deg]">
+        <div className="absolute left-[2%] top-[6%] w-[48%] -rotate-[4deg]">
           <div className="frame-wood">
             <div className="mat">
               <SampleImage src={STYLE_SAMPLES.botanical} alt="" swatch={botanical.swatch} sizes="240px" />
@@ -52,10 +52,10 @@ export function RevealVisual() {
         </div>
 
         {/* Code ticket */}
-        <div className="absolute bottom-[8%] left-[10%] -rotate-[2deg] rounded-xl bg-white px-4 py-3 shadow-soft ring-1 ring-line">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-clay">Your code</p>
-          <p className="mt-0.5 font-display text-xl leading-none">YOURDOG{PROGRAM.discountPercent}</p>
-          <p className="mt-1 text-[11px] text-ink-3">
+        <div className="absolute bottom-[3%] left-0 z-10 -rotate-[2deg] rounded-xl bg-white px-3 py-2 shadow-soft ring-1 ring-line sm:px-4 sm:py-3">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-clay sm:text-[10px]">Your code</p>
+          <p className="mt-0.5 font-display text-lg leading-none sm:text-xl">YOURDOG{PROGRAM.discountPercent}</p>
+          <p className="mt-1 hidden text-[11px] text-ink-3 sm:block">
             {PROGRAM.discountPercent}% off for them · {Math.round(PROGRAM.commissionRate * 100)}% for you
           </p>
         </div>

@@ -269,7 +269,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
             <Eyebrow className="mb-4">Questions</Eyebrow>
-            <h2 className="font-display text-4xl leading-[1.05] sm:text-5xl">About the {product.shortName.toLowerCase()}</h2>
+            <h2 className="font-display text-4xl leading-[1.05] sm:text-5xl">About the {product.name.toLowerCase()}</h2>
             <p className="mt-5 text-lg text-ink-2">
               Still wondering?{" "}
               <Link href="/faq" className="text-ink underline decoration-clay/50 underline-offset-4 hover:decoration-clay">
@@ -292,7 +292,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           <ul className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((p) => (
               <li key={p.type}>
-                <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} />
+                <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} onTint />
               </li>
             ))}
           </ul>

@@ -119,7 +119,7 @@ export function PageHeader({
 
 export function Card({ className, title, actions, children, ...props }: ComponentProps<"section"> & { title?: ReactNode; actions?: ReactNode }) {
   return (
-    <section className={cn("rounded-xl border border-line bg-white", className)} {...props}>
+    <section className={cn("min-w-0 rounded-xl border border-line bg-white", className)} {...props}>
       {(title || actions) && (
         <header className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
           {title && <h2 className="font-sans text-sm font-semibold tracking-normal text-ink">{title}</h2>}

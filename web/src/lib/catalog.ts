@@ -30,6 +30,7 @@ export type ArtStyle = {
   swatch: string;
   /** Which occasions this style is especially good for (used for merchandising). */
   goodFor: ("gift" | "memorial" | "funny" | "decor" | "holiday")[];
+  /** Featured in merchandising. Label it "Featured"/"Staff pick" — never "Popular"/"Best-selling" (no sales data yet). */
   popular?: boolean;
   isNew?: boolean;
 };
@@ -43,7 +44,7 @@ export const STYLES: ArtStyle[] = [
     name: "The Royal",
     blurb: "Velvet, ermine and a crown. Nobility suits them.",
     description:
-      "A Renaissance court portrait in rich oil paint: a velvet robe trimmed in ermine, gold chains and jewels, and the dramatic candlelit background of an old-master painting. Our best-selling style for a reason.",
+      "A Renaissance court portrait in rich oil paint: a velvet robe trimmed in ermine, gold chains and jewels, and the dramatic candlelit background of an old-master painting. Pure, ridiculous nobility.",
     prompt: `A regal Renaissance oil painting portrait of the dog as a noble monarch, wearing a deep crimson velvet robe with white ermine fur trim, an ornate gold chain with a jeweled medallion, and a small jeweled crown. Dark umber background with soft candlelight, dramatic chiaroscuro, visible brushwork, craquelure-free museum quality, in the manner of 17th-century Dutch and Flemish court painters. ${IDENTITY}`,
     swatch: "#7a2e2a",
     goodFor: ["gift", "funny", "decor"],
@@ -118,7 +119,7 @@ export const STYLES: ArtStyle[] = [
     name: "Botanical",
     blurb: "Framed in vintage flowers.",
     description:
-      "Your dog surrounded by a wreath of hand-painted botanical flowers and leaves, like a page from a vintage naturalist's journal. Our most-requested style for remembering a best friend.",
+      "Your dog surrounded by a wreath of hand-painted botanical flowers and leaves, like a page from a vintage naturalist's journal. A gentle favorite for remembering a best friend.",
     prompt: `A vintage botanical illustration portrait of the dog surrounded by a soft wreath of hand-painted wildflowers, roses, eucalyptus leaves and ferns, muted cream parchment background, fine detailed naturalist illustration style, gentle and serene. ${IDENTITY}`,
     swatch: "#8a9a6c",
     goodFor: ["memorial", "gift", "decor"],
@@ -158,7 +159,7 @@ export const STYLES: ArtStyle[] = [
     name: "Holiday Cozy",
     blurb: "A festive portrait by the fire.",
     description:
-      "A warm holiday oil painting: a knit scarf, twinkling lights and a crackling fireplace. The holiday card and ornament everyone asks about.",
+      "A warm holiday oil painting: a knit scarf, twinkling lights and a crackling fireplace. Made for holiday cards, mantels and ornaments.",
     prompt: `A warm festive holiday oil painting portrait of the dog wearing a cozy red and green knit scarf, sitting by a glowing fireplace with twinkling string lights, evergreen garland and soft bokeh, rich warm tones, nostalgic and joyful. ${IDENTITY}`,
     swatch: "#7d2b2b",
     goodFor: ["holiday", "gift"],
@@ -209,7 +210,7 @@ export const PRODUCTS: Product[] = [
     type: "canvas",
     name: "Gallery Canvas",
     shortName: "Canvas",
-    tagline: "Hand-stretched canvas with a gallery wrap. Our most popular piece.",
+    tagline: "Hand-stretched canvas with a gallery wrap. Our favorite way to hang a portrait.",
     details: [
       "Poly-cotton canvas, hand-stretched over a solid wood stretcher bar",
       "Image wraps the edges for a finished gallery look",
@@ -224,7 +225,7 @@ export const PRODUCTS: Product[] = [
     ],
     defaultVariantId: "canvas-16x20",
     shipDays: [5, 9],
-    badge: "Most popular",
+    badge: "Our pick",
   },
   {
     type: "framed",
@@ -246,7 +247,7 @@ export const PRODUCTS: Product[] = [
     defaultVariantId: "framed-12x16",
     shipDays: [5, 9],
     frameColors: ["black", "white", "oak"],
-    badge: "Most gifted",
+    badge: "Gift-ready",
   },
   {
     type: "poster",

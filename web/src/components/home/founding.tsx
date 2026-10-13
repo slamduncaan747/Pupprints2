@@ -6,7 +6,6 @@ import { SampleImage } from "@/components/ui/sample-image";
 import { STYLE_MAP } from "@/lib/catalog";
 import { site } from "@/lib/config";
 import { GALLERY } from "@/lib/samples";
-import { cn } from "@/lib/utils";
 import { Accent, HomeHeading } from "./typography";
 
 const handle = `@${site.social.instagram.replace(/\/+$/, "").split("/").pop()}`;
@@ -50,7 +49,7 @@ export function Founding() {
           </div>
         </div>
 
-        <div className={cn("rounded-[1.75rem] bg-paper p-4 shadow-soft ring-1 ring-line sm:p-6", "ph-reveal")}>
+        <div className="rounded-[1.75rem] bg-paper p-4 shadow-soft ring-1 ring-line sm:p-6 ph-reveal">
           {/* Profile-style header (no follower counts: we don't fabricate numbers) */}
           <div className="flex items-center justify-between gap-4 px-1 pb-4 sm:pb-5">
             <div className="flex items-center gap-3">
@@ -61,7 +60,7 @@ export function Founding() {
               </span>
               <div>
                 <p className="text-[15px] font-semibold leading-tight">{handle}</p>
-                <p className="text-[13px] text-ink-3">Example portraits from our studio</p>
+                <p className="text-[13px] text-ink-2/85">Example portraits</p>
               </div>
             </div>
             <a
@@ -84,14 +83,18 @@ export function Founding() {
                     swatch={s.swatch}
                     sizes="(max-width: 1024px) 33vw, 200px"
                   />
-                  <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-2.5 pb-2 pt-6 text-[11px] font-medium leading-tight text-white">
-                    {g.dog} · {s.name}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-2 pb-1.5 pt-6 text-[10px] font-medium leading-tight text-white sm:px-2.5 sm:pb-2 sm:text-[11px]"
+                  >
+                    <span className="hidden sm:inline">{g.dog} · </span>
+                    {s.name}
                   </span>
                 </li>
               );
             })}
           </ul>
-          <p className="px-1 pt-4 text-center text-[13px] text-ink-3">
+          <p className="px-1 pt-4 text-center text-[13px] text-ink-2/85">
             Examples made by our studio to show each style. Real customer photos coming soon.
           </p>
         </div>

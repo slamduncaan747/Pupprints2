@@ -69,7 +69,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
       link: { href: "/how-it-works#photo-tips", label: "See all photo tips" },
     },
     {
-      q: `Is the ${style.name} portrait hand-painted?`,
+      q: `Is ${style.name} hand-painted?`,
       a: "No. Our AI artist creates your portrait from your photo in this style, you approve it before paying, and a person on our team checks every print before it's printed. It's made to look like real art, and we'll never pretend it was painted by hand.",
     },
     {
@@ -241,7 +241,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
                 All styles
               </ButtonLink>
             </div>
-            <ul className="mt-12 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4">
               {others.map((s) => (
                 <li key={s.slug}>
                   <StyleCard style={s} showTags={false} />

@@ -7,11 +7,14 @@ import type { Generation, ShipCountry, UploadInfo } from "./store";
 export class ApiError extends Error {
   code: string;
   status: number;
-  constructor(code: string, message: string, status: number) {
+  /** The full JSON error body (may carry extras, e.g. `generationId` on ai_unavailable). */
+  data: Record<string, unknown>;
+  constructor(code: string, message: string, status: number, data: Record<string, unknown> = {}) {
     super(message);
     this.name = "ApiError";
     this.code = code;
     this.status = status;
+    this.data = data;
   }
 }
 
@@ -27,7 +30,7 @@ async function parse<T>(res: Response): Promise<T> {
   if (!res.ok) {
     const code = typeof body.error === "string" ? body.error : res.status === 404 ? "not_found" : "server_error";
     const message = typeof body.message === "string" ? body.message : "Something went wrong. Please try again.";
-    throw new ApiError(code, message, res.status);
+    throw new ApiError(code, message, res.status, body);
   }
   return body as T;
 }
@@ -120,13 +123,6 @@ export function startCheckout(body: CheckoutRequest) {
 
 export type LeadSource = "save_preview" | "checkout_unavailable" | "ai_unavailable";
 
-export function saveLead(body: {
-  email: string;
-  source: LeadSource;
-  generationId?: string;
-  petName?: string;
-  uploadId?: string;
-  style?: string;
-}) {
+export function saveLead(body: { email: string; source: LeadSource; generationId?: string; petName?: string }) {
   return postJson<{ ok?: boolean }>("/api/leads", body);
 }

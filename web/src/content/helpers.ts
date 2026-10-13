@@ -69,8 +69,12 @@ export const ALL_SIZES = Array.from(
   ).values(),
 ).sort((a, b) => a.widthIn * a.heightIn - b.widthIn * b.heightIn);
 
-export const ORNAMENT = ADDONS.find((a) => a.id === "addon-ornament");
-export const MUG = ADDONS.find((a) => a.id === "addon-mug");
+/** Formatted add-on price by id ("addon-ornament" -> "$19"). Throws on unknown ids so typos fail at build. */
+export function addonPrice(id: string) {
+  const addon = ADDONS.find((a) => a.id === id);
+  if (!addon) throw new Error(`Unknown add-on: ${id}`);
+  return formatPrice(addon.price);
+}
 
 export const US_SHIPPING_FREE = SHIPPING_RATES.US === 0;
 export const CANADA_SHIPPING = formatPrice(SHIPPING_RATES.CA);

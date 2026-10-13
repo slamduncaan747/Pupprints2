@@ -31,17 +31,25 @@ export function ProductCard({
   style,
   className,
   priority,
+  onTint = false,
 }: {
   product: Product;
   style: StyleSlug;
   className?: string;
   priority?: boolean;
+  /** Set when the card sits on a paper-2 section, so the scene still reads as a card. */
+  onTint?: boolean;
 }) {
   const instant = product.shipDays[1] === 0;
   return (
     <article className={cn("group flex flex-col", className)}>
       <Link href={`/shop/${product.type}`} className="block" aria-label={`${product.name} details`}>
-        <ProductScene type={product.type} style={style} priority={priority} className="transition-colors group-hover:bg-paper-3" />
+        <ProductScene
+          type={product.type}
+          style={style}
+          priority={priority}
+          className={cn("transition-colors group-hover:bg-paper-3", onTint && "bg-paper")}
+        />
       </Link>
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex items-baseline justify-between gap-4">

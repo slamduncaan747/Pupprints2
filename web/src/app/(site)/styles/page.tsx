@@ -6,6 +6,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
 import { StyleCard } from "@/components/marketing/style-card";
+import { FramedArt } from "@/components/marketing/framed-art";
 import { PromiseRow } from "@/components/marketing/promise-row";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { stylesFor, type GoodFor } from "@/components/marketing/style-content";
@@ -44,10 +45,17 @@ export default function StylesPage() {
             </ButtonLink>
           </>
         }
+        aside={
+          <div className="mx-auto hidden max-w-[520px] grid-cols-3 items-center gap-6 lg:grid" aria-hidden="true">
+            <FramedArt style="watercolor" finish="white" sizes="(max-width: 1024px) 30vw, 13vw" className="translate-y-6" />
+            <FramedArt style="royal" finish="black" priority sizes="(max-width: 1024px) 30vw, 13vw" className="-translate-y-4 scale-110" />
+            <FramedArt style="mid-century" finish="oak" sizes="(max-width: 1024px) 30vw, 13vw" className="translate-y-8" />
+          </div>
+        }
       />
 
       <Container className="pb-20 sm:pb-28">
-        <ul className="grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
           {STYLES.map((style, i) => (
             <li key={style.slug}>
               <StyleCard style={style} priority={i < 3} />

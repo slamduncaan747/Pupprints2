@@ -1,7 +1,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { fetchAll } from "@/components/admin/queries";
-import { PAID_STATUSES } from "@/components/admin/constants";
+import { GIFT_SESSION, PAID_STATUSES } from "@/components/admin/constants";
 import { ADMIN_TZ } from "@/components/admin/ui";
 
 export type RangeKey = "today" | "7d" | "30d";
@@ -107,13 +107,15 @@ export async function loadDashboard(c: SupabaseClient, range: RangeKey) {
       .select("id, created_at, style, preview_path, status, pet_name")
       .eq("status", "succeeded")
       .not("preview_path", "is", null)
+      .or(`session_id.is.null,session_id.neq.${GIFT_SESSION}`)
       .order("created_at", { ascending: false })
       .limit(12),
     c.from("partners").select("id, name, handle, code").not("code", "is", null).limit(1000),
   ]);
 
   const since = rangeStart(range, now);
-  const g = inRange(gens, since);
+  // Gift portraits made in the admin aren't customer activity.
+  const g = inRange(gens, since).filter((x) => x.session_id !== GIFT_SESSION);
   const paid = inRange(orders, since).filter((o) => (PAID_STATUSES as readonly string[]).includes(o.status));
   const succeeded = g.filter((x) => x.status === "succeeded");
   const sessions = new Set(g.map(visitorKey).filter(Boolean)).size;
@@ -133,7 +135,11 @@ export async function loadDashboard(c: SupabaseClient, range: RangeKey) {
   };
 
   // Funnel over the selected range: people, not events.
-  const uploadSessions = new Set(inRange(uploads, since).map((u) => u.session_id).filter(Boolean));
+  const uploadSessions = new Set(
+    inRange(uploads, since)
+      .map((u) => u.session_id)
+      .filter((sid) => sid && sid !== GIFT_SESSION),
+  );
   const previewSessions = new Set(succeeded.map(visitorKey).filter(Boolean));
   const funnel: FunnelStep[] = [
     { label: "Uploaded a photo", hint: "unique sessions", value: Math.max(uploadSessions.size, previewSessions.size) },

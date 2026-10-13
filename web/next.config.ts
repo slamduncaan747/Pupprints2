@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     rules: {
       "*.css": {
+        // CSS Modules keep Turbopack's native handling (hashed class names).
+        condition: { not: { path: /\.module\.css$/ } },
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },

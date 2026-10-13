@@ -230,6 +230,11 @@ const VOID_ORDER_STATUSES = ["refunded", "canceled"];
 
 export const EMPTY_STATS: PartnerStats = { clicks: 0, orders: 0, revenueCents: 0, commissionCents: 0, recentOrders: [] };
 
+/** ISO timestamp `days` ago (kept out of render bodies for React purity rules). */
+export function daysAgoIso(days: number): string {
+  return new Date(Date.now() - days * 86_400_000).toISOString();
+}
+
 /** Aggregates referral_events for one code (clicks counted server-side, orders summed). */
 export async function getPartnerStats(code: string, sinceIso?: string): Promise<PartnerStats> {
   const c = db();

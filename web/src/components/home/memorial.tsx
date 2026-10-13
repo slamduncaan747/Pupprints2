@@ -77,7 +77,7 @@ export function Memorial() {
           </div>
         </div>
 
-        <div className={cn("relative", "ph-reveal")}>
+        <div className="relative ph-reveal">
           <ul className="mx-auto grid max-w-[520px] grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 sm:gap-y-10">
             {items.map((s, i) => (
               <li key={s.slug} className={cn(i % 2 === 1 && "translate-y-8 sm:translate-y-12")}>

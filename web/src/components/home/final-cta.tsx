@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { SampleImage } from "@/components/ui/sample-image";
@@ -47,17 +47,19 @@ export function FinalCta() {
               Create your portrait
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
             </ButtonLink>
-            <p className="text-sm text-paper/55">
-              {PROMISES.guarantee} · {PROMISES.shipping}
-            </p>
+            <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-sm text-paper/60">
+              {[PROMISES.guarantee, PROMISES.shipping].map((p) => (
+                <li key={p} className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-butter" aria-hidden="true" />
+                  {p}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
         <div
-          className={cn(
-            "mx-auto mt-16 flex max-w-2xl flex-col items-center gap-5 border-t border-white/10 pt-12 sm:mt-20",
-            "ph-reveal",
-          )}
+          className="mx-auto mt-16 flex max-w-2xl flex-col items-center gap-5 border-t border-white/10 pt-12 sm:mt-20 ph-reveal"
         >
           <div>
             <p className="font-display text-2xl">Not today? Take 10% off for later.</p>

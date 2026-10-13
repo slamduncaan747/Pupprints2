@@ -7,6 +7,7 @@ export type NormalizedItem = {
   quantity: number;
   unitCents: number | null;
   frame: string | null;
+  included: boolean;
   style: string | null;
   petName: string | null;
   raw: unknown;
@@ -44,6 +45,7 @@ export function normalizeItems(items: unknown): NormalizedItem[] {
         num(pick(o, ["unitCents", "unit_cents", "unitAmount", "unit_amount", "priceCents", "price_cents", "price", "amount_cents", "amountCents"])) ??
         (found ? found.variant.price : null),
       frame: str(pick(o, ["frame", "frameColor", "frame_color"])),
+      included: o.included === true,
       style,
       petName: str(pick(o, ["petName", "pet_name"])),
       raw: it,

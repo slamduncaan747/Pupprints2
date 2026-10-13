@@ -24,3 +24,11 @@ export function labelize(s: string | null | undefined): string {
 }
 
 export const IMPORT_HEADER = "name,handle,platform,profile_url,followers,niche,email,notes";
+
+/** Session id stamped on generations/uploads made by the admin gift tool (excluded from customer KPIs). */
+export const GIFT_SESSION = "admin-gift";
+
+/** Prefilled outreach DM for a gift portrait. */
+export function giftDm({ name, pet, link }: { name?: string | null; pet?: string | null; link: string }): string {
+  return `Hi ${name?.trim() || "there"}! We're Pup Prints — we made ${pet?.trim() || "your pup"} a portrait as a little gift, no strings attached: ${link} 💛`;
+}

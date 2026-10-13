@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, Clock, FileImage, Gift, HeartHandshake, Truck, UserCheck } from "lucide-react";
-import { ADDONS, PRODUCT_MAP, PRODUCTS, PROMISES, STARTING_PHYSICAL_PRICE } from "@/lib/catalog";
+import { ADDONS, PRODUCT_MAP, PRODUCTS, STARTING_PHYSICAL_PRICE } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/ui/container";
@@ -28,7 +28,7 @@ const SIZES = [...new Set(PHYSICAL_PRODUCTS.flatMap((p) => p.variants.map((v) =>
 });
 
 const INCLUDED = [
-  { icon: FileImage, title: "The hi-res digital file", body: PROMISES.digital },
+  { icon: FileImage, title: "The hi-res digital file", body: "Emailed right after checkout, free with every physical piece" },
   { icon: Truck, title: "Free US shipping", body: "On every order, with tracking. No minimum, no surprise fees" },
   { icon: UserCheck, title: "A human check", body: "A person on our team checks your art before it's printed" },
   { icon: HeartHandshake, title: "Love-it guarantee", body: "Remake or full refund within 30 days of delivery" },
@@ -95,17 +95,18 @@ export default function ShopPage() {
             subtitle={`No fake "compare at" prices, no countdown timers, no pre-checked add-ons. US shipping is included in every price below.`}
           />
           <div className="mt-14 overflow-x-auto rounded-card bg-paper ring-1 ring-line">
-            <table className="w-full min-w-[520px] border-collapse text-left">
+            <table className="w-full border-collapse text-left">
               <caption className="sr-only">Prices by size and product</caption>
               <thead>
                 <tr className="border-b border-line">
-                  <th scope="col" className="px-5 py-5 text-xs font-semibold uppercase tracking-[0.14em] text-ink-3 sm:px-7">
+                  <th scope="col" className="px-4 py-5 text-xs font-semibold uppercase tracking-[0.14em] text-ink-3 sm:px-7">
                     Size
                   </th>
                   {PHYSICAL_PRODUCTS.map((p) => (
-                    <th key={p.type} scope="col" className="px-4 py-5 text-right sm:px-7">
+                    <th key={p.type} scope="col" className="px-3 py-5 text-right sm:px-7">
                       <Link href={`/shop/${p.type}`} className="font-display text-lg font-normal hover:text-clay-dark sm:text-xl">
-                        {p.name}
+                        <span className="sm:hidden">{p.shortName}</span>
+                        <span className="hidden sm:inline">{p.name}</span>
                       </Link>
                     </th>
                   ))}
@@ -114,13 +115,13 @@ export default function ShopPage() {
               <tbody className="divide-y divide-line">
                 {SIZES.map((size) => (
                   <tr key={size}>
-                    <th scope="row" className="px-5 py-4 font-display text-xl font-normal sm:px-7">
+                    <th scope="row" className="whitespace-nowrap px-4 py-4 font-display text-lg font-normal sm:px-7 sm:text-xl">
                       {size}
                     </th>
                     {PHYSICAL_PRODUCTS.map((p) => {
                       const v = p.variants.find((x) => x.label === size);
                       return (
-                        <td key={p.type} className="px-4 py-4 text-right text-[17px] sm:px-7">
+                        <td key={p.type} className="px-3 py-4 text-right text-[16px] sm:px-7 sm:text-[17px]">
                           {v ? formatPrice(v.price) : <span className="text-ink-3" aria-label="Not available">—</span>}
                         </td>
                       );
@@ -130,12 +131,13 @@ export default function ShopPage() {
               </tbody>
               <tfoot>
                 <tr className="border-t border-line bg-paper-2/50">
-                  <th scope="row" className="px-5 py-4 text-left text-sm font-medium sm:px-7">
-                    Arrives in (US)
+                  <th scope="row" className="px-4 py-4 text-left text-sm font-medium sm:px-7">
+                    <span className="sm:hidden">Arrives in (days)</span>
+                    <span className="hidden sm:inline">Arrives in (US business days)</span>
                   </th>
                   {PHYSICAL_PRODUCTS.map((p) => (
-                    <td key={p.type} className="px-4 py-4 text-right text-sm text-ink-2 sm:px-7">
-                      {shipWindow(p)}
+                    <td key={p.type} className="px-3 py-4 text-right text-sm text-ink-2 sm:px-7">
+                      {shipWindow(p).replace(" business days", "")}
                     </td>
                   ))}
                 </tr>

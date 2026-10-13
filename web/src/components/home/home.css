@@ -93,6 +93,9 @@
 .ph-pocket {
   z-index: 3;
 }
+.ph-seal {
+  animation: ph-kf-seal 8s ease-out infinite;
+}
 .ph-confetti {
   animation: ph-kf-confetti 8s ease-out infinite;
 }
@@ -126,11 +129,24 @@
   }
   44%,
   86% {
-    transform: translateY(-64%) scale(1);
+    transform: translateY(-60%) scale(1);
   }
   98%,
   100% {
     transform: translateY(0) scale(0.96);
+  }
+}
+@keyframes ph-kf-seal {
+  0%,
+  10% {
+    opacity: 1;
+  }
+  15%,
+  92% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 @keyframes ph-kf-confetti {
@@ -181,12 +197,16 @@
   }
   .ph-card {
     animation: none;
-    transform: translateY(-64%);
+    transform: translateY(-60%);
   }
   .ph-confetti,
   .ph-caption {
     animation: none;
     opacity: 1;
+  }
+  .ph-seal {
+    animation: none;
+    opacity: 0;
   }
 }
 

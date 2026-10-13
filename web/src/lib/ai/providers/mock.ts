@@ -36,29 +36,30 @@ export const mock: PortraitProvider = {
     const base = await sharp(input.imageBytes)
       .autoOrient()
       .resize({ width: W, height: H, fit: "cover", position: "attention" })
-      .median(5) // flattens detail into soft "brush" patches
-      .modulate({ saturation: 0.8, brightness: 1.02 })
-      .recomb([
-        [0.6, 0.35, 0.12],
-        [0.28, 0.66, 0.11],
-        [0.2, 0.3, 0.5],
-      ])
+      .median(7) // flattens detail into soft "brush" patches
+      .modulate({ saturation: 1.15, brightness: 1.03 })
       .toBuffer();
 
-    const overlay = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+    // Wash the scene in the style's color, then darken the edges like an old-master varnish.
+    const wash = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+      <rect width="100%" height="100%" fill="${swatch}" fill-opacity="0.55"/>
+    </svg>`);
+    const vignette = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
       <defs>
-        <radialGradient id="v" cx="50%" cy="42%" r="70%">
-          <stop offset="45%" stop-color="${swatch}" stop-opacity="0"/>
-          <stop offset="100%" stop-color="${swatch}" stop-opacity="0.85"/>
+        <radialGradient id="v" cx="50%" cy="40%" r="72%">
+          <stop offset="40%" stop-color="#000" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#140c06" stop-opacity="0.78"/>
         </radialGradient>
       </defs>
-      <rect width="100%" height="100%" fill="${swatch}" fill-opacity="0.18"/>
       <rect width="100%" height="100%" fill="url(#v)"/>
     </svg>`);
 
     const bytes = await sharp(base)
-      .composite([{ input: overlay, blend: "multiply" }])
-      .sharpen({ sigma: 0.8 })
+      .composite([
+        { input: wash, blend: "soft-light" },
+        { input: vignette, blend: "over" },
+      ])
+      .sharpen({ sigma: 1 })
       .png()
       .toBuffer();
 

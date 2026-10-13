@@ -6,7 +6,6 @@ import { Container, Section } from "@/components/ui/container";
 import { SampleImage } from "@/components/ui/sample-image";
 import { STYLES, STYLE_MAP, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
-import { cn } from "@/lib/utils";
 import { Accent, HomeHeading } from "./typography";
 
 /** Curated order for the home page (seasonal pick included); names/blurbs come from the catalog. */
@@ -18,7 +17,7 @@ export function StyleGallery() {
   return (
     <Section id="styles" aria-labelledby="styles-title" className="scroll-mt-16 overflow-hidden bg-paper">
       <Container>
-        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", "ph-reveal")}>
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between ph-reveal">
           <HomeHeading
             id="styles-title"
             eyebrow="The styles"
@@ -38,15 +37,12 @@ export function StyleGallery() {
         </div>
 
         <ul
-          className={cn(
-            "-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12 lg:overflow-visible lg:px-0 lg:pb-0",
-            "ph-no-scrollbar",
-          )}
+          className="-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12 lg:overflow-visible lg:px-0 lg:pb-0 ph-no-scrollbar"
           aria-label="Portrait styles"
         >
           {featured.map((s) => (
-            <li key={s.slug} className="w-[68%] shrink-0 snap-start sm:w-[40%] lg:w-auto">
-              <article className="group relative">
+            <li key={s.slug} className="flex w-[68%] shrink-0 snap-start sm:w-[40%] lg:w-auto">
+              <article className="group relative flex w-full flex-col">
                 <Link
                   href={`/styles/${s.slug}`}
                   tabIndex={-1}
@@ -63,9 +59,9 @@ export function StyleGallery() {
                       className="transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     />
                   </div>
-                  {(s.popular || s.isNew) && (
-                    <Badge tone={s.isNew ? "butter" : "paper"} className="absolute left-4 top-4 shadow-soft">
-                      {s.isNew ? "New" : "Popular"}
+                  {s.isNew && (
+                    <Badge tone="butter" className="absolute left-4 top-4 shadow-soft">
+                      New
                     </Badge>
                   )}
                 </Link>
@@ -77,7 +73,7 @@ export function StyleGallery() {
                 <p className="mt-1 text-[15px] leading-snug text-ink-2">{s.blurb}</p>
                 <Link
                   href={`/create?style=${s.slug}`}
-                  className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-clay-dark transition-colors hover:text-ink"
+                  className="mt-auto inline-flex items-center gap-1.5 self-start pt-3 text-[15px] font-medium text-clay-dark transition-colors hover:text-ink"
                 >
                   Try it with your dog
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -99,12 +95,12 @@ export function StyleGallery() {
           </li>
         </ul>
 
-        <div className={cn("mt-12 flex flex-col items-center gap-3 text-center lg:mt-16", "ph-reveal")}>
+        <div className="mt-12 flex flex-col items-center gap-3 text-center lg:mt-16 ph-reveal">
           <ButtonLink href="/create" size="lg" className="group w-full sm:w-auto">
             Try every style on your dog
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
           </ButtonLink>
-          <p className="text-sm text-ink-3">Can&apos;t decide? You don&apos;t have to. Previews are free.</p>
+          <p className="text-sm text-ink-2/85">Can&apos;t decide? You don&apos;t have to. Previews are free.</p>
         </div>
       </Container>
     </Section>

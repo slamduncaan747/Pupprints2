@@ -40,7 +40,7 @@ export function Header() {
     >
       <Container className="flex h-16 items-center justify-between gap-6 sm:h-[72px]">
         <Link href="/" aria-label="Pup Prints home" className="shrink-0">
-          <Logo />
+          <Logo className="[&_svg]:h-6 [&_svg]:w-6 sm:[&_svg]:h-7 sm:[&_svg]:w-7" />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
@@ -59,8 +59,9 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ButtonLink href="/create" size="sm" className="h-10 px-5 sm:h-11 sm:px-6 sm:text-[15px]">
-            Create yours — free preview
+          <ButtonLink href="/create" size="sm" className="h-10 px-4 sm:h-11 sm:px-6 sm:text-[15px]">
+            <span className="sm:hidden">Try it free</span>
+            <span className="hidden sm:inline">Create yours — free preview</span>
           </ButtonLink>
           <button
             type="button"

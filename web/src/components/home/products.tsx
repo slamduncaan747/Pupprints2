@@ -23,12 +23,14 @@ function Art({ slug, sizes }: { slug: StyleSlug; sizes: string }) {
   return <SampleImage src={STYLE_SAMPLES[slug]} alt={`${s.name} portrait example`} swatch={s.swatch} sizes={sizes} />;
 }
 
-function PriceLine({ product }: { product: Product }) {
+function PriceLine({ product, compact = false }: { product: Product; compact?: boolean }) {
   return (
     <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-      <span className="text-sm text-ink-3">From</span>
+      <span className="text-sm text-ink-2/85">From</span>
       <span className="font-display text-[1.75rem] leading-none">{formatPrice(fromPrice(product))}</span>
-      {product.type !== "digital" && <span className="text-sm text-ink-3">· {sizeRange(product)}</span>}
+      {product.type !== "digital" && (
+        <span className={cn("text-sm text-ink-2/85", compact && "hidden xl:inline")}>· {sizeRange(product)}</span>
+      )}
     </p>
   );
 }
@@ -45,12 +47,12 @@ function FeatureCard({
   extra?: ReactNode;
 }) {
   return (
-    <article className={cn("group flex flex-col overflow-hidden rounded-card bg-white ring-1 ring-line", "ph-reveal")}>
+    <article className="group flex flex-col overflow-hidden rounded-card bg-white ring-1 ring-line ph-reveal">
       <Link
         href={`/shop/${product.type}`}
         tabIndex={-1}
         aria-hidden="true"
-        className={cn("relative flex aspect-[5/4] items-center justify-center overflow-hidden", wall)}
+        className={cn("relative flex aspect-[4/3] items-center justify-center overflow-hidden pt-4", wall)}
       >
         {visual}
         {product.badge && (
@@ -83,7 +85,7 @@ function FeatureCard({
           <div className="flex flex-wrap items-end justify-between gap-4 border-t border-line pt-5">
             <div>
               <PriceLine product={product} />
-              <p className="mt-1.5 text-[13px] text-ink-3">{shipCopy(product.type)} · free US shipping</p>
+              <p className="mt-1.5 text-[13px] text-ink-2/85">{shipCopy(product.type)} · free US shipping</p>
             </div>
             <Link
               href={`/shop/${product.type}`}
@@ -101,10 +103,7 @@ function FeatureCard({
 function CompactCard({ product, visual, wall, note }: { product: Product; visual: ReactNode; wall: string; note: string }) {
   return (
     <article
-      className={cn(
-        "group grid grid-cols-[38%_1fr] overflow-hidden rounded-card bg-white ring-1 ring-line sm:grid-cols-[42%_1fr]",
-        "ph-reveal",
-      )}
+      className="group grid grid-cols-[38%_1fr] overflow-hidden rounded-card bg-white ring-1 ring-line sm:grid-cols-[42%_1fr] ph-reveal"
     >
       <Link
         href={`/shop/${product.type}`}
@@ -122,8 +121,8 @@ function CompactCard({ product, visual, wall, note }: { product: Product; visual
         </h3>
         <p className="mt-1.5 text-[14.5px] leading-relaxed text-ink-2">{product.tagline}</p>
         <div className="mt-auto pt-4">
-          <PriceLine product={product} />
-          <p className="mt-1.5 text-[13px] text-ink-3">{note}</p>
+          <PriceLine product={product} compact />
+          <p className="mt-1.5 text-[13px] text-ink-2/85">{note}</p>
           <Link
             href={`/shop/${product.type}`}
             className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-medium text-clay-dark transition-colors hover:text-ink"
@@ -146,7 +145,7 @@ export function Products() {
   return (
     <Section aria-labelledby="products-title" className="bg-paper">
       <Container>
-        <div className={cn("flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between", "ph-reveal")}>
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between ph-reveal">
           <HomeHeading
             id="products-title"
             eyebrow="Canvas, prints & frames"
@@ -170,7 +169,7 @@ export function Products() {
             product={canvas}
             wall="bg-[linear-gradient(180deg,#ece3d4,#e2d6c3)]"
             visual={
-              <div className="w-[46%] transition-transform duration-700 ease-out group-hover:-translate-y-1">
+              <div className="w-[38%] transition-transform duration-700 ease-out group-hover:-translate-y-1">
                 <div className="canvas-wrap">
                   <Art slug="royal" sizes="(max-width: 768px) 46vw, 280px" />
                 </div>
@@ -181,7 +180,7 @@ export function Products() {
             product={framed}
             wall="bg-[linear-gradient(180deg,#f3e3d8,#ead3c5)]"
             visual={
-              <div className="w-[44%] transition-transform duration-700 ease-out group-hover:-translate-y-1">
+              <div className="w-[40%] transition-transform duration-700 ease-out group-hover:-translate-y-1">
                 <Framed frame="black">
                   <Art slug="watercolor" sizes="(max-width: 768px) 36vw, 220px" />
                 </Framed>
@@ -189,7 +188,7 @@ export function Products() {
             }
             extra={
               framed.frameColors && (
-                <div className="mt-5 flex items-center gap-2.5 text-[13px] text-ink-3">
+                <div className="mt-5 flex items-center gap-2.5 text-[13px] text-ink-2/85">
                   <span className="flex -space-x-1">
                     {framed.frameColors.map((c) => (
                       <span
@@ -237,10 +236,7 @@ export function Products() {
         </div>
 
         <div
-          className={cn(
-            "mt-6 flex flex-col items-start gap-5 rounded-card bg-paper-2 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8",
-            "ph-reveal",
-          )}
+          className="mt-6 flex flex-col items-start gap-5 rounded-card bg-paper-2 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8 ph-reveal"
         >
           <div className="flex gap-4">
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white text-clay-dark ring-1 ring-line">

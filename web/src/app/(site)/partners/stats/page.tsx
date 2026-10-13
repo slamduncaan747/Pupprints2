@@ -4,7 +4,7 @@ import { Lock } from "lucide-react";
 import { Container, Eyebrow } from "@/components/ui/container";
 import { CopyField } from "@/components/partners/copy-field";
 import { REDEEMABLE_STATUSES, normalizeCode } from "@/components/partners/program";
-import { EMPTY_STATS, getPartnerStats, getPartnerSummary, partnerShareLink, verifyPartnerStatsToken } from "@/lib/partners";
+import { EMPTY_STATS, daysAgoIso, getPartnerStats, getPartnerSummary, partnerShareLink, verifyPartnerStatsToken } from "@/lib/partners";
 import { site } from "@/lib/config";
 import { formatPrice } from "@/lib/utils";
 
@@ -60,7 +60,7 @@ export default async function PartnerStatsPage({ searchParams }: PageProps<"/par
   const partner = await getPartnerSummary(code);
   if (!partner) return <Invalid />;
 
-  const since30 = new Date(Date.now() - 30 * 86_400_000).toISOString();
+  const since30 = daysAgoIso(30);
   const [all, last30] = await Promise.all([getPartnerStats(partner.code), getPartnerStats(partner.code, since30)]).catch(
     () => [EMPTY_STATS, EMPTY_STATS] as const,
   );

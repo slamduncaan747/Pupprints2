@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   }
 
   const supabase = db();
-  if (!supabase || !aiAvailable()) {
+  if (!supabase) {
     return json({ error: "ai_unavailable", message: "Our studio is busy right now." }, 503);
   }
 
@@ -54,6 +54,25 @@ export async function POST(req: Request) {
     .maybeSingle();
   if (!upload || upload.session_id !== sessionId) {
     return json({ error: "upload_not_found", message: "We couldn't find your photo. Please upload it again." }, 404);
+  }
+
+  if (!aiAvailable()) {
+    // Queue the request as a `pending` generation so the "email me when it's ready" lead
+    // (POST /api/leads with this generationId) carries the photo + style for follow-up.
+    const { data: pending } = await supabase
+      .from("generations")
+      .insert({
+        upload_id: upload.id,
+        session_id: sessionId,
+        ip_hash: ipHash,
+        pet_name: body.petName ?? null,
+        style: body.style,
+        status: "pending",
+        error: "ai_unavailable",
+      })
+      .select("id")
+      .single();
+    return json({ error: "ai_unavailable", message: "Our studio is busy right now.", generationId: pending?.id }, 503);
   }
 
   // Per-IP daily limit (failed attempts don't count against the customer).
@@ -154,8 +173,11 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     if (err instanceof AiUnavailableError) {
-      await fail("ai_unavailable");
-      return json({ error: "ai_unavailable", message: "Our studio is busy right now." }, 503);
+      await supabase
+        .from("generations")
+        .update({ status: "pending", error: "ai_unavailable", duration_ms: Date.now() - started })
+        .eq("id", generationId);
+      return json({ error: "ai_unavailable", message: "Our studio is busy right now.", generationId }, 503);
     }
     const detail = err instanceof GenerationFailedError ? err.message : err instanceof Error ? err.message : String(err);
     console.error("[generate] failed", generationId, detail);

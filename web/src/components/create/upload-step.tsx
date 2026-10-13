@@ -84,8 +84,8 @@ export function UploadStep({
   return (
     <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-6 pb-16 sm:px-8 sm:pt-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
       <div className="min-w-0">
-        <Eyebrow>Step 1 of 3 · Your photo</Eyebrow>
-        <h1 className="mt-3 font-display text-[2.15rem] leading-[1.05] sm:text-5xl">
+        <Eyebrow className="hidden sm:block">Step 1 of 3 · Your photo</Eyebrow>
+        <h1 className="font-display text-[2.15rem] leading-[1.05] sm:mt-3 sm:text-5xl">
           Start with a photo you love.
         </h1>
         <p className="mt-3 max-w-xl text-[16px] leading-relaxed text-ink-2 sm:text-lg">
@@ -220,7 +220,7 @@ export function UploadStep({
           <p className="mt-1.5 text-[12.5px] text-ink-3">So we can make this feel like theirs. It never appears on the art.</p>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className={cn("mt-8 flex-col gap-3 sm:flex-row sm:items-center", displayUrl ? "flex" : "hidden sm:flex")}>
           <button
             type="button"
             onClick={onContinue}

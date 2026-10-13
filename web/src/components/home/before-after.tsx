@@ -184,15 +184,15 @@ export function BeforeAfter({
       {/* Corner labels fade when their side is mostly hidden */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-ink/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm transition-opacity duration-300"
-        style={{ opacity: pos > 24 ? 1 : 0 }}
+        className="pointer-events-none absolute bottom-2 left-2 rounded-full bg-ink/60 px-2 py-0.5 text-[9px] sm:bottom-3 sm:left-3 sm:px-2.5 sm:py-1 sm:text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm transition-opacity duration-300"
+        style={{ opacity: pos > 30 ? 1 : 0 }}
       >
         Photo
       </span>
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-3 right-3 rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink backdrop-blur-sm transition-opacity duration-300"
-        style={{ opacity: pos < 76 ? 1 : 0 }}
+        className="pointer-events-none absolute bottom-2 right-2 rounded-full bg-white/85 px-2 py-0.5 text-[9px] sm:bottom-3 sm:right-3 sm:px-2.5 sm:py-1 sm:text-[10px] font-semibold uppercase tracking-[0.14em] text-ink backdrop-blur-sm transition-opacity duration-300"
+        style={{ opacity: pos < 70 ? 1 : 0 }}
       >
         Portrait
       </span>

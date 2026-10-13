@@ -17,8 +17,6 @@ export function EmailCapture({
   source,
   generationId,
   petName,
-  uploadId,
-  style,
   cta = "Send it",
   doneMessage = "Sent! Check your inbox in a minute.",
   placeholder = "you@email.com",
@@ -28,8 +26,6 @@ export function EmailCapture({
   source: LeadSource;
   generationId?: string;
   petName?: string;
-  uploadId?: string;
-  style?: string;
   cta?: string;
   doneMessage?: string;
   placeholder?: string;
@@ -55,8 +51,6 @@ export function EmailCapture({
         source,
         generationId,
         petName: petName || undefined,
-        uploadId,
-        style,
       });
       track("Lead", { source });
       setState("done");

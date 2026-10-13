@@ -5,7 +5,7 @@ import { Container, Section } from "@/components/ui/container";
 import { PawMark } from "@/components/ui/paw";
 import { SampleImage } from "@/components/ui/sample-image";
 import { PRODUCT_MAP, STYLE_MAP } from "@/lib/catalog";
-import { BEFORE_AFTER } from "@/lib/samples";
+import { BEFORE_AFTER, STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 import { Accent, HomeHeading } from "./typography";
 
@@ -42,18 +42,18 @@ function Phone() {
               <PawMark className="h-3.5 w-3.5" /> A gift for you
             </div>
             <p className="mt-2 font-display text-[22px] leading-tight text-ink">Happy birthday, Alex!</p>
-            <p className="mt-1 text-[11.5px] text-ink-3">With love from Sam</p>
+            <p className="mt-1 text-[11.5px] text-ink-2/85">With love from Sam</p>
           </div>
 
           {/* Envelope */}
-          <div className="absolute inset-x-0 bottom-[23%] flex justify-center">
-            <div className={cn("relative h-[112px] w-[74%]", "ph-envelope")}>
+          <div className="absolute inset-x-0 bottom-[21%] flex justify-center">
+            <div className="relative h-[112px] w-[74%] ph-envelope">
               {/* Back */}
               <div className="absolute inset-0 rounded-[3px] bg-[#9a3c29]" />
               {/* Card that rises (clipped at the envelope's bottom edge) */}
               <div className="absolute inset-x-[7%] bottom-0 top-[-260px] overflow-hidden">
-                <div className={cn("absolute inset-x-0 top-[268px] bg-white p-[7px] shadow-soft", "ph-card")}>
-                  <SampleImage src={pair.after} alt="" swatch={style.swatch} sizes="180px" />
+                <div className="absolute inset-x-0 top-[268px] bg-white p-[7px] shadow-soft ph-card">
+                  <SampleImage src={STYLE_SAMPLES[pair.style]} alt="" swatch={style.swatch} sizes="180px" />
                 </div>
               </div>
               {/* Confetti */}
@@ -63,7 +63,7 @@ function Phone() {
                 ))}
               </div>
               {/* Front pocket with folds */}
-              <div className={cn("absolute inset-0 overflow-hidden rounded-[3px]", "ph-pocket")}>
+              <div className="absolute inset-0 overflow-hidden rounded-[3px] ph-pocket">
                 <div className="absolute inset-0 bg-[#c8553d]" />
                 <div className="absolute inset-0 bg-[#b94c35] [clip-path:polygon(0_0,52%_56%,0_100%)]" />
                 <div className="absolute inset-0 bg-[#b94c35] [clip-path:polygon(100%_0,48%_56%,100%_100%)]" />
@@ -71,16 +71,17 @@ function Phone() {
               </div>
               {/* Flap */}
               <div
-                className={cn(
-                  "absolute inset-x-0 top-0 h-[62%] bg-[#ad4731] [backface-visibility:visible] [clip-path:polygon(0_0,100%_0,50%_100%)]",
-                  "ph-flap",
-                )}
+                className="absolute inset-x-0 top-0 h-[62%] bg-[#ad4731] [backface-visibility:visible] [clip-path:polygon(0_0,100%_0,50%_100%)] ph-flap"
               />
+              {/* Wax seal (fades as the flap opens) */}
+              <div className="ph-seal absolute left-1/2 top-[44%] z-[5] grid h-7 w-7 -translate-x-1/2 place-items-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#e9c88a,#b8913f)] text-[#6e521f] shadow-[0_2px_4px_rgb(0_0_0/0.25)]">
+                <PawMark className="h-3.5 w-3.5" />
+              </div>
             </div>
           </div>
 
           {/* Caption */}
-          <div className={cn("absolute inset-x-0 bottom-[14%] text-center", "ph-caption")}>
+          <div className="absolute inset-x-0 bottom-[14%] text-center ph-caption">
             <p className="font-display text-[15px] text-ink">
               Biscuit, as {style.name}
             </p>
@@ -103,7 +104,7 @@ export function GiftReveal() {
       className="relative overflow-hidden bg-[linear-gradient(180deg,var(--color-paper-2),#f5e3d8)]"
     >
       <Container className="grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
-        <div className={cn("relative order-2 lg:order-1", "ph-reveal")}>
+        <div className="relative order-2 lg:order-1 ph-reveal">
           <div
             aria-hidden="true"
             className="absolute left-1/2 top-1/2 h-[118%] w-[118%] max-w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(255_255_255/0.85),rgb(255_255_255/0))]"
@@ -111,7 +112,7 @@ export function GiftReveal() {
           <Phone />
         </div>
 
-        <div className={cn("order-1 lg:order-2", "ph-reveal")}>
+        <div className="order-1 lg:order-2 ph-reveal">
           <HomeHeading
             id="gift-title"
             eyebrow="Instant Gift Reveal"
