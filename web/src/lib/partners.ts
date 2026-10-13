@@ -50,13 +50,14 @@ export type PartnerRow = {
   application: Record<string, unknown> | null;
 };
 
-const PARTNER_SELECT = "id, code, name, handle, discount_percent, commission_rate, status";
+const PARTNER_SELECT = "id, code, name, handle, email, discount_percent, commission_rate, status";
 
 type PartnerCodeRow = {
   id: string;
   code: string;
   name: string | null;
   handle: string | null;
+  email: string | null;
   discount_percent: number | null;
   commission_rate: number | string | null;
   status: string;
@@ -137,6 +138,13 @@ export async function recordReferralOrder({
       .eq("order_id", orderId)
       .limit(1);
     if (existing && existing.length > 0) return;
+
+    // No commission when the creator buys with their own code (e.g. their gift portrait).
+    const partnerEmail = partner.email?.trim().toLowerCase();
+    if (partnerEmail) {
+      const { data: order } = await c.from("orders").select("email").eq("id", orderId).maybeSingle();
+      if (order?.email && order.email.trim().toLowerCase() === partnerEmail) return;
+    }
 
     const amount = Math.max(0, Math.round(Number(amountCents) || 0));
     const rate = Number(partner.commission_rate ?? PROGRAM.commissionRate);
