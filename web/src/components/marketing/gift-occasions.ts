@@ -1,5 +1,4 @@
 /** Gift-guide occasions: copy for /gifts and the /gifts/[occasion] landing pages. */
-import { Baby, Cake, Flower2, Gift, Heart, Medal, Snowflake, type LucideIcon } from "lucide-react";
 import { ADDONS, STYLE_MAP, type StyleSlug } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 import type { FaqItem } from "@/components/marketing/faq";
@@ -14,7 +13,6 @@ export type Occasion = {
   name: string;
   /** Used in "Styles we love for …". */
   forLabel: string;
-  icon: LucideIcon;
   /** One line for gift-guide cards. */
   card: string;
   title: string;
@@ -22,7 +20,6 @@ export type Occasion = {
   eyebrow: string;
   h1: string;
   lede: string;
-  tone: "clay" | "sage" | "butter" | "blush";
   goodFor: GoodFor[];
   /** Styles shown first, if present in the catalog. */
   feature: StyleSlug;
@@ -43,7 +40,6 @@ export const OCCASIONS: Occasion[] = [
     slug: "christmas",
     forLabel: "Christmas",
     name: "Christmas",
-    icon: Snowflake,
     card: "The gift that gets the gasp on Christmas morning.",
     title: "Christmas Dog Portraits — Custom Gifts for Dog Lovers",
     metaDescription:
@@ -51,7 +47,6 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "Christmas 2026",
     h1: "The Christmas gift they'll hang forever",
     lede: "A portrait of their dog, in a style that suits them, framed and ready for the wall. See it free before you buy, and send a Gift Reveal the moment you order.",
-    tone: "clay",
     goodFor: ["holiday", "gift"],
     feature: "holiday",
     ideas: [
@@ -87,7 +82,6 @@ export const OCCASIONS: Occasion[] = [
     slug: "memorial",
     forLabel: "remembering them",
     name: "In memory",
-    icon: Flower2,
     card: "A gentle, lasting way to remember a best friend.",
     title: "Pet Memorial Portraits — Remember Your Dog",
     metaDescription:
@@ -95,7 +89,6 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "Memorial portraits",
     h1: "A gentle way to remember them",
     lede: "When a dog has been part of your life, they stay part of it. A portrait made from a photo you love can bring a little of them back into the room. Take your time. You'll see it before you decide anything.",
-    tone: "sage",
     goodFor: ["memorial"],
     feature: "watercolor",
     ideas: [
@@ -132,7 +125,6 @@ export const OCCASIONS: Occasion[] = [
     slug: "mothers-day",
     forLabel: "Mother's Day",
     name: "Mother's Day",
-    icon: Heart,
     card: "For the dog mom who has everything (except this).",
     title: "Mother's Day Gifts for Dog Moms — Custom Dog Portraits",
     metaDescription:
@@ -140,7 +132,6 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "Mother's Day",
     h1: "For the dog mom who has everything",
     lede: "She already has the mug and the tote. Give her a real piece of art of the one who follows her from room to room. Mother's Day is Sunday, May 9, 2027.",
-    tone: "blush",
     goodFor: ["gift", "decor"],
     feature: "botanical",
     ideas: [
@@ -172,7 +163,6 @@ export const OCCASIONS: Occasion[] = [
     slug: "birthday",
     forLabel: "birthdays",
     name: "Birthday",
-    icon: Cake,
     card: "Their birthday, or their dog's. Both deserve a portrait.",
     title: "Birthday Gifts for Dog Lovers — Custom Dog Portraits",
     metaDescription:
@@ -180,7 +170,6 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "Birthday gifts",
     h1: "A birthday gift with a wagging tail",
     lede: "For the friend who shows you their dog before they say hello. Make a portrait from a photo you already have, send the Gift Reveal on their birthday, and let the print follow.",
-    tone: "butter",
     goodFor: ["gift", "funny"],
     feature: "royal",
     ideas: [
@@ -212,7 +201,6 @@ export const OCCASIONS: Occasion[] = [
     slug: "new-puppy",
     forLabel: "a new puppy",
     name: "New puppy",
-    icon: Baby,
     card: "They're only this small for a few weeks.",
     title: "New Puppy Gifts — A Portrait of Their First Weeks",
     metaDescription:
@@ -220,7 +208,6 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "New puppy",
     h1: "Their very first portrait",
     lede: "Puppies grow up astonishingly fast. Capture the oversized paws and floppy ears now, while they still fit in your lap.",
-    tone: "butter",
     goodFor: ["gift", "decor"],
     feature: "storybook",
     ideas: [
@@ -249,7 +236,6 @@ export const OCCASIONS: Occasion[] = [
     slug: "fathers-day",
     forLabel: "Father's Day",
     name: "Father's Day",
-    icon: Medal,
     card: "For the dog dad and his best friend.",
     title: "Father's Day Gifts for Dog Dads — Custom Dog Portraits",
     metaDescription:
@@ -257,7 +243,6 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "Father's Day",
     h1: "For the dog dad and his best friend",
     lede: "He'll say he doesn't need anything. Then he'll hang a portrait of his dog as a decorated naval admiral above his desk and show everyone who visits. Father's Day is Sunday, June 20, 2027.",
-    tone: "clay",
     goodFor: ["gift", "funny"],
     feature: "admiral",
     ideas: [
@@ -296,7 +281,6 @@ export function getOccasion(slug: string): Occasion | undefined {
 /** Gift-guide card for "dog lovers who have everything" (no landing page; it points at styles). */
 export const EVERYTHING_CARD = {
   name: "Dog lovers who have everything",
-  icon: Gift,
   card: "Nobody else will give them a portrait of their own dog.",
   href: "/styles",
   cta: "Browse styles",

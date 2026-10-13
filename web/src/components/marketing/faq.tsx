@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type FaqItem = {
@@ -10,27 +9,28 @@ export type FaqItem = {
 };
 
 /** Accessible accordion built on native <details>, so it works without JavaScript. */
-export function FaqList({ items, className, tone = "paper" }: { items: FaqItem[]; className?: string; tone?: "paper" | "sage" }) {
+export function FaqList({ items, className }: { items: FaqItem[]; className?: string }) {
   return (
-    <div className={cn("divide-y border-y", tone === "sage" ? "divide-sage/40 border-sage/40" : "divide-line border-line", className)}>
+    <div className={cn("border-t border-line", className)}>
       {items.map((item) => (
-        <details key={item.q} className="group">
-          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left [&::-webkit-details-marker]:hidden">
-            <span className="font-display text-lg leading-snug sm:text-xl">{item.q}</span>
-            <span
-              className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full ring-1 ring-ink/15 transition-transform duration-200 group-open:rotate-45 group-open:bg-ink group-open:text-paper"
-              aria-hidden="true"
-            >
-              <Plus className="h-4 w-4" />
+        <details key={item.q} className="group border-b border-line">
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left text-[17px] leading-snug text-ink [&::-webkit-details-marker]:hidden">
+            <span>{item.q}</span>
+            <span aria-hidden="true" className="w-4 shrink-0 text-center text-[20px] font-light leading-[1.1] text-ink-3">
+              <span className="group-open:hidden">+</span>
+              <span className="hidden group-open:inline">&minus;</span>
             </span>
           </summary>
-          <div className="max-w-2xl space-y-3 pb-6 pr-10 text-[15px] leading-relaxed text-ink-2 sm:text-base">
+          <div className="space-y-3 pb-6 pr-10 text-[16px] leading-relaxed text-ink-2">
             {item.a.split(/\n\n+/).map((para) => (
               <p key={para}>{para}</p>
             ))}
             {item.link && (
               <p>
-                <Link href={item.link.href} className="font-medium text-ink underline decoration-clay/50 underline-offset-4 hover:decoration-clay">
+                <Link
+                  href={item.link.href}
+                  className="text-ink underline decoration-ink/30 underline-offset-[3px] hover:decoration-ink"
+                >
                   {item.link.label}
                 </Link>
               </p>

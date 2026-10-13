@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { JsonLd } from "@/components/marketing/json-ld";
 
@@ -9,14 +8,14 @@ export type Crumb = { href: string; label: string };
 export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: string }) {
   const all = [{ href: "/", label: "Home" }, ...items];
   return (
-    <nav aria-label="Breadcrumb" className={cn("text-sm text-ink-3", className)}>
-      <ol className="flex flex-wrap items-center gap-1.5">
+    <nav aria-label="Breadcrumb" className={cn("text-[13px] text-ink-3", className)}>
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
         {all.map((c, i) => {
           const last = i === all.length - 1;
           return (
-            <li key={c.href} className="flex items-center gap-1.5">
+            <li key={c.href} className="flex min-w-0 items-center gap-2">
               {last ? (
-                <span aria-current="page" className="text-ink-2">
+                <span aria-current="page" className="truncate text-ink-2">
                   {c.label}
                 </span>
               ) : (
@@ -24,7 +23,7 @@ export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: 
                   <Link href={c.href} className="hover:text-ink">
                     {c.label}
                   </Link>
-                  <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span aria-hidden="true">/</span>
                 </>
               )}
             </li>

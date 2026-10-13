@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 /** Shared link style for links inside editorial copy. */
 export const proseLink =
-  "font-medium text-ink underline decoration-clay/45 decoration-[1.5px] underline-offset-[3px] transition-colors hover:decoration-clay";
+  "text-ink underline decoration-ink/30 underline-offset-[3px] transition-colors hover:decoration-ink";
 
 const TOKEN = /(\[[^\]]+\]\([^)\s]+\)|\*\*.+?\*\*|\*[^*\s][^*]*?\*)/g;
 
@@ -45,7 +45,7 @@ export function renderInline(text: string, keyPrefix = "i"): ReactNode[] {
       }
     } else if (token.startsWith("**")) {
       out.push(
-        <strong key={key} className="font-semibold text-ink">
+        <strong key={key} className="font-medium text-ink">
           {renderInline(token.slice(2, -2), key)}
         </strong>,
       );

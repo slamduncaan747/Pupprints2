@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { site, socialLinks } from "@/lib/config";
-import { absoluteUrl } from "@/lib/utils";
-import { DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { site } from "@/lib/config";
+import { DEFAULT_OG_IMAGE, jsonLdProps, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import { Hero } from "@/components/home/hero";
+import { StyleIndex } from "@/components/home/style-index";
 import { HowItWorks } from "@/components/home/how-it-works";
-import { StyleGallery } from "@/components/home/style-gallery";
-import { Comparison } from "@/components/home/comparison";
 import { Products } from "@/components/home/products";
-import { GiftReveal } from "@/components/home/gift-reveal";
-import { Memorial } from "@/components/home/memorial";
-import { Guarantee } from "@/components/home/guarantee";
-import { Founding } from "@/components/home/founding";
-import { FaqTeaser } from "@/components/home/faq-teaser";
-import { FinalCta } from "@/components/home/final-cta";
+import { Promises } from "@/components/home/promises";
 
 const TITLE = "Custom Dog Portraits from Your Photo — See Yours Free";
 const DESCRIPTION =
@@ -39,55 +32,15 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": absoluteUrl("/#organization"),
-      name: site.name,
-      url: absoluteUrl("/"),
-      description: site.description,
-      email: site.supportEmail,
-      ...(socialLinks.length ? { sameAs: socialLinks.map((s) => s.url) } : {}),
-      contactPoint: {
-        "@type": "ContactPoint",
-        contactType: "customer support",
-        email: site.supportEmail,
-        availableLanguage: ["English"],
-      },
-    },
-    {
-      "@type": "WebSite",
-      "@id": absoluteUrl("/#website"),
-      name: site.name,
-      url: absoluteUrl("/"),
-      description: site.description,
-      inLanguage: "en-US",
-      publisher: { "@id": absoluteUrl("/#organization") },
-    },
-  ],
-};
-
 export default function HomePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        // JSON-LD must be inlined; escape "<" so the payload can never close the script tag.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
+      <script {...jsonLdProps([organizationJsonLd({ logo: "/logo.png" }), websiteJsonLd()])} />
       <Hero />
+      <StyleIndex />
       <HowItWorks />
-      <StyleGallery />
-      <Comparison />
       <Products />
-      <GiftReveal />
-      <Memorial />
-      <Guarantee />
-      <Founding />
-      <FaqTeaser />
-      <FinalCta />
+      <Promises />
     </>
   );
 }

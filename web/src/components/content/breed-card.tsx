@@ -1,35 +1,36 @@
 import Link from "next/link";
+import { STYLE_MAP } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import type { Breed } from "@/content/types";
 import { breedSample } from "@/content/breeds";
-import { FramedSample } from "@/components/content/framed-sample";
+import { SampleImage } from "@/components/ui/sample-image";
 
-/** Breed tile linking to /breeds/[slug]. */
-export function BreedCard({ breed, className, priority }: { breed: Breed; className?: string; priority?: boolean }) {
+/** Breed tile for image grids: the breed's sample portrait and its name. */
+export function BreedCard({
+  breed,
+  className,
+  priority,
+  sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 270px",
+}: {
+  breed: Breed;
+  className?: string;
+  priority?: boolean;
+  sizes?: string;
+}) {
   const sample = breedSample(breed);
   return (
-    <article className={cn("group relative flex flex-col", className)}>
-      <div className="relative flex aspect-[5/6] items-center justify-center overflow-hidden rounded-card bg-paper-2 transition-colors duration-300 group-hover:bg-paper-3">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(75%_60%_at_50%_30%,rgb(255_255_255/0.75),transparent_70%)]"
-        />
-        <FramedSample
-          style={sample.style}
+    <article className={cn("group", className)}>
+      <Link href={`/breeds/${breed.slug}`} className="block">
+        <SampleImage
           src={sample.src}
           alt={sample.alt}
+          swatch={STYLE_MAP[sample.style].swatch}
+          sizes={sizes}
           priority={priority}
-          showLabel={false}
-          sizes="(max-width: 640px) 32vw, (max-width: 1024px) 20vw, 13vw"
-          className="relative w-[58%] transition-transform duration-500 group-hover:-translate-y-1"
+          className="transition-opacity duration-300 group-hover:opacity-90"
         />
-      </div>
-      <h3 className="mt-4 font-display text-xl leading-tight text-ink sm:text-[1.35rem]">
-        <Link href={`/breeds/${breed.slug}`} className="after:absolute after:inset-0 hover:text-clay-dark">
-          {breed.name}
-        </Link>
-      </h3>
-      <p className="mt-1 line-clamp-2 text-sm leading-snug text-ink-2">{breed.personality}</p>
+        <h3 className="mt-3 font-display text-[19px] leading-tight sm:text-[21px]">{breed.name}</h3>
+      </Link>
     </article>
   );
 }

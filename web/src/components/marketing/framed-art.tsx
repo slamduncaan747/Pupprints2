@@ -1,130 +1,100 @@
-import type { CSSProperties } from "react";
 import { SampleImage } from "@/components/ui/sample-image";
 import { STYLE_MAP, type FrameColor, type ProductType, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
+import { styleContent } from "@/components/marketing/style-content";
 import { cn } from "@/lib/utils";
 
-export type Finish = FrameColor | "canvas" | "print" | "phone";
-
-/** Natural oak is lighter than the walnut-toned .frame-wood helper, so it gets its own gradient. */
-const OAK: CSSProperties = {
-  background: "linear-gradient(135deg, #b98f5f, #dcbb8c 42%, #c49a68 68%, #a57a4a)",
-  padding: 14,
-  boxShadow: "var(--shadow-frame)",
-};
+/** Frames we sell, plus canvas, a loose print, and "plain" (the image alone, e.g. the digital file). */
+export type Finish = FrameColor | "canvas" | "print" | "plain";
 
 const FRAME_CLASS: Record<FrameColor, string> = {
   black: "frame-black",
   white: "frame-white",
-  oak: "",
+  oak: "frame-oak",
 };
 
 /**
- * A style sample presented the way it would hang: in a frame, on canvas, as a loose print
- * or on a phone (digital). Purely presentational; the real product mockup lives in /create.
+ * A sample portrait shown the way it would hang: in a thin frame, on canvas, as a loose print or plain.
+ * Pass `src` + `alt` to show a specific image (e.g. a breed portrait); otherwise the style's sample is
+ * used. Without a `finish`, each style gets the frame that suits it. Purely presentational.
  */
 export function FramedArt({
   style,
-  finish = "black",
+  src,
+  alt,
+  finish,
   mat = false,
   className,
   sizes = "(max-width: 768px) 70vw, 30vw",
   priority,
+  showLabel = true,
 }: {
   style: StyleSlug;
+  src?: string;
+  alt?: string;
   finish?: Finish;
   mat?: boolean;
   className?: string;
   sizes?: string;
   priority?: boolean;
+  /** Show the style name on the placeholder used while a sample image is missing. */
+  showLabel?: boolean;
 }) {
   const s = STYLE_MAP[style];
+  const f = finish ?? styleContent(s).frame;
   const art = (
     <SampleImage
-      src={STYLE_SAMPLES[style]}
-      alt={`Example ${s.name} portrait of a dog`}
+      src={src ?? STYLE_SAMPLES[style]}
+      alt={alt ?? `Example ${s.name} portrait of a dog`}
       swatch={s.swatch}
-      label={s.name}
+      label={showLabel ? s.name : undefined}
       sizes={sizes}
       priority={priority}
     />
   );
 
-  if (finish === "canvas") {
-    return <div className={cn("canvas-wrap overflow-hidden rounded-[2px]", className)}>{art}</div>;
-  }
-  if (finish === "print") {
-    return (
-      <div className={cn("bg-[#fdfcf9] p-[5%] shadow-soft", className)}>
-        <div className="ring-1 ring-black/5">{art}</div>
-      </div>
-    );
-  }
-  if (finish === "phone") {
-    return (
-      <div className={cn("rounded-[2.2rem] bg-ink p-2.5 shadow-frame", className)}>
-        <div className="overflow-hidden rounded-[1.7rem] bg-paper">
-          <div className="flex h-6 items-center justify-center">
-            <span className="h-1.5 w-12 rounded-full bg-ink/15" />
-          </div>
-          {art}
-          <div className="space-y-1.5 px-4 py-4">
-            <span className="block h-2 w-2/3 rounded-full bg-ink/10" />
-            <span className="block h-2 w-1/3 rounded-full bg-ink/10" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+  if (f === "plain") return <div className={className}>{art}</div>;
+  if (f === "canvas") return <div className={cn("canvas-wrap overflow-hidden", className)}>{art}</div>;
+  if (f === "print") return <div className={cn("bg-white p-[6%] shadow-soft ring-1 ring-black/5", className)}>{art}</div>;
   return (
-    <div className={cn(FRAME_CLASS[finish], className)} style={finish === "oak" ? OAK : undefined}>
-      <div className={cn("shadow-[inset_0_0_0_1px_rgb(0_0_0/0.06)]", mat && "mat")}>{art}</div>
+    <div className={cn(FRAME_CLASS[f], className)}>
+      <div className={cn(mat && "mat")}>{art}</div>
     </div>
   );
 }
 
 /** Default way to show each product type. */
 export const FINISH_FOR_PRODUCT: Record<ProductType, Finish> = {
-  digital: "phone",
+  digital: "plain",
   poster: "print",
   framed: "black",
   canvas: "canvas",
 };
 
-/** A product presented on a softly lit "wall". */
-export function ProductScene({
+/** A product's example art, centered in a fixed 4:5 box so product tiles line up. */
+export function ProductArt({
   type,
   style,
   finish,
   className,
+  sizes = "(max-width: 640px) 70vw, 22vw",
   priority,
 }: {
   type: ProductType;
   style: StyleSlug;
   finish?: Finish;
   className?: string;
+  sizes?: string;
   priority?: boolean;
 }) {
-  const f = finish ?? FINISH_FOR_PRODUCT[type];
   return (
-    <div
-      className={cn(
-        "relative flex aspect-[5/4] items-center justify-center overflow-hidden rounded-card bg-paper-2",
-        className,
-      )}
-    >
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_25%,rgb(255_255_255/0.75),transparent_70%)]"
-      />
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[18%] bg-paper-3/70" />
+    <div className={cn("flex aspect-[4/5] items-center justify-center", className)}>
       <FramedArt
         style={style}
-        finish={f}
+        finish={finish ?? FINISH_FOR_PRODUCT[type]}
         priority={priority}
-        sizes="(max-width: 768px) 45vw, 18vw"
-        className={cn("relative", f === "phone" ? "w-[34%]" : "w-[44%]", f === "print" && "-rotate-1")}
+        sizes={sizes}
+        className="w-[82%]"
       />
     </div>
   );

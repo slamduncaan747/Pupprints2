@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
-import { CircleCheck, LoaderCircle, Mail } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { saveLead, type LeadSource } from "./api";
@@ -62,8 +62,7 @@ export function EmailCapture({
 
   if (state === "done") {
     return (
-      <p role="status" className={cn("flex items-center gap-2 text-[14px] font-medium text-moss", className)}>
-        <CircleCheck className="h-4.5 w-4.5" aria-hidden />
+      <p role="status" className={cn("text-[14px] text-ink", className)}>
         {doneMessage}
       </p>
     );
@@ -75,35 +74,32 @@ export function EmailCapture({
         Email address
       </label>
       <div className="flex gap-2">
-        <div className="relative flex-1">
-          <Mail className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-ink-3" aria-hidden />
-          <input
-            id={id}
-            type="email"
-            inputMode="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={placeholder}
-            aria-invalid={Boolean(error)}
-            aria-describedby={error ? `${id}-err` : undefined}
-            className={cn(
-              "h-12 w-full rounded-full pr-4 pl-10 text-[15px] text-ink ring-1 ring-line outline-none placeholder:text-ink-3 focus:ring-2 focus:ring-ink",
-              tone === "light" ? "bg-white" : "bg-paper",
-            )}
-          />
-        </div>
+        <input
+          id={id}
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={placeholder}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${id}-err` : undefined}
+          className={cn(
+            "h-12 min-w-0 flex-1 rounded-[3px] border border-line px-4 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-ink",
+            tone === "light" ? "bg-white" : "bg-paper",
+          )}
+        />
         <button
           type="submit"
           disabled={state === "sending"}
-          className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-5 text-[15px] font-medium text-paper transition hover:bg-ink/90 disabled:opacity-60"
+          className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-[3px] bg-ink px-5 text-[15px] font-medium text-paper transition-colors hover:bg-ink/85 disabled:opacity-60"
         >
           {state === "sending" ? <LoaderCircle className="h-4 w-4 animate-spin" aria-hidden /> : null}
           {cta}
         </button>
       </div>
       {error && (
-        <p id={`${id}-err`} role="alert" className="mt-2 text-[13px] text-clay-dark">
+        <p id={`${id}-err`} role="alert" className="mt-2 text-[13px] text-ink">
           {error}
         </p>
       )}
