@@ -8,7 +8,12 @@ export const sympathyCard: ArticleInput = {
   date: "2026-10-07",
   category: "memorial",
   heroStyle: "charcoal",
-  keywords: ["what to write in a pet sympathy card", "pet sympathy card messages", "dog sympathy message", "loss of dog condolences"],
+  keywords: [
+    "what to write in a pet sympathy card",
+    "pet sympathy card messages",
+    "dog sympathy message",
+    "loss of dog condolences",
+  ],
   related: ["dog-memorial-ideas", "gift-ideas-for-dog-lovers", "how-to-photograph-your-dog-for-a-portrait"],
   body: [
     {
@@ -23,7 +28,7 @@ export const sympathyCard: ArticleInput = {
       items: [
         "**Name the loss.** \"I'm so sorry about Biscuit.\" Use the dog's name. It matters more than anything else you write.",
         "**Name the love.** Share a memory, a habit or something you noticed about their bond.",
-        "**Offer something specific, or simply your presence.** \"I'm here if you want to talk about him,\" or \"I'll drop dinner off on Thursday.\"",
+        '**Offer something specific, or simply your presence.** "I\'m here if you want to talk about him," or "I\'ll drop dinner off on Thursday."',
       ],
     },
     {
@@ -103,11 +108,11 @@ export const sympathyCard: ArticleInput = {
     {
       type: "list",
       items: [
-        "**\"You can always get another dog.\"** Even if they eventually do, no dog replaces another.",
-        "**\"It was just a dog.\"** For many people, losing a dog hurts as much as losing any family member.",
-        "**Sentences that start with \"at least.\"** However kindly meant, they tend to shrink the loss.",
+        '**"You can always get another dog."** Even if they eventually do, no dog replaces another.',
+        '**"It was just a dog."** For many people, losing a dog hurts as much as losing any family member.',
+        '**Sentences that start with "at least."** However kindly meant, they tend to shrink the loss.',
         "**Questions about what happened**, especially after a sudden loss. They'll share if and when they want to.",
-        "**Anything that second-guesses their decisions.** Saying goodbye to a dog is one of the hardest choices anyone makes. \"You gave them a peaceful goodbye\" is kind; anything that hints at doubt is not.",
+        '**Anything that second-guesses their decisions.** Saying goodbye to a dog is one of the hardest choices anyone makes. "You gave them a peaceful goodbye" is kind; anything that hints at doubt is not.',
       ],
     },
     { type: "heading", text: "Should you mention the Rainbow Bridge?" },

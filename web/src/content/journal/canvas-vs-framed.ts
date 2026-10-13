@@ -10,7 +10,13 @@ export const canvasVsFramed: ArticleInput = {
   date: "2026-10-06",
   category: "home-and-framing",
   heroStyle: "admiral",
-  keywords: ["pet portrait canvas", "framed dog portrait", "canvas vs framed print", "canvas or framed print", "dog portrait print"],
+  keywords: [
+    "pet portrait canvas",
+    "framed dog portrait",
+    "canvas vs framed print",
+    "canvas or framed print",
+    "dog portrait print",
+  ],
   related: ["what-size-art-for-your-wall", "how-to-hang-a-canvas-or-framed-print", "watercolor-vs-oil-vs-line-art"],
   body: [
     {
@@ -35,7 +41,12 @@ export const canvasVsFramed: ArticleInput = {
       rows: [
         ["Starting price", fromPrice("canvas"), fromPrice("framed"), fromPrice("poster")],
         ["Sizes", sizeList("canvas"), sizeList("framed"), sizeList("poster")],
-        ["Surface", "Textured poly-cotton canvas", "Archival matte paper behind acrylic", "Archival, acid-free matte paper"],
+        [
+          "Surface",
+          "Textured poly-cotton canvas",
+          "Archival matte paper behind acrylic",
+          "Archival, acid-free matte paper",
+        ],
         ["Ready to hang?", "Yes, hardware included", "Yes, hardware included", "No, frame it yourself"],
         ["The look", "Painting-like, no frame", "Polished and finished", "Depends on your frame"],
         ["Arrives in (US)", shipWindow("canvas"), shipWindow("framed"), shipWindow("poster")],
@@ -93,7 +104,7 @@ export const canvasVsFramed: ArticleInput = {
     {
       type: "tip",
       title: "Framing it yourself?",
-      text: "Measure the print when it arrives before buying a frame, and decide whether you want a mat. A mat needs a frame one size up (an 8×10\" print in an 11×14\" frame is a classic combination).",
+      text: 'Measure the print when it arrives before buying a frame, and decide whether you want a mat. A mat needs a frame one size up (an 8×10" print in an 11×14" frame is a classic combination).',
     },
     { type: "heading", text: "What about digital?" },
     {

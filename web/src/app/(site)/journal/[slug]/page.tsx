@@ -8,13 +8,13 @@ import { CtaBand } from "@/components/marketing/cta-band";
 import { PROMISES, STYLE_MAP } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { articleJsonLd, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
-import { ARTICLES, CATEGORIES, getArticle, relatedArticles, tableOfContents } from "@/content/articles";
+import { ARTICLES, CATEGORIES, articleStyles, getArticle, relatedArticles, tableOfContents } from "@/content/articles";
 import { publicAssetExists } from "@/content/assets";
 import type { Article } from "@/content/types";
 import { ArticleBody } from "@/components/content/article-body";
 import { ArticleCard, formatArticleDate, type ArticleSummary } from "@/components/content/article-card";
 import { ContentBreadcrumbs } from "@/components/content/breadcrumbs";
-import { FramedSample, SampleOnWall } from "@/components/content/framed-sample";
+import { FramedSample } from "@/components/content/framed-sample";
 import { JsonLd } from "@/components/content/json-ld";
 import { TocDisclosure, TocSidebar } from "@/components/content/toc";
 
@@ -70,6 +70,7 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
   const toc = tableOfContents(article);
   const showToc = toc.length >= 4;
   const related = relatedArticles(article, 3);
+  const [, left, right] = articleStyles(article, 3);
   const crumbs = [
     { name: "Journal", path: "/journal" },
     { name: article.title, path },
@@ -97,7 +98,7 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
       <article>
         <header className="bg-paper">
           <Container className="pt-8 sm:pt-10">
-            <ContentBreadcrumbs items={crumbs} className="[&_li:last-child]:hidden sm:[&_li:last-child]:flex" />
+            <ContentBreadcrumbs items={crumbs} />
             <div className="mx-auto mt-10 max-w-3xl text-center sm:mt-14">
               <Eyebrow>{category.label}</Eyebrow>
               <h1 className="mt-5 font-display text-[2.3rem] leading-[1.05] sm:text-[3.4rem] lg:text-[3.9rem]">
@@ -111,13 +112,33 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
                 {article.readingMinutes} min read
               </p>
             </div>
-            <SampleOnWall
-              style={article.heroStyle}
-              priority
-              sizes="(max-width: 640px) 45vw, 20vw"
-              className="mx-auto mt-10 aspect-[4/3] max-w-5xl sm:mt-14 sm:aspect-[2/1]"
-              frameClassName="w-[44%] sm:w-[22%]"
-            />
+            <div
+              aria-hidden="true"
+              className="relative mx-auto mt-10 flex aspect-[4/3] max-w-5xl items-center justify-center gap-[5%] overflow-hidden rounded-card bg-paper-2 sm:mt-14 sm:aspect-[2.2/1]"
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(80%_70%_at_50%_30%,rgb(255_255_255/0.8),transparent_70%)]" />
+              <div className="absolute inset-x-0 bottom-0 h-[14%] bg-paper-3/60" />
+              {left && (
+                <FramedSample
+                  style={left}
+                  sizes="15vw"
+                  className="relative hidden w-[14%] -translate-y-[8%] -rotate-2 sm:block"
+                />
+              )}
+              <FramedSample
+                style={article.heroStyle}
+                priority
+                sizes="(max-width: 640px) 45vw, 22vw"
+                className="relative w-[42%] sm:w-[21%]"
+              />
+              {right && (
+                <FramedSample
+                  style={right}
+                  sizes="15vw"
+                  className="relative hidden w-[14%] translate-y-[6%] rotate-2 sm:block"
+                />
+              )}
+            </div>
           </Container>
         </header>
 
@@ -159,10 +180,22 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
               <div className="sticky top-28 space-y-10">
                 {showToc && <TocSidebar entries={toc} />}
                 <div className="rounded-card bg-paper-2 p-5 ring-1 ring-line">
-                  <FramedSample style={article.heroStyle} sizes="120px" className="mx-auto w-24 -rotate-2" />
+                  <FramedSample
+                    style={article.heroStyle}
+                    sizes="120px"
+                    showLabel={false}
+                    className="mx-auto w-24 -rotate-2"
+                  />
                   <p className="mt-5 font-display text-lg leading-snug text-ink">See your dog as art, free</p>
-                  <p className="mt-1.5 text-sm leading-relaxed text-ink-2">{PROMISES.preview}. About a minute, no card needed.</p>
-                  <ButtonLink href={`/create?style=${article.heroStyle}`} variant="accent" size="sm" className="mt-4 w-full">
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-2">
+                    {PROMISES.preview}. About a minute, no card needed.
+                  </p>
+                  <ButtonLink
+                    href={`/create?style=${article.heroStyle}`}
+                    variant="accent"
+                    size="sm"
+                    className="mt-4 w-full"
+                  >
                     Try it free <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </ButtonLink>
                 </div>

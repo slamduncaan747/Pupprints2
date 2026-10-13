@@ -10,7 +10,13 @@ export const giftIdeas: ArticleInput = {
   date: "2026-10-12",
   category: "gift-guides",
   heroStyle: "royal",
-  keywords: ["gifts for dog lovers", "dog lover gift", "gifts for dog owners", "personalized dog gifts", "unique dog gifts"],
+  keywords: [
+    "gifts for dog lovers",
+    "dog lover gift",
+    "gifts for dog owners",
+    "personalized dog gifts",
+    "unique dog gifts",
+  ],
   related: ["christmas-gifts-for-dog-owners", "gifts-for-dog-moms", "new-puppy-gift-ideas"],
   body: [
     {

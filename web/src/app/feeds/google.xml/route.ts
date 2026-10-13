@@ -96,12 +96,7 @@ function describe(product: Product, variant: Variant, style?: ArtStyle) {
     product.type === "digital" ? "" : `${PROMISES.digital}. ${PROMISES.shipping}.`,
     `${PROMISES.guarantee}. Every portrait is checked by a person on our team before it's printed.`,
   ];
-  return parts
-    .filter(Boolean)
-    .join(" ")
-    .replace(/\s+/g, " ")
-    .replace(/\.\./g, ".")
-    .trim();
+  return parts.filter(Boolean).join(" ").replace(/\s+/g, " ").replace(/\.\./g, ".").trim();
 }
 
 function variantTitle(product: Product, variant: Variant) {
@@ -173,9 +168,7 @@ function renderItem(item: Item) {
     item.groupId ? `<g:item_group_id>${xml(item.groupId)}</g:item_group_id>` : "",
     physical && size(variant) ? `<g:size>${xml(size(variant))}</g:size>` : "",
     `<g:shipping><g:country>US</g:country><g:service>Standard</g:service><g:price>${money(SHIPPING_RATES.US)}</g:price></g:shipping>`,
-    physical
-      ? `<g:shipping_label>${product.type}</g:shipping_label>`
-      : "",
+    physical ? `<g:shipping_label>${product.type}</g:shipping_label>` : "",
     `<g:custom_label_0>${xml(product.type)}</g:custom_label_0>`,
     `<g:custom_label_1>${xml(item.style ? item.style.slug : "any-style")}</g:custom_label_1>`,
   ].filter(Boolean);

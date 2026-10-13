@@ -10,11 +10,14 @@ export function NewsletterForm({
   className,
   cta = "Join",
   dark = false,
+  successMessage,
 }: {
   source: string;
   className?: string;
   cta?: string;
   dark?: boolean;
+  /** Overrides the default "WELCOME10 is on its way" confirmation. */
+  successMessage?: React.ReactNode;
 }) {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -40,7 +43,12 @@ export function NewsletterForm({
   if (state === "done") {
     return (
       <p className={cn("flex items-center gap-2 text-[15px] font-medium", dark ? "text-paper" : "text-moss", className)}>
-        <Check className="h-4 w-4" /> You&apos;re in. Your code <span className="font-semibold">WELCOME10</span> is on its way.
+        <Check className="h-4 w-4" />{" "}
+        {successMessage ?? (
+          <>
+            You&apos;re in. Your code <span className="font-semibold">WELCOME10</span> is on its way.
+          </>
+        )}
       </p>
     );
   }

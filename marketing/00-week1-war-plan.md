@@ -157,11 +157,11 @@ Shift every block if you start later. **The order matters more than the clock.**
 ### Thu Oct 15: convert the reactions
 - **48-hour follow-ups** to Tuesday's creator DMs that got no reply (template B, once only).
 - **Pick the 2 paid nano creators** and send template D ($30, post Fri or Sat). Get the Spark code or partnership-ad permission in writing.
-- **Gift prints:** offer the physical print to up to **5** creators who replied warmly (12×16 fine-art print, ~$16 landed). Place the orders in Printful ([outreach-playbook §8](creators/outreach-playbook.md#8-ops-tracking-codes-payouts)).
+- **Gift prints:** offer the physical print to up to **5** creators who replied warmly (12×16 fine-art print, ~$16 landed). Place them through our own site with a single-use 100%-off code, so the print file gets upscaled and QA'd ([outreach-playbook §8](creators/outreach-playbook.md#8-ops-tracking-codes-payouts)).
 - **Facebook breed groups:** 3–4 posts in groups whose rules allow them ([community-posts.md §4](channels/community-posts.md#4-facebook-breed-groups-10)).
 - **Reddit:** at most 2 founder-story posts ([community-posts.md §5](channels/community-posts.md#5-reddit-honest-verdict--3-posts)).
 - **Shelter:** follow up by phone with the 3 shelters. Make portraits of 3 adoptable dogs for the first shelter that says yes.
-- **3 videos** (#6, #11, #16). Shortlist the boost candidate.
+- **3 videos** (#6, #11, #16). Swap any script you can't shoot yet: #6 needs a willing memorial subject, #16 needs a shelter's OK. Shortlist the boost candidate.
 - **Targets:** 60 creator gifts total, 20 creator replies, 3 creator stories or posts live, **10–15 orders cumulative**.
 
 ### Fri Oct 16: amplify

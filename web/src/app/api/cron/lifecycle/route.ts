@@ -161,6 +161,8 @@ async function runOrderEmails() {
     .in("status", ["shipped", "delivered"])
     .is("shipped_email_sent_at", null)
     .not("email", "is", null)
+    // Only recent shipments (don't email old orders when email is first switched on).
+    .gte("updated_at", new Date(Date.now() - 14 * 24 * HOUR).toISOString())
     .limit(BATCH);
   for (const order of (shippedNoEmail ?? []) as OrderRow[]) {
     await sendShippedEmail(order);

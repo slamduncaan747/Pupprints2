@@ -29,7 +29,7 @@ export const dogMomGifts: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: "Not sure what to write? Something like \"Thanks for the walks, the treats and for letting me on the couch (even when you said I wasn't allowed). Love, Bailey\" does the job beautifully.",
+      text: 'Not sure what to write? Something like "Thanks for the walks, the treats and for letting me on the couch (even when you said I wasn\'t allowed). Love, Bailey" does the job beautifully.',
     },
     { type: "heading", text: "Match the gift to the dog mom" },
     {

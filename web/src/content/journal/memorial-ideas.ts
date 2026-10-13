@@ -9,8 +9,18 @@ export const memorialIdeas: ArticleInput = {
   date: "2026-10-05",
   category: "memorial",
   heroStyle: "watercolor",
-  keywords: ["dog memorial ideas", "dog memorial gift", "pet memorial gifts", "pet loss gift", "ways to remember your dog"],
-  related: ["what-to-write-in-a-pet-sympathy-card", "how-to-photograph-your-dog-for-a-portrait", "watercolor-vs-oil-vs-line-art"],
+  keywords: [
+    "dog memorial ideas",
+    "dog memorial gift",
+    "pet memorial gifts",
+    "pet loss gift",
+    "ways to remember your dog",
+  ],
+  related: [
+    "what-to-write-in-a-pet-sympathy-card",
+    "how-to-photograph-your-dog-for-a-portrait",
+    "watercolor-vs-oil-vs-line-art",
+  ],
   body: [
     {
       type: "paragraph",
@@ -102,7 +112,7 @@ export const memorialIdeas: ArticleInput = {
     { type: "heading", text: "Helping children say goodbye" },
     {
       type: "paragraph",
-      text: "For many children, losing a dog is their first experience of grief. Simple, honest language helps more than euphemisms: phrases like \"went to sleep\" can be confusing or even frightening. Let them see that you're sad too, and give them something to do with their feelings.",
+      text: 'For many children, losing a dog is their first experience of grief. Simple, honest language helps more than euphemisms: phrases like "went to sleep" can be confusing or even frightening. Let them see that you\'re sad too, and give them something to do with their feelings.',
     },
     {
       type: "list",

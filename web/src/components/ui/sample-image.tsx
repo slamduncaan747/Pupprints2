@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,6 +26,12 @@ export function SampleImage({
   priority?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
+  const ref = useRef<HTMLImageElement>(null);
+  // The image may have failed before hydration, in which case onError never fires.
+  useEffect(() => {
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) setFailed(true);
+  }, []);
   return (
     <div className={cn("relative aspect-[4/5] overflow-hidden bg-paper-2", className)}>
       {failed ? (
@@ -39,6 +45,7 @@ export function SampleImage({
         </div>
       ) : (
         <Image
+          ref={ref}
           src={src}
           alt={alt}
           fill

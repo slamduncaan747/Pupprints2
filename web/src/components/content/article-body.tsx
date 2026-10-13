@@ -16,7 +16,13 @@ function spacing(block: Block, prev: Block | undefined) {
   if (level === 3) return prev.type === "heading" ? "mt-7" : "mt-10";
   if (block.type === "cta" || block.type === "styles" || block.type === "table") return "mt-10";
   if (prev.type === "heading") return (prev.level ?? 2) === 2 ? "mt-5" : "mt-3";
-  if (prev.type === "cta" || prev.type === "styles" || prev.type === "table" || block.type === "tip" || prev.type === "tip")
+  if (
+    prev.type === "cta" ||
+    prev.type === "styles" ||
+    prev.type === "table" ||
+    block.type === "tip" ||
+    prev.type === "tip"
+  )
     return "mt-8";
   return "mt-6";
 }
@@ -50,7 +56,7 @@ function BlockView({ block, id, index, first }: { block: Block; id?: string; ind
           className={cn(
             "text-[1.0625rem] leading-[1.8] text-ink-2 sm:text-[1.125rem]",
             first &&
-              "text-[1.15rem] text-ink sm:text-[1.25rem] sm:leading-[1.75] first-letter:float-left first-letter:mr-3 first-letter:mt-[0.12em] first-letter:font-display first-letter:text-[3.6em] first-letter:leading-[0.78] first-letter:text-clay",
+              "text-[1.15rem] text-ink sm:text-[1.25rem] sm:leading-[1.75] first-letter:float-left first-letter:mr-2 first-letter:mt-[0.12em] first-letter:font-display first-letter:text-[3.6em] first-letter:leading-[0.78] first-letter:text-clay",
           )}
         >
           {renderInline(block.text, k)}
@@ -108,11 +114,13 @@ function BlockView({ block, id, index, first }: { block: Block; id?: string; ind
           <div className={cn("grid items-center gap-6 p-6 sm:p-8", block.style && "sm:grid-cols-[132px_1fr] sm:gap-8")}>
             {block.style && (
               <div className="hidden sm:block">
-                <FramedSample style={block.style} sizes="132px" className="-rotate-2" />
+                <FramedSample style={block.style} sizes="132px" showLabel={false} className="-rotate-2" />
               </div>
             )}
             <div>
-              <p className="font-display text-2xl leading-tight text-ink sm:text-[1.7rem]">{renderInline(block.title, `${k}t`)}</p>
+              <p className="font-display text-2xl leading-tight text-ink sm:text-[1.7rem]">
+                {renderInline(block.title, `${k}t`)}
+              </p>
               <p className="mt-2 text-[1rem] leading-relaxed text-ink-2">{renderInline(block.body, k)}</p>
               <ButtonLink href={block.href} variant="accent" className="mt-5">
                 {block.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -162,19 +170,29 @@ function BlockView({ block, id, index, first }: { block: Block; id?: string; ind
             </table>
           </div>
           {block.caption && (
-            <figcaption className="mt-3 px-5 text-sm text-ink-3 sm:px-0">{renderInline(block.caption, `${k}c`)}</figcaption>
+            <figcaption className="mt-3 px-5 text-sm text-ink-3 sm:px-0">
+              {renderInline(block.caption, `${k}c`)}
+            </figcaption>
           )}
         </figure>
       );
     case "styles":
       return (
         <figure>
-          <ul className={cn("grid grid-cols-2 gap-x-5 gap-y-8", block.slugs.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-4")}>
+          <ul
+            className={cn(
+              "grid grid-cols-2 gap-x-5 gap-y-8",
+              block.slugs.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-4",
+            )}
+          >
             {block.slugs.map((slug) => {
               const s = STYLE_MAP[slug];
               return (
                 <li key={slug} className="group">
-                  <Link href={`/styles/${slug}`} className="block rounded-2xl bg-paper-2 px-[16%] py-[14%] transition-colors hover:bg-paper-3">
+                  <Link
+                    href={`/styles/${slug}`}
+                    className="block rounded-2xl bg-paper-2 px-[16%] py-[14%] transition-colors hover:bg-paper-3"
+                  >
                     <FramedSample style={slug} sizes="(max-width: 640px) 35vw, 160px" />
                     <span className="sr-only">About the {s.name} style</span>
                   </Link>

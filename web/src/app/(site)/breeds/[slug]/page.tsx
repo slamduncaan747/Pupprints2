@@ -42,7 +42,10 @@ function buildFaq(b: Breed): FaqItem[] {
   const nick = shortName(b);
   const [first, second] = b.styles;
   const styleQ: FaqItem = {
-    q: b.slug === "mixed-breed" ? "Which portrait style suits a mixed-breed dog?" : `Which portrait style suits a ${b.name}?`,
+    q:
+      b.slug === "mixed-breed"
+        ? "Which portrait style suits a mixed-breed dog?"
+        : `Which portrait style suits a ${b.name}?`,
     a: `We'd start with ${STYLE_MAP[first.slug].name}: ${first.why} ${STYLE_MAP[second.slug].name} is a close second: ${second.why} That said, you can try every style free with your own photo and pick the one that looks most like your ${nick}.`,
     link: { href: `/styles/${first.slug}`, label: `About ${STYLE_MAP[first.slug].name}` },
   };
@@ -54,9 +57,15 @@ function buildFaq(b: Breed): FaqItem[] {
       .join(" ")}`,
     link: { href: "/journal/how-to-photograph-your-dog-for-a-portrait", label: "Read the full photo guide" },
   };
-  const priceLine = PRODUCTS.map((p) => `${p.name} ${p.variants.length > 1 ? "from " : ""}${formatPrice(Math.min(...p.variants.map((v) => v.price)))}`).join(", ");
+  const priceLine = PRODUCTS.map(
+    (p) =>
+      `${p.name} ${p.variants.length > 1 ? "from " : ""}${formatPrice(Math.min(...p.variants.map((v) => v.price)))}`,
+  ).join(", ");
   const priceQ: FaqItem = {
-    q: b.slug === "mixed-breed" ? "How much does a custom dog portrait cost?" : `How much does a custom ${b.name} portrait cost?`,
+    q:
+      b.slug === "mixed-breed"
+        ? "How much does a custom dog portrait cost?"
+        : `How much does a custom ${b.name} portrait cost?`,
     a: `The preview is free. If you love it: ${priceLine}. US shipping is free on every order, and every print, framed print and canvas includes the hi-res digital file.`,
     link: { href: "/shop", label: "See every size and price" },
   };
@@ -79,7 +88,12 @@ function summary(a: Article): ArticleSummary {
 
 function furtherReading(b: Breed): Article[] {
   const linked = articlesLinkingTo(`/breeds/${b.slug}`);
-  const defaults = ["how-to-photograph-your-dog-for-a-portrait", "watercolor-vs-oil-vs-line-art", "gift-ideas-for-dog-lovers", "canvas-vs-framed-print-vs-poster"]
+  const defaults = [
+    "how-to-photograph-your-dog-for-a-portrait",
+    "watercolor-vs-oil-vs-line-art",
+    "gift-ideas-for-dog-lovers",
+    "canvas-vs-framed-print-vs-poster",
+  ]
     .map((s) => ARTICLE_MAP[s])
     .filter(Boolean);
   const out: Article[] = [];
@@ -149,14 +163,18 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
           <ContentBreadcrumbs items={crumbs} />
           <div className="mt-8 grid items-center gap-10 sm:mt-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
             <div>
-              <Eyebrow className="mb-5">{isMixed ? "Rescue & mixed breed portraits" : `${breed.name} portraits`}</Eyebrow>
+              <Eyebrow className="mb-5">
+                {isMixed ? "Rescue & mixed breed portraits" : `${breed.name} portraits`}
+              </Eyebrow>
               <h1 className="font-display text-[2.5rem] leading-[1.03] sm:text-6xl lg:text-[4rem]">
                 Custom {breed.name} Portraits
               </h1>
-              <p className="mt-5 font-display text-xl italic leading-snug text-ink-2 sm:text-2xl">{breed.personality}</p>
+              <p className="mt-5 font-display text-xl italic leading-snug text-ink-2 sm:text-2xl">
+                {breed.personality}
+              </p>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-2">
-                Upload a favorite photo of your {nick} and see them as a work of art in about a minute. Try every
-                style free, and only order if you love it.
+                Upload a favorite photo of your {nick} and see them as a work of art in about a minute. Try every style
+                free, and only order if you love it.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <ButtonLink href={`/create?style=${top}`} variant="accent" size="lg">
@@ -216,7 +234,9 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
                 <p className="mt-7 text-xs font-semibold uppercase tracking-[0.16em] text-ink-3">Popularity</p>
                 <p className="mt-3 text-[16px] leading-relaxed text-ink-2">
                   <span className="font-display text-3xl text-ink">No. {breed.akcRank2025}</span>
-                  <span className="mt-1 block text-sm text-ink-3">on the AKC&rsquo;s 2025 most popular breeds list</span>
+                  <span className="mt-1 block text-sm text-ink-3">
+                    on the AKC&rsquo;s 2025 most popular breeds list
+                  </span>
                 </p>
               </>
             )}
@@ -225,7 +245,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
               href={`/styles/${top}`}
               className="mt-3 flex items-center gap-4 rounded-2xl bg-paper-2 p-3 transition-colors hover:bg-paper-3"
             >
-              <FramedSample style={top} sizes="56px" className="w-14 shrink-0" />
+              <FramedSample style={top} sizes="56px" showLabel={false} className="w-14 shrink-0" />
               <span>
                 <span className="block font-display text-lg leading-tight text-ink">{STYLE_MAP[top].name}</span>
                 <span className="mt-0.5 block text-sm leading-snug text-ink-2">{STYLE_MAP[top].blurb}</span>
@@ -275,8 +295,8 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
               {isMixed ? "Styles we'd try first" : `Styles we'd pick for a ${nick}`}
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-ink-2">
-              Chosen for the {isMixed ? "personality" : "breed's look and personality"}. You can preview all of
-              them, and every other style, free with your own photo.
+              Chosen for the {isMixed ? "personality" : "breed's look and personality"}. You can preview all of them,
+              and every other style, free with your own photo.
             </p>
           </div>
           <ul className="mt-12 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -298,7 +318,9 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
                   <div className="mt-5 flex flex-1 flex-col">
                     <div className="flex items-baseline gap-2">
                       <h3 className="font-display text-2xl leading-tight">{style.name}</h3>
-                      {i === 0 && <span className="text-xs font-semibold uppercase tracking-wider text-clay">Top pick</span>}
+                      {i === 0 && (
+                        <span className="text-xs font-semibold uppercase tracking-wider text-clay">Top pick</span>
+                      )}
                     </div>
                     <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{why}</p>
                     <Link
@@ -321,7 +343,10 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
               how to choose a portrait style
             </Link>{" "}
             or{" "}
-            <Link href="/styles" className="font-medium text-ink underline decoration-clay/45 underline-offset-[3px] hover:decoration-clay">
+            <Link
+              href="/styles"
+              className="font-medium text-ink underline decoration-clay/45 underline-offset-[3px] hover:decoration-clay"
+            >
               browse all styles
             </Link>
             .
@@ -360,7 +385,11 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
                     {p.type === "digital" ? "Delivered instantly by email" : `Arrives in ${shipWindow(p.type)}`}
                   </span>
                   <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[15px] font-medium text-clay-dark">
-                    Details <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                    Details{" "}
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
                   </span>
                 </Link>
               </li>
@@ -412,7 +441,10 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
             </h2>
             <p className="mt-4 text-ink-2">
               More answers in our{" "}
-              <Link href="/faq" className="font-medium text-ink underline decoration-clay/45 underline-offset-[3px] hover:decoration-clay">
+              <Link
+                href="/faq"
+                className="font-medium text-ink underline decoration-clay/45 underline-offset-[3px] hover:decoration-clay"
+              >
                 full FAQ
               </Link>
               .

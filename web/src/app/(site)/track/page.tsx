@@ -39,7 +39,7 @@ export default async function TrackPage({ searchParams }: PageProps<"/track">) {
           <li className="flex gap-3">
             <Mail className="h-5 w-5 shrink-0 text-moss" aria-hidden="true" />
             <span>
-              Questions? <a className="text-clay underline underline-offset-2" href={`mailto:${site.supportEmail}`}>Email us</a>, a real person replies.
+              Questions? <a className="text-clay underline underline-offset-2" href={`mailto:${site.supportEmail}`}>Email us</a> and a person on our team will reply.
             </span>
           </li>
         </ul>

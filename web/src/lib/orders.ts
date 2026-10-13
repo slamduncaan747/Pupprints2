@@ -2,6 +2,7 @@ import "server-only";
 import type Stripe from "stripe";
 import { findAddon, findVariant, getStyle, PRODUCT_MAP, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site } from "@/lib/config";
+import { features } from "@/lib/env";
 import { db, previewUrl, requireDb } from "@/lib/supabase/server";
 import { formatPrice } from "@/lib/utils";
 import { computeEta, formatArrival, type OrderStatus } from "@/components/order/timeline";
@@ -423,7 +424,8 @@ async function markLeadConverted(order: OrderRow) {
 }
 
 export async function sendConfirmationEmail(order: OrderRow, opts: { giftEmailedNow: boolean }) {
-  if (!order.email) return;
+  // Without an email provider nothing is claimed, so nothing is wrongly marked as sent.
+  if (!order.email || !features.email) return;
   if (!(await claimOnce(order.id, "confirmation_sent_at"))) return;
   const { sendEmail, orderConfirmationEmail } = await import("@/lib/email");
   const main = primaryItem(order);
@@ -456,7 +458,7 @@ export async function sendConfirmationEmail(order: OrderRow, opts: { giftEmailed
 
 /** Email the Gift Reveal link to the recipient. Pass `force` to allow a re-send. */
 export async function sendGiftRevealEmail(order: OrderRow, opts: { force?: boolean } = {}): Promise<boolean> {
-  if (!order.gift_recipient_email || !isPaid(order)) return false;
+  if (!order.gift_recipient_email || !isPaid(order) || !features.email) return false;
   if (!opts.force && !(await claimOnce(order.id, "reveal_sent_at"))) return false;
   const { sendEmail, giftRevealEmail } = await import("@/lib/email");
   const email = giftRevealEmail({
@@ -480,7 +482,7 @@ export async function sendGiftRevealEmail(order: OrderRow, opts: { force?: boole
 
 /** "It shipped" email, once per order (Printful webhook, or the daily cron for manual shipments). */
 export async function sendShippedEmail(order: OrderRow) {
-  if (!order.email) return;
+  if (!order.email || !features.email) return;
   if (!(await claimOnce(order.id, "shipped_email_sent_at"))) return;
   const { sendEmail, shippedEmail } = await import("@/lib/email");
   const main = primaryItem(order);

@@ -102,7 +102,7 @@ export function orderConfirmationEmail(i: ConfirmationInput): RenderedEmail {
     i.hasPhysical
       ? steps([
           { title: "We check your portrait by hand", detail: "Within one business day. If anything looks off, we fix it before printing." },
-          { title: "Printed and finished", detail: "Archival inks, hand-finished, carefully packed." },
+          { title: "Printed and finished", detail: "Fade-resistant archival inks, finished and carefully packed." },
           {
             title: "Shipped with tracking",
             detail: i.arrival ? `Expected to arrive ${i.arrival}. We'll email your tracking link.` : "We'll email your tracking link.",
@@ -394,7 +394,7 @@ export function nurtureEmail(i: NurtureInput): RenderedEmail {
           "clay",
         ),
         button(i.createUrl, "Use my code"),
-        para("Enter it at checkout. After it expires, this is our last email about this preview.", { muted: true, size: 14 }),
+        para("Enter it at checkout. This is the last email we'll send about this preview.", { muted: true, size: 14 }),
       ];
       text = [
         subject,

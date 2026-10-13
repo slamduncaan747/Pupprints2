@@ -15,7 +15,7 @@ export function ContentBreadcrumbs({ items, className }: { items: Crumb[]; class
         {all.map((c, i) => {
           const last = i === all.length - 1;
           return (
-            <li key={c.path} className="flex min-w-0 items-center gap-1.5">
+            <li key={c.path} className={cn("flex items-center gap-1.5", last && "min-w-0 max-w-full")}>
               {last ? (
                 <span aria-current="page" className="truncate text-ink-2">
                   {c.name}

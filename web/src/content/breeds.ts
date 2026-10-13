@@ -30,9 +30,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Brindle, fawn, cream, white and pied coats all paint well. Dark brindle looks rich in the candlelit old-master styles; fawn and cream glow in watercolor.",
     tips: [
-      { title: "Get both ears in the frame", body: "The bat ears are the Frenchie signature. Leave a little space above the head so neither ear tip gets cropped, even in a close-up." },
-      { title: "Light the folds from the side", body: "Soft window light from one side shows the wrinkles over the nose. Flat, front-on flash makes a Frenchie face look smudgy." },
-      { title: "Shoot at their eye level", body: "Crouch down. Photos taken from above shrink the ears and make the muzzle disappear." },
+      {
+        title: "Get both ears in the frame",
+        body: "The bat ears are the Frenchie signature. Leave a little space above the head so neither ear tip gets cropped, even in a close-up.",
+      },
+      {
+        title: "Light the folds from the side",
+        body: "Soft window light from one side shows the wrinkles over the nose. Flat, front-on flash makes a Frenchie face look smudgy.",
+      },
+      {
+        title: "Shoot at their eye level",
+        body: "Crouch down. Photos taken from above shrink the ears and make the muzzle disappear.",
+      },
     ],
     styles: [
       { slug: "royal", why: "A smooshed face and total self-confidence were made for velvet and ermine." },
@@ -67,9 +76,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "The AKC recognizes black, yellow and chocolate, and yellow ranges from pale cream to fox red. Black Labs need good light to show detail; chocolate glows in warm oil tones.",
     tips: [
-      { title: "Expose for a black coat", body: "Shoot black Labs in bright shade or beside a big window, and look for a sparkle of light in their eyes. A dark face against a bright background turns into a silhouette." },
-      { title: "Skip the midday sun on yellow coats", body: "Harsh sun washes out a yellow coat and flattens the face. Overcast days and open shade are your friends." },
-      { title: "Hold a treat above the lens", body: "Labs follow food with their whole soul. Hold a treat just above your phone and you'll get the alert, soft-eyed look in seconds." },
+      {
+        title: "Expose for a black coat",
+        body: "Shoot black Labs in bright shade or beside a big window, and look for a sparkle of light in their eyes. A dark face against a bright background turns into a silhouette.",
+      },
+      {
+        title: "Skip the midday sun on yellow coats",
+        body: "Harsh sun washes out a yellow coat and flattens the face. Overcast days and open shade are your friends.",
+      },
+      {
+        title: "Hold a treat above the lens",
+        body: "Labs follow food with their whole soul. Hold a treat just above your phone and you'll get the alert, soft-eyed look in seconds.",
+      },
     ],
     styles: [
       { slug: "oil-classic", why: "No costume needed. A Lab's honest face is made for a quiet, museum-style oil." },
@@ -100,9 +118,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Light golden, golden and dark golden, from near-cream to deep red. Darker coats glow in the old-master styles; paler coats are lovely on light watercolor and botanical backgrounds.",
     tips: [
-      { title: "Include the chest feathering", body: "Frame from the top of the head down to the chest so the feathering and ears have room. It adds so much of their softness to the finished piece." },
-      { title: "Shoot in golden hour (really)", body: "Early morning or late afternoon light brings out the warm tones in the coat without blowing out the highlights." },
-      { title: "Choose the expression", body: "An open-mouthed smile reads joyful; a closed mouth reads regal. Pick the one that feels most like your dog." },
+      {
+        title: "Include the chest feathering",
+        body: "Frame from the top of the head down to the chest so the feathering and ears have room. It adds so much of their softness to the finished piece.",
+      },
+      {
+        title: "Shoot in golden hour (really)",
+        body: "Early morning or late afternoon light brings out the warm tones in the coat without blowing out the highlights.",
+      },
+      {
+        title: "Choose the expression",
+        body: "An open-mouthed smile reads joyful; a closed mouth reads regal. Pick the one that feels most like your dog.",
+      },
     ],
     styles: [
       { slug: "royal", why: "Gentle eyes under a jeweled crown: dignified, funny and very giftable." },
@@ -133,9 +160,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Black and tan, black and red, sable and solid black are the most familiar. Contrasting saddle markings look superb in oil and charcoal; solid black dogs need a bright photo.",
     tips: [
-      { title: "Ears up, please", body: "A squeaky toy or an odd noise just above the camera gets both ears standing tall. Half-lowered ears can make the portrait read as a different dog." },
-      { title: "Find the light for dark coats", body: "Shoot outdoors in open shade or by a large window so the eyes, and the tan markings around them, stay visible." },
-      { title: "Try a three-quarter angle", body: "A slight turn of the head shows off the long Shepherd muzzle better than a straight-on photo, which can shorten it." },
+      {
+        title: "Ears up, please",
+        body: "A squeaky toy or an odd noise just above the camera gets both ears standing tall. Half-lowered ears can make the portrait read as a different dog.",
+      },
+      {
+        title: "Find the light for dark coats",
+        body: "Shoot outdoors in open shade or by a large window so the eyes, and the tan markings around them, stay visible.",
+      },
+      {
+        title: "Try a three-quarter angle",
+        body: "A slight turn of the head shows off the long Shepherd muzzle better than a straight-on photo, which can shorten it.",
+      },
     ],
     styles: [
       { slug: "admiral", why: "A natural officer: serious, watchful and born to wear epaulettes." },
@@ -164,9 +200,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Solid colors are the norm: black, white, apricot, red, cream, silver, blue, brown and more. White and apricot look stunning in fine line and watercolor; a black Poodle shines in high-contrast pop art.",
     tips: [
-      { title: "Show the eyes", body: "If the topknot falls over the eyes, brush it back or use a photo taken just after grooming. Likeness depends on the eyes." },
-      { title: "Keep the silhouette", body: "Leave space around the head and ears. The outline of the clip is part of what makes your Poodle look like your Poodle." },
-      { title: "Light a dark coat", body: "Black and brown curls need bright, soft light. Face your Poodle toward a window, not away from it." },
+      {
+        title: "Show the eyes",
+        body: "If the topknot falls over the eyes, brush it back or use a photo taken just after grooming. Likeness depends on the eyes.",
+      },
+      {
+        title: "Keep the silhouette",
+        body: "Leave space around the head and ears. The outline of the clip is part of what makes your Poodle look like your Poodle.",
+      },
+      {
+        title: "Light a dark coat",
+        body: "Black and brown curls need bright, soft light. Face your Poodle toward a window, not away from it.",
+      },
     ],
     styles: [
       { slug: "royal", why: "Elegant posture and a sculpted clip were born for the palace." },
@@ -196,9 +241,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Red, black and tan, chocolate, cream, dapple and brindle are common. Dapple and brindle look terrific in pop art; red coats glow in oil.",
     tips: [
-      { title: "Get down on the floor", body: "A Dachshund's eye level is about a foot off the ground. Lie down with your phone and their face will fill the frame naturally." },
-      { title: "Mind the muzzle angle", body: "A slight three-quarter angle shows off the length of the muzzle. Straight-on photos can make the nose look stubby." },
-      { title: "Let the ears hang", body: "Catch them sitting or standing rather than lying with their ears flopped sideways, so the ear shape reads clearly." },
+      {
+        title: "Get down on the floor",
+        body: "A Dachshund's eye level is about a foot off the ground. Lie down with your phone and their face will fill the frame naturally.",
+      },
+      {
+        title: "Mind the muzzle angle",
+        body: "A slight three-quarter angle shows off the length of the muzzle. Straight-on photos can make the nose look stubby.",
+      },
+      {
+        title: "Let the ears hang",
+        body: "Catch them sitting or standing rather than lying with their ears flopped sideways, so the ear shape reads clearly.",
+      },
     ],
     styles: [
       { slug: "pop-art", why: "A long nose and a bold attitude are made for halftone dots and hot color." },
@@ -228,9 +282,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Tricolor (black, tan and white) is classic; lemon, red and white, and tan and white are common too. Tricolor contrast is wonderful in oil; lighter coats look soft in storybook and watercolor.",
     tips: [
-      { title: "Bring the nose up", body: "Beagles inspect the ground constantly. A treat held right above your phone lifts the nose and brings the eyes to the lens." },
-      { title: "Even light for three colors", body: "Patchy sun blows out the white and hides the black saddle. Shade or an overcast sky keeps all three colors readable." },
-      { title: "Show the full ear", body: "Make sure both long ears hang naturally on either side of the face. They're a big part of the Beagle outline." },
+      {
+        title: "Bring the nose up",
+        body: "Beagles inspect the ground constantly. A treat held right above your phone lifts the nose and brings the eyes to the lens.",
+      },
+      {
+        title: "Even light for three colors",
+        body: "Patchy sun blows out the white and hides the black saddle. Shade or an overcast sky keeps all three colors readable.",
+      },
+      {
+        title: "Show the full ear",
+        body: "Make sure both long ears hang naturally on either side of the face. They're a big part of the Beagle outline.",
+      },
     ],
     styles: [
       { slug: "admiral", why: "A Beagle's earnest stare is perfect beneath gold epaulettes." },
@@ -261,9 +324,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Black with rust to mahogany markings. That contrast is ideal for candlelit oil and charcoal; the trick is a photo bright enough to show the tan eyebrows.",
     tips: [
-      { title: "Light the eyebrows", body: "The tan spots above the eyes are a Rottie's expression. Turn them toward the light so those spots, and the eyes beneath, are clear." },
-      { title: "Shoot from their eye level", body: "From above, a big head looks oddly small and the chest disappears. Kneel down and let them fill the frame." },
-      { title: "Relaxed beats alert", body: "A soft mouth and calm eyes read noble; a hard stare can look stern in a dramatic style. Choose the mood you want on your wall." },
+      {
+        title: "Light the eyebrows",
+        body: "The tan spots above the eyes are a Rottie's expression. Turn them toward the light so those spots, and the eyes beneath, are clear.",
+      },
+      {
+        title: "Shoot from their eye level",
+        body: "From above, a big head looks oddly small and the chest disappears. Kneel down and let them fill the frame.",
+      },
+      {
+        title: "Relaxed beats alert",
+        body: "A soft mouth and calm eyes read noble; a hard stare can look stern in a dramatic style. Choose the mood you want on your wall.",
+      },
     ],
     styles: [
       { slug: "royal", why: "All that dignity deserves a crown, and a black coat makes the gold glow." },
@@ -292,9 +364,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Brindle, fawn, red, white and piebald patterns. Brindle and red look superb in oil; white and fawn pied coats pop in pop art.",
     tips: [
-      { title: "Side light for the wrinkles", body: "Sit your Bulldog beside a window, not facing it. Light from one side shapes the folds; flat light erases them." },
-      { title: "Wipe the jowls first", body: "A quick wipe before the photo keeps drool and shiny reflections out of the finished portrait." },
-      { title: "Show the underbite", body: "A relaxed, closed-mouth photo shows the jaw that makes a Bulldog face unmistakable." },
+      {
+        title: "Side light for the wrinkles",
+        body: "Sit your Bulldog beside a window, not facing it. Light from one side shapes the folds; flat light erases them.",
+      },
+      {
+        title: "Wipe the jowls first",
+        body: "A quick wipe before the photo keeps drool and shiny reflections out of the finished portrait.",
+      },
+      {
+        title: "Show the underbite",
+        body: "A relaxed, closed-mouth photo shows the jaw that makes a Bulldog face unmistakable.",
+      },
     ],
     styles: [
       { slug: "royal", why: "Nobody wears ermine with more gravity. It's hilarious and somehow fitting." },
@@ -324,9 +405,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Solid liver, liver and white, black and white, ticked and roan. Ticking adds lovely texture in oil and watercolor if the photo is sharp enough to show it.",
     tips: [
-      { title: "Capture the profile", body: "A side or three-quarter view of a GSP on point (or watching a squirrel) shows off the classic sporting outline." },
-      { title: "Sharpness shows the ticking", body: "Freeze the motion with plenty of light or burst mode. Blur turns those lovely speckles to mush." },
-      { title: "Tire them out first", body: "A long walk before the photo buys you a few calm seconds. You'll need them." },
+      {
+        title: "Capture the profile",
+        body: "A side or three-quarter view of a GSP on point (or watching a squirrel) shows off the classic sporting outline.",
+      },
+      {
+        title: "Sharpness shows the ticking",
+        body: "Freeze the motion with plenty of light or burst mode. Blur turns those lovely speckles to mush.",
+      },
+      {
+        title: "Tire them out first",
+        body: "A long walk before the photo buys you a few calm seconds. You'll need them.",
+      },
     ],
     styles: [
       { slug: "oil-classic", why: "Sporting dogs have been painted in oil for centuries; a GSP fits right in." },
@@ -356,9 +446,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Adults are blue and tan or black and tan, with gold on the face. Warm tan details shine in oil, and the silky texture looks lovely in watercolor.",
     tips: [
-      { title: "Lie down for this one", body: "Shoot from floor level so the face isn't foreshortened. Small dogs photographed from above look like all head and no body." },
-      { title: "Clear the eyes", body: "Tie back a long fringe or take the photo right after grooming. Bright, dark eyes are a Yorkie's whole expression." },
-      { title: "Bow or no bow", body: "If a topknot bow is part of their look, try a photo with it and one without. Previews are free, so you can compare." },
+      {
+        title: "Lie down for this one",
+        body: "Shoot from floor level so the face isn't foreshortened. Small dogs photographed from above look like all head and no body.",
+      },
+      {
+        title: "Clear the eyes",
+        body: "Tie back a long fringe or take the photo right after grooming. Bright, dark eyes are a Yorkie's whole expression.",
+      },
+      {
+        title: "Bow or no bow",
+        body: "If a topknot bow is part of their look, try a photo with it and one without. Previews are free, so you can compare.",
+      },
     ],
     styles: [
       { slug: "royal", why: "A Yorkie in ermine looks like it has always expected to be painted." },
@@ -388,9 +487,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Blue merle, red merle, black and red, with or without white and copper trim. Merle patterns are stunning in watercolor and oil.",
     tips: [
-      { title: "Daylight for eye color", body: "Blue and amber eyes need natural light to read correctly. Indoor lamps can turn them grey or orange." },
-      { title: "Map the merle", body: "Take a sharp, front-facing photo so the patches on the face, including any split face, land in the right places." },
-      { title: "Use the herding stare", body: "Aussies lock onto anything that moves. Wiggle a toy just above your phone." },
+      {
+        title: "Daylight for eye color",
+        body: "Blue and amber eyes need natural light to read correctly. Indoor lamps can turn them grey or orange.",
+      },
+      {
+        title: "Map the merle",
+        body: "Take a sharp, front-facing photo so the patches on the face, including any split face, land in the right places.",
+      },
+      {
+        title: "Use the herding stare",
+        body: "Aussies lock onto anything that moves. Wiggle a toy just above your phone.",
+      },
     ],
     styles: [
       { slug: "watercolor", why: "Merle marbling and soft color blooms were made for each other." },
@@ -420,9 +528,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Four colors: Blenheim (chestnut on white), tricolor, black and tan, and ruby. Blenheim and ruby glow in oil; tricolor is crisp in botanical and watercolor.",
     tips: [
-      { title: "Keep the top of the head in frame", body: "If your Blenheim has the chestnut spot on the crown, leave room above the head so it isn't cropped." },
-      { title: "Let the ears fall", body: "Brush the ears so they fall naturally on both sides. Tucked or flipped ears change the whole outline." },
-      { title: "Soft light for big eyes", body: "Window light gives those large eyes a gentle sparkle without the glowing-eye effect of a flash." },
+      {
+        title: "Keep the top of the head in frame",
+        body: "If your Blenheim has the chestnut spot on the crown, leave room above the head so it isn't cropped.",
+      },
+      {
+        title: "Let the ears fall",
+        body: "Brush the ears so they fall naturally on both sides. Tucked or flipped ears change the whole outline.",
+      },
+      {
+        title: "Soft light for big eyes",
+        body: "Window light gives those large eyes a gentle sparkle without the glowing-eye effect of a flash.",
+      },
     ],
     styles: [
       { slug: "royal", why: "The breed grew up in royal portraits. This is simply bringing it home." },
@@ -453,9 +570,15 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Red, sable, fawn, and black and tan, usually with white. Red and sable glow in warm, cozy styles; tricolor pops in pop art.",
     tips: [
-      { title: "Ears are everything", body: "Make a funny noise right before you shoot. Both ears up and forward is classic Corgi." },
+      {
+        title: "Ears are everything",
+        body: "Make a funny noise right before you shoot. Both ears up and forward is classic Corgi.",
+      },
       { title: "Get low", body: "They're short. Lie on the floor so you're looking straight into their face." },
-      { title: "Catch the smile", body: "Corgis often 'smile' with an open mouth after play. Take a burst of photos right after a game of fetch." },
+      {
+        title: "Catch the smile",
+        body: "Corgis often 'smile' with an open mouth after play. Take a burst of photos right after a game of fetch.",
+      },
     ],
     styles: [
       { slug: "storybook", why: "A Corgi trotting through a meadow is basically a picture book already." },
@@ -486,9 +609,15 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Black and rust, red and rust, blue and rust, and fawn (Isabella) and rust. The rust points are key; a glossy black coat looks magnificent in candlelit oil.",
     tips: [
-      { title: "No flash on a glossy coat", body: "Flash bounces off a short, shiny coat and flattens the face. Use bright daylight instead." },
+      {
+        title: "No flash on a glossy coat",
+        body: "Flash bounces off a short, shiny coat and flattens the face. Use bright daylight instead.",
+      },
       { title: "Profile power", body: "A three-quarter view shows the long muzzle and the elegant line of the neck." },
-      { title: "Find the rust points", body: "Make sure the markings above the eyes are lit. They give a Doberman its expression." },
+      {
+        title: "Find the rust points",
+        body: "Make sure the markings above the eyes are lit. They give a Doberman its expression.",
+      },
     ],
     styles: [
       { slug: "admiral", why: "Disciplined, elegant and always at attention: the uniform fits." },
@@ -517,7 +646,10 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Fawn or brindle, often with white 'flash' markings; some Boxers are mostly white. Fawn glows in royal and oil styles; brindle is gorgeous in charcoal and pop art.",
     tips: [
-      { title: "Make them wonder", body: "A new noise makes a Boxer tilt the head and wrinkle the forehead. That's the expression you want." },
+      {
+        title: "Make them wonder",
+        body: "A new noise makes a Boxer tilt the head and wrinkle the forehead. That's the expression you want.",
+      },
       { title: "Watch the black mask", body: "Shoot in bright, even light so the dark muzzle keeps its detail." },
       { title: "Use burst mode", body: "Boxers rarely hold still. Take a dozen and pick the sharpest." },
     ],
@@ -549,9 +681,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Salt and pepper, black and silver, and solid black. Wiry, textured coats look wonderful in fine line and charcoal.",
     tips: [
-      { title: "Trim or part the eyebrows", body: "If the brows cover the eyes, give them a trim or wait until after the next grooming appointment." },
-      { title: "Keep the beard clean and dry", body: "A soggy, just-left-the-water-bowl beard photographs as a dark blob." },
-      { title: "Sharp beats posed", body: "The wiry texture is what makes a Schnauzer. Pick your sharpest photo, even if the pose is ordinary." },
+      {
+        title: "Trim or part the eyebrows",
+        body: "If the brows cover the eyes, give them a trim or wait until after the next grooming appointment.",
+      },
+      {
+        title: "Keep the beard clean and dry",
+        body: "A soggy, just-left-the-water-bowl beard photographs as a dark blob.",
+      },
+      {
+        title: "Sharp beats posed",
+        body: "The wiry texture is what makes a Schnauzer. Pick your sharpest photo, even if the pose is ordinary.",
+      },
     ],
     styles: [
       { slug: "fine-line", why: "Eyebrows and beard are practically drawn in ink already." },
@@ -581,9 +722,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Black, gray, fawn, red and brindle, sometimes with a gray or black mask. Gray and fawn look superb in charcoal and oil; black needs a bright photo.",
     tips: [
-      { title: "Shoot slightly from below", body: "With the camera at chest height looking up a little, a big dog looks powerful and heroic." },
-      { title: "Light the brow", body: "Deep-set eyes need light from the front or side. A shaded brow can hide them completely." },
-      { title: "Calm is king", body: "A relaxed Corso looks noble; a mid-bark Corso looks like a warning sign. Wait for the quiet moment." },
+      {
+        title: "Shoot slightly from below",
+        body: "With the camera at chest height looking up a little, a big dog looks powerful and heroic.",
+      },
+      {
+        title: "Light the brow",
+        body: "Deep-set eyes need light from the front or side. A shaded brow can hide them completely.",
+      },
+      {
+        title: "Calm is king",
+        body: "A relaxed Corso looks noble; a mid-bark Corso looks like a warning sign. Wait for the quiet moment.",
+      },
     ],
     styles: [
       { slug: "royal", why: "A Roman profile and a crown: this one practically paints itself." },
@@ -613,9 +763,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Fawn, brindle, black, blue, harlequin, mantle and merle. Harlequin and mantle patterns are striking in pop art; fawn and brindle glow in oil.",
     tips: [
-      { title: "Don't shoot down at them", body: "Ironically, the usual mistake with giant dogs is standing up. Shoot from their head height so the face isn't distorted." },
-      { title: "Map the patches", body: "For harlequins and mantles, a straight-on photo in even light keeps the patches on the face where they belong." },
-      { title: "Give the ears room", body: "Cropped or natural, leave space above the head so the ears aren't clipped." },
+      {
+        title: "Don't shoot down at them",
+        body: "Ironically, the usual mistake with giant dogs is standing up. Shoot from their head height so the face isn't distorted.",
+      },
+      {
+        title: "Map the patches",
+        body: "For harlequins and mantles, a straight-on photo in even light keeps the patches on the face where they belong.",
+      },
+      {
+        title: "Give the ears room",
+        body: "Cropped or natural, leave space above the head so the ears aren't clipped.",
+      },
     ],
     styles: [
       { slug: "admiral", why: "Tall, dignified and born to command the fleet." },
@@ -644,7 +803,10 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Almost every color and pattern: gold, white, black, liver, brindle and parti. Gold and white coats glow in oil; parti coats look charming in storybook.",
     tips: [
-      { title: "Get the hair off the eyes", body: "A topknot or a fresh trim makes all the difference. The eyes are the heart of a Shih Tzu portrait." },
+      {
+        title: "Get the hair off the eyes",
+        body: "A topknot or a fresh trim makes all the difference. The eyes are the heart of a Shih Tzu portrait.",
+      },
       { title: "Come down to their level", body: "Sit on the floor and hold a treat right above the lens." },
       { title: "Brush before the photo", body: "A quick brush fluffs the face into that lovely chrysanthemum shape." },
     ],
@@ -676,9 +838,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Black, gray, red, agouti, sable and white, usually with white markings and a facial mask. Gray and white coats are striking in charcoal; reds glow in oil.",
     tips: [
-      { title: "Daylight for those eyes", body: "Blue eyes can look gray or washed out indoors. Open shade outdoors gives them their true color." },
-      { title: "Square up the mask", body: "A straight-on photo shows the symmetry of the facial markings, which is a huge part of likeness." },
-      { title: "Snow is tricky", body: "Snow fools phone cameras into underexposing. Tap your dog's face on screen to set exposure before you shoot." },
+      {
+        title: "Daylight for those eyes",
+        body: "Blue eyes can look gray or washed out indoors. Open shade outdoors gives them their true color.",
+      },
+      {
+        title: "Square up the mask",
+        body: "A straight-on photo shows the symmetry of the facial markings, which is a huge part of likeness.",
+      },
+      {
+        title: "Snow is tricky",
+        body: "Snow fools phone cameras into underexposing. Tap your dog's face on screen to set exposure before you shoot.",
+      },
     ],
     styles: [
       { slug: "astronaut", why: "Built for extreme environments. Space is the obvious next step." },
@@ -709,9 +880,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Tricolor: black, rust and white. The contrast is spectacular in oil and holiday styles; keep the black areas well lit.",
     tips: [
-      { title: "Balance the three colors", body: "Shoot in shade or on a cloudy day. Bright sun overexposes the white blaze while the black coat goes flat." },
-      { title: "Show the chest", body: "Frame down to the chest to include the white marking. It completes the tricolor pattern." },
-      { title: "Brush the ruff", body: "A quick brush fluffs the cheeks and chest so the coat reads soft, not tangled." },
+      {
+        title: "Balance the three colors",
+        body: "Shoot in shade or on a cloudy day. Bright sun overexposes the white blaze while the black coat goes flat.",
+      },
+      {
+        title: "Show the chest",
+        body: "Frame down to the chest to include the white marking. It completes the tricolor pattern.",
+      },
+      {
+        title: "Brush the ruff",
+        body: "A quick brush fluffs the cheeks and chest so the coat reads soft, not tangled.",
+      },
     ],
     styles: [
       { slug: "oil-classic", why: "Black, rust and white glow like an Alpine farmhouse painting." },
@@ -741,9 +921,15 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Orange, red, cream, sable, black, chocolate, merle and parti. Orange and cream glow in royal and watercolor styles; parti and merle pop in pop art.",
     tips: [
-      { title: "Find the face in the fluff", body: "Brush the fur away from the eyes and shoot close enough that the face fills most of the frame." },
+      {
+        title: "Find the face in the fluff",
+        body: "Brush the fur away from the eyes and shoot close enough that the face fills most of the frame.",
+      },
       { title: "Floor level, always", body: "Poms are tiny. Lie down so you're eye to eye." },
-      { title: "Bright light, fast fingers", body: "Poms move constantly. Shoot near a window in burst mode and pick the sharpest frame." },
+      {
+        title: "Bright light, fast fingers",
+        body: "Poms move constantly. Shoot near a window in burst mode and pick the sharpest frame.",
+      },
     ],
     styles: [
       { slug: "royal", why: "A Pom in ermine looks like a Victorian court favorite. Because it was one." },
@@ -773,9 +959,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Black, brindle or seal, with white markings. The high contrast looks crisp in pop art, fine line and mid-century.",
     tips: [
-      { title: "Tame the contrast", body: "Black-and-white dogs are hard for phone cameras. Skip direct sun; open shade keeps both the white blaze and the dark coat detailed." },
-      { title: "Both ears, both eyes", body: "Big eyes and upright ears are a Boston's signature. Keep them fully in the frame." },
-      { title: "Watch for reflections", body: "Large, round eyes reflect everything. Turn off the flash and angle away from lamps." },
+      {
+        title: "Tame the contrast",
+        body: "Black-and-white dogs are hard for phone cameras. Skip direct sun; open shade keeps both the white blaze and the dark coat detailed.",
+      },
+      {
+        title: "Both ears, both eyes",
+        body: "Big eyes and upright ears are a Boston's signature. Keep them fully in the frame.",
+      },
+      {
+        title: "Watch for reflections",
+        body: "Large, round eyes reflect everything. Turn off the flash and angle away from lamps.",
+      },
     ],
     styles: [
       { slug: "admiral", why: "Already wearing a tuxedo. A dress uniform is a small step." },
@@ -836,8 +1031,14 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Liver and white, black and white, or either with tan, often ticked or roan. Freckled muzzles look wonderful in oil and watercolor.",
     tips: [
-      { title: "Show off the ears", body: "Brush the ears so the waves fall naturally, and frame wide enough to include them." },
-      { title: "Sharp shows the freckles", body: "Ticking on the muzzle is part of their face. Choose your sharpest photo." },
+      {
+        title: "Show off the ears",
+        body: "Brush the ears so the waves fall naturally, and frame wide enough to include them.",
+      },
+      {
+        title: "Sharp shows the freckles",
+        body: "Ticking on the muzzle is part of their face. Choose your sharpest photo.",
+      },
       { title: "Outdoors is best", body: "Springers are happiest outside. Shade under a tree gives soft, even light." },
     ],
     styles: [
@@ -868,7 +1069,10 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Sable, tricolor, blue merle, bi-black and bi-blue, with white. Sable glows in oil; blue merle is beautiful in watercolor.",
     tips: [
-      { title: "Keep the tipped ears", body: "Sheltie ears fold at the tips. Get their attention with a sound so the ears lift into their natural shape." },
+      {
+        title: "Keep the tipped ears",
+        body: "Sheltie ears fold at the tips. Get their attention with a sound so the ears lift into their natural shape.",
+      },
       { title: "Include the mane", body: "Frame down to the chest so the full white frill is visible." },
       { title: "Even light for merle", body: "Shade or cloudy daylight shows the merle pattern without hot spots." },
     ],
@@ -899,8 +1103,14 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Black and white is classic; red, blue, lilac, merle, tricolor and sable also appear. Black and white is striking in fine line and charcoal; merle looks gorgeous in watercolor.",
     tips: [
-      { title: "Use the stare", body: "Hold a ball right next to your phone. A Border Collie will lock on and give you the most intense look of its life." },
-      { title: "Keep the quirks", body: "Many Border Collies have one ear up and one down, or an uneven blaze. Choose a photo that shows them; they're what makes yours yours." },
+      {
+        title: "Use the stare",
+        body: "Hold a ball right next to your phone. A Border Collie will lock on and give you the most intense look of its life.",
+      },
+      {
+        title: "Keep the quirks",
+        body: "Many Border Collies have one ear up and one down, or an uneven blaze. Choose a photo that shows them; they're what makes yours yours.",
+      },
       { title: "Freeze the motion", body: "They rarely stop. Use burst mode in bright light." },
     ],
     styles: [
@@ -932,8 +1142,14 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Smooth or long coats in almost any color: fawn, cream, chocolate, black, white, merle and parti. Fawn and cream glow in royal styles; bolder coats pop in pop art.",
     tips: [
-      { title: "Lie down. Lower.", body: "Get your phone to their eye level, which is close to the floor. From above, a Chihuahua looks like a pair of ears." },
-      { title: "Ears fully in", body: "Those big ears reach right to the edges of the frame, so leave generous space around the head." },
+      {
+        title: "Lie down. Lower.",
+        body: "Get your phone to their eye level, which is close to the floor. From above, a Chihuahua looks like a pair of ears.",
+      },
+      {
+        title: "Ears fully in",
+        body: "Those big ears reach right to the edges of the frame, so leave generous space around the head.",
+      },
       { title: "Steady the shivers", body: "A warm, calm spot and burst mode help with a nervous or shivery Chi." },
     ],
     styles: [
@@ -963,9 +1179,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Cream, apricot, red, gold, chocolate, black and parti, in wavy, curly or straight coats. Cream and apricot glow in watercolor and storybook; red looks rich in oil.",
     tips: [
-      { title: "Find the eyes", body: "Doodle fluff can hide the eyes completely. Trim, brush or use a photo from just after grooming." },
-      { title: "Protect light coats", body: "Cream coats wash out in bright sun. Open shade keeps the curl texture visible." },
-      { title: "Pick your favorite haircut", body: "The portrait follows your photo, so choose the cut you'd want to remember." },
+      {
+        title: "Find the eyes",
+        body: "Doodle fluff can hide the eyes completely. Trim, brush or use a photo from just after grooming.",
+      },
+      {
+        title: "Protect light coats",
+        body: "Cream coats wash out in bright sun. Open shade keeps the curl texture visible.",
+      },
+      {
+        title: "Pick your favorite haircut",
+        body: "The portrait follows your photo, so choose the cut you'd want to remember.",
+      },
     ],
     styles: [
       { slug: "storybook", why: "A teddy-bear face was made for a picture book." },
@@ -994,9 +1219,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Chalk, cream, apricot, caramel, red, chocolate, black and parti. Darker coats glow in oil; lighter, curly coats are lovely in storybook.",
     tips: [
-      { title: "Show the head shape", body: "A three-quarter photo helps the portrait capture whether your Labradoodle has a Lab-like or Poodle-like head." },
-      { title: "Dark coats need light", body: "Chocolate and black Doodles need bright, soft light so the curls don't merge into one dark shape." },
-      { title: "Treat above the lens", body: "That Lab appetite is your best tool. Hold a treat over the camera for an alert, happy look." },
+      {
+        title: "Show the head shape",
+        body: "A three-quarter photo helps the portrait capture whether your Labradoodle has a Lab-like or Poodle-like head.",
+      },
+      {
+        title: "Dark coats need light",
+        body: "Chocolate and black Doodles need bright, soft light so the curls don't merge into one dark shape.",
+      },
+      {
+        title: "Treat above the lens",
+        body: "That Lab appetite is your best tool. Hold a treat over the camera for an alert, happy look.",
+      },
     ],
     styles: [
       { slug: "oil-classic", why: "Chocolate and caramel coats look gorgeous in warm old-master light." },
@@ -1025,9 +1259,18 @@ export const BREEDS: Breed[] = [
     ],
     coat: "Any coat at all. Choose a style for their personality and let the markings do the rest.",
     tips: [
-      { title: "Show what makes them unique", body: "Make sure the photo clearly shows their most distinctive features, whether that's a split face, mismatched eyes or one upright ear." },
-      { title: "Use a recent, sharp photo", body: "Shelter listing photos are often small and dim. A fresh photo at home in daylight gives far more detail." },
-      { title: "Try a few styles", body: "Mixes can surprise you. Previews are free, so try a classic, a funny and a soft style and see which one feels like them." },
+      {
+        title: "Show what makes them unique",
+        body: "Make sure the photo clearly shows their most distinctive features, whether that's a split face, mismatched eyes or one upright ear.",
+      },
+      {
+        title: "Use a recent, sharp photo",
+        body: "Shelter listing photos are often small and dim. A fresh photo at home in daylight gives far more detail.",
+      },
+      {
+        title: "Try a few styles",
+        body: "Mixes can surprise you. Previews are free, so try a classic, a funny and a soft style and see which one feels like them.",
+      },
     ],
     styles: [
       { slug: "oil-classic", why: "No costume, no labels: just your dog, painted like a museum piece." },
@@ -1079,14 +1322,29 @@ export function breedSample(breed: Breed): BreedSample {
   const names = (breed.sampleNames ?? []).map((s) => s.toLowerCase());
   const pair = BEFORE_AFTER.find((p) => names.includes(p.dog.toLowerCase()));
   if (pair) {
-    return { src: pair.after, style: pair.style, alt: `${STYLE_MAP[pair.style].name} portrait of a ${pair.dog}`, breedSpecific: true };
+    return {
+      src: pair.after,
+      style: pair.style,
+      alt: `${STYLE_MAP[pair.style].name} portrait of a ${pair.dog}`,
+      breedSpecific: true,
+    };
   }
   const g = GALLERY.find((p) => names.includes(p.dog.toLowerCase()));
   if (g) {
-    return { src: g.src, style: g.style, alt: `${STYLE_MAP[g.style].name} portrait of a ${g.dog}`, breedSpecific: true };
+    return {
+      src: g.src,
+      style: g.style,
+      alt: `${STYLE_MAP[g.style].name} portrait of a ${g.dog}`,
+      breedSpecific: true,
+    };
   }
   const style = breed.styles[0].slug;
-  return { src: STYLE_SAMPLES[style], style, alt: `Example ${STYLE_MAP[style].name} dog portrait`, breedSpecific: false };
+  return {
+    src: STYLE_SAMPLES[style],
+    style,
+    alt: `Example ${STYLE_MAP[style].name} dog portrait`,
+    breedSpecific: false,
+  };
 }
 
 /** Related breeds: hand-picked first, then same-size breeds, never the breed itself. */

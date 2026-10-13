@@ -56,7 +56,8 @@ export function ArticleCard({
         </Heading>
         <p className="mt-2 line-clamp-3 text-[15px] leading-relaxed text-ink-2">{article.description}</p>
         <p className="mt-3 text-sm text-ink-3">
-          <time dateTime={article.date}>{formatArticleDate(article.date, "short")}</time> · {article.readingMinutes} min read
+          <time dateTime={article.date}>{formatArticleDate(article.date, "short")}</time> · {article.readingMinutes} min
+          read
         </p>
       </div>
     </article>

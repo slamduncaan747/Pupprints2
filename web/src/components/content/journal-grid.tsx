@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArticleCard, type ArticleSummary } from "@/components/content/article-card";
 
@@ -50,6 +52,20 @@ export function JournalGrid({ articles, categories }: { articles: ArticleSummary
             <ArticleCard article={a} headingLevel="h3" />
           </li>
         ))}
+        <li className="flex">
+          <div className="grain relative flex w-full flex-col justify-between overflow-hidden rounded-card bg-moss p-7 text-paper sm:p-8">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sage-soft">Free preview</p>
+              <p className="mt-4 font-display text-[1.75rem] leading-[1.1]">Done reading? See your dog as art.</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-paper/80">
+                Upload a photo and see your portrait in about a minute. Only pay if you love it.
+              </p>
+            </div>
+            <ButtonLink href="/create" variant="light" className="mt-8 self-start">
+              Create your free preview <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </ButtonLink>
+          </div>
+        </li>
       </ul>
     </div>
   );

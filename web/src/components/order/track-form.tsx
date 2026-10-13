@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExternalLink, PackageSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OrderTimeline } from "./order-timeline";
@@ -14,6 +14,13 @@ export function TrackForm({ initialOrder = "", supportEmail }: { initialOrder?: 
   const [state, setState] = useState<
     { status: "idle" } | { status: "loading" } | { status: "error"; message: string } | { status: "found"; data: TrackResponse }
   >({ status: "idle" });
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (state.status === "found" || state.status === "error") {
+      resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [state.status]);
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,7 +74,7 @@ export function TrackForm({ initialOrder = "", supportEmail }: { initialOrder?: 
         <p className="mt-4 text-sm text-ink-3">Your order number is in your confirmation email (it starts with PP-).</p>
       </form>
 
-      <div aria-live="polite" className="mt-8">
+      <div ref={resultRef} aria-live="polite" className="mt-8 scroll-mt-24">
         {state.status === "error" && (
           <div className="rounded-card bg-clay-soft/60 p-5 text-[15px] text-clay-dark" role="alert">
             {state.message}{" "}
@@ -122,7 +129,7 @@ function TrackResult({ data }: { data: TrackResponse }) {
       <OrderTimeline steps={data.timeline} className="mt-8" />
 
       <div className="mt-8 border-t border-line pt-5">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-ink-3">In this order</h3>
+        <h3 className="font-sans text-sm font-semibold uppercase tracking-wider text-ink-3">In this order</h3>
         <ul className="mt-3 space-y-1.5 text-[15px] text-ink-2">
           {data.items.map((i, n) => (
             <li key={n}>

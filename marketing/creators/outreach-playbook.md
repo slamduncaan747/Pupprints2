@@ -226,12 +226,17 @@ This is the law (FTC Endorsement Guides, 16 CFR Part 255), and our partner terms
 - **Fix:** tell creators to say "link in bio." If someone insists on a spoken code, create a Stripe promotion code with the same name on the `PP_PARTNER_15` coupon (Stripe → Coupons).
 - **Typed-code orders aren't auto-attributed.** Each Friday, filter Stripe payments by promotion code and add those commissions by hand.
 
-**Gift prints** (max 5 this week; 12×16 fine-art print, about $16 landed):
-1. Admin → Gifts → open the gift → download the hi-res file.
-2. Printful → Orders → New order → Fine-art print 12×16 → upload the file → the creator's address.
-3. Add a note "Gift – [handle]". Log the cost in the war-plan tracking table.
+**Gift prints** (max 5 this week; a 12×16 fine-art print costs about $16 landed). Run them **through our own site** so the print file is upscaled properly and goes through QA and Printful like any order:
+1. One-time Stripe setup:
+   - Coupon `INTERNAL100`: 100% off, duration "Once".
+   - Per gift, add a **single-use** promotion code, e.g. `GIFT-RUFUS` (max redemptions 1).
+   - Stripe supports $0 "no-cost" Checkout orders, and our webhook treats them as paid.
+2. Open the site in a **private window**, with no `?ref=` link, so the code box shows.
+3. Upload the creator's dog photo at `/create` → same style → 12×16 fine-art print.
+4. At checkout, enter **the creator's shipping address and *your* email**, so they don't get our customer emails, and apply `GIFT-RUFUS`.
+5. Log the ~$16 cost in the war-plan tracking table. Add a note on their partner record.
 
-Prints arrive in about 5–9 business days. That makes the **unboxing** week-2/3 content; the **digital reveal reaction** is this week's content.
+The Gift Studio image is web-size (for the reveal page), so **don't** send it to Printful directly; it's too small to print sharply. Prints arrive in about 5–9 business days. That makes the **unboxing** week-2/3 content; the **digital reveal reaction** is this week's content.
 
 **Paid posts:**
 - Pay on the day the post goes live, via PayPal **Goods & Services** (buyer protection), and keep the receipt.

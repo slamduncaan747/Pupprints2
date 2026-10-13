@@ -22,7 +22,11 @@ export const christmasGifts: ArticleInput = {
     "custom dog portrait christmas",
     "christmas shipping deadline 2026",
   ],
-  related: ["gift-ideas-for-dog-lovers", "canvas-vs-framed-print-vs-poster", "how-to-photograph-your-dog-for-a-portrait"],
+  related: [
+    "gift-ideas-for-dog-lovers",
+    "canvas-vs-framed-print-vs-poster",
+    "how-to-photograph-your-dog-for-a-portrait",
+  ],
   body: [
     {
       type: "paragraph",
@@ -46,7 +50,11 @@ export const christmasGifts: ArticleInput = {
       caption: "Holiday 2026 guidance. US shipping is free on every order.",
       head: ["What", "Order by", "Why"],
       rows: [
-        ["Prints, framed prints and canvases (US)", CHRISTMAS_US_CUTOFF, `Most pieces arrive in ${PHYSICAL_SHIP_WINDOW}, and carriers slow down in December`],
+        [
+          "Prints, framed prints and canvases (US)",
+          CHRISTMAS_US_CUTOFF,
+          `Most pieces arrive in ${PHYSICAL_SHIP_WINDOW}, and carriers slow down in December`,
+        ],
         ["Prints, framed prints and canvases (Canada)", CHRISTMAS_CA_CUTOFF, "Cross-border delivery adds a few days"],
         ["Digital portrait", "Christmas morning", "Delivered by email right after checkout"],
         ["Gift Reveal", "Christmas Day", "Sent instantly with your order; the print follows"],

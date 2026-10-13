@@ -88,6 +88,11 @@ export const newPuppyGifts: ArticleInput = {
       type: "paragraph",
       text: "Seriously. The first weeks with a puppy are a lot like the first weeks with a newborn, minus most of the diapers. A dropped-off meal is always welcome.",
     },
+    { type: "heading", level: 3, text: "Your expertise, if you have it" },
+    {
+      type: "paragraph",
+      text: "If you've raised a puppy before, offer to come over for an afternoon and help: practicing a few basics, sorting out the crate setup or just taking a shift so they can nap. A gift card for a trusted trainer or groomer you already know works well too.",
+    },
     { type: "heading", text: "Keepsakes for a moment that won't last" },
     {
       type: "paragraph",

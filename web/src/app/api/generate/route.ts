@@ -60,6 +60,17 @@ export async function POST(req: Request) {
   if (!aiAvailable()) {
     // Queue the request as a `pending` generation so the "email me when it's ready" lead
     // (POST /api/leads with this generationId) carries the photo + style for follow-up.
+    const { data: existing } = await supabase
+      .from("generations")
+      .select("id")
+      .eq("upload_id", upload.id)
+      .eq("style", body.style)
+      .eq("status", "pending")
+      .limit(1)
+      .maybeSingle();
+    if (existing) {
+      return json({ error: "ai_unavailable", message: "Our studio is busy right now.", generationId: existing.id }, 503);
+    }
     const { data: pending } = await supabase
       .from("generations")
       .insert({

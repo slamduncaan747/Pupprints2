@@ -29,7 +29,9 @@ export function TocDisclosure({ entries, className }: { entries: TocEntry[]; cla
   return (
     <details className={cn("group rounded-2xl bg-paper-2 ring-1 ring-line", className)}>
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-[15px] font-medium text-ink [&::-webkit-details-marker]:hidden">
-        <span>In this article <span className="font-normal text-ink-3">· {entries.length} sections</span></span>
+        <span>
+          In this article <span className="font-normal text-ink-3">· {entries.length} sections</span>
+        </span>
         <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
       </summary>
       <ol className="space-y-0.5 px-5 pb-4">

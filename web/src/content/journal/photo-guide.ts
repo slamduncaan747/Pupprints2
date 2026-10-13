@@ -10,7 +10,12 @@ export const photoGuide: ArticleInput = {
   date: "2026-10-01",
   category: "photo-tips",
   heroStyle: "oil-classic",
-  keywords: ["how to photograph your dog for a portrait", "best photo for pet portrait", "dog portrait from photo", "pet portrait photo tips"],
+  keywords: [
+    "how to photograph your dog for a portrait",
+    "best photo for pet portrait",
+    "dog portrait from photo",
+    "pet portrait photo tips",
+  ],
   related: ["watercolor-vs-oil-vs-line-art", "dog-memorial-ideas", "canvas-vs-framed-print-vs-poster"],
   body: [
     {
@@ -105,7 +110,8 @@ export const photoGuide: ArticleInput = {
     { type: "heading", text: "What if you only have old or imperfect photos?" },
     {
       type: "paragraph",
-      text: "This matters most when a dog has passed away, so it's worth saying clearly: an imperfect photo you treasure is a fine place to start. Older, slightly blurry or low-resolution photos often work better than people expect, particularly in forgiving styles like " +
+      text:
+        "This matters most when a dog has passed away, so it's worth saying clearly: an imperfect photo you treasure is a fine place to start. Older, slightly blurry or low-resolution photos often work better than people expect, particularly in forgiving styles like " +
         styleLink("watercolor") +
         " and " +
         styleLink("charcoal") +

@@ -3,7 +3,7 @@
  * structured blocks; this module adds computed fields (word count, reading time), ordering,
  * related-article logic and a build-time check that every internal link points somewhere real.
  */
-import { STYLE_MAP } from "@/lib/catalog";
+import { STYLE_MAP, type StyleSlug } from "@/lib/catalog";
 import { BREED_MAP } from "@/content/breeds";
 import { countWords, slugify } from "@/content/helpers";
 import type { Article, ArticleCategory, ArticleInput, Block } from "@/content/types";
@@ -28,7 +28,13 @@ export const CATEGORIES: Record<ArticleCategory, { label: string; blurb: string 
   "home-and-framing": { label: "Home & framing", blurb: "Sizes, finishes and hanging, without the guesswork." },
 };
 
-export const CATEGORY_ORDER: ArticleCategory[] = ["gift-guides", "photo-tips", "memorial", "art-and-style", "home-and-framing"];
+export const CATEGORY_ORDER: ArticleCategory[] = [
+  "gift-guides",
+  "photo-tips",
+  "memorial",
+  "art-and-style",
+  "home-and-framing",
+];
 
 const INPUTS: ArticleInput[] = [
   photoGuide,
@@ -69,7 +75,9 @@ function withComputed(input: ArticleInput): Article {
 }
 
 /** Newest first. */
-export const ARTICLES: Article[] = INPUTS.map(withComputed).sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+export const ARTICLES: Article[] = INPUTS.map(withComputed).sort((a, b) =>
+  a.date < b.date ? 1 : a.date > b.date ? -1 : 0,
+);
 
 export const ARTICLE_MAP: Record<string, Article> = Object.fromEntries(ARTICLES.map((a) => [a.slug, a]));
 
@@ -110,6 +118,22 @@ export function tableOfContents(article: Article): TocEntry[] {
   return article.body.flatMap((b, i) =>
     b.type === "heading" && (b.level ?? 2) === 2 ? [{ id: ids.get(i) ?? "", text: b.text.replace(/\*/g, "") }] : [],
   );
+}
+
+/** Styles an article features (hero first), from its style blocks, CTAs and /styles links. */
+export function articleStyles(article: Article, count = 3): StyleSlug[] {
+  const found: StyleSlug[] = [article.heroStyle];
+  const add = (slug: string) => {
+    if (slug in STYLE_MAP && !found.includes(slug as StyleSlug)) found.push(slug as StyleSlug);
+  };
+  for (const b of article.body) {
+    if (b.type === "styles") b.slugs.forEach(add);
+    if (b.type === "cta" && b.style) add(b.style);
+    for (const t of blockText(b))
+      for (const m of t.matchAll(/\]\(\/(?:styles\/|create\?style=)([a-z-]+)\)/g)) add(m[1]);
+  }
+  for (const fallback of ["watercolor", "royal", "oil-classic", "fine-line"]) add(fallback);
+  return found.slice(0, count);
 }
 
 /** Articles that mention a breed page (for "further reading" on breed pages). */

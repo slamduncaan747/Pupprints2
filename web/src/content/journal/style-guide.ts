@@ -10,7 +10,13 @@ export const styleGuide: ArticleInput = {
   date: "2026-10-02",
   category: "art-and-style",
   heroStyle: "fine-line",
-  keywords: ["dog portrait styles", "watercolor dog portrait", "oil painting of dog", "line art dog portrait", "pop art dog portrait"],
+  keywords: [
+    "dog portrait styles",
+    "watercolor dog portrait",
+    "oil painting of dog",
+    "line art dog portrait",
+    "pop art dog portrait",
+  ],
   related: ["history-of-royal-pet-portraits", "canvas-vs-framed-print-vs-poster", "what-size-art-for-your-wall"],
   body: [
     {

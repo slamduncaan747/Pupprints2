@@ -49,6 +49,7 @@ export function FramedSample({
   className,
   sizes = "(max-width: 768px) 60vw, 25vw",
   priority,
+  showLabel = true,
 }: {
   style: StyleSlug;
   src?: string;
@@ -58,6 +59,8 @@ export function FramedSample({
   className?: string;
   sizes?: string;
   priority?: boolean;
+  /** Show the style name on the placeholder shown while a sample image is missing. Off for tiny thumbnails. */
+  showLabel?: boolean;
 }) {
   const s = STYLE_MAP[style];
   const f = finish ?? STYLE_FRAME[style];
@@ -66,7 +69,7 @@ export function FramedSample({
       src={src ?? STYLE_SAMPLES[style]}
       alt={alt ?? `Example ${s.name} dog portrait`}
       swatch={s.swatch}
-      label={s.name}
+      label={showLabel ? s.name : undefined}
       sizes={sizes}
       priority={priority}
     />

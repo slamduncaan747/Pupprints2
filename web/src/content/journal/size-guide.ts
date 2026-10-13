@@ -4,11 +4,11 @@ import { PRODUCTS } from "@/lib/catalog";
 
 /** Where each catalog size tends to work. Unknown future sizes fall back to a neutral line. */
 const SIZE_USE: Record<string, string> = {
-  "8×10\"": "Desks, bookshelves, bedside tables and gallery walls",
-  "12×16\"": "Small walls, hallways, above a desk, or hung in pairs",
-  "16×20\"": "Above a console or nightstand; a strong single piece on a medium wall",
-  "18×24\"": "Above a dresser or a small sofa, or as a pair above a bed",
-  "24×36\"": "A statement piece above a sofa, bed or fireplace, or on a large open wall",
+  '8×10"': "Desks, bookshelves, bedside tables and gallery walls",
+  '12×16"': "Small walls, hallways, above a desk, or hung in pairs",
+  '16×20"': "Above a console or nightstand; a strong single piece on a medium wall",
+  '18×24"': "Above a dresser or a small sofa, or as a pair above a bed",
+  '24×36"': "A statement piece above a sofa, bed or fireplace, or on a large open wall",
 };
 
 function formatsFor(label: string) {
@@ -28,12 +28,22 @@ export const sizeGuide: ArticleInput = {
   slug: "what-size-art-for-your-wall",
   title: "How to Choose the Right Size Art for Your Wall",
   description:
-    "The simple rules designers use to size art above a sofa, bed, console or desk, with real measurements, plus how portrait sizes from 8×10\" to 24×36\" work in actual rooms.",
+    'The simple rules designers use to size art above a sofa, bed, console or desk, with real measurements, plus how portrait sizes from 8×10" to 24×36" work in actual rooms.',
   date: "2026-10-03",
   category: "home-and-framing",
   heroStyle: "mid-century",
-  keywords: ["what size art for wall", "art size above sofa", "how big should art be above a bed", "canvas size guide", "wall art size guide"],
-  related: ["how-to-hang-a-canvas-or-framed-print", "canvas-vs-framed-print-vs-poster", "watercolor-vs-oil-vs-line-art"],
+  keywords: [
+    "what size art for wall",
+    "art size above sofa",
+    "how big should art be above a bed",
+    "canvas size guide",
+    "wall art size guide",
+  ],
+  related: [
+    "how-to-hang-a-canvas-or-framed-print",
+    "canvas-vs-framed-print-vs-poster",
+    "watercolor-vs-oil-vs-line-art",
+  ],
   body: [
     {
       type: "paragraph",
@@ -69,17 +79,17 @@ export const sizeGuide: ArticleInput = {
     { type: "heading", level: 3, text: "Above a sofa" },
     {
       type: "paragraph",
-      text: "Most sofas are somewhere between 72 and 90 inches wide. For a single portrait, go big: a 24×36\" canvas or framed print. To fill more of the width, try three 16×20\" portraits in a row with 3 inches between them. They span about 54 inches, close to two-thirds of an 84-inch sofa.",
+      text: 'Most sofas are somewhere between 72 and 90 inches wide. For a single portrait, go big: a 24×36" canvas or framed print. To fill more of the width, try three 16×20" portraits in a row with 3 inches between them. They span about 54 inches, close to two-thirds of an 84-inch sofa.',
     },
     { type: "heading", level: 3, text: "Above a bed" },
     {
       type: "paragraph",
-      text: "A queen bed is about 60 inches wide, so two-thirds is roughly 40 inches. A 24×36\" portrait centered above the headboard makes a calm focal point; a pair of 18×24\" pieces with a 4-inch gap spans almost exactly 40 inches.",
+      text: 'A queen bed is about 60 inches wide, so two-thirds is roughly 40 inches. A 24×36" portrait centered above the headboard makes a calm focal point; a pair of 18×24" pieces with a 4-inch gap spans almost exactly 40 inches.',
     },
     { type: "heading", level: 3, text: "Above a console, dresser or fireplace" },
     {
       type: "paragraph",
-      text: "Consoles and dressers are often 36 to 60 inches wide, which suits a single 16×20\" to 24×36\" piece. A mantel is also a great place to lean a framed portrait instead of hanging it, especially if you like to swap art seasonally.",
+      text: 'Consoles and dressers are often 36 to 60 inches wide, which suits a single 16×20" to 24×36" piece. A mantel is also a great place to lean a framed portrait instead of hanging it, especially if you like to swap art seasonally.',
     },
     { type: "heading", level: 3, text: "Home office" },
     {
@@ -89,19 +99,19 @@ export const sizeGuide: ArticleInput = {
     { type: "heading", level: 3, text: "Hallways and stairs" },
     {
       type: "paragraph",
-      text: "Narrow spaces suit 12×16\" pieces, or a vertical stack of 8×10\"s. On a staircase, follow the angle of the stairs and keep each piece the same height above its step.",
+      text: 'Narrow spaces suit 12×16" pieces, or a vertical stack of 8×10"s. On a staircase, follow the angle of the stairs and keep each piece the same height above its step.',
     },
     { type: "heading", level: 3, text: "Gallery walls" },
     {
       type: "paragraph",
-      text: "Mix sizes from 8×10\" up to 18×24\", keep the gaps consistent (2 to 3 inches is typical), and stick to one or two frame colors for a calm, collected look. Lay everything out on the floor first, or tape paper templates to the wall.",
+      text: 'Mix sizes from 8×10" up to 18×24", keep the gaps consistent (2 to 3 inches is typical), and stick to one or two frame colors for a calm, collected look. Lay everything out on the floor first, or tape paper templates to the wall.',
     },
     { type: "heading", text: "The most common sizing mistakes" },
     {
       type: "list",
       items: [
         "**Hanging too high.** This is the big one. Art hung near the ceiling feels disconnected from the room. Bring it down toward eye level, or closer to the furniture beneath it.",
-        "**Going too small above furniture.** A lone 8×10\" above a sofa looks like it wandered off from somewhere else. Size up, or group several pieces.",
+        '**Going too small above furniture.** A lone 8×10" above a sofa looks like it wandered off from somewhere else. Size up, or group several pieces.',
         "**Forgetting the sight lines.** Think about where the art is seen from: the doorway, the sofa, the bed. A piece seen from across the room needs more presence.",
         "**Crowding.** Art needs breathing room. Avoid squeezing a large piece between windows or right up against a corner.",
       ],

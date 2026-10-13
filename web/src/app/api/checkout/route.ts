@@ -287,7 +287,6 @@ export async function POST(req: Request) {
       payment_intent_data: { metadata: { orderId: order.id, orderNumber: order.order_number } },
       success_url: `${siteUrl()}/order/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl()}/create?step=product`,
-      phone_number_collection: { enabled: true },
       billing_address_collection: "auto",
       ...(body.email ? { customer_email: body.email } : {}),
       ...(discounts ? { discounts } : { allow_promotion_codes: true }),
@@ -307,6 +306,8 @@ export async function POST(req: Request) {
       const [min, max] = shipWindow(shipDays, shipCountry);
       const rate = SHIPPING_RATES[shipCountry];
       params.shipping_address_collection = { allowed_countries: [shipCountry] };
+      // Carriers use the phone number for delivery issues.
+      params.phone_number_collection = { enabled: true };
       params.shipping_options = [
         {
           shipping_rate_data: {

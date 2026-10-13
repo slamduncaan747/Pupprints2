@@ -93,6 +93,11 @@
     padding: 14px;
     box-shadow: var(--shadow-frame);
   }
+  .frame-oak {
+    background: linear-gradient(135deg, #b8875a, #d9b48a 40%, #c49a6c 70%, #a8784c);
+    padding: 14px;
+    box-shadow: var(--shadow-frame);
+  }
   .frame-black {
     background: #151311;
     padding: 12px;

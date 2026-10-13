@@ -62,7 +62,7 @@ export default function GiftCardsPage() {
               <p className="flex flex-wrap items-center gap-2 font-medium text-ink">
                 <Badge tone="clay">Coming soon</Badge> Get notified when gift cards launch
               </p>
-              <NewsletterForm source="gift_cards" cta="Notify me" className="mt-4" />
+              <NewsletterForm source="gift_cards" cta="Notify me" className="mt-4" successMessage="You're on the list. We'll email you the moment gift cards go live." />
             </div>
           </>
         }

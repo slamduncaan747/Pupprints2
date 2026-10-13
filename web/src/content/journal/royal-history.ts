@@ -51,7 +51,8 @@ export const royalHistory: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: "Military and naval portraiture flourished at the same time. Painters like Joshua Reynolds portrayed naval commanders in dress coats against stormy seas, a tradition our " +
+      text:
+        "Military and naval portraiture flourished at the same time. Painters like Joshua Reynolds portrayed naval commanders in dress coats against stormy seas, a tradition our " +
         styleLink("admiral") +
         " style borrows from with a straight face.",
     },
@@ -88,7 +89,11 @@ export const royalHistory: ArticleInput = {
         "**Frame it like you mean it.** A black or natural oak frame, or a gallery canvas, finishes the museum look. See [canvas vs. framed print](/journal/canvas-vs-framed-print-vs-poster).",
       ],
     },
-    { type: "styles", slugs: ["royal", "admiral", "oil-classic"], caption: "Three ways to paint your dog like an aristocrat" },
+    {
+      type: "styles",
+      slugs: ["royal", "admiral", "oil-classic"],
+      caption: "Three ways to paint your dog like an aristocrat",
+    },
     {
       type: "cta",
       title: "Give your dog the royal treatment",
