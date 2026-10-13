@@ -34,7 +34,7 @@ export function ResultView({
   const strip = [...generations].reverse(); // oldest → newest, reads left to right
 
   return (
-    <section className="mx-auto grid w-full max-w-[1440px] gap-10 pt-4 pb-24 sm:px-10 sm:pt-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center lg:gap-20 xl:gap-28">
+    <section className="mx-auto grid w-full max-w-[1440px] gap-10 pt-4 pb-32 sm:px-10 sm:pb-24 sm:pt-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center lg:gap-20 xl:gap-28">
       {/* The portrait, as a campaign image: large, on white, unframed. */}
       <figure className="min-w-0">
         <div className="relative mx-auto w-full bg-paper-2 sm:max-w-[520px] lg:max-w-[min(100%,calc((100dvh_-_190px)_*_0.75))]">
@@ -62,10 +62,10 @@ export function ResultView({
           Love it? Choose a size and finish next.
         </p>
 
-        <Button type="button" size="lg" onClick={onLoveIt} className="mt-9 w-full sm:max-w-sm lg:max-w-none">
+        <Button type="button" size="lg" onClick={onLoveIt} className="mt-9 hidden w-full sm:inline-flex sm:max-w-sm lg:max-w-none">
           Choose your piece
         </Button>
-        <div className="mt-3 flex items-center justify-center gap-10 lg:justify-start">
+        <div className="mt-5 flex items-center justify-center gap-10 sm:mt-3 lg:justify-start">
           <button type="button" onClick={onTryAnother} className={textLink}>
             Another style
           </button>
@@ -141,6 +141,13 @@ export function ResultView({
         </div>
 
         <p className="label mt-6 text-ink-3">{PROMISES.guarantee}</p>
+      </div>
+
+      {/* Phones: the one call to action stays within reach below the campaign image. */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:hidden">
+        <Button type="button" size="lg" onClick={onLoveIt} className="w-full">
+          Choose your piece
+        </Button>
       </div>
     </section>
   );

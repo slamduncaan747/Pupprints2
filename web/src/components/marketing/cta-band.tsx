@@ -21,6 +21,7 @@ export function CtaBand({
   cta = "Commission a portrait",
   note = PROMISE_LINE,
   image,
+  rule = true,
 }: {
   eyebrow?: ReactNode;
   title?: ReactNode;
@@ -29,6 +30,8 @@ export function CtaBand({
   cta?: string;
   note?: ReactNode;
   image?: StyleSlug;
+  /** Hairline above the band; turn off when it follows an ivory section. */
+  rule?: boolean;
 }) {
   const text = (
     <>
@@ -47,7 +50,7 @@ export function CtaBand({
   if (image) {
     const s = STYLE_MAP[image];
     return (
-      <section className="border-t border-line lg:grid lg:grid-cols-2">
+      <section className={cn("lg:grid lg:grid-cols-2", rule && "border-t border-line")}>
         <CampaignImage
           src={STYLE_SAMPLES[image]}
           alt={`Example ${s.name} dog portrait`}
@@ -69,7 +72,7 @@ export function CtaBand({
   return (
     <section>
       <Container>
-        <div className="flex flex-col items-center border-t border-line py-28 text-center sm:py-40">{text}</div>
+        <div className={cn("flex flex-col items-center py-28 text-center sm:py-40", rule && "border-t border-line")}>{text}</div>
       </Container>
     </section>
   );

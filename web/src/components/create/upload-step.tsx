@@ -40,7 +40,6 @@ export function UploadStep({
   const displayUrl = localUrl ?? flow.upload?.url ?? null;
   const ready = Boolean(flow.upload) && !busy;
   const style = preselected ? getStyle(preselected) : undefined;
-  const dogName = flow.petName.trim();
 
   async function handleFile(file: File | undefined | null) {
     if (!file || busy) return;
@@ -103,7 +102,7 @@ export function UploadStep({
 
         {displayUrl ? (
           <div className="flex flex-col items-center">
-            <div className="relative w-full max-w-[240px] sm:max-w-[280px]">
+            <div className="relative w-full max-w-[220px] sm:max-w-[280px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={displayUrl}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/lib/config";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, Bullets, Note, Prose, Rows, textLink } from "@/components/marketing/blocks";
+import { Block, Bullets, Note, Rows, Statement, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
@@ -44,49 +44,54 @@ export default function GuaranteePage() {
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
-        eyebrow="Love-it guarantee"
+        eyebrow="The Love-It Guarantee"
         title="Love it, or it's on us."
         lede="If you don't love your printed portrait, tell us within 30 days of delivery. We'll remake it free or refund you in full, your choice."
       />
 
-      <Block title="Three steps, no runaround">
+      <Block eyebrow="The process" title="Three steps, no runaround">
         <Rows numbered items={STEPS} />
-        <Note className="mt-6">
-          Ready to start?{" "}
-          <Link href="/contact?topic=guarantee" className={textLink}>
+        <p className="mt-8">
+          <Link href="/contact?topic=guarantee" className="link-cta">
             Ask for a remake or refund
           </Link>
-        </Note>
+        </p>
       </Block>
 
-      <Block
-        title="If it's not right, we make it right"
-        intro="Damaged pieces don't need to come back. A photo is all we need."
-      >
+      <Block eyebrow="Covered" title="If it's not right, we make it right" intro="Damaged pieces don't need to come back. A photo is all we need.">
         <Rows items={COVERED} />
         <Note className="mt-6">
           Tip: keep the packaging until you&apos;ve checked your piece. It helps if anything was damaged on the way.
         </Note>
       </Block>
 
-      <Block title="No fine print" intro="Typical portrait shops often hide behind these. We don't.">
+      <Block eyebrow="Our word" title="No fine print" intro="Typical portrait shops often hide behind these. We don't.">
         <Bullets items={NO_FINE_PRINT} />
       </Block>
 
-      <Block title="You see it before you pay">
-        <Prose>
-          <p>
-            Because you approve your portrait before checkout, and a person on our team checks every print before it&apos;s
-            printed, there are very few surprises. When something does go wrong, it should be our problem, not yours.
-          </p>
-          <p>
-            Questions about an order? Write to <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>. We reply
-            within one business day.
-          </p>
-        </Prose>
-      </Block>
+      <Statement
+        className="bg-paper-2"
+        eyebrow="Before you pay"
+        body={
+          <>
+            <p>
+              You approve your portrait before checkout, and a person on our team checks every print before it&apos;s printed.
+              When something does go wrong, it should be our problem, not yours.
+            </p>
+            <p className="mt-6">
+              Questions about an order?{" "}
+              <a href={`mailto:${site.supportEmail}`} className={`${textLink} break-all`}>
+                {site.supportEmail}
+              </a>
+            </p>
+          </>
+        }
+      >
+        You see it before you pay.
+      </Statement>
 
       <Block
+        titleStyle="label"
         title="The details"
         intro={
           <>
@@ -101,7 +106,7 @@ export default function GuaranteePage() {
         <FaqList items={FAQS} />
       </Block>
 
-      <CtaBand title="See it free. Love it, or it's on us." />
+      <CtaBand eyebrow="Without risk" title="See it free. Love it, or it's on us." />
     </>
   );
 }

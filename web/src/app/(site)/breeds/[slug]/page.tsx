@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, type FaqItem } from "@/components/marketing/faq";
-import { FramedArt } from "@/components/marketing/framed-art";
+import { CampaignImage } from "@/components/marketing/campaign";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Note, Prose, Rows, textLink } from "@/components/marketing/blocks";
 import { StyleCard } from "@/components/marketing/style-card";
@@ -181,72 +181,74 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
       <PageHero
         breadcrumbs={<ContentBreadcrumbs items={crumbs} />}
         title={`Custom ${breed.name} Portraits`}
+        mediaFirst
         lede={
           <>
-            <p className="font-display text-[1.5rem] italic leading-snug text-ink sm:text-[1.75rem]">{breed.personality}</p>
-            <p className="mt-4">
-              Upload a favorite photo of your {nick} and see them as a work of art in about a minute, free.
-            </p>
+            <p className="font-display text-[22px] leading-[1.3] text-ink sm:text-[26px]">{breed.personality}</p>
+            <p className="mt-5">Upload a favorite photo of your {nick} and see them as a work of art in about a minute, free.</p>
           </>
         }
         media={
-          <figure className="mx-auto w-full max-w-[440px]">
-            <FramedArt
-              style={sample.style}
-              src={sample.src}
-              alt={sample.alt}
-              priority
-              sizes="(max-width: 1024px) 85vw, 440px"
-            />
-            <figcaption className="mt-5 text-center text-[13px] text-ink-3">
-              {sample.breedSpecific
-                ? `${STYLE_MAP[sample.style].name} portrait of a ${breed.name}. Yours will look like your dog.`
-                : `Example ${STYLE_MAP[sample.style].name} portrait. Yours will be made from your ${nick}'s photo.`}
-            </figcaption>
-          </figure>
+          <CampaignImage
+            src={sample.src}
+            alt={sample.alt}
+            swatch={STYLE_MAP[sample.style].swatch}
+            priority
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
         }
-      />
+      >
+        <p className="label text-ink-3">
+          {sample.breedSpecific
+            ? `Shown: ${STYLE_MAP[sample.style].name}, a ${breed.name}`
+            : `Shown: an example ${STYLE_MAP[sample.style].name} portrait`}
+        </p>
+        <Link href={`/create?style=${top}`} className="link-cta mt-8 inline-block">
+          Commission yours
+        </Link>
+      </PageHero>
 
-      <Block title={isMixed ? "Portraits of one-of-a-kind dogs" : `Portraits of ${breed.plural}`}>
+      <Block eyebrow="The breed" title={isMixed ? "Portraits of one-of-a-kind dogs" : `Portraits of ${breed.plural}`}>
         <Prose>
           {breed.intro.map((p) => (
             <p key={p.slice(0, 24)}>{p}</p>
           ))}
         </Prose>
-        <Rows items={facts} className="mt-10" />
+        <Rows items={facts} className="mt-12" />
       </Block>
 
-      <Block id="photo-tips" title={`Photo tips for your ${nick}`}>
+      <Block id="photo-tips" eyebrow="The photograph" title={`Photo tips for your ${nick}`}>
         <Rows numbered items={breed.tips.map((t) => ({ title: t.title, body: t.body }))} />
-        <Note className="mt-6">
-          <Link href="/journal/how-to-photograph-your-dog-for-a-portrait" className={textLink}>
+        <p className="mt-8">
+          <Link href="/journal/how-to-photograph-your-dog-for-a-portrait" className="link-cta">
             The full photo guide
           </Link>
-        </Note>
+        </p>
       </Block>
 
       <Block
         id="styles"
-        title={isMixed ? "Styles we'd try first" : `Styles we'd pick for a ${nick}`}
-        intro={`Chosen for the ${isMixed ? "personality" : "breed's look and personality"}, best first. You can preview every style free with your own photo.`}
+        eyebrow="The edit"
+        title={isMixed ? "Styles we'd try first" : `Styles for a ${nick}`}
+        intro={`Chosen for the ${isMixed ? "personality" : "breed's look and personality"}, best first. Preview every style free with your own photo.`}
         layout="stack"
       >
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 sm:gap-x-8">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:grid-cols-4 sm:gap-x-4">
           {breed.styles.map(({ slug: s, why }) => (
             <li key={s}>
-              <StyleCard style={STYLE_MAP[s]} compact sizes="(max-width: 640px) 45vw, 260px" />
-              <p className="mt-1.5 text-[14px] leading-snug text-ink-3">{why}</p>
+              <StyleCard style={STYLE_MAP[s]} note={why} sizes="(max-width: 640px) 50vw, 25vw" />
             </li>
           ))}
         </ul>
-        <Note className="mt-10">
+        <Note className="mt-12">
           Not sure? Read{" "}
           <Link href="/journal/watercolor-vs-oil-vs-line-art" className={textLink}>
             how to choose a portrait style
           </Link>{" "}
           or{" "}
           <Link href="/styles" className={textLink}>
-            browse all styles
+            browse the collection
           </Link>
           .
         </Note>
@@ -254,12 +256,13 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
 
       <Block
         id="faq"
-        title={isMixed ? "Rescue portrait FAQ" : `${breed.name} portrait FAQ`}
+        titleStyle="label"
+        title={isMixed ? "Rescue portrait questions" : `${breed.name} portrait questions`}
         intro={
           <>
-            More answers in our{" "}
+            More answers in{" "}
             <Link href="/faq" className={textLink}>
-              full FAQ
+              Client Services
             </Link>
             .
           </>
@@ -268,15 +271,15 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
         <FaqList items={faq} />
       </Block>
 
-      <Block title="Keep exploring">
-        <div className="grid gap-10 sm:grid-cols-2">
+      <Block eyebrow="Further" title="Keep exploring" layout="stack">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {more.map((g) => (
             <div key={g.title}>
-              <h3 className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ink-3">{g.title}</h3>
-              <ul className="mt-4 space-y-2 text-[15px] leading-snug">
+              <h3 className="label text-ink-3">{g.title}</h3>
+              <ul className="mt-5 border-t border-line">
                 {g.links.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className="text-ink-2 underline-offset-4 hover:text-ink hover:underline">
+                  <li key={l.href} className="border-b border-line">
+                    <Link href={l.href} className="block py-3 text-[14px] leading-snug text-ink transition-opacity hover:opacity-60">
                       {l.label}
                     </Link>
                   </li>
@@ -288,6 +291,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
       </Block>
 
       <CtaBand
+        eyebrow={breed.name}
         title={isMixed ? "See your dog as a work of art" : `See your ${nick} as a work of art`}
         href={`/create?style=${top}`}
       />

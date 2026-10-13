@@ -3,7 +3,10 @@ import Link from "next/link";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
 import { ButtonLink } from "@/components/ui/button";
-import { Container, Eyebrow } from "@/components/ui/container";
+import { STYLE_MAP } from "@/lib/catalog";
+import { STYLE_SAMPLES } from "@/lib/samples";
+import { PageHero } from "@/components/marketing/page-hero";
+import { CampaignImage } from "@/components/marketing/campaign";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -12,41 +15,48 @@ export const metadata: Metadata = {
 
 const LINKS = [
   { href: "/", label: "Home" },
-  { href: "/styles", label: "Styles" },
-  { href: "/shop", label: "Prints & canvas" },
-  { href: "/gifts", label: "Gift ideas" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact us" },
+  { href: "/styles", label: "The collection" },
+  { href: "/shop", label: "The shop" },
+  { href: "/gifts", label: "Gifts" },
+  { href: "/faq", label: "Client services" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function NotFound() {
+  const style = STYLE_MAP.charcoal;
   return (
     <>
       <Header />
       <main id="main" className="flex-1">
-        <Container className="py-24 sm:py-36">
-          <Eyebrow>Error 404</Eyebrow>
-          <h1 className="mt-6 max-w-3xl font-display text-[2.75rem] leading-[1.02] tracking-[-0.015em] sm:text-6xl lg:text-[4.5rem]">
-            This page wandered off chasing a squirrel
-          </h1>
-          <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-2 sm:text-lg">
-            It may have moved, or the link might be a little off. Let&apos;s get you back on the trail.
-          </p>
-          <ButtonLink href="/create" size="lg" className="mt-10">
-            Create your portrait
+        <PageHero
+          eyebrow="Error 404"
+          title="This page has wandered off."
+          lede="It may have moved, or the link might be a little off. Let's get you back on the trail."
+          media={
+            <CampaignImage
+              src={STYLE_SAMPLES[style.slug]}
+              alt={`Example ${style.name} dog portrait`}
+              swatch={style.swatch}
+              fill
+              priority
+            />
+          }
+        >
+          <ButtonLink href="/create" size="lg" className="w-full sm:w-auto">
+            Commission a portrait
           </ButtonLink>
-          <nav aria-label="Helpful links" className="mt-16 border-t border-line pt-8">
-            <ul className="flex flex-wrap gap-x-6 gap-y-3 text-[15px]">
+          <nav aria-label="Helpful links" className="mt-14 border-t border-line pt-8">
+            <ul className="flex flex-wrap gap-x-6 gap-y-4">
               {LINKS.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-ink-2 underline-offset-4 hover:text-ink hover:underline">
+                  <Link href={l.href} className="label text-ink-2 transition-colors hover:text-ink">
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </nav>
-        </Container>
+        </PageHero>
       </main>
       <Footer />
     </>

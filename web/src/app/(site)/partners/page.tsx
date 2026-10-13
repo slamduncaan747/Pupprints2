@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Rows, textLink } from "@/components/marketing/blocks";
 import { FaqList } from "@/components/marketing/faq";
-import { FramedArt } from "@/components/marketing/framed-art";
+import { CampaignImage } from "@/components/marketing/campaign";
+import { STYLE_MAP } from "@/lib/catalog";
+import { STYLE_SAMPLES } from "@/lib/samples";
 import { PartnerApplyForm } from "@/components/partners/apply-form";
 import { PROGRAM } from "@/components/partners/program";
 import { site } from "@/lib/config";
@@ -128,53 +130,58 @@ export default function PartnersPage() {
     <>
       <PageHero
         eyebrow="Creators & affiliates"
-        title={
-          <>
-            Your dog, as art. <br className="hidden sm:block" />
-            Your audience, delighted.
-          </>
-        }
-        lede={`We make a fine-art portrait of your dog for your content, your followers get ${DISCOUNT} off, and you earn ${COMMISSION} on every order. For creators of every size.`}
+        title="The Creator Programme"
+        lede={`A fine-art portrait of your dog for your content, ${DISCOUNT} off for your followers, and ${COMMISSION} on every order. For creators of every size.`}
         media={
-          <FramedArt
-            style="royal"
+          <CampaignImage
+            src={STYLE_SAMPLES.royal}
+            alt={`Example ${STYLE_MAP.royal.name} dog portrait`}
+            swatch={STYLE_MAP.royal.swatch}
             priority
-            sizes="(max-width: 1024px) 85vw, 400px"
-            className="mx-auto w-full max-w-[400px]"
+            fill
           />
         }
       >
-        <p className="text-[15px]">
-          <a href="#apply" className={textLink}>
-            Apply in two minutes
-          </a>
-        </p>
+        <a href="#apply" className="link-cta">
+          Apply in two minutes
+        </a>
       </PageHero>
 
-      <Block title="A simple, honest offer" intro="No posting quotas, no complicated tiers. Creators we work with closely get custom terms.">
-        <Rows items={PERKS} />
+      <Block
+        eyebrow="The offer"
+        title="Simple and honest"
+        intro="No posting quotas, no complicated tiers. Creators we work with closely get custom terms."
+      >
+        <ul className="grid gap-x-10 gap-y-12 sm:grid-cols-2">
+          {PERKS.map((p, i) => (
+            <li key={p.title} className="border-t border-line pt-6">
+              <p className="label tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</p>
+              <h3 className="mt-5 font-display text-[26px] leading-[1.1] sm:text-[30px]">{p.title}</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{p.body}</p>
+            </li>
+          ))}
+        </ul>
       </Block>
 
-      <Block id="how" title="From application to first payout">
+      <Block id="how" eyebrow="The process" title="From application to first payout">
         <Rows numbered items={STEPS} />
       </Block>
 
-      <Block
-        title="Posts your audience will love"
-        intro="The best partner content is real: your dog, your home, your genuine reaction."
-      >
+      <Block eyebrow="Ideas" title="Posts your audience will love" intro="The best partner content is real: your dog, your home, your genuine reaction.">
         <Rows items={IDEAS} />
       </Block>
 
       <Block
-        title="Always disclose"
+        eyebrow="Always disclose"
+        title="#ad, every time"
         intro="Because you receive a free portrait and earn commission, every post about Pup Prints is an ad. It's the law, and it's our rule."
       >
         <Bullets items={DISCLOSE} />
       </Block>
 
       <Block
-        title="Creator FAQ"
+        titleStyle="label"
+        title="Creator questions"
         intro={
           <>
             Something else?{" "}
@@ -189,6 +196,7 @@ export default function PartnersPage() {
 
       <Block
         id="apply"
+        eyebrow="Apply"
         title="Let's make something beautiful"
         intro="Tell us about you and your dog. We read every application and reply within about a week."
       >

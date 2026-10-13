@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { SampleImage } from "@/components/ui/sample-image";
 import { cn } from "@/lib/utils";
-import { BLEED_PAD_RIGHT } from "@/components/marketing/page-hero";
+import { BLEED_PAD_LEFT, BLEED_PAD_RIGHT } from "@/components/marketing/page-hero";
 
 /**
  * Campaign photography helpers: portraits shown unframed and edge to edge, product shots on an
@@ -146,5 +146,45 @@ export function ProductTitle({
       <h1 className="font-display text-[42px] leading-[1.02] tracking-[-0.02em] sm:text-[56px] xl:text-[64px]">{title}</h1>
       {price && <p className="label mt-5 text-ink">{price}</p>}
     </div>
+  );
+}
+
+/**
+ * One chapter of an editorial story: a large image running to the edge of the screen on one side,
+ * a numeral, a short Bodoni line and a sentence or two on the other.
+ */
+export function Chapter({
+  id,
+  kicker,
+  title,
+  children,
+  media,
+  side = "left",
+}: {
+  id?: string;
+  kicker: ReactNode;
+  title: ReactNode;
+  children?: ReactNode;
+  media: ReactNode;
+  /** Which side the image sits on (desktop). */
+  side?: "left" | "right";
+}) {
+  const headingId = id ? `${id}-title` : undefined;
+  return (
+    <section id={id} aria-labelledby={headingId} className="scroll-mt-24 md:grid md:grid-cols-2 md:items-center">
+      <div className={cn("min-w-0", side === "right" && "md:order-2")}>{media}</div>
+      <div
+        className={cn(
+          "min-w-0 px-5 pb-20 pt-10 sm:px-10 sm:pb-24 sm:pt-14 md:py-24",
+          side === "left" ? cn("md:pl-16 xl:pl-28", BLEED_PAD_RIGHT) : cn("md:pr-16 xl:pr-28", BLEED_PAD_LEFT),
+        )}
+      >
+        <p className="label text-ink-3">{kicker}</p>
+        <h2 id={headingId} className="mt-6 max-w-lg font-display text-[40px] leading-[1.02] tracking-[-0.02em] sm:text-[56px] xl:text-[68px]">
+          {title}
+        </h2>
+        {children && <div className="mt-7 max-w-sm text-[15px] leading-relaxed text-ink-2">{children}</div>}
+      </div>
+    </section>
   );
 }

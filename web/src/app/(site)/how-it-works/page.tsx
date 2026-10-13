@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PROMISES, STYLE_MAP } from "@/lib/catalog";
-import { BEFORE_AFTER } from "@/lib/samples";
-import { SampleImage } from "@/components/ui/sample-image";
+import { BEFORE_AFTER, STYLE_SAMPLES } from "@/lib/samples";
+import { CampaignImage, Chapter, ProductShot } from "@/components/marketing/campaign";
+import { FramedArt } from "@/components/marketing/framed-art";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Note, Rows, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
@@ -91,59 +92,89 @@ const FAQS = [
 export default function HowItWorksPage() {
   const pair = BEFORE_AFTER[0];
   const style = pair ? STYLE_MAP[pair.style] : undefined;
+  const chapterStyle = style ?? STYLE_MAP.royal;
   return (
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
-        eyebrow="How it works"
-        title="From photo to portrait, in four steps"
-        lede="See it now. Give it now. Hang it in days. Here's exactly what happens, from the photo on your phone to the portrait on your wall."
-        media={
-          pair &&
-          style && (
-            <div className="mx-auto grid max-w-[520px] grid-cols-2 gap-4 sm:gap-6">
-              <figure>
-                <SampleImage
-                  src={pair.before}
-                  alt={`Phone photo of a ${pair.dog}`}
-                  swatch="#d8d2c4"
-                  priority
-                  sizes="(max-width: 640px) 45vw, 250px"
-                />
-                <figcaption className="mt-3 text-[13px] text-ink-3">The photo</figcaption>
-              </figure>
-              <figure>
-                <SampleImage
-                  src={pair.after}
-                  alt={`${style.name} portrait of the same ${pair.dog}`}
-                  swatch={style.swatch}
-                  priority
-                  sizes="(max-width: 640px) 45vw, 250px"
-                />
-                <figcaption className="mt-3 text-[13px] text-ink-3">The portrait, in {style.name}</figcaption>
-              </figure>
-            </div>
-          )
-        }
+        align="center"
+        eyebrow="The Process"
+        title="From photograph to portrait"
+        lede="See it now. Give it now. Hang it in days. Here is exactly what happens, from your phone to your wall."
       />
 
-      <Block title="Step by step">
-        <Rows numbered items={STEPS} />
-      </Block>
+      <h2 className="sr-only">Step by step</h2>
+      <Chapter
+        id="step-photo"
+        kicker="I · The photograph"
+        title="It begins with a photograph."
+        media={
+          <CampaignImage
+            src={pair?.before ?? STYLE_SAMPLES.royal}
+            alt={pair ? `Phone photo of a ${pair.dog}` : "Example dog portrait"}
+            swatch="#d8d2c4"
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        }
+      >
+        <p>{STEPS[0].body}</p>
+        <p className="mt-6">
+          <a href="#photo-tips" className="link-cta text-ink">
+            Photo tips
+          </a>
+        </p>
+      </Chapter>
+      <Chapter
+        id="step-preview"
+        side="right"
+        kicker="II · The preview"
+        title="See it before you pay."
+        media={
+          <CampaignImage
+            src={pair?.after ?? STYLE_SAMPLES[chapterStyle.slug]}
+            alt={pair && style ? `${style.name} portrait of the same ${pair.dog}` : `Example ${chapterStyle.name} dog portrait`}
+            swatch={chapterStyle.swatch}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        }
+      >
+        <p>{STEPS[1].body}</p>
+      </Chapter>
+      <Chapter
+        id="step-piece"
+        kicker="III · The piece"
+        title="Checked by a person. Hung in days."
+        media={
+          <ProductShot>
+            <FramedArt
+              style={chapterStyle.slug}
+              src={pair?.after}
+              alt={pair && style ? `${style.name} portrait of a ${pair.dog} in a black frame` : undefined}
+              finish="black"
+              sizes="(max-width: 768px) 60vw, 30vw"
+            />
+          </ProductShot>
+        }
+      >
+        <p>{STEPS[2].body}</p>
+        <p className="mt-4">{STEPS[3].body}</p>
+      </Chapter>
 
       <Block
         id="photo-tips"
+        eyebrow="The photograph"
         title="The photo makes the portrait"
-        intro="You don't need a professional camera. A phone photo is perfect if it's sharp, close and well lit."
+        intro="A phone photo is perfect if it's sharp, close and well lit."
       >
-        <div className="grid gap-10 sm:grid-cols-2 sm:gap-8">
+        <div className="grid gap-12 sm:grid-cols-2 sm:gap-10">
           <div>
-            <h3 className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ink-3">A great photo</h3>
-            <Bullets items={DO} className="mt-4" />
+            <h3 className="label text-ink">A great photo</h3>
+            <Bullets items={DO} className="mt-5" />
           </div>
           <div>
-            <h3 className="font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ink-3">Try to avoid</h3>
-            <Bullets items={AVOID} className="mt-4" />
+            <h3 className="label text-ink">Try to avoid</h3>
+            <Bullets items={AVOID} className="mt-5" />
           </div>
         </div>
         <Note className="mt-8">
@@ -152,25 +183,33 @@ export default function HowItWorksPage() {
         </Note>
       </Block>
 
-      <Block title="See it now. Hang it in days." intro="No waiting days for a proof, and no paying for something you haven't seen.">
+      <Block
+        eyebrow="Timing"
+        title="See it now. Hang it in days."
+        intro="No waiting days for a proof, and no paying for something you haven't seen."
+      >
         <Rows items={TIMELINE} />
       </Block>
 
-      <Block id="how-its-made" title="Honest about how it's made" intro="We think you deserve to know exactly what you're buying.">
+      <Block
+        id="how-its-made"
+        eyebrow="In confidence"
+        title="Honest about how it's made"
+        intro="You deserve to know exactly what you're buying."
+      >
         <Rows items={MADE} />
-        <h3 className="mt-12 font-sans text-[12px] font-medium uppercase tracking-[0.14em] text-ink-3">
-          What we&apos;ll never do
-        </h3>
-        <Bullets items={NEVER} className="mt-4" />
+        <h3 className="label mt-14 text-ink">What we&apos;ll never do</h3>
+        <Bullets items={NEVER} className="mt-5" />
       </Block>
 
       <Block
-        title="Good to know"
+        titleStyle="label"
+        title="Client services"
         intro={
           <>
-            More answers in our{" "}
+            More answers in{" "}
             <Link href="/faq" className={textLink}>
-              FAQ
+              Client Services
             </Link>
             .
           </>

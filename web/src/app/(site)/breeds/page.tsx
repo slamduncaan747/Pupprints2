@@ -7,7 +7,7 @@ import { Block, Prose } from "@/components/marketing/blocks";
 import { breadcrumbJsonLd, itemListJsonLd, pageMetadata } from "@/lib/seo";
 import { STYLE_MAP } from "@/lib/catalog";
 import { BREEDS_SORTED, breedSample, getBreed } from "@/content/breeds";
-import { SampleImage } from "@/components/ui/sample-image";
+import { ZoomImage } from "@/components/marketing/campaign";
 import { ContentBreadcrumbs } from "@/components/content/breadcrumbs";
 import { JsonLd } from "@/components/content/json-ld";
 
@@ -22,7 +22,7 @@ export default function BreedsIndexPage() {
   // Only portraits that actually show the breed, so the picture never claims a breed it doesn't depict.
   const shown = BREEDS_SORTED.map((b) => ({ breed: b, sample: breedSample(b) }))
     .filter((x) => x.sample.breedSpecific)
-    .slice(0, 3);
+    .slice(0, 4);
 
   return (
     <>
@@ -37,58 +37,70 @@ export default function BreedsIndexPage() {
       />
 
       <PageHero
+        align="center"
         breadcrumbs={<ContentBreadcrumbs items={[{ name: "Breeds", path: "/breeds" }]} />}
         title="Every breed has its best angle"
-        lede="Bat ears, beards, merle coats and mismatched eyes: the details that make your dog yours are the ones a portrait has to get right. Find your breed for photo tips and the styles we'd pick."
-        media={
-          shown.length > 0 && (
-            <ul className="mx-auto grid max-w-[520px] grid-cols-3 gap-3 sm:gap-5">
-              {shown.map(({ breed, sample }, i) => (
-                <li key={breed.slug}>
-                  <Link href={`/breeds/${breed.slug}`} className="group block">
-                    <SampleImage
-                      src={sample.src}
-                      alt={sample.alt}
-                      swatch={STYLE_MAP[sample.style].swatch}
-                      priority={i === 0}
-                      sizes="(max-width: 640px) 30vw, 170px"
-                      className="transition-opacity duration-300 group-hover:opacity-90"
-                    />
-                    <p className="mt-3 text-[13px] leading-snug text-ink-3">{breed.name}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )
-        }
+        lede="Bat ears, beards, merle coats, mismatched eyes: the details a portrait has to get right. Find your breed for photo tips and the styles we'd pick."
       />
 
-      <section aria-labelledby="all-breeds" className="pb-24 sm:pb-32">
-        <Container>
-          <h2 id="all-breeds" className="sr-only">
-            All breeds
+      {shown.length > 0 && (
+        <section aria-labelledby="lookbook-title">
+          <h2 id="lookbook-title" className="sr-only">
+            The lookbook
           </h2>
-          <ul className="grid grid-cols-2 gap-x-5 border-t border-line sm:gap-x-8 lg:grid-cols-3">
-            {BREEDS_SORTED.map((b) => (
-              <li key={b.slug} className="border-b border-line">
-                <Link
-                  href={`/breeds/${b.slug}`}
-                  className="block py-4 font-display text-[19px] leading-tight sm:text-[22px] hover:underline hover:decoration-ink/30 hover:decoration-1 hover:underline-offset-4"
-                >
-                  {b.name}
+          <ul className="grid grid-cols-2 gap-x-0.5 gap-y-10 md:grid-cols-4">
+            {shown.map(({ breed, sample }, i) => (
+              <li key={breed.slug}>
+                <Link href={`/breeds/${breed.slug}`} className="group block">
+                  <ZoomImage
+                    src={sample.src}
+                    alt={sample.alt}
+                    swatch={STYLE_MAP[sample.style].swatch}
+                    priority={i < 2}
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                  <div className="mt-4 flex items-baseline justify-between gap-3 px-3 sm:px-5">
+                    <p className="label text-ink">{breed.name}</p>
+                    <p aria-hidden="true" className="label tabular-nums text-ink-3">
+                      {String(i + 1).padStart(2, "0")}
+                    </p>
+                  </div>
+                  <p className="mt-1.5 px-3 text-[13px] text-ink-3 sm:px-5">{STYLE_MAP[sample.style].name}</p>
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="mt-14 max-w-xl text-[14px] leading-relaxed text-ink-3">
-            Breeds are listed in order of the American Kennel Club&rsquo;s 2025 popularity ranking, followed by Doodles and
-            mixes, which the AKC doesn&rsquo;t rank.
-          </p>
+        </section>
+      )}
+
+      <section aria-labelledby="all-breeds" className="py-24 sm:py-36">
+        <Container>
+          <div className="lg:grid lg:grid-cols-12 lg:gap-x-10">
+            <div className="mb-12 lg:col-span-4 lg:mb-0">
+              <p className="label text-ink-3">The index</p>
+              <h2 id="all-breeds" className="mt-5 font-display text-[30px] leading-[1.06] sm:text-[40px]">
+                All breeds
+              </h2>
+              <p className="mt-5 max-w-sm text-[13px] leading-relaxed text-ink-3">
+                Listed in order of the American Kennel Club&rsquo;s 2025 popularity ranking, followed by Doodles and mixes,
+                which the AKC doesn&rsquo;t rank.
+              </p>
+            </div>
+            <ul className="grid grid-cols-2 gap-x-5 border-t border-line sm:gap-x-10 lg:col-span-8 lg:grid-cols-3">
+              {BREEDS_SORTED.map((b) => (
+                <li key={b.slug} className="border-b border-line">
+                  <Link href={`/breeds/${b.slug}`} className="label block py-4 text-ink transition-opacity hover:opacity-60">
+                    {b.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </Container>
       </section>
 
       {mixed && (
-        <Block title="Don't see your breed? Even better.">
+        <Block eyebrow="Mixed & rescue" title="Don't see your breed? Even better.">
           <Prose>
             <p>
               Portraits are made from your photo, not a breed template, so every one-of-a-kind ear, freckle and patch carries

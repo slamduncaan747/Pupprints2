@@ -3,8 +3,11 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, textLink } from "@/components/marketing/blocks";
-import { FramedArt } from "@/components/marketing/framed-art";
+import { Block } from "@/components/marketing/blocks";
+import { CampaignImage } from "@/components/marketing/campaign";
+import { BLEED_PAD_RIGHT } from "@/components/marketing/page-hero";
+import { STYLE_MAP } from "@/lib/catalog";
+import { STYLE_SAMPLES } from "@/lib/samples";
 import { breadcrumbJsonLd, itemListJsonLd, pageMetadata } from "@/lib/seo";
 import { ARTICLES, CATEGORIES, CATEGORY_ORDER } from "@/content/articles";
 import { BREEDS_SORTED } from "@/content/breeds";
@@ -56,70 +59,100 @@ export default function JournalIndexPage() {
       />
 
       <PageHero
+        align="center"
         breadcrumbs={<ContentBreadcrumbs items={[{ name: "Journal", path: "/journal" }]} />}
-        title="Notes on dogs, art & giving"
-        lede="Honest, practical guides: getting the photo, choosing a style, finding the right gift and hanging the result. No filler."
-      />
+        title="The Journal"
+        lede="Notes on dogs, art and giving: the photo, the style, the gift and the wall. No filler."
+      >
+        <nav aria-label="Journal sections">
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+            {groups.map((g) => (
+              <li key={g.id}>
+                <a href={`#${g.id}`} className="label text-ink-2 underline-offset-[6px] transition-colors hover:text-ink hover:underline">
+                  {g.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </PageHero>
 
       {featured && (
-        <section aria-labelledby="featured-heading" className="pb-16 sm:pb-24">
-          <Container>
-            <article className="group relative grid items-center gap-10 border-t border-line pt-12 sm:pt-16 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-20">
-              <FramedArt
-                style={featured.heroStyle}
+        <section aria-labelledby="featured-heading" className="border-t border-line md:border-t-0">
+          <article className="group relative md:grid md:grid-cols-12 md:items-center">
+            <div className="overflow-hidden md:col-span-7">
+              <CampaignImage
+                src={STYLE_SAMPLES[featured.heroStyle]}
+                alt={`Example ${STYLE_MAP[featured.heroStyle].name} dog portrait`}
+                swatch={STYLE_MAP[featured.heroStyle].swatch}
                 priority
-                sizes="(max-width: 1024px) 80vw, 380px"
-                className="mx-auto w-full max-w-[380px] lg:mx-0"
+                sizes="(max-width: 768px) 100vw, 58vw"
+                className="transition-transform duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
               />
-              <div>
-                <p className="text-[13px] text-ink-3">
-                  Latest · {CATEGORIES[featured.category].label} ·{" "}
-                  <time dateTime={featured.date}>{formatArticleDate(featured.date)}</time> · {featured.readingMinutes} min
-                  read
-                </p>
-                <h2 id="featured-heading" className="mt-4 font-display text-[2.25rem] leading-[1.06] sm:text-5xl">
-                  <Link
-                    href={`/journal/${featured.slug}`}
-                    className="after:absolute after:inset-0 group-hover:underline group-hover:decoration-ink/30 group-hover:decoration-1 group-hover:underline-offset-[6px]"
-                  >
-                    {featured.title}
-                  </Link>
-                </h2>
-                <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-ink-2">{featured.description}</p>
-              </div>
-            </article>
-          </Container>
+            </div>
+            <div className={`px-5 pb-20 pt-10 sm:px-10 md:col-span-5 md:py-20 md:pl-14 xl:pl-20 ${BLEED_PAD_RIGHT}`}>
+              <p className="label text-ink-3">
+                The latest <span aria-hidden="true">·</span> {CATEGORIES[featured.category].label}
+              </p>
+              <h2
+                id="featured-heading"
+                className="mt-6 font-display text-[38px] leading-[1.04] tracking-[-0.02em] sm:text-[52px] xl:text-[60px]"
+              >
+                <Link href={`/journal/${featured.slug}`} className="after:absolute after:inset-0">
+                  {featured.title}
+                </Link>
+              </h2>
+              <p className="mt-6 max-w-md text-[15px] leading-relaxed text-ink-2">{featured.description}</p>
+              <p className="label mt-6 text-ink-3">
+                <time dateTime={featured.date}>{formatArticleDate(featured.date)}</time>
+                <span aria-hidden="true"> · </span>
+                {featured.readingMinutes} min read
+              </p>
+              <span className="link-cta mt-10 inline-block text-ink">Read the story</span>
+            </div>
+          </article>
         </section>
       )}
 
       {groups.map((g) => (
-        <Block key={g.id} id={g.id} title={g.label} intro={g.blurb} compact>
-          <ul className="-mt-6 sm:-mt-8">
-            {g.articles.map((a) => (
-              <li key={a.slug}>
-                <ArticleCard article={summary(a)} />
-              </li>
-            ))}
-          </ul>
-        </Block>
+        <section key={g.id} id={g.id} aria-labelledby={`${g.id}-title`} className="scroll-mt-24">
+          <Container>
+            <div className="border-t border-line pb-16 pt-8 sm:pb-24 sm:pt-10 lg:grid lg:grid-cols-12 lg:gap-x-10">
+              <header className="mb-4 lg:col-span-4 lg:mb-0">
+                <h2 id={`${g.id}-title`} className="font-display text-[30px] leading-[1.06] sm:text-[40px]">
+                  {g.label}
+                </h2>
+                <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-ink-3">{g.blurb}</p>
+              </header>
+              <ul className="lg:col-span-8 lg:-mt-9">
+                {g.articles.map((a, i) => (
+                  <li key={a.slug}>
+                    <ArticleCard article={summary(a)} layout="row" className={i === g.articles.length - 1 ? "border-b-0 pb-0 sm:pb-0" : undefined} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Container>
+        </section>
       ))}
 
-      <Block title="Portraits by breed" intro="Photo tips and style picks for your breed.">
-        <p className="text-[16px] leading-[1.9] text-ink-2">
+      <Block eyebrow="The breeds" title="Portraits by breed" intro="Photo tips and style picks for your breed.">
+        <ul className="flex flex-wrap gap-x-7 gap-y-4">
           {popularBreeds.map((b) => (
-            <span key={b.slug}>
-              <Link href={`/breeds/${b.slug}`} className={textLink}>
+            <li key={b.slug}>
+              <Link href={`/breeds/${b.slug}`} className="label text-ink transition-opacity hover:opacity-60">
                 {b.name}
               </Link>
-              <span className="text-ink-3">{"\u00a0· "}</span>
-            </span>
+            </li>
           ))}
-          <Link href="/breeds/mixed-breed" className={textLink}>
-            Mixed breed &amp; rescue
-          </Link>
-        </p>
-        <p className="mt-6 text-[15px]">
-          <Link href="/breeds" className={textLink}>
+          <li>
+            <Link href="/breeds/mixed-breed" className="label text-ink transition-opacity hover:opacity-60">
+              Mixed breed &amp; rescue
+            </Link>
+          </li>
+        </ul>
+        <p className="mt-10">
+          <Link href="/breeds" className="link-cta">
             All breeds
           </Link>
         </p>

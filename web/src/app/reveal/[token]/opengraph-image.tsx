@@ -8,11 +8,11 @@ export const alt = "A Pup Prints gift";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/** Instrument Serif subset from Google Fonts (TTF); falls back to the default font when offline. */
+/** Bodoni Moda subset from Google Fonts (TTF); falls back to the default font when offline. */
 async function loadSerif(text: string): Promise<ArrayBuffer | null> {
   try {
     const css = await fetch(
-      `https://fonts.googleapis.com/css2?family=Instrument+Serif&text=${encodeURIComponent(text)}`,
+      `https://fonts.googleapis.com/css2?family=Bodoni+Moda&text=${encodeURIComponent(text)}`,
       {
         headers: {
           // An old Safari UA makes Google Fonts return a TTF (Satori can't read WOFF2).
@@ -64,23 +64,23 @@ export default async function Image({ params }: { params: Promise<{ token: strin
       ? `${data.petName}, as a work of art`
       : `A portrait of ${data.petName}`
     : "A one-of-a-kind portrait";
-  const [font, portrait] = await Promise.all([loadSerif(`${headline}${pet}Pup Prints${sub.toUpperCase()}TAP TO REVEAL`), portraitDataUri(data?.imagePath ?? null)]);
-  const serif = font ? "Instrument Serif" : undefined;
+  const [font, portrait] = await Promise.all([loadSerif(`${headline}${pet}PUP PRINTS${sub.toUpperCase()}TAP TO REVEAL`), portraitDataUri(data?.imagePath ?? null)]);
+  const serif = font ? "Bodoni Moda" : undefined;
 
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", background: "#fbfbf9", color: "#111111" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", background: "#ffffff", color: "#0a0a0a" }}>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 0 0 88px", width: 680 }}>
-          <div style={{ display: "flex", fontSize: 30, fontFamily: serif }}>Pup Prints</div>
-          <div style={{ marginTop: 44, fontSize: 76, lineHeight: 1.02, fontFamily: serif, display: "flex" }}>{headline}</div>
-          <div style={{ marginTop: 20, fontSize: 34, lineHeight: 1.2, fontFamily: serif, color: "#474747", display: "flex" }}>{pet}</div>
-          <div style={{ marginTop: 44, display: "flex", fontSize: 20, color: "#6b6b6b", textTransform: "uppercase", letterSpacing: 3 }}>
+          <div style={{ display: "flex", fontSize: 26, letterSpacing: 4, fontFamily: serif }}>PUP PRINTS</div>
+          <div style={{ marginTop: 52, fontSize: 74, lineHeight: 1.04, fontFamily: serif, display: "flex" }}>{headline}</div>
+          <div style={{ marginTop: 22, fontSize: 32, lineHeight: 1.2, fontFamily: serif, color: "#3d3d3d", display: "flex" }}>{pet}</div>
+          <div style={{ marginTop: 52, display: "flex", fontSize: 17, color: "#6a6a6a", textTransform: "uppercase", letterSpacing: 4 }}>
             {sub}
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flex: 1, paddingRight: 48 }}>
           {portrait ? (
-            <div style={{ display: "flex", padding: 10, background: "#161616", boxShadow: "0 24px 48px -24px rgba(0,0,0,0.35)" }}>
+            <div style={{ display: "flex", padding: 7, background: "#121212", boxShadow: "0 28px 48px -28px rgba(0,0,0,0.4)" }}>
               <img src={portrait} width={336} height={420} alt="" style={{ objectFit: "cover" }} />
             </div>
           ) : (
@@ -91,8 +91,8 @@ export default async function Image({ params }: { params: Promise<{ token: strin
                 justifyContent: "center",
                 width: 356,
                 height: 440,
-                padding: 10,
-                background: "#161616",
+                padding: 7,
+                background: "#121212",
               }}
             >
               <div
@@ -102,11 +102,11 @@ export default async function Image({ params }: { params: Promise<{ token: strin
                   justifyContent: "center",
                   width: "100%",
                   height: "100%",
-                  background: "#fdfdfb",
-                  fontSize: 22,
-                  color: "#6b6b6b",
+                  background: "#f6f4ef",
+                  fontSize: 17,
+                  color: "#6a6a6a",
                   textTransform: "uppercase",
-                  letterSpacing: 3,
+                  letterSpacing: 4,
                 }}
               >
                 Tap to reveal
@@ -118,7 +118,7 @@ export default async function Image({ params }: { params: Promise<{ token: strin
     ),
     {
       ...size,
-      fonts: font ? [{ name: "Instrument Serif", data: font, style: "normal", weight: 400 }] : undefined,
+      fonts: font ? [{ name: "Bodoni Moda", data: font, style: "normal", weight: 400 }] : undefined,
     },
   );
 }

@@ -50,12 +50,13 @@ export default function ShippingPage() {
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
-        eyebrow="Shipping & delivery"
+        eyebrow="Shipping & Delivery"
         title="Free US shipping. Honest delivery times."
         lede={`Every order ships free in the US, with tracking and no minimum. Canada is a flat ${CANADA_SHIPPING_LABEL}, and digital files arrive right after checkout.`}
       />
 
       <Block
+        eyebrow="Timing"
         title="How long it takes"
         intro="Estimates include production and delivery, in business days, for US addresses. US shipping is free on every product."
       >
@@ -63,7 +64,7 @@ export default function ShippingPage() {
           items={PRODUCTS.map((p) => ({
             key: p.type,
             label: (
-              <Link href={`/shop/${p.type}`} className="hover:underline hover:underline-offset-4">
+              <Link href={`/shop/${p.type}`} className="underline-offset-4 hover:underline">
                 {p.name}
               </Link>
             ),
@@ -73,13 +74,14 @@ export default function ShippingPage() {
         <Note className="mt-6">Canadian orders usually take a few extra business days.</Note>
       </Block>
 
-      <Block title="What happens after you order">
+      <Block eyebrow="After you order" title="Made for you, then sent">
         <Rows numbered items={STEPS} />
       </Block>
 
       <Block
         id="holidays"
-        title="Christmas order-by dates"
+        eyebrow="Christmas 2026"
+        title="Order-by dates"
         intro="Our recommended last order dates for standard delivery before Christmas. They're honest guidance, not guarantees: carriers get very busy in December, so earlier is always better."
       >
         <Facts items={christmasRows.map((r) => ({ key: r.what + r.where, label: r.what, note: r.where, value: r.when }))} />
@@ -95,7 +97,7 @@ export default function ShippingPage() {
         </Prose>
       </Block>
 
-      <Block title="Good to know">
+      <Block eyebrow="Good to know" title="The particulars">
         <Rows
           items={[
             {
@@ -134,11 +136,11 @@ export default function ShippingPage() {
         />
       </Block>
 
-      <Block title="Shipping FAQ">
+      <Block titleStyle="label" title="Client services">
         <FaqList items={FAQS} />
       </Block>
 
-      <CtaBand />
+      <CtaBand eyebrow="Begin here" />
     </>
   );
 }

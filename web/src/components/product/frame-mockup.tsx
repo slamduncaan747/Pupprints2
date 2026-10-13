@@ -230,7 +230,16 @@ function EdgeImage({ src, ratio, side }: { src: string; ratio: number; side: "ri
         };
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt="" aria-hidden draggable={false} className="absolute max-w-none object-cover" style={style} />
+    <img
+      src={src}
+      alt=""
+      aria-hidden
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      className="absolute max-w-none object-cover"
+      style={style}
+    />
   );
 }
 

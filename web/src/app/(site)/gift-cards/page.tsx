@@ -45,8 +45,8 @@ export default function GiftCardsPage() {
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
-        eyebrow="Digital gift cards · Coming soon"
-        title="Let them choose the photo and the style"
+        eyebrow="Gift cards · Coming soon"
+        title="Let them choose"
         lede="For someone whose dog you don't have a great photo of, or who'd love to pick their own style. Join the list and we'll tell you the moment gift cards are ready."
       >
         <NewsletterForm
@@ -56,7 +56,7 @@ export default function GiftCardsPage() {
         />
       </PageHero>
 
-      <Block title="Planned amounts" intro="US shipping is free on every order, so the whole amount goes toward their portrait.">
+      <Block eyebrow="Planned amounts" title="The whole amount, for the portrait" intro="US shipping is free on every order, so nothing is lost to delivery.">
         <Rows
           items={AMOUNTS.map((amount) => ({
             key: String(amount),
@@ -66,15 +66,16 @@ export default function GiftCardsPage() {
         />
       </Block>
 
-      <Block title="They pick, we print">
+      <Block eyebrow="How it will work" title="They pick, we print">
         <Rows numbered items={STEPS} />
       </Block>
 
-      <Block title="About gift cards">
+      <Block titleStyle="label" title="About gift cards">
         <FaqList items={FAQS} />
       </Block>
 
       <CtaBand
+        eyebrow="A gift today"
         title="Make their portrait today"
         body="Upload a photo of their dog, see it free in about a minute, and send a Gift Reveal instantly."
         cta="Start a gift portrait"

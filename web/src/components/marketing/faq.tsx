@@ -16,7 +16,7 @@ export function FaqList({ items, className }: { items: FaqItem[]; className?: st
         <details key={item.q} className="group border-b border-line">
           <summary className="flex cursor-pointer list-none items-baseline justify-between gap-8 py-5 text-left text-[15px] leading-snug text-ink transition-opacity hover:opacity-60 sm:py-6 sm:text-[16px] [&::-webkit-details-marker]:hidden">
             <span>{item.q}</span>
-            <span aria-hidden="true" className="label w-3 shrink-0 text-center text-ink-3">
+            <span aria-hidden="true" className="w-3 shrink-0 text-center text-[15px] font-light leading-none text-ink-3">
               <span className="group-open:hidden">+</span>
               <span className="hidden group-open:inline">&minus;</span>
             </span>

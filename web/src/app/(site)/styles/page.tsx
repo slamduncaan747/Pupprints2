@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { STYLES } from "@/lib/catalog";
+import { STYLE_MAP, STYLES, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
 import { StyleCard } from "@/components/marketing/style-card";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { ZoomImage } from "@/components/marketing/campaign";
-import { stylesFor, type GoodFor } from "@/components/marketing/style-content";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Dog Portrait Styles — Oil Painting, Watercolor, Royal & More",
@@ -15,21 +15,29 @@ export const metadata: Metadata = {
   alternates: { canonical: "/styles" },
 };
 
-const EDITS: { title: string; body: string; tags: GoodFor[] }[] = [
-  { title: "The Memorial Edit", body: "Soft, timeless styles that feel gentle on the wall.", tags: ["memorial"] },
-  { title: "The Playful Edit", body: "Costumes and color for big personalities.", tags: ["funny"] },
-  { title: "The Modern Edit", body: "Clean, graphic styles for modern rooms.", tags: ["decor"] },
+/** Curated edits. The first slug leads with its portrait. */
+const EDITS: { title: string; body: string; slugs: StyleSlug[] }[] = [
+  {
+    title: "The Memorial Edit",
+    body: "Soft, timeless styles that feel gentle on the wall.",
+    slugs: ["watercolor", "oil-classic", "botanical", "charcoal"],
+  },
+  {
+    title: "The Playful Edit",
+    body: "Costumes and color for big personalities.",
+    slugs: ["astronaut", "royal", "admiral", "pop-art"],
+  },
+  {
+    title: "The Modern Edit",
+    body: "Clean, graphic styles for modern rooms.",
+    slugs: ["mid-century", "fine-line", "charcoal", "pop-art"],
+  },
 ];
 
 export default function StylesPage() {
-  const edits = EDITS.map((e) => ({ ...e, styles: stylesFor(e.tags, 4) }));
-  // Lead each edit with a different portrait.
-  const used = new Set<string>();
-  const leads = edits.map((e) => {
-    const lead = e.styles.find((s) => !used.has(s.slug)) ?? e.styles[0];
-    used.add(lead.slug);
-    return lead;
-  });
+  const edits = EDITS.map((e) => ({ ...e, styles: e.slugs.map((slug) => STYLE_MAP[slug]).filter(Boolean) })).filter(
+    (e) => e.styles.length > 0,
+  );
 
   return (
     <>
@@ -71,10 +79,13 @@ export default function StylesPage() {
           </div>
           <ul className="grid gap-16 sm:gap-10 md:grid-cols-3">
             {edits.map((e, i) => {
-              const lead = leads[i];
+              const lead = e.styles[0];
               return (
                 <li key={e.title} className={i === 1 ? "md:mt-24" : undefined}>
-                  <Link href={`/styles/${lead.slug}`} className="group block">
+                  <Link
+                    href={`/styles/${lead.slug}`}
+                    className={cn("group block w-[78%] md:w-full", i % 2 === 1 && "ml-auto md:ml-0")}
+                  >
                     <ZoomImage
                       src={STYLE_SAMPLES[lead.slug]}
                       alt={`Example ${lead.name} dog portrait`}
@@ -104,6 +115,7 @@ export default function StylesPage() {
       </section>
 
       <CtaBand
+        rule={false}
         eyebrow="Your commission"
         title="Which one looks most like them?"
         body="Upload one photo and see your dog in every style, free."

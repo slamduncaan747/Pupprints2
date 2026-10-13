@@ -8,10 +8,10 @@ import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd } from "@/components/marketing/faq";
-import { FramedArt } from "@/components/marketing/framed-art";
+import { CampaignImage } from "@/components/marketing/campaign";
 import { JsonLd } from "@/components/marketing/json-ld";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, Facts, Note, Prose, Rows, textLink } from "@/components/marketing/blocks";
+import { Block, Facts, Prose, Rows, textLink } from "@/components/marketing/blocks";
 import { StyleCard } from "@/components/marketing/style-card";
 import { OCCASIONS, getOccasion } from "@/components/marketing/gift-occasions";
 import { stylesFor } from "@/components/marketing/style-content";
@@ -86,22 +86,24 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
         title={o.h1}
         lede={<p>{firstSentences(o.lede)}</p>}
         media={
-          <FramedArt
-            style={o.feature}
-            finish={memorial ? "oak" : "black"}
-            priority
-            sizes="(max-width: 1024px) 85vw, 440px"
-            className="mx-auto w-full max-w-[440px]"
-          />
+          feature && (
+            <CampaignImage
+              src={STYLE_SAMPLES[o.feature]}
+              alt={`Example ${feature.name} dog portrait`}
+              swatch={feature.swatch}
+              priority
+              fill
+            />
+          )
         }
       >
-        <Note>
-          {memorial ? "Free preview. No pressure, no obligation." : "Free preview · Instant Gift Reveal · Free US shipping"}
-        </Note>
+        <p className="label text-ink-3">
+          {memorial ? "Free preview · No pressure, no obligation" : "Free preview · Instant Gift Reveal · Free US shipping"}
+        </p>
       </PageHero>
 
       {o.timing && (
-        <Block id="timing" title={o.timing.title}>
+        <Block id="timing" eyebrow="Timing" title={o.timing.title}>
           {christmas ? (
             <>
               <Facts
@@ -115,14 +117,14 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
                   },
                 ]}
               />
-              <Prose className="mt-8 text-[16px]">
+              <Prose className="mt-8 text-[15px]">
                 <p>{o.timing.body}</p>
               </Prose>
-              <Note className="mt-4">
-                <Link href="/shipping#holidays" className={textLink}>
+              <p className="mt-6">
+                <Link href="/shipping#holidays" className="link-cta">
                   All shipping dates
                 </Link>
-              </Note>
+              </p>
             </>
           ) : (
             <Prose>
@@ -132,36 +134,38 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
         </Block>
       )}
 
-      <Block title={memorial ? "Some things that may help" : `${o.name} ideas`}>
+      <Block eyebrow={memorial ? "With care" : "The edit"} title={memorial ? "Some things that may help" : `${o.name} ideas`}>
         <Rows items={o.ideas} />
       </Block>
 
       <Block
         id="styles"
-        title={memorial ? "Soft, timeless styles" : `Styles we love for ${o.forLabel}`}
+        eyebrow="From the collection"
+        title={memorial ? "Soft, timeless styles" : `Styles for ${o.forLabel}`}
         intro={memorial ? "Try any of them with your photo. You'll see it before you decide anything." : undefined}
         layout="stack"
       >
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 sm:gap-x-8">
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-4 sm:gap-x-4">
           {styles.map((s) => (
             <li key={s.slug}>
-              <StyleCard style={s} compact sizes="(max-width: 640px) 45vw, 260px" />
+              <StyleCard style={s} compact sizes="(max-width: 640px) 50vw, 25vw" />
             </li>
           ))}
         </ul>
-        <Note className="mt-10">
-          <Link href="/styles" className={textLink}>
-            All styles
+        <p className="mt-12">
+          <Link href="/styles" className="link-cta">
+            The collection
           </Link>
-        </Note>
+        </p>
       </Block>
 
       {memorial ? (
-        <Block title="Made with care">
+        <Block eyebrow="Our care" title="Made with care">
           <Rows items={MEMORIAL_CARE} />
         </Block>
       ) : (
         <Block
+          eyebrow="The Gift Reveal"
           title="The moment they see it"
           intro={`Order a portrait as a gift and you get a digital reveal right away. The print follows in ${PHYSICAL_SHIP_WINDOW}.`}
         >
@@ -176,12 +180,13 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
       )}
 
       <Block
-        title={memorial ? "If you're wondering" : "Good to know"}
+        titleStyle="label"
+        title={memorial ? "If you're wondering" : "Client services"}
         intro={
           <>
-            {memorial ? "Or simply " : "More in our "}
+            {memorial ? "Or simply " : "More in "}
             <Link href={memorial ? "/contact" : "/faq"} className={textLink}>
-              {memorial ? "write to us" : "FAQ"}
+              {memorial ? "write to us" : "Client Services"}
             </Link>
             .
           </>
@@ -191,6 +196,7 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
       </Block>
 
       <CtaBand
+        eyebrow={o.eyebrow}
         title={o.cta.title}
         body={o.cta.body}
         cta={o.cta.button}

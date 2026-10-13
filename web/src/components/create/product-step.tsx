@@ -208,73 +208,73 @@ export function ProductStep({
     <section className="mx-auto grid w-full max-w-[1440px] gap-10 pt-2 pb-36 sm:px-10 sm:pt-6 sm:pb-28 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16 xl:grid-cols-[minmax(0,1fr)_420px] xl:gap-28">
       {/* ---------------- Preview ---------------- */}
       <div className="min-w-0 lg:sticky lg:top-4 lg:self-start">
-        <div className="mx-auto w-full sm:max-w-[560px] lg:max-w-[min(100%,calc((100dvh_-_250px)_*_0.8))]">
-          <div className="mb-1 flex items-center justify-between gap-3 px-3 sm:mb-3 sm:px-0">
-            <button type="button" onClick={onBack} className={cn(TOGGLE, "text-ink-3 hover:text-ink sm:-ml-2")}>
-              Back<span className="hidden sm:inline">&nbsp;{backLabel}</span>
-            </button>
-            {physical && (
-              <div role="group" aria-label="Preview view" className="flex items-center gap-2 sm:-mr-2 sm:gap-4">
-                {(
-                  [
-                    { id: "room", label: "On the wall" },
-                    { id: "closeup", label: "Close-up" },
-                  ] as const
-                ).map(({ id, label }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    aria-pressed={view === id}
-                    onClick={() => setView(id)}
-                    className={cn(
-                      TOGGLE,
-                      view === id ? "text-ink underline underline-offset-[6px]" : "text-ink-3 hover:text-ink",
-                    )}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {showRoom ? (
-            <FrameMockup
-              src={active.previewUrl}
-              alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, shown to scale as a ${variant.label} ${product.name.toLowerCase()} on a wall`}
-              productType={product.type}
-              frameColor={selection.frameColor}
-              printSize={printSize}
-              room
-              size="lg"
-              priority
-              className="max-w-none"
-            />
-          ) : (
-            <div className="@container flex aspect-[4/5] w-full items-center justify-center bg-paper-2">
-              <div style={{ width: `${closeupWidth}cqw` }}>
-                <FrameMockup
-                  src={active.previewUrl}
-                  alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, ${product.name}`}
-                  productType={product.type}
-                  frameColor={selection.frameColor}
-                  printSize={printSize}
-                  size="lg"
-                  priority
-                  className="max-w-none"
-                />
-              </div>
+        <div className="mb-1 flex items-center justify-between gap-3 px-3 sm:mb-3 sm:px-0">
+          <button type="button" onClick={onBack} className={cn(TOGGLE, "text-ink-3 hover:text-ink sm:-ml-2")}>
+            Back<span className="hidden sm:inline">&nbsp;{backLabel}</span>
+          </button>
+          {physical && (
+            <div role="group" aria-label="Preview view" className="flex items-center gap-2 sm:-mr-2 sm:gap-4">
+              {(
+                [
+                  { id: "room", label: "On the wall" },
+                  { id: "closeup", label: "Close-up" },
+                ] as const
+              ).map(({ id, label }) => (
+                <button
+                  key={id}
+                  type="button"
+                  aria-pressed={view === id}
+                  onClick={() => setView(id)}
+                  className={cn(
+                    TOGGLE,
+                    view === id ? "text-ink underline underline-offset-[6px]" : "text-ink-3 hover:text-ink",
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           )}
         </div>
-        <p className="label mt-4 px-5 text-center text-ink-3 sm:px-0">
-          {physical
-            ? showRoom
-              ? `${variant.label} — shown to scale`
-              : `${variant.label} — close-up`
-            : "High-resolution file — no watermark"}
+
+        <div className="relative bg-paper-2">
+          <div className="mx-auto w-full sm:max-w-[560px] lg:max-w-[min(100%,calc((100dvh_-_250px)_*_0.8))]">
+            {showRoom ? (
+              <FrameMockup
+                src={active.previewUrl}
+                alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, shown to scale as a ${variant.label} ${product.name.toLowerCase()} on a wall`}
+                productType={product.type}
+                frameColor={selection.frameColor}
+                printSize={printSize}
+                room
+                size="lg"
+                priority
+                className="max-w-none"
+              />
+            ) : (
+              <div className="@container flex aspect-[4/5] w-full items-center justify-center bg-paper-2">
+                <div style={{ width: `${closeupWidth}cqw` }}>
+                  <FrameMockup
+                    src={active.previewUrl}
+                    alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, ${product.name}`}
+                    productType={product.type}
+                    frameColor={selection.frameColor}
+                    printSize={printSize}
+                    size="lg"
+                    priority
+                    className="max-w-none"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+          <p className="label pointer-events-none absolute inset-x-0 bottom-4 px-5 text-center text-ink-3 sm:bottom-6">
+            {physical ? `${variant.label} — ${showRoom ? "shown to scale" : "close-up"}` : "High-resolution file"}
+          </p>
+        </div>
+        <p className="mt-3 px-5 text-center text-[12px] text-ink-3 sm:px-0">
+          {physical ? "The preview watermark is never printed." : "The preview watermark is not on your file."}
         </p>
-        <p className="mt-1.5 px-5 text-center text-[12px] text-ink-3 sm:px-0">The preview watermark is never printed.</p>
       </div>
 
       {/* ---------------- Configurator ---------------- */}
@@ -488,10 +488,7 @@ export function ProductStep({
         </div>
 
         {/* Delivery */}
-        <p className="mt-6 text-[13px] leading-relaxed text-ink-3">
-          {delivery}
-          {physical && selection.shipCountry === "US" && <> · {PROMISES.shipping}</>}
-        </p>
+        <p className="mt-6 text-[13px] leading-relaxed text-ink-3">{delivery}</p>
 
         {/* Summary */}
         <div className="mt-8" aria-live="polite">

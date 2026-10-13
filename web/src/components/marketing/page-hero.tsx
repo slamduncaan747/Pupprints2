@@ -99,13 +99,13 @@ export function PageHero({
           <h1 className="font-display text-[44px] leading-[1] tracking-[-0.02em] sm:text-[72px] lg:col-span-8 lg:text-[88px]">
             {title}
           </h1>
-          {(lede || children) && (
-            <div className="mt-8 max-w-md lg:col-span-4 lg:col-start-9 lg:mt-0 lg:pb-2">
-              {lede && <div className="text-[15px] leading-relaxed text-ink-2 sm:text-[16px]">{lede}</div>}
-              {children && <div className={cn(lede && "mt-7")}>{children}</div>}
+          {lede && (
+            <div className="mt-8 max-w-md text-[15px] leading-relaxed text-ink-2 sm:text-[16px] lg:col-span-4 lg:col-start-9 lg:mt-0 lg:pb-2">
+              {lede}
             </div>
           )}
         </div>
+        {children && <div className="mt-10 sm:mt-14">{children}</div>}
       </Container>
     </section>
   );
