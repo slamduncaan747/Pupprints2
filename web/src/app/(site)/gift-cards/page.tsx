@@ -95,7 +95,7 @@ export default function GiftCardsPage() {
             {AMOUNTS.map((amount) => {
               const covers = itemsCoveredBy(amount, 2);
               return (
-                <li key={amount} className="flex flex-col rounded-card bg-paper-2 p-5 ring-1 ring-line sm:p-6">
+                <li key={amount} className="flex flex-col rounded-card bg-paper-2 p-5 ring-1 ring-line last:col-span-2 sm:p-6 sm:last:col-span-1">
                   <p className="font-display text-4xl">{formatPrice(amount)}</p>
                   {covers.length > 0 && (
                     <>

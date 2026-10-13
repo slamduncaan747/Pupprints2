@@ -225,7 +225,7 @@ export function UploadStep({
             type="button"
             onClick={onContinue}
             disabled={!ready}
-            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-clay px-8 text-[16px] font-medium text-white shadow-[0_8px_24px_-8px_rgb(200_85_61/0.7)] transition hover:bg-clay-dark active:scale-[0.98] disabled:bg-ink/15 disabled:text-ink-3 disabled:shadow-none"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-clay px-8 text-[16px] font-medium text-white shadow-[0_8px_24px_-8px_rgb(200_85_61/0.7)] transition hover:bg-clay-dark active:scale-[0.98] sm:whitespace-nowrap disabled:bg-ink/15 disabled:text-ink-3 disabled:shadow-none"
           >
             {continueLabel}
             <ArrowRight className="h-4.5 w-4.5" aria-hidden />

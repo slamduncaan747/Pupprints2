@@ -1,5 +1,5 @@
 import type { ArticleInput } from "@/content/types";
-import { addonPrice, fromPrice, styleLink } from "@/content/helpers";
+import { addonPrice, fromPrice, priceOf, styleLink } from "@/content/helpers";
 import {
   CHRISTMAS_CA_CUTOFF,
   CHRISTMAS_US_CUTOFF,
@@ -98,6 +98,24 @@ export const christmasGifts: ArticleInput = {
     {
       type: "paragraph",
       text: "If the dog is the family's center of gravity, a large canvas for the living room is a gift everyone shares. Our [size guide](/journal/what-size-art-for-your-wall) helps you pick the right scale, and our [full list of gifts for dog lovers](/journal/gift-ideas-for-dog-lovers) has 25 more ideas.",
+    },
+    { type: "heading", text: "Christmas gifts at every budget" },
+    {
+      type: "paragraph",
+      text: "Not every dog person on your list needs a showstopper. Here's how the ideas above break down, with our own portrait prices included so you can compare honestly:",
+    },
+    {
+      type: "list",
+      items: [
+        `**Stocking-sized:** a bag of chews and a new toy, paw balm, a collapsible travel bowl, a matching ornament (${addonPrice("addon-ornament")} with any print), or the digital portrait (${fromPrice("digital")}) for their holiday cards.`,
+        `**Thoughtful mid-range:** an 8×10" fine art print of their dog (${priceOf("poster-8x10")}), an 8×10" canvas (${priceOf("canvas-8x10")}) or framed print (${priceOf("framed-8x10")}), a washable orthopedic bed or a hands-free leash.`,
+        `**Something special:** a 16×20" canvas (${priceOf("canvas-16x20")}) or framed print (${priceOf("framed-16x20")}) for the living room, a GPS tracker for an escape artist, or a training class they've been meaning to try.`,
+        `**The big gift:** a 24×36" statement canvas (${priceOf("canvas-24x36")}) above the fireplace, a dog-friendly weekend away, or a professional photo session for the whole family.`,
+      ],
+    },
+    {
+      type: "paragraph",
+      text: "Every price above includes free US shipping, and every physical portrait includes the hi-res digital file. What you see is what you pay.",
     },
     { type: "heading", text: "A quick holiday safety note" },
     { type: "paragraph", text: "December is wonderful and a little hazardous for dogs. A few practical reminders:" },

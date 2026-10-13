@@ -88,7 +88,8 @@ export async function POST(req: Request) {
     return json(
       {
         error: "rate_limited",
-        message: `You've created ${env.dailyGenerationLimitPerIp} previews today — that's our daily limit. Your portraits are saved, and you can make more tomorrow.`,
+        message:
+          "You've reached today's limit for free previews. Your portraits are saved, and you can make more tomorrow.",
       },
       429,
     );

@@ -120,7 +120,7 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/orde
                     <li key={i} className="flex gap-4 p-4">
                       <div className="relative h-32 w-26 shrink-0 overflow-hidden rounded-md bg-paper-2 sm:h-40 sm:w-32">
                         {g?.preview_path ? (
-                          <a href={previewUrl(g.preview_path)} target="_blank" rel="noreferrer" title="Open preview">
+                          <a href={previewUrl(g.preview_path)} target="_blank" rel="noreferrer" title="Open preview" className="absolute inset-0 block">
                             <Image
                               src={previewUrl(g.preview_path)}
                               alt={`Preview for ${it.label}`}

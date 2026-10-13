@@ -119,7 +119,7 @@ export default function AboutPage() {
         <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
             <Eyebrow className="mb-4">How we work</Eyebrow>
-            <h2 className="font-display text-4xl leading-[1.05] sm:text-5xl">Our AI artist, finished and checked by our team</h2>
+            <h2 className="font-display text-4xl leading-[1.05] sm:text-5xl">Made with care, checked by people</h2>
             <p className="mt-5 text-lg leading-relaxed text-ink-2">
               Your portrait is created from your photo by our AI artist, in styles we&apos;ve designed and tuned for dogs. Then
               people take over: we check your art and print file, print on archival materials, and stand behind the result.

@@ -163,7 +163,7 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
           )}
         </div>
 
-        <aside className="space-y-6">
+        <aside className="space-y-6 max-lg:order-first">
           <Card title="Code & links">
             <div className="space-y-4 p-4">
               <div>

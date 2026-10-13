@@ -145,8 +145,8 @@ function BrushReveal({ src, color, animate }: { src: string; color: string; anim
     "M 330 326 C 220 348, 90 304, -30 334",
     "M -30 388 C 90 366, 200 410, 330 384",
   ];
-  const T = 12; // seconds per loop
-  const per = 1.15; // seconds per stroke
+  const T = 15; // seconds per loop
+  const per = 1.6; // seconds per stroke
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0">
       {/* paper wash over the underdrawing */}
@@ -193,9 +193,9 @@ function BrushReveal({ src, color, animate }: { src: string; color: string; anim
             width="300"
             height="400"
             preserveAspectRatio="xMidYMid slice"
-            style={{ filter: "saturate(1.25) contrast(1.05) sepia(0.12) blur(0.4px)" }}
+            style={{ filter: "saturate(1.35) contrast(1.04) sepia(0.15) blur(1.1px)" }}
           />
-          <rect width="300" height="400" fill={color} opacity="0.28" style={{ mixBlendMode: "soft-light" }} />
+          <rect width="300" height="400" fill={color} opacity="0.45" style={{ mixBlendMode: "soft-light" }} />
         </g>
       </svg>
       <div className="absolute inset-0 animate-shimmer bg-[linear-gradient(110deg,transparent_35%,rgb(255_255_255/0.28)_50%,transparent_65%)] bg-[length:250%_100%]" />

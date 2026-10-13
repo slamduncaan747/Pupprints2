@@ -27,6 +27,25 @@ export const dogMomGifts: ArticleInput = {
       type: "paragraph",
       text: "The single best upgrade to any dog-mom gift costs nothing: sign the card from the dog. A paw-print signature is optional (and messy). If there are kids in the house, let them write it in the dog's voice, spelling mistakes and all. It's very hard to beat.",
     },
+    {
+      type: "paragraph",
+      text: "Not sure what to write? Something like \"Thanks for the walks, the treats and for letting me on the couch (even when you said I wasn't allowed). Love, Bailey\" does the job beautifully.",
+    },
+    { type: "heading", text: "Match the gift to the dog mom" },
+    {
+      type: "paragraph",
+      text: "Dog moms come in a few recognizable varieties. Knowing which one you're shopping for narrows things down fast:",
+    },
+    {
+      type: "list",
+      items: [
+        "**The homebody.** Her dog's favorite place is her lap, and hers is the sofa. Think cozy and beautiful: a framed portrait for the living room, a soft throw that hides dog hair, a candle for the evenings.",
+        "**The adventurer.** Weekends are trails, beaches and muddy paws. She'll love gear that makes outings easier: a hands-free leash, a packable water bowl, a car seat cover, or a booked day trip somewhere new.",
+        "**The minimalist.** She doesn't want more stuff, so give her one good thing. A single fine-line portrait in a natural oak frame, or an experience with no physical footprint at all.",
+        "**The multi-dog household.** Each of our portraits features one dog, so give her a matching set: the same style and size for each dog, hung side by side. Nobody gets left out, and the set looks wonderful as a group.",
+        "**The senior-dog mom.** Her dog has a grey muzzle and a slower walk. Comfort gifts (an orthopedic bed, a ramp for the car) mean a lot, and so does a portrait that captures this gentle chapter.",
+      ],
+    },
     { type: "heading", text: "Personal keepsakes" },
     { type: "heading", level: 3, text: "A portrait of her dog" },
     {

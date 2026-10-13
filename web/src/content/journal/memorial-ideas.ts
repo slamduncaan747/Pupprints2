@@ -99,6 +99,20 @@ export const memorialIdeas: ArticleInput = {
       type: "paragraph",
       text: "A portrait, a paw-print ornament or a donation in the dog's name. If you're giving a portrait, quietly find a favorite photo from their social media or ask a family member. You can ship it straight to them or, with us, send a Gift Reveal with a note when the moment feels right.",
     },
+    { type: "heading", text: "Helping children say goodbye" },
+    {
+      type: "paragraph",
+      text: "For many children, losing a dog is their first experience of grief. Simple, honest language helps more than euphemisms: phrases like \"went to sleep\" can be confusing or even frightening. Let them see that you're sad too, and give them something to do with their feelings.",
+    },
+    {
+      type: "list",
+      items: [
+        "**Draw or write something** for the dog: a picture, a letter or a list of favorite memories.",
+        "**Make a memory box** together with the collar, a favorite toy and a few photos.",
+        "**Plant something** they can help look after, and watch it grow.",
+        "**Keep a portrait where they can see it**, so the dog stays part of family conversations.",
+      ],
+    },
     { type: "heading", text: "Be gentle with yourself" },
     {
       type: "paragraph",

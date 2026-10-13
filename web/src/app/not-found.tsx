@@ -19,7 +19,7 @@ const LINKS = [
   { href: "/contact", label: "Contact us" },
 ];
 
-/** Paw prints trotting off the page, after a squirrel. */
+/** Paw prints trotting off the edge of the page (after a squirrel, presumably). */
 function PawTrail() {
   const steps = [
     { x: 30, y: 150, r: -20 },
@@ -28,11 +28,12 @@ function PawTrail() {
     { x: 176, y: 104, r: 12 },
     { x: 226, y: 116, r: -10 },
     { x: 274, y: 82, r: 15 },
+    { x: 322, y: 92, r: -8 },
   ];
   return (
     <svg viewBox="0 0 360 180" className="h-auto w-full max-w-[420px]" aria-hidden="true">
       {steps.map((s, i) => (
-        <g key={i} transform={`translate(${s.x} ${s.y}) rotate(${s.r + 70})`} fill="currentColor" opacity={0.25 + i * 0.12}>
+        <g key={i} transform={`translate(${s.x} ${s.y}) rotate(${s.r + 70})`} className="text-clay" fill="currentColor" opacity={0.85 - i * 0.13}>
           <ellipse cx="0" cy="5" rx="8" ry="6.5" />
           <ellipse cx="-8" cy="-5" rx="3" ry="4" />
           <ellipse cx="-3" cy="-10" rx="3" ry="4" />
@@ -40,12 +41,6 @@ function PawTrail() {
           <ellipse cx="8" cy="-5" rx="3" ry="4" />
         </g>
       ))}
-      {/* squirrel tail, disappearing off the edge */}
-      <path
-        d="M330 70 C 352 40, 360 10, 338 4 C 322 0, 312 18, 324 30 C 312 30, 306 48, 318 60 Z"
-        className="text-clay"
-        fill="currentColor"
-      />
     </svg>
   );
 }

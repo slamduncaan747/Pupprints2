@@ -122,7 +122,8 @@ export function RevealExperience(p: RevealViewProps) {
 
   return (
     <main className={styles.stage}>
-      <div className="mx-auto flex min-h-dvh max-w-xl flex-col px-5 pb-12 pt-6 sm:px-8">
+      {confetti && <PawConfetti />}
+      <div className="relative z-10 mx-auto flex min-h-dvh max-w-xl flex-col px-5 pb-12 pt-6 sm:px-8">
         <header className="flex justify-center">
           <span className="inline-flex items-center gap-2 text-[#f7efe1]/80">
             <PawMark className="h-5 w-5 text-[#e8cc85]" />
@@ -132,8 +133,10 @@ export function RevealExperience(p: RevealViewProps) {
 
         {phase !== "open" ? (
           <section className="flex flex-1 flex-col items-center justify-center py-10 text-center" aria-label="Your gift">
-            <p className="font-display text-[1.65rem] italic leading-tight text-[#f7efe1] sm:text-3xl">{forWhom}</p>
-            {from && <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[#e8cc85]/80">{from}</p>}
+            <div className={cn("transition-opacity duration-300", phase === "opening" && "opacity-0")}>
+              <p className="font-display text-[1.65rem] italic leading-tight text-[#f7efe1] sm:text-3xl">{forWhom}</p>
+              {from && <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[#e8cc85]/80">{from}</p>}
+            </div>
 
             <div className="mt-10 w-full">
               <button
@@ -142,8 +145,13 @@ export function RevealExperience(p: RevealViewProps) {
                 aria-label="Open your gift"
                 className={cn(styles.envelopeButton, phase === "opening" && styles.opening)}
               >
-                <span className={styles.envelopeBody} />
+                <span className={styles.envelopeBack} />
                 <span className={styles.letter} />
+                <span className={styles.envelopeFront}>
+                  <span className={styles.foldLeft} />
+                  <span className={styles.foldRight} />
+                  <span className={styles.foldBottom} />
+                </span>
                 <span className={styles.flap}>
                   <span className={styles.flapFace} />
                   <span className={styles.flapBack} />
@@ -211,11 +219,11 @@ export function RevealExperience(p: RevealViewProps) {
             )}
 
             {p.productNote && (
-              <p
-                className={cn("mt-6 inline-flex items-center gap-2 rounded-full bg-[#f7efe1]/10 px-4 py-2 text-[15px] text-[#f7efe1]/90 ring-1 ring-[#f7efe1]/15", styles.fadeUp)}
-                style={{ animationDelay: "0.8s" }}
-              >
-                <span aria-hidden="true">✦</span> {p.productNote}
+              <p className={cn("mt-7 max-w-xs text-[15px] leading-relaxed text-[#f7efe1]/85", styles.fadeUp)} style={{ animationDelay: "0.8s" }}>
+                <span aria-hidden="true" className="mr-1.5 text-[#e8cc85]">
+                  ✦
+                </span>
+                {p.productNote}
               </p>
             )}
 
@@ -253,7 +261,6 @@ export function RevealExperience(p: RevealViewProps) {
           </section>
         )}
       </div>
-      {confetti && <PawConfetti />}
     </main>
   );
 }

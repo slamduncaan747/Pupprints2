@@ -72,19 +72,19 @@ export default function GiftsPage() {
       <Section id="occasions" className="scroll-mt-20 bg-paper-2">
         <Container>
           <SectionHeading eyebrow="Ideas by occasion" title="Who's it for?" />
-          <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-12 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-4 lg:grid-cols-4">
             {cards.map(({ href, name, icon: Icon, card, cta }) => (
               <li key={href + name}>
                 <Link
                   href={href}
-                  className="group flex h-full flex-col rounded-card bg-paper p-6 ring-1 ring-line transition hover:-translate-y-0.5 hover:shadow-soft sm:p-7"
+                  className="group flex h-full flex-col rounded-2xl bg-paper p-4 ring-1 ring-line transition hover:-translate-y-0.5 hover:shadow-soft sm:rounded-card sm:p-7"
                 >
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-clay-soft">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-clay-soft sm:h-11 sm:w-11">
                     <Icon className="h-5 w-5 text-clay-dark" aria-hidden="true" />
                   </span>
-                  <span className="mt-6 font-display text-2xl leading-tight">{name}</span>
-                  <span className="mt-2 flex-1 text-[15px] leading-relaxed text-ink-2">{card}</span>
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-medium text-clay-dark">
+                  <span className="mt-4 font-display text-xl leading-tight sm:mt-6 sm:text-2xl">{name}</span>
+                  <span className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-2 sm:mt-2 sm:text-[15px]">{card}</span>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-clay-dark sm:mt-6 sm:text-[15px]">
                     {cta} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden="true" />
                   </span>
                 </Link>

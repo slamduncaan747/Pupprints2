@@ -207,10 +207,10 @@ export function GiftStudio({
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-3">
           <div>
             <label htmlFor="gift-recipient" className={labelClass}>
-              Recipient (first name)
+              Recipient name
             </label>
             <input id="gift-recipient" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} maxLength={80} className={inputClass} />
           </div>
@@ -294,7 +294,7 @@ export function GiftStudio({
             <p className="text-xs text-ink-3">Not quite right? Pick another style on the left and regenerate; the link stays the same.</p>
           </div>
         ) : (
-          <div className="flex h-full min-h-[260px] flex-col items-center justify-center text-center text-sm text-ink-3">
+          <div className="flex h-full min-h-[140px] flex-col items-center justify-center text-center text-sm text-ink-3 lg:min-h-[260px]">
             {busy ? (
               <>
                 <div className="skeleton aspect-[3/4] w-48 rounded-md" />

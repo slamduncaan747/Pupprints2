@@ -43,14 +43,21 @@ export type Eta = {
   arriveTo: Date;
 };
 
+/** Noon UTC on the order's calendar day in New York, so business-day math and display agree. */
+function anchorDay(d: Date): Date {
+  const ymd = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+  return new Date(`${ymd}T12:00:00Z`);
+}
+
 /** Delivery estimate from the order date: checked within 1 business day, printed within ~4. */
 export function computeEta(orderedAt: Date, shipDays: [number, number], country?: string | null): Eta {
   const [min, max] = shipWindow(shipDays, country);
+  const day = anchorDay(orderedAt);
   return {
-    checkedBy: addBusinessDays(orderedAt, 1),
-    printedBy: addBusinessDays(orderedAt, Math.max(2, Math.min(4, min - 1))),
-    arriveFrom: addBusinessDays(orderedAt, min),
-    arriveTo: addBusinessDays(orderedAt, max),
+    checkedBy: addBusinessDays(day, 1),
+    printedBy: addBusinessDays(day, Math.max(2, Math.min(4, min - 1))),
+    arriveFrom: addBusinessDays(day, min),
+    arriveTo: addBusinessDays(day, max),
   };
 }
 

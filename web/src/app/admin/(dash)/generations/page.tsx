@@ -100,7 +100,7 @@ export default async function GenerationsPage({ searchParams }: PageProps<"/admi
             <li key={g.id} className="overflow-hidden rounded-xl border border-line bg-white">
               <div className="relative aspect-[4/5] bg-paper-2">
                 {g.preview_path ? (
-                  <a href={previewUrl(g.preview_path)} target="_blank" rel="noreferrer" title="Open full preview">
+                  <a href={previewUrl(g.preview_path)} target="_blank" rel="noreferrer" title="Open full preview" className="absolute inset-0 block">
                     <Image
                       src={previewUrl(g.preview_path)}
                       alt={`${getStyle(g.style)?.name ?? g.style} preview${g.pet_name ? ` of ${g.pet_name}` : ""}`}

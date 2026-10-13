@@ -31,12 +31,46 @@ function scrollTop() {
   if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+/* Steps live in the URL (?step=style|piece) so the phone's back button walks back through them. */
+const STEP_PARAM: Record<Step, string | null> = { upload: null, style: "style", product: "piece" };
+
+function stepFromUrl(): Step {
+  const v = new URL(window.location.href).searchParams.get("step");
+  return v === "piece" ? "product" : v === "style" ? "style" : "upload";
+}
+
+function urlForStep(step: Step) {
+  const url = new URL(window.location.href);
+  const v = STEP_PARAM[step];
+  if (v) url.searchParams.set("step", v);
+  else url.searchParams.delete("step");
+  return url;
+}
+
 export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
   const flow = useFlow();
   const [job, setJob] = useState<Job>({ kind: "idle" });
   const [styleView, setStyleView] = useState<"grid" | "result">("result");
   const [preselected, setPreselected] = useState<StyleSlug | undefined>(initialStyle);
   const abortRef = useRef<AbortController | null>(null);
+  /** Steps we've pushed onto browser history in this visit (index 0 = the entry we landed on). */
+  const historyRef = useRef<Step[]>([]);
+
+  // Keep browser history in sync with the step.
+  useEffect(() => {
+    const current = readFlow().step;
+    window.history.replaceState(null, "", urlForStep(current));
+    historyRef.current = [current];
+    const onPop = () => {
+      const step = stepFromUrl();
+      const stack = historyRef.current;
+      const idx = stack.lastIndexOf(step);
+      historyRef.current = idx >= 0 ? stack.slice(0, idx + 1) : [step];
+      updateFlow((s) => ({ ...s, step }));
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   // Restore from the server (fresh signed photo URL + previews made on this browser session).
   useEffect(() => {
@@ -60,7 +94,8 @@ export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
           const activeId =
             s.activeId && forUpload.some((g) => g.generationId === s.activeId) ? s.activeId : (forUpload[0]?.generationId ?? null);
           const step = s.step === "upload" && !s.upload && upload && forUpload.length ? "style" : s.step;
-          return { ...s, upload, generations, activeId, step };
+          const petName = s.petName || forUpload.find((g) => g.petName)?.petName || "";
+          return { ...s, upload, generations, activeId, step, petName };
         });
       })
       .catch(() => {
@@ -76,25 +111,34 @@ export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
   const currentGens = uploadId ? flow.generations.filter((g) => g.uploadId === uploadId) : [];
   const active = currentGens.find((g) => g.generationId === flow.activeId) ?? null;
 
+  /** Move to a step, using history.back() for backwards moves so the stack doesn't grow. */
   const goTo = useCallback((step: Step) => {
-    updateFlow((s) => ({ ...s, step }));
+    const stack = historyRef.current;
+    const idx = stack.lastIndexOf(step);
+    if (idx >= 0 && idx < stack.length - 1) {
+      window.history.go(idx - (stack.length - 1)); // popstate updates the step
+    } else if (readFlow().step !== step || stack[stack.length - 1] !== step) {
+      window.history.pushState(null, "", urlForStep(step));
+      historyRef.current = [...stack, step];
+      updateFlow((s) => ({ ...s, step }));
+    }
     scrollTop();
   }, []);
 
   const generate = useCallback(async (style: StyleSlug, opts: { force?: boolean } = {}) => {
     const s = readFlow();
     if (!s.upload) {
-      updateFlow((st) => ({ ...st, step: "upload" }));
+      goTo("upload");
       return;
     }
     const upload = s.upload;
     if (!opts.force) {
       const existing = s.generations.find((g) => g.uploadId === upload.uploadId && g.style === style);
       if (existing) {
-        updateFlow((st) => ({ ...st, activeId: existing.generationId, step: "style" }));
+        updateFlow((st) => ({ ...st, activeId: existing.generationId }));
         setJob({ kind: "idle" });
         setStyleView("result");
-        scrollTop();
+        goTo("style");
         return;
       }
     }
@@ -105,8 +149,7 @@ export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
     const startedAt = Date.now();
     setJob({ kind: "generating", style, startedAt });
     setPreselected(style);
-    updateFlow((st) => ({ ...st, step: "style" }));
-    scrollTop();
+    goTo("style");
     track("GeneratePreview", { style, regenerate: Boolean(opts.force) });
 
     try {
@@ -129,12 +172,13 @@ export function CreateFlow({ initialStyle }: { initialStyle?: StyleSlug }) {
       const e =
         err instanceof ApiError ? err : new ApiError("network", "We couldn't reach our studio. Please try again.", 0);
       if (e.code === "upload_not_found") {
-        updateFlow((st) => ({ ...st, upload: null, activeId: null, step: "upload" }));
+        updateFlow((st) => ({ ...st, upload: null, activeId: null }));
+        goTo("upload");
       }
       const pendingId = typeof e.data.generationId === "string" ? e.data.generationId : undefined;
       setJob({ kind: "error", style, code: e.code, message: e.message, generationId: pendingId });
     }
-  }, []);
+  }, [goTo]);
 
   const cancelGeneration = useCallback(() => {
     abortRef.current?.abort();
@@ -299,8 +343,9 @@ function JobError({
           <div className="flex-1">
             <p className="font-display text-xl">Our studio is busy right now.</p>
             <p className="mt-1 max-w-xl text-[14.5px] leading-relaxed text-ink-2">
-              Leave your email and we&apos;ll send {petName.trim() ? `${petName.trim()}'s` : "your"} {style?.name ?? ""}{" "}
-              portrait preview shortly. Your photo is saved, so there&apos;s nothing else to do.
+              Leave your email and we&apos;ll send you {petName.trim() ? `${petName.trim()}'s` : "your"} portrait
+              {style ? ` in ${style.name}` : ""} as soon as it&apos;s painted. Your photo is saved, so there&apos;s nothing
+              else to do.
             </p>
             <EmailCapture
               className="mt-4 max-w-lg"

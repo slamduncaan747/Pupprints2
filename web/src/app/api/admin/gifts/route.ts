@@ -6,6 +6,7 @@ import { getStyle, type StyleSlug } from "@/lib/catalog";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { ImageError, makeWatermarkedPreview, normalizeUpload, toPrintMaster } from "@/lib/image";
 import { BUCKETS, db, signedUrl } from "@/lib/supabase/server";
+import { uniquePartnerCode } from "@/lib/partners";
 import { adminApiGuard, jsonError } from "@/components/admin/guard";
 import { GIFT_SESSION, giftDm } from "@/components/admin/constants";
 import { giftImagePath, giftRevealUrl, type GiftRow } from "@/components/admin/gifts";
@@ -284,14 +285,23 @@ export async function POST(req: Request) {
       gift = data;
     }
 
-    // 4) CRM: mark the creator as gifted + contacted (never downgrade an active partner).
+    // 4) CRM: mark the creator as gifted + contacted (never downgrade an active partner), and give
+    //    them a code so traffic from their shared reveal page is attributed to them.
     const partnerId = gift.partner_id;
     if (partnerId) {
       const now = new Date().toISOString();
-      const { data: p } = await c.from("partners").select("status").eq("id", partnerId).maybeSingle();
+      const { data: p } = await c
+        .from("partners")
+        .select("status, code, handle, name, discount_percent")
+        .eq("id", partnerId)
+        .maybeSingle();
       const patch: Record<string, unknown> = { last_contacted_at: now, updated_at: now };
       if (p && p.status !== "active") patch.status = "gifted";
-      await c.from("partners").update(patch).eq("id", partnerId);
+      if (p && !p.code) {
+        patch.code = await uniquePartnerCode(p.handle || p.name || "PUP", Number(p.discount_percent ?? 15), partnerId);
+      }
+      const { error: pErr } = await c.from("partners").update(patch).eq("id", partnerId);
+      if (pErr) console.error("[admin/gifts] partner update failed", pErr.message);
     }
 
     const revealUrl = giftRevealUrl(gift.reveal_token);

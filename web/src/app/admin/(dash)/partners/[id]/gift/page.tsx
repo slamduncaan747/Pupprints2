@@ -75,8 +75,9 @@ export default async function PartnerGiftPage({ params }: PageProps<"/admin/part
         </div>
       </Card>
       <p className="mb-6 text-xs text-ink-3">
-        Creating a gift marks {display} as <strong>gifted</strong> and logs today as last contacted (active partners keep
-        their status). Remember: if they post about it, it needs #ad or the Paid partnership label.
+        Creating a gift marks {display} as <strong>gifted</strong>, logs today as last contacted (active partners keep
+        their status) and assigns a referral code if they don&apos;t have one, so visits from their shared reveal page are
+        attributed to them. If they post about it, it needs #ad or the Paid partnership label.
       </p>
 
       <Card title={`Gifts for ${display} (${gifts.length})`}>

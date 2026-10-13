@@ -1,7 +1,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { site } from "@/lib/config";
-import { BUCKETS } from "@/lib/supabase/server";
+import { BUCKETS, previewUrl } from "@/lib/supabase/server";
 import { giftDm } from "@/components/admin/constants";
 
 /** Unwatermarked web-size JPEG for the reveal page (gifts are free, so no watermark). */
@@ -41,7 +41,7 @@ export async function loadGifts(c: SupabaseClient, opts: { partnerId?: string; l
   let q = c
     .from("gifts")
     .select(
-      "id, created_at, reveal_token, generation_id, partner_id, recipient_name, pet_name, sender_name, message, source_photo_url, viewed_at, view_count, generations(style), partners(id, name, handle, platform)",
+      "id, created_at, reveal_token, generation_id, partner_id, recipient_name, pet_name, sender_name, message, source_photo_url, viewed_at, view_count, generations(style, preview_path), partners(id, name, handle, platform)",
     )
     .order("created_at", { ascending: false })
     .limit(opts.limit ?? 200);
@@ -49,21 +49,20 @@ export async function loadGifts(c: SupabaseClient, opts: { partnerId?: string; l
   const { data, error } = await q;
   if (error) throw new Error(error.message);
 
+  type GenJoin = { style: string; preview_path: string | null };
   type Joined = GiftRow & {
-    generations: { style: string } | { style: string }[] | null;
+    generations: GenJoin | GenJoin[] | null;
     partners: GiftView["partner"] | GiftView["partner"][] | null;
   };
   const rows = (data ?? []) as Joined[];
   const first = <T,>(v: T | T[] | null): T | null => (Array.isArray(v) ? (v[0] ?? null) : v);
 
+  // Same resolution order as the reveal page: gifts/<id>.jpg, else the generation's web image
+  // (web/<generationId>.jpg), else its watermarked preview.
   const signed = new Map<string, string>();
   if (rows.length) {
-    const { data: urls } = await c.storage
-      .from(BUCKETS.portraits)
-      .createSignedUrls(
-        rows.map((r) => giftImagePath(r.id)),
-        60 * 60,
-      );
+    const paths = rows.flatMap((r) => [giftImagePath(r.id), ...(r.generation_id ? [`web/${r.generation_id}.jpg`] : [])]);
+    const { data: urls } = await c.storage.from(BUCKETS.portraits).createSignedUrls(paths, 60 * 60);
     for (const u of urls ?? []) if (u.path && u.signedUrl && !u.error) signed.set(u.path, u.signedUrl);
   }
 
@@ -71,7 +70,10 @@ export async function loadGifts(c: SupabaseClient, opts: { partnerId?: string; l
     const revealUrl = giftRevealUrl(g.reveal_token);
     return {
       ...g,
-      imageUrl: signed.get(giftImagePath(g.id)) ?? null,
+      imageUrl:
+        signed.get(giftImagePath(g.id)) ??
+        (g.generation_id ? signed.get(`web/${g.generation_id}.jpg`) : undefined) ??
+        (first(generations)?.preview_path ? previewUrl(first(generations)!.preview_path!) : null),
       revealUrl,
       dm: giftDm({ name: g.recipient_name, pet: g.pet_name, link: revealUrl }),
       style: first(generations)?.style ?? null,

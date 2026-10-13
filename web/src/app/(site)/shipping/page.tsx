@@ -102,7 +102,7 @@ export default function ShippingPage() {
               few extra business days in transit.
             </p>
           </div>
-          <div className="overflow-hidden rounded-card bg-paper ring-1 ring-line">
+          <div className="self-start overflow-hidden rounded-card bg-paper ring-1 ring-line">
             <table className="w-full border-collapse text-left">
               <caption className="sr-only">Estimated delivery time and shipping cost by product</caption>
               <thead>
@@ -168,7 +168,7 @@ export default function ShippingPage() {
               </p>
             </div>
           </div>
-          <div className="overflow-hidden rounded-card bg-paper ring-1 ring-line">
+          <div className="self-start overflow-hidden rounded-card bg-paper ring-1 ring-line">
             <table className="w-full border-collapse text-left">
               <caption className="sr-only">Christmas 2026 recommended order-by dates</caption>
               <thead>

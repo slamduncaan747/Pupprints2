@@ -59,7 +59,11 @@ export default async function Image({ params }: { params: Promise<{ token: strin
         : "Someone made you something"
     : "A gift for you";
   const sub = data?.senderName ? `From ${data.senderName}` : "Made with Pup Prints";
-  const pet = data?.petName ? `${data.petName}, as a work of art` : "A one-of-a-kind portrait";
+  const pet = data?.petName
+    ? data.kind === "gift"
+      ? `${data.petName}, as a work of art`
+      : `A portrait of ${data.petName}`
+    : "A one-of-a-kind portrait";
   const [font, portrait] = await Promise.all([loadSerif(`${headline}${pet}Pup Prints`), portraitDataUri(data?.imagePath ?? null)]);
   const serif = font ? "Fraunces" : undefined;
 
@@ -78,12 +82,11 @@ export default async function Image({ params }: { params: Promise<{ token: strin
         <div
           style={{
             position: "absolute",
-            right: -80,
-            top: -60,
-            width: 760,
-            height: 760,
-            borderRadius: 9999,
-            background: "radial-gradient(closest-side, rgba(242,212,146,0.30), rgba(242,212,146,0))",
+            left: 0,
+            top: 0,
+            width: 1200,
+            height: 630,
+            backgroundImage: "radial-gradient(circle at 76% 45%, rgba(242,212,146,0.30) 0%, rgba(242,212,146,0.10) 28%, rgba(242,212,146,0) 52%)",
           }}
         />
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 0 0 84px", width: 660 }}>

@@ -240,6 +240,17 @@ export function itemListJsonLd(items: { name: string; path: string }[], name?: s
 /* ------------------------------------------------------------------ */
 
 /**
+ * The site-wide generated image (app/opengraph-image.tsx). Next only applies that file to pages that
+ * don't override `openGraph`, so anything that sets openGraph should include this (pageMetadata does).
+ */
+export const DEFAULT_OG_IMAGE = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: `${site.name}: custom fine-art portraits of your dog`,
+};
+
+/**
  * Consistent per-page metadata: canonical URL plus Open Graph + Twitter cards.
  * `title` is the bare page title (the root layout template appends "| Pup Prints").
  * Open Graph fields from the root layout are replaced (not merged) by Next, so siteName etc. are restated.
@@ -267,7 +278,7 @@ export function pageMetadata({
   section?: string;
   tags?: string[];
 }): Metadata {
-  const images = image ? [{ url: image, alt: imageAlt ?? title }] : undefined;
+  const images = image ? [{ url: image, alt: imageAlt ?? title }] : [DEFAULT_OG_IMAGE];
   const og: NonNullable<Metadata["openGraph"]> =
     type === "article"
       ? {
@@ -282,7 +293,7 @@ export function pageMetadata({
           section,
           tags,
           authors: [site.name],
-          ...(images ? { images } : {}),
+          images,
         }
       : {
           type: "website",
@@ -291,7 +302,7 @@ export function pageMetadata({
           url: path,
           siteName: site.name,
           locale: "en_US",
-          ...(images ? { images } : {}),
+          images,
         };
   return {
     title,
@@ -302,7 +313,7 @@ export function pageMetadata({
       card: "summary_large_image",
       title,
       description,
-      ...(image ? { images: [image] } : {}),
+      images: [image ?? DEFAULT_OG_IMAGE.url],
     },
   };
 }

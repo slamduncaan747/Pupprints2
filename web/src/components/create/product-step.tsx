@@ -247,15 +247,21 @@ export function ProductStep({ flow, active, onBack }: { flow: FlowState; active:
             />
           ) : (
             <div className="flex justify-center rounded-card bg-paper-2 px-6 py-8 sm:px-12 sm:py-12">
-              <FrameMockup
-                src={active.previewUrl}
-                alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, ${product.name}`}
-                productType={product.type}
-                frameColor={selection.frameColor}
-                printSize={printSize}
-                size="lg"
-                priority
-              />
+              {/* Cap by viewport height so tall 2:3 pieces stay fully visible in the sticky column. */}
+              <div
+                className="flex w-full justify-center"
+                style={{ maxWidth: `min(480px, calc((100dvh - 300px) * ${printSize ? printSize.widthIn / printSize.heightIn : 0.75}))` }}
+              >
+                <FrameMockup
+                  src={active.previewUrl}
+                  alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, ${product.name}`}
+                  productType={product.type}
+                  frameColor={selection.frameColor}
+                  printSize={printSize}
+                  size="lg"
+                  priority
+                />
+              </div>
             </div>
           )}
         </div>

@@ -91,7 +91,7 @@ export function ContactForm({
     ) : null;
 
   return (
-    <form action="/api/contact" method="post" onSubmit={onSubmit} noValidate={false} className="space-y-6">
+    <form action="/api/contact" method="post" onSubmit={onSubmit} className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="contact-name" className="text-[15px] font-medium text-ink">

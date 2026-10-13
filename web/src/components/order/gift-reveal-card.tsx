@@ -75,7 +75,7 @@ export function GiftRevealCard(p: Props) {
 
   return (
     <section aria-labelledby="gift-reveal-title" className="rounded-card bg-white p-6 shadow-soft ring-1 ring-line sm:p-8">
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col items-start gap-4 sm:flex-row">
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-butter-soft text-[#7a5a12]">
           <Gift className="h-5 w-5" aria-hidden="true" />
         </span>

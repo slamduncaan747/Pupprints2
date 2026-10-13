@@ -12,9 +12,10 @@ import type { FrameColor } from "@/lib/catalog";
  *   1   "Enhanced Matte Paper Poster (in)"            189 g/m² matte
  *   19  "White Glossy Mug"                            11 oz
  *   900 "Ceramic Ornaments, 2-Side Print"            1 pc / Circle (2.99″), same design both sides
- * Each id below was matched on product + size (+ frame color) and confirmed in stock for US
- * and CA (the ornament is produced in the US only). Base prices at derivation time are noted
- * for margin checks. Re-verify with `verifyPrintfulVariants()` in ./printful.ts.
+ * Each id below was matched on product + size (+ frame color) and confirmed `in_stock` in the
+ * US region. White framed posters and the ornament list no Canadian production region, so
+ * Canadian orders for those ship from the US. Base prices at derivation time are noted for
+ * margin checks. Re-verify with `verifyPrintfulVariants()` in ./printful.ts.
  */
 
 export type PrintfulVariantRef = {

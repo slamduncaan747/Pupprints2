@@ -52,6 +52,26 @@ export const newPuppyGifts: ArticleInput = {
       type: "paragraph",
       text: "A lightweight long lead makes practicing recall in open spaces safer while the puppy learns to come back.",
     },
+    { type: "heading", level: 3, text: "A puppy-proofing kit" },
+    {
+      type: "paragraph",
+      text: "Puppies explore with their mouths, so a small kit of household safety basics is a genuinely useful gift:",
+    },
+    {
+      type: "list",
+      items: [
+        "Cord protectors for phone chargers and lamp cables",
+        "Child-safety latches for low cabinets, especially where cleaning products live",
+        "A lidded trash can (a puppy's idea of a buffet)",
+        "A washable, stain-resistant throw for the sofa they'll be on within a week",
+        "A pet-safe chew-deterrent spray for table legs and baseboards",
+      ],
+    },
+    { type: "heading", text: "Gifts for the humans" },
+    {
+      type: "paragraph",
+      text: "New dog parents are running on very little sleep. Some of the most welcome gifts aren't for the puppy at all: a coffee subscription for the 6 a.m. potty breaks, a good rain jacket for walks in all weathers, comfortable slip-on shoes by the back door, or an offer to puppy-sit for an evening so they can go out to dinner.",
+    },
     { type: "heading", text: "Gifts of time and help" },
     { type: "heading", level: 3, text: "A puppy class" },
     {
