@@ -4,7 +4,7 @@ Goal: the first paid order from a stranger, then a repeatable loop that produces
 Engine: **the gift-first loop.** A free portrait of someone's *own* dog, delivered as a private reveal link with a one-tap "Put {pet} on your wall" button, converts far better than any ad. Every channel below just feeds dogs into that loop.
 
 Site: https://pup-prints.vercel.app (moving to pupprints.shop) · Admin: /admin · Launch code: `FOUNDING100` (15% off, first 100 orders, ends Oct 31; created in Stripe automatically).
-Portraits: OpenAI's GPT Image model (primary) with Google Gemini as automatic fallback. Cost ≈ $0.04–0.25 per portrait depending on quality, so 20 gifts a day is roughly $1–5/day.
+Portraits: OpenAI's GPT Image model (primary) with Google Gemini as automatic fallback. Cost ≈ $0.08 per portrait at print quality (≈ $0.03 with `OPENAI_IMAGE_QUALITY=medium`), so 20 gifts a day is about $1.60/day.
 
 ---
 
@@ -12,9 +12,9 @@ Portraits: OpenAI's GPT Image model (primary) with Google Gemini as automatic fa
 
 All keys go in **Vercel → pup-prints → Settings → Environment Variables** (Production + Preview).
 
-1. **Portrait engine — OpenAI (ChatGPT's image model), primary**: platform.openai.com → Settings → Organization → **verify your organization** (required for GPT Image models; takes a few minutes with an ID) → Billing: add ~$10 → API keys → create → `OPENAI_API_KEY`.
+1. **Portrait engine — OpenAI (ChatGPT's image model), primary**: platform.openai.com → Settings → Organization → **verify your organization** (likely required for GPT Image models; government ID, access can take ~15 min) → Billing: add ~$10 → API keys → create → `OPENAI_API_KEY`.
    **Fallback — Google Gemini**: aistudio.google.com → Get API key → enable billing on the linked Google Cloud project → `GEMINI_API_KEY`. If OpenAI refuses or times out, the site retries with Gemini automatically.
-   Verify the key in one command (from `web/`): `npx tsx scripts/ai-smoke.ts <dog-photo.jpg> royal` → opens a finished portrait PNG. If it looks off, tell us before driving traffic.
+   Verify the keys in one command (put them in `web/.env.local` too, then from `web/`): `npx tsx scripts/ai-smoke.ts <dog-photo.jpg> royal` → writes the finished portrait next to the photo; add `--provider=gemini` to test the fallback. If it looks off, tell us before driving traffic.
 2. **Stripe**: activate the account (business details, bank). Secret key → `STRIPE_SECRET_KEY`. Webhook `https://pup-prints.vercel.app/api/webhooks/stripe` (events `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `charge.refunded`) → `STRIPE_WEBHOOK_SECRET`. In Settings → Payment methods turn on Apple Pay, Google Pay, Link. Statement descriptor: `PUPPRINTS`.
 3. **Printful**: create account, add a billing card, Settings → API → token → `PRINTFUL_API_KEY`; set `FULFILLMENT_PROVIDER=printful`.
 4. **Resend** (order + gift emails): API key → `RESEND_API_KEY`; set `BUSINESS_POSTAL_ADDRESS` (PO box is fine) or marketing emails stay off.
