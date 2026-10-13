@@ -6,6 +6,7 @@ import { PartnerApplyForm } from "@/components/partners/apply-form";
 import { RevealVisual } from "@/components/partners/reveal-visual";
 import { PROGRAM } from "@/components/partners/program";
 import { site } from "@/lib/config";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const COMMISSION = `${Math.round(PROGRAM.commissionRate * 100)}%`;
 const DISCOUNT = `${PROGRAM.discountPercent}%`;
@@ -17,7 +18,16 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/partners" },
-  openGraph: { title: `${TITLE} | ${site.name}`, description: DESCRIPTION, url: "/partners" },
+  openGraph: {
+    type: "website",
+    title: `${TITLE} | ${site.name}`,
+    description: DESCRIPTION,
+    url: "/partners",
+    siteName: site.name,
+    locale: "en_US",
+    images: [DEFAULT_OG_IMAGE],
+  },
+  twitter: { card: "summary_large_image", title: `${TITLE} | ${site.name}`, description: DESCRIPTION, images: [DEFAULT_OG_IMAGE.url] },
 };
 
 const PERKS = [
