@@ -40,17 +40,17 @@ const WEBP_QUALITY = 82;
 /** Which source photo (in scripts/sample-sources/) feeds each sample image. */
 const SOURCE_FOR: Record<string, string> = {
   // Style cards
-  "/samples/royal.webp": "golden-retriever.jpg",
+  "/samples/royal.webp": "cavalier-2.jpg",
   "/samples/admiral.webp": "beagle.jpg",
   "/samples/oil-classic.webp": "labrador.jpg",
   "/samples/watercolor.webp": "french-bulldog.jpg",
-  "/samples/fine-line.webp": "border-collie.jpg",
+  "/samples/fine-line.webp": "labrador-2.jpg",
   "/samples/pop-art.webp": "dachshund.jpg",
   "/samples/storybook.webp": "doodle-puppy.jpg",
   "/samples/botanical.webp": "cavalier.jpg",
   "/samples/astronaut.webp": "husky.jpg",
-  "/samples/charcoal.webp": "beagle-2.jpg",
-  "/samples/mid-century.webp": "french-bulldog-sitting.jpg",
+  "/samples/charcoal.webp": "border-collie-2.jpg",
+  "/samples/mid-century.webp": "corgi.jpg",
   "/samples/holiday.webp": "corgi.jpg",
   // Before/after pairs (the "before" is the source photo itself)
   "/samples/pair-1-before.webp": "golden-retriever.jpg",
@@ -60,12 +60,12 @@ const SOURCE_FOR: Record<string, string> = {
   "/samples/pair-3-before.webp": "beagle.jpg",
   "/samples/pair-3-after.webp": "beagle.jpg",
   // Gallery wall
-  "/samples/gallery-1.webp": "labrador.jpg",
-  "/samples/gallery-2.webp": "dachshund.jpg",
-  "/samples/gallery-3.webp": "cavalier.jpg",
-  "/samples/gallery-4.webp": "border-collie.jpg",
-  "/samples/gallery-5.webp": "corgi.jpg",
-  "/samples/gallery-6.webp": "husky.jpg",
+  "/samples/gallery-1.webp": "golden-retriever-2.jpg",
+  "/samples/gallery-2.webp": "french-bulldog.jpg",
+  "/samples/gallery-3.webp": "cavapoo.jpg",
+  "/samples/gallery-4.webp": "husky.jpg",
+  "/samples/gallery-5.webp": "cavalier-3.jpg",
+  "/samples/gallery-6.webp": "beagle-2.jpg",
 };
 
 type Job = { out: string; source: string; style: StyleSlug | null; dog?: string };

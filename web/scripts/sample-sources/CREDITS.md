@@ -20,3 +20,9 @@ All photos come from Unsplash and are used under the [Unsplash License](https://
 | corgi.jpg | Pembroke Welsh Corgi | Ivana La | https://unsplash.com/photos/tycZhR54Ddk |
 | husky.jpg | Siberian Husky | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI |
 | doodle-puppy.jpg | Doodle / Poodle puppy | Erick Lee Hodge | https://unsplash.com/photos/U8pgck1dgtQ |
+| cavalier-2.jpg | Cavalier King Charles Spaniel | Tracy Anderson | https://unsplash.com/photos/OktYfwY5ZQI |
+| cavalier-3.jpg | Cavalier King Charles Spaniel | Courtney Mihaka | https://unsplash.com/photos/8rdX9FraXug |
+| border-collie-2.jpg | Border Collie | Chung Nguyen | https://unsplash.com/photos/kJlk-jW2nLI |
+| golden-retriever-2.jpg | Golden Retriever | Victor G | https://unsplash.com/photos/x5oPmHmY3kQ |
+| cavapoo.jpg | Cavapoo / Doodle | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM |
+| labrador-2.jpg | Labrador Retriever | Not identified yet (free Unsplash image, not Unsplash+) | https://images.unsplash.com/photo-1761797732084-eed42f058516 |

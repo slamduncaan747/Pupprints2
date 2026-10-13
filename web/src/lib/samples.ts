@@ -29,10 +29,10 @@ export const BEFORE_AFTER: { before: string; after: string; style: StyleSlug; do
 
 /** Extra gallery portraits (various breeds/styles) for social-proof-free "wall of portraits" sections. */
 export const GALLERY: { src: string; style: StyleSlug; dog: string }[] = [
-  { src: "/samples/gallery-1.webp", style: "oil-classic", dog: "Labrador" },
-  { src: "/samples/gallery-2.webp", style: "pop-art", dog: "Dachshund" },
-  { src: "/samples/gallery-3.webp", style: "botanical", dog: "Cavalier King Charles" },
-  { src: "/samples/gallery-4.webp", style: "fine-line", dog: "Border Collie" },
-  { src: "/samples/gallery-5.webp", style: "holiday", dog: "Corgi" },
-  { src: "/samples/gallery-6.webp", style: "astronaut", dog: "Husky" },
+  { src: "/samples/gallery-1.webp", style: "oil-classic", dog: "Golden Retriever" },
+  { src: "/samples/gallery-2.webp", style: "pop-art", dog: "French Bulldog" },
+  { src: "/samples/gallery-3.webp", style: "watercolor", dog: "Cavapoo" },
+  { src: "/samples/gallery-4.webp", style: "admiral", dog: "Husky" },
+  { src: "/samples/gallery-5.webp", style: "storybook", dog: "Cavalier King Charles" },
+  { src: "/samples/gallery-6.webp", style: "charcoal", dog: "Beagle" },
 ];
