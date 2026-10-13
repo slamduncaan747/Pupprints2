@@ -95,6 +95,25 @@ export const styleGuide: ArticleInput = {
       type: "paragraph",
       text: `${styleLink("storybook")} looks like gouache and colored pencil from a classic picture book, sweet for nurseries, kids' rooms and puppies. ${styleLink("astronaut")} puts your dog in a retro space suit among the stars. Both are pure joy, and both make excellent gifts for people with a sense of humor.`,
     },
+    { type: "heading", text: "Matching the style to the coat" },
+    {
+      type: "paragraph",
+      text: "Your dog's coat has a lot to say about which style will flatter them. A few rules of thumb:",
+    },
+    {
+      type: "list",
+      items: [
+        `**Black and very dark coats** shine in the oil styles and ${styleLink("charcoal")}, which are built on deep shadows and warm highlights. ${styleName("pop-art")} works too, turning a dark coat into a bold graphic shape.`,
+        "**White, cream and pale coats** look luminous in watercolor and fine line, where the paper does half the work. In oil, a pale dog glows dramatically against a dark background.",
+        "**Merle, brindle and patchwork coats** keep their texture in painterly styles. Graphic styles simplify patterns, so choose those when you want boldness over detail.",
+        "**Wiry, curly and fluffy coats** look wonderful in line and charcoal, which emphasize texture. Watercolor softens it into something dreamier.",
+      ],
+    },
+    { type: "heading", text: "Styles for gifts and memorials" },
+    {
+      type: "paragraph",
+      text: `For a gift, humor is a safe bet if you know the recipient well: ${styleName("royal")} and ${styleName("admiral")} make people laugh and then hang them proudly. If you're unsure of their taste, a classic like ${styleName("oil-classic")} or ${styleName("watercolor")} suits almost any home. For a memorial, most people lean toward the gentler styles, but the only real rule is that it should feel like the dog. A dog who was a lovable clown can be remembered as one.`,
+    },
     { type: "heading", text: "Three questions to help you decide" },
     {
       type: "list",

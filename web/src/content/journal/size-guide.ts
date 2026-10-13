@@ -96,6 +96,16 @@ export const sizeGuide: ArticleInput = {
       type: "paragraph",
       text: "Mix sizes from 8×10\" up to 18×24\", keep the gaps consistent (2 to 3 inches is typical), and stick to one or two frame colors for a calm, collected look. Lay everything out on the floor first, or tape paper templates to the wall.",
     },
+    { type: "heading", text: "The most common sizing mistakes" },
+    {
+      type: "list",
+      items: [
+        "**Hanging too high.** This is the big one. Art hung near the ceiling feels disconnected from the room. Bring it down toward eye level, or closer to the furniture beneath it.",
+        "**Going too small above furniture.** A lone 8×10\" above a sofa looks like it wandered off from somewhere else. Size up, or group several pieces.",
+        "**Forgetting the sight lines.** Think about where the art is seen from: the doorway, the sofa, the bed. A piece seen from across the room needs more presence.",
+        "**Crowding.** Art needs breathing room. Avoid squeezing a large piece between windows or right up against a corner.",
+      ],
+    },
     { type: "heading", text: "Tricks for getting it right before you buy" },
     {
       type: "list",
