@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArticleCard, type ArticleSummary } from "@/components/content/article-card";
+import { FramedSample } from "@/components/content/framed-sample";
 
 type Chip = { id: string; label: string; count: number };
 
@@ -61,7 +62,13 @@ export function JournalGrid({ articles, categories }: { articles: ArticleSummary
                 Upload a photo and see your portrait in about a minute. Only pay if you love it.
               </p>
             </div>
-            <ButtonLink href="/create" variant="light" className="mt-8 self-start">
+            <FramedSample
+              style="royal"
+              sizes="96px"
+              showLabel={false}
+              className="my-8 w-24 rotate-3 self-end sm:my-6 sm:w-28"
+            />
+            <ButtonLink href="/create" variant="light" className="self-start">
               Create your free preview <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </ButtonLink>
           </div>

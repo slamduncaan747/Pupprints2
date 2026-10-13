@@ -15,8 +15,7 @@ import { JsonLd } from "@/components/content/json-ld";
 
 export const metadata: Metadata = pageMetadata({
   title: "Custom Dog Portraits by Breed",
-  description:
-    "Custom portraits for French Bulldogs, Labs, Goldens, Doodles, rescues and 30 more breeds, with breed-specific photo tips and style picks. Preview yours free from a photo.",
+  description: `Custom portraits of French Bulldogs, Labs, Goldens, Doodles, rescues and ${BREEDS_SORTED.length - 6} more breeds, with breed-specific photo tips and style picks. Preview yours free.`,
   path: "/breeds",
 });
 

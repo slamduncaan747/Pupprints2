@@ -32,10 +32,12 @@ function shortName(b: Breed) {
 }
 
 function metaDescription(b: Breed) {
-  const styles = b.styles.slice(0, 3).map((s) => STYLE_MAP[s.slug].name);
-  const subject = b.slug === "mixed-breed" ? "your one-of-a-kind rescue or mixed-breed dog" : `your ${b.name}`;
-  const list = `${styles.slice(0, -1).join(", ")} and ${styles[styles.length - 1]}`;
-  return `A custom portrait of ${subject}, made from your photo in styles like ${list}. Preview it free, then order a print, framed print or canvas.`;
+  const [s1, s2] = b.styles.map((s) => STYLE_MAP[s.slug].name);
+  const subject =
+    b.slug === "mixed-breed"
+      ? "Custom portraits of your one-of-a-kind rescue or mixed-breed dog"
+      : `Custom ${b.name} portraits`;
+  return `${subject}, made from your photo in styles like ${s1} and ${s2}. Preview free, then choose a print, frame or canvas.`;
 }
 
 function buildFaq(b: Breed): FaqItem[] {

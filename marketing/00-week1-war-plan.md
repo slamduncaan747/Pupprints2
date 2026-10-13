@@ -167,7 +167,7 @@ Shift every block if you start later. **The order matters more than the clock.**
 ### Fri Oct 16: amplify
 - **12:00: start the $40 boost** on the best post, if it qualifies ([ads doc §2](ads/meta-tiktok-test.md)).
 - **Paid nano post #1 goes live.** Reshare it to our stories (with the creator's permission) and reply in its comments as the brand.
-- **Warm network "second ring":** ask your 5 happiest buyers to forward the reveal to one friend ([community-posts.md §2b](channels/community-posts.md)).
+- **Warm network "second ring":** ask your 5 happiest buyers to forward the reveal to one friend ([community-posts.md §2c](channels/community-posts.md#2c-the-second-ring-ask-friday-to-friends-who-loved-theirs)).
 - **Comment-to-portrait:** make 10 portraits of dogs from comments (with permission) and reply with the reveal link.
 - **3 videos** (#7, #14, #21).
 - **Targets:** 1,000 sessions cumulative, 350 previews, **15–20 orders cumulative**.
