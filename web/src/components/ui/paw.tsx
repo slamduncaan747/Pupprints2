@@ -17,7 +17,7 @@ export function PawMark(props: SVGProps<SVGSVGElement>) {
 export function Logo({ className }: { className?: string }) {
   return (
     <span className={className}>
-      <span className="font-display text-[26px] leading-none tracking-[-0.01em]">Pup Prints</span>
+      <span className="font-display text-[22px] uppercase leading-none tracking-[0.14em] sm:text-[26px]">Pup Prints</span>
     </span>
   );
 }

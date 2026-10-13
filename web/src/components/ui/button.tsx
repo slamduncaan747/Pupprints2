@@ -6,21 +6,21 @@ type Variant = "primary" | "accent" | "secondary" | "ghost" | "light";
 type Size = "sm" | "md" | "lg" | "xl";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-[3px] font-medium tracking-[-0.005em] transition-colors duration-150 select-none disabled:opacity-40 disabled:pointer-events-none whitespace-nowrap";
+  "inline-flex items-center justify-center gap-3 rounded-none font-sans text-[11px] font-medium uppercase tracking-[0.2em] transition-colors duration-200 select-none disabled:opacity-40 disabled:pointer-events-none whitespace-nowrap";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-ink text-paper hover:bg-ink/85",
-  accent: "bg-ink text-paper hover:bg-ink/85",
-  secondary: "bg-transparent text-ink ring-1 ring-inset ring-ink/25 hover:ring-ink",
-  ghost: "bg-transparent text-ink underline-offset-4 hover:underline",
-  light: "bg-paper text-ink hover:bg-white",
+  primary: "bg-ink text-paper hover:bg-ink/80",
+  accent: "bg-ink text-paper hover:bg-ink/80",
+  secondary: "bg-transparent text-ink ring-1 ring-inset ring-ink hover:bg-ink hover:text-paper",
+  ghost: "bg-transparent text-ink underline decoration-1 underline-offset-[6px] hover:opacity-60",
+  light: "bg-paper text-ink hover:bg-paper/85",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-sm",
-  md: "h-11 px-6 text-[15px]",
-  lg: "h-12 px-7 text-[15px]",
-  xl: "h-14 px-9 text-base",
+  sm: "h-10 px-6",
+  md: "h-12 px-8",
+  lg: "h-14 px-10",
+  xl: "h-14 px-12",
 };
 
 export function buttonClasses(variant: Variant = "primary", size: Size = "md", className?: string) {

@@ -8,7 +8,7 @@ import { track } from "@/lib/analytics";
 export function NewsletterForm({
   source,
   className,
-  cta = "Join",
+  cta = "Subscribe",
   dark = false,
   successMessage,
 }: {
@@ -54,29 +54,29 @@ export function NewsletterForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className={cn("flex w-full max-w-md gap-2", className)}>
+    <form onSubmit={onSubmit} className={cn("flex w-full max-w-md items-end gap-4", className)}>
       <label htmlFor={`nl-${source}`} className="sr-only">Email address</label>
       <input size={1}
         id={`nl-${source}`}
         type="email"
         required
         autoComplete="email"
-        placeholder="you@email.com"
+        placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className={cn(
-          "h-11 min-w-0 flex-1 rounded-[3px] px-4 text-[15px] outline-none ring-1 ring-inset transition",
+          "h-12 min-w-0 flex-1 rounded-none border-0 border-b bg-transparent px-0 text-[14px] outline-none ring-0 transition",
           dark
-            ? "bg-white/10 text-paper placeholder:text-paper/50 ring-white/20 focus:ring-paper"
-            : "bg-white text-ink placeholder:text-ink-3 ring-line focus:ring-ink",
+            ? "border-paper/40 text-paper placeholder:text-paper/50 focus:border-paper"
+            : "border-ink/30 text-ink placeholder:text-ink-3 focus:border-ink",
         )}
       />
       <button
         type="submit"
         disabled={state === "loading"}
         className={cn(
-          "inline-flex h-11 shrink-0 items-center gap-1.5 rounded-[3px] px-5 text-[15px] font-medium transition",
-          dark ? "bg-paper text-ink hover:bg-white" : "bg-ink text-paper hover:bg-ink/90",
+          "inline-flex h-12 shrink-0 items-center gap-2 rounded-none px-2 text-[11px] font-medium uppercase tracking-[0.2em] transition",
+          dark ? "text-paper hover:opacity-60" : "text-ink hover:opacity-60",
         )}
       >
         {state === "loading" ? "…" : cta} <ArrowRight className="h-4 w-4" />

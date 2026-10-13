@@ -1,21 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Bodoni_Moda, Hanken_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { site } from "@/lib/config";
 import { Tracking } from "@/components/site/tracking";
 import "./globals.css";
 
-const serif = Instrument_Serif({
-  variable: "--font-serif-display",
+const couture = Bodoni_Moda({
+  variable: "--font-couture",
   subsets: ["latin"],
-  weight: "400",
   style: ["normal", "italic"],
+  axes: ["opsz"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const grotesk = Hanken_Grotesk({
+  variable: "--font-grotesk",
   subsets: ["latin"],
   display: "swap",
 });
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbfbf9",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${serif.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${couture.variable} ${grotesk.variable} antialiased`}>
       <body className="min-h-dvh flex flex-col bg-paper text-ink">
         {children}
         <Tracking />

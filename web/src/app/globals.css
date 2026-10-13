@@ -1,40 +1,35 @@
 @import "tailwindcss";
 
 /*
- * Pup Prints design tokens.
- * Warm gallery palette: cream paper, warm ink, terracotta "clay" accent.
- * Use the Tailwind utilities generated from these (bg-paper, text-ink, bg-clay, font-display, ...).
+ * Pup Prints — luxury fashion-house system.
+ * Pure white, true black, one warm ivory for quiet sections. Imagery carries all color.
+ * Legacy accent names (clay, butter, sage, blush, moss, gold) still compile but resolve to neutrals.
  */
 @theme {
-  /*
-   * Minimal gallery system: near-white paper, near-black ink, one neutral line color.
-   * Imagery carries the color. Legacy accent names (clay, butter, sage, blush, moss, gold)
-   * are kept so older classes still compile, but they all resolve to neutrals.
-   */
-  --color-paper: #fbfbf9;
-  --color-paper-2: #f3f3f0;
-  --color-paper-3: #e9e9e5;
-  --color-ink: #111111;
-  --color-ink-2: #474747;
-  --color-ink-3: #6b6b6b;
-  --color-line: #e5e5e1;
-  --color-clay: #111111;
+  --color-paper: #ffffff;
+  --color-paper-2: #f6f4ef;
+  --color-paper-3: #ebe8e1;
+  --color-ink: #0a0a0a;
+  --color-ink-2: #3d3d3d;
+  --color-ink-3: #6a6a6a;
+  --color-line: #e3e1dc;
+  --color-clay: #0a0a0a;
   --color-clay-dark: #000000;
-  --color-clay-soft: #f3f3f0;
-  --color-butter: #e9e9e5;
-  --color-butter-soft: #f3f3f0;
-  --color-sage: #d8d8d3;
-  --color-sage-soft: #f3f3f0;
-  --color-moss: #111111;
-  --color-blush: #f3f3f0;
-  --color-gold: #6b6b6b;
+  --color-clay-soft: #f6f4ef;
+  --color-butter: #ebe8e1;
+  --color-butter-soft: #f6f4ef;
+  --color-sage: #d9d6cf;
+  --color-sage-soft: #f6f4ef;
+  --color-moss: #0a0a0a;
+  --color-blush: #f6f4ef;
+  --color-gold: #6a6a6a;
 
-  --font-display: var(--font-serif-display), ui-serif, Georgia, serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-couture), "Didot", "Bodoni 72", ui-serif, Georgia, serif;
+  --font-sans: var(--font-grotesk), "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
 
-  --radius-card: 0.25rem;
-  --shadow-frame: 0 1px 2px rgb(0 0 0 / 0.05), 0 18px 40px -24px rgb(0 0 0 / 0.25);
-  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.04);
+  --radius-card: 0;
+  --shadow-frame: 0 30px 60px -40px rgb(0 0 0 / 0.35);
+  --shadow-soft: none;
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-shimmer: shimmer 2.2s linear infinite;
@@ -74,8 +69,8 @@
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 400;
-    letter-spacing: -0.01em;
-    line-height: 1.05;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
     text-wrap: balance;
   }
   p {
@@ -92,6 +87,31 @@
 }
 
 @layer components {
+  /* Tiny uppercase tracked label: nav items, eyebrows, captions, prices in grids. */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  /* Uppercase underlined text link: "DISCOVER", "COMMISSION YOURS". */
+  .link-cta {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    transition: opacity 150ms;
+  }
+  .link-cta:hover {
+    opacity: 0.6;
+  }
+
   /* Gallery frame used to display portraits */
   .frame-wood {
     background: #5a4434;
