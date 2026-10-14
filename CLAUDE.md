@@ -1,6 +1,6 @@
 # Pup Prints — project guide for agents
 
-Pup Prints (pupprints) is a DTC brand selling fine-art portraits of people's dogs. A customer uploads a photo, sees an AI-generated portrait **free and instantly**, then buys it as a print, framed print, canvas or digital file. We compete with Crown & Paw (crownandpaw.com). Research lives in `docs/research/`, strategy in `docs/strategy.md`.
+Pup Prints (pupprints) is a DTC brand selling fine-art portraits of people's dogs. A customer uploads a photo, sees an AI-generated portrait **free and instantly**, then buys it as a print, framed print, canvas or digital file. We compete with Crown & Paw (crownandpaw.com). Research lives in `docs/research/` and `docs/plan-research/`, strategy in `docs/strategy.md`, and the operating plan (first customers → $1,000/month, Rule of 100, gates) in `docs/business-plan.md`.
 
 ## Positioning (use this in all copy)
 - Wedge: **"See it now. Give it now. Hang it in days."**
