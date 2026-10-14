@@ -83,7 +83,13 @@ function useOffer(code: string): OfferStatus | null {
     let cancelled = false;
     fetchOffer(code || undefined)
       .then((offer) => {
-        if (!cancelled) setState({ code, offer });
+        if (cancelled) return;
+        setState({ code, offer });
+        // A saved creator code that is no longer live (e.g. the partnership ended) is dropped, so
+        // the page never claims a code is applied when checkout would ignore it.
+        if (code && offer.code && !offer.code.valid) {
+          updateFlow((s) => (s.creatorCode === code ? { ...s, creatorCode: "" } : s));
+        }
       })
       .catch(() => {
         // Offline or API down: regular prices only (never a discount we can't confirm).
@@ -708,9 +714,9 @@ export function ProductStep({
                 )}
               </p>
               <p className="label mt-1.5 truncate text-ink-3">
-                {discountCents > 0 ? `${priceTag} · ` : ""}
-                {product.shortName}
-                {variant.widthIn ? ` · ${variant.label}` : ""}
+                {discountCents > 0
+                  ? `${priceTag} · ${variant.widthIn ? variant.label : product.shortName}`
+                  : `${product.shortName} · ${variant.widthIn ? variant.label : "Hi-res file"}`}
               </p>
             </div>
             <button

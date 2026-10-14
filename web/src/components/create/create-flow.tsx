@@ -80,10 +80,15 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
-  // Prefetch the live offer (founding price, creator code) so the product step shows real prices at once.
+  // Prefetch the live offer (founding price, creator code) so the product step shows real prices at
+  // once. Deferred a tick so a fresh ?ref= cookie (set by <Tracking />, whose effect runs after this
+  // one) is already sent. Gift links set their creator's cookie when the gift loads, so the product
+  // step fetches for itself there.
   useEffect(() => {
-    void fetchOffer(readFlow().creatorCode || undefined).catch(() => {});
-  }, []);
+    if (giftToken) return;
+    const t = window.setTimeout(() => void fetchOffer(readFlow().creatorCode || undefined).catch(() => {}), 0);
+    return () => window.clearTimeout(t);
+  }, [giftToken]);
 
   // Gift link: load that portrait and go straight to choosing the piece.
   useEffect(() => {
