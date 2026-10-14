@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 import { X } from "lucide-react";
 import { useFoundingLive } from "@/components/marketing/offer-status";
+import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-keys";
 
 export type TopLineMessage = {
   /** Changes whenever the message does, so a dismissed message never hides a new one. */
@@ -16,8 +17,6 @@ export type TopLineMessage = {
   href: string;
 };
 
-export const TOP_LINE_ID = "pp-topline";
-export const TOP_LINE_STORAGE_KEY = "pp-topline-dismissed";
 const CHANGE_EVENT = "pp-topline-change";
 
 function subscribe(onChange: () => void) {

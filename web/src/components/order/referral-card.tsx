@@ -39,7 +39,11 @@ export function ReferralCard({ code, shareUrl, shareText }: { code: string; shar
   async function share() {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Pup Prints", text: shareText, url: shareUrl });
+        await navigator.share({
+          title: "Pup Prints",
+          text: shareText,
+          url: shareUrl,
+        });
         track("ReferralShare", { method: "native" });
         return;
       } catch {
@@ -63,42 +67,47 @@ export function ReferralCard({ code, shareUrl, shareText }: { code: string; shar
       </h2>
       <div className="min-w-0">
         <p className="max-w-md text-[14px] leading-relaxed text-ink-2">
-          Know someone with a dog worth framing? Your code takes ${REFERRAL.friendCents / 100} off their first portrait.
-          When their order is past its {REFERRAL.holdDays}-day guarantee window, we send you ${REFERRAL.rewardCents / 100}.
+          Know someone with a dog worth framing? Your code takes ${REFERRAL.friendCents / 100} off their first portrait. When
+          their order is past its {REFERRAL.holdDays}-day guarantee window, we send you ${REFERRAL.rewardCents / 100}.
         </p>
 
-        <p className="label mt-8 text-ink-3">Your code</p>
-        <div className="mt-2 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1">
-          <p className="font-display text-[34px] leading-none tracking-[0.02em] sm:text-[40px]">{code}</p>
-          <button type="button" onClick={() => copy("code")} className={textLink} aria-live="polite">
-            {copied === "code" ? "Copied" : "Copy code"}
-          </button>
-        </div>
+        <div className="max-w-lg">
+          <p className="label mt-8 text-ink-3">Your code</p>
+          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1">
+            <p className="font-display text-[34px] leading-none tracking-[0.02em] sm:text-[40px]">{code}</p>
+            <button type="button" onClick={() => copy("code")} className={textLink} aria-live="polite">
+              {copied === "code" ? "Copied" : "Copy code"}
+            </button>
+          </div>
 
-        <div className="mt-6 flex items-end gap-6">
-          <label htmlFor="referral-link" className="sr-only">
-            Your referral link
-          </label>
-          <input
-            id="referral-link"
-            readOnly
-            value={shareUrl}
-            onFocus={(e) => e.currentTarget.select()}
-            className="h-11 min-w-0 flex-1 truncate rounded-none border-0 border-b border-line bg-transparent px-0 text-[13px] text-ink-2 outline-none focus:border-ink focus-visible:outline-none"
-          />
-          <button type="button" onClick={() => copy("link")} className={`${textLink} shrink-0`} aria-live="polite">
-            {copied === "link" ? "Copied" : "Copy link"}
-          </button>
-        </div>
-        <div className="mt-4">
-          <button type="button" onClick={share} className={textLink}>
-            Share with a friend
-          </button>
+          <div className="mt-6 flex items-end gap-6">
+            <label htmlFor="referral-link" className="sr-only">
+              Your referral link
+            </label>
+            <input
+              id="referral-link"
+              readOnly
+              value={shareUrl}
+              onFocus={(e) => e.currentTarget.select()}
+              className="h-11 min-w-0 flex-1 truncate rounded-none border-0 border-b border-line bg-transparent px-0 text-[13px] text-ink-2 outline-none focus:border-ink focus-visible:outline-none"
+            />
+            <button type="button" onClick={() => copy("link")} className={`${textLink} shrink-0`} aria-live="polite">
+              {copied === "link" ? "Copied" : "Copy link"}
+            </button>
+          </div>
+          <div className="mt-4">
+            <button type="button" onClick={share} className={textLink}>
+              Share with a friend
+            </button>
+          </div>
         </div>
 
         <p className="mt-6 max-w-md text-[12px] leading-relaxed text-ink-3">
           {REFERRAL_TERMS}{" "}
-          <Link href="/terms#referrals" className="underline decoration-ink/30 underline-offset-4 transition-colors hover:text-ink">
+          <Link
+            href="/terms#referrals"
+            className="underline decoration-ink/30 underline-offset-4 transition-colors hover:text-ink"
+          >
             Terms
           </Link>
         </p>

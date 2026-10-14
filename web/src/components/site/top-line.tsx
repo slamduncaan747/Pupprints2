@@ -1,6 +1,7 @@
 import { FOUNDING_OFFER, GUARANTEE, HOLIDAY, OFFER, holidayNotice } from "@/lib/offer";
 import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
-import { TopLineBar, TOP_LINE_ID, TOP_LINE_STORAGE_KEY, type TopLineMessage } from "@/components/site/top-line-bar";
+import { TopLineBar, type TopLineMessage } from "@/components/site/top-line-bar";
+import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-keys";
 
 /**
  * The single most compelling real offer right now, in date order. Every line is true when shown:
