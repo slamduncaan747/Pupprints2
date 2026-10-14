@@ -2,6 +2,8 @@
 
 **The rule:** we don't buy reach for unproven creative. The $40 goes behind **one** post that has already earned it organically. It runs **Fri Oct 16 12:00 → Sun Oct 18 ~20:00**. If nothing qualifies by Friday noon, the $40 becomes a third paid nano post ([war plan §2](../00-week1-war-plan.md#2-the-100-where-every-dollar-goes)).
 
+> **Superseded split (Oct 14):** the $100 is now $40 Google Search + $30 boost of a proven post + $30 partner kit, per [business plan §6](../../docs/business-plan.md#6-money-the-100-and-the-reinvestment-rule). The qualification rules, stop-loss, UTMs and copy below still apply to the $30 boost.
+
 ---
 
 ## 1. Before any dollar: tracking must work

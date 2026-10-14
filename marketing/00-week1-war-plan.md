@@ -1,4 +1,6 @@
-# Week-1 War Plan: $1,000 profit by Sunday, Oct 18
+# Week-1 War Plan: $1,000 profit by Sunday, Oct 18 (retired)
+
+> **Retired Oct 14, 2026.** This plan's #1 and #2 channels were the founder's warm network, which is now excluded, and its week-1 $1K goal was set before any keys were live. Use **[docs/business-plan.md](../docs/business-plan.md)** (the 100-day plan to $1,000/month) and **[FIRST-SALE-RUNBOOK.md](FIRST-SALE-RUNBOOK.md)** (week 1). Still useful here: the per-product profit table (§0) and the launch-offer wording (§3).
 
 **Window:** Tue Oct 13 (launch day) to Sun Oct 18, 2026. Six selling days.
 **Paid budget:** $100, hard cap.

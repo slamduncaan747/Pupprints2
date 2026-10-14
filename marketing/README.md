@@ -1,6 +1,6 @@
-# Pup Prints Marketing: Week-1 Kit
+# Pup Prints Marketing Kit
 
-**Goal:** $1,000 profit by Sun Oct 18, 2026 with **$100 max** paid spend. That takes 30–35 orders. The honest odds are about 1 in 4, so the plan maximizes them and builds the Q4 creator pipeline either way.
+**The plan:** [docs/business-plan.md](../docs/business-plan.md): first customers → $1,000/month profit, Hormozi-style, no personal network, $100 of starting acquisition cash. **Week 1:** [FIRST-SALE-RUNBOOK.md](FIRST-SALE-RUNBOOK.md). This folder holds the scripts, lists and templates both of them use.
 
 **Site:** https://pup-prints.vercel.app (moving to pupprints.shop) · **Admin:** `/admin` · **Strategy:** `docs/strategy.md` §8–9 · **Research:** `docs/research/`
 
@@ -8,7 +8,7 @@
 
 ## Start here: first 60 minutes
 
-Do these in order on Day 1. Then jump to the [war plan's 11:40 block](00-week1-war-plan.md#4-day-1-tuesday-oct-13-hour-by-hour) (warm network), because handles are already done here.
+Do these in order on Day 1, then follow the [runbook](FIRST-SALE-RUNBOOK.md) (handles are already done here). No warm-network outreach: every gift goes to a stranger's dog.
 
 | Min | Do | Why |
 |---|---|---|
@@ -16,9 +16,9 @@ Do these in order on Day 1. Then jump to the [war plan's 11:40 block](00-week1-w
 | 10–20 | **One real order, end to end.** Make a preview of your own dog → buy the $29 digital file with your card → check the confirmation email, the Gift Reveal page and Admin → Orders. Refund yourself in Stripe afterwards. | Proves money, email and admin work before you send anyone |
 | 20–28 | **Stripe codes** (Products → Coupons): **(1)** a 15% "Once" coupon with promotion code **`FOUNDING100`**: max 100 redemptions, expires **Oct 31 11:59pm PT**, first-time order only. **(2)** A 100% "Once" coupon **`INTERNAL100`** with *no public code*. Add a single-use code per gift or Etsy order (e.g. `GIFT-RUFUS`). | The honest launch offer, plus the $0 internal orders used for gift prints and Etsy fulfillment |
 | 28–35 | **Import creators.** Admin → Partners → Import → upload [`creators/prospects.csv`](creators/prospects.csv). | 167 creators land as `prospect`, with notes |
-| 35–45 | **Test the gift flow.** Admin → Gifts → make your own dog's portrait → open the reveal link on your phone → then make 2 friends' dogs. | Your first 3 warm-network gifts, and you'll know the flow cold |
+| 35–45 | **Test the gift flow.** Admin → Gifts → make your own dog's portrait → open the reveal link on your phone → then make 2 for P1 creators from the list. | You'll know the flow cold before the daily 25 |
 | 45–55 | **Claim handles + bios:** `@pupprints.shop` on IG + TikTok ([social-setup.md](content/social-setup.md)). Paste the bios and links. | Everything you send points here |
-| 55–60 | **Write tonight's KPI row headers** in Notes or Sheets ([war plan §7](00-week1-war-plan.md#7-tracking-table-copy-to-notes-or-sheets-update-at-2100-daily)). Set alarms for 13:00, 17:00 and 21:00 to reply and log. | What gets measured gets done |
+| 55–60 | **Open the scorecard** (Admin → Scorecard) and log today's actions. Set alarms for 13:00, 17:00 and 21:00 to reply and log. | What gets measured gets done |
 
 **Pixels** (`NEXT_PUBLIC_META_PIXEL_ID`, `NEXT_PUBLIC_TIKTOK_PIXEL_ID`) can wait until Wednesday. No ads run before Friday ([ads doc §1](ads/meta-tiktok-test.md#1-before-any-dollar-tracking-must-work)).
 
@@ -28,7 +28,7 @@ Do these in order on Day 1. Then jump to the [war plan's 11:40 block](00-week1-w
 
 | # | File | Use it for | When |
 |---|---|---|---|
-| 1 | [00-week1-war-plan.md](00-week1-war-plan.md) | The plan: honest math, channels ranked by speed to cash, the $100 split, Founding 100 offer, Day 1 hour by hour, Days 2–6, KPIs, tracking table | Every morning |
+| 1 | [docs/business-plan.md](../docs/business-plan.md) + [FIRST-SALE-RUNBOOK.md](FIRST-SALE-RUNBOOK.md) | The plan (goal math, offer, money model, channels, $100, Rule of 100, 100-day roadmap, gates) and the week-1 runbook. The old [week-1 war plan](00-week1-war-plan.md) is retired | Every morning |
 | 2 | [creators/prospects.csv](creators/prospects.csv) | 167 real creators (108 nano/micro), with priority (`P1`/`P2`/`P3`/`LATER`), verification date and source in the notes. Imports straight into Admin → Partners. | Day 1 import; daily picks |
 | 3 | [creators/outreach-playbook.md](creators/outreach-playbook.md) | The gift-first flow, a style picker, 6 templates (A gift · B follow-up · C affiliate · D paid post · E memorial · F UGC license), the 3-touch sequence, reply scripts, the AI answer, FTC in plain English, ops, do-not list | Every outreach block |
 | 4 | [creators/creator-brief.md](creators/creator-brief.md) | One-pager for creators who said yes: the deal, content formats, hooks, disclosure, payouts | After a "yes" |
@@ -36,8 +36,8 @@ Do these in order on Day 1. Then jump to the [war plan's 11:40 block](00-week1-w
 | 6 | [content/30-video-scripts.md](content/30-video-scripts.md) | 30 scripts (hooks, shots, text, captions, hashtags, sound) plus the "comment your dog" lead engine | 3 videos/day |
 | 7 | [content/social-setup.md](content/social-setup.md) | Handles (availability checked), bios, link-in-bio, highlights, first 9 posts, schedule | Day 1–2 |
 | 8 | [ads/meta-tiktok-test.md](ads/meta-tiktok-test.md) | How to spend the $40 boost, qualification rules, stop-loss, UTM conventions, pixel events, 10 ad copies, 5 static concepts | Fri Oct 16 |
-| 9 | [channels/etsy-kit.md](channels/etsy-kit.md) | Etsy setup, 5 complete listings, AI disclosure, fulfillment through our pipeline | Wed Oct 14 |
-| 10 | [channels/community-posts.md](channels/community-posts.md) | Founder launch posts (FB/IG/LinkedIn), friend texts, Nextdoor (2026 rules), 10 breed-group posts, Reddit verdict + 3 posts | Day 1–4 |
+| 9 | [channels/etsy-kit.md](channels/etsy-kit.md) | Etsy setup, 5 complete listings, AI disclosure, fulfillment through our pipeline. **Deferred:** not in Q4 (plan §5.7); January memorial test | Jan 2027 |
+| 10 | [channels/community-posts.md](channels/community-posts.md) | Nextdoor (2026 rules), 10 breed-group posts, Reddit verdict + 3 posts. Skip the founder-network posts and friend texts (no warm outreach) | Day 1–4 |
 | 11 | [channels/shelter-partnership.md](channels/shelter-partnership.md) | Shelter pitch, call script, process, social templates, press release + reporter pitch | Day 1 email, Day 3 call |
 | 12 | [email/flows.md](email/flows.md) | Welcome, preview nurture, post-purchase, review request, win-back: matched to what the site sends, with the gaps flagged | Reference + manual sends |
 
