@@ -16,6 +16,8 @@ text or jewellery, no watermarks).
     the same Apache-2.0 license.
 - **Text encoder:** Qwen3-4B (`Qwen/Qwen3-4B`, as bundled in the FLUX.2-klein-4B repository), **Apache-2.0**
   (https://huggingface.co/Qwen/Qwen3-4B).
+- **Retouching:** on royal.webp the medallion was re-rendered with the same model's inpainting pipeline
+  (`Flux2KleinInpaintPipeline`, masked to the pendant only) to replace engraved pseudo-lettering with a plain gold pendant.
 - **Finishing:** cropped 1.5% at the edges (removes the faint painted canvas edge), Lanczos resize to
   1200×1500, light unsharp mask, WebP quality 84 (Pillow).
 - Style prompts are adapted from `STYLES[].prompt` in `web/src/lib/catalog.ts`.
