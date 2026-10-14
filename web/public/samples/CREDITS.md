@@ -16,7 +16,7 @@ text or jewellery, no watermarks).
     the same Apache-2.0 license.
 - **Text encoder:** Qwen3-4B (`Qwen/Qwen3-4B`, as bundled in the FLUX.2-klein-4B repository), **Apache-2.0**
   (https://huggingface.co/Qwen/Qwen3-4B).
-- **Retouching:** on royal.webp the medallion was re-rendered with the same model's inpainting pipeline
+- **Retouching:** on royal.webp and pair-1-after.webp the medallion was re-rendered with the same model's inpainting pipeline
   (`Flux2KleinInpaintPipeline`, masked to the pendant only) to replace engraved pseudo-lettering with a plain gold pendant.
 - **Finishing:** cropped 1.5% at the edges (removes the faint painted canvas edge), Lanczos resize to
   1200×1500, light unsharp mask, WebP quality 84 (Pillow).
@@ -37,7 +37,7 @@ anyway. None are Unsplash+ photos. Local copies (4:5 crops) live in `web/scripts
 |---|---|---|---|---|---|---|
 | royal.webp | The Royal | Cavalier King Charles Spaniel | cavalier-2.jpg | Tracy Anderson | https://unsplash.com/photos/OktYfwY5ZQI | FLUX.2 klein |
 | pair-3-before.webp (photo), pair-3-after.webp | The Admiral | Beagle | beagle.jpg | Nathanaël Desmeules | https://unsplash.com/photos/527_3nFNAPo | FLUX.2 klein |
-| admiral.webp | The Admiral | Beagle | beagle.jpg | Nathanaël Desmeules | https://unsplash.com/photos/527_3nFNAPo | legacy |
+| admiral.webp | The Admiral | Labrador Retriever | labrador-2.jpg | Not identified yet (free Unsplash CDN image) | https://images.unsplash.com/photo-1761797732084-eed42f058516 | FLUX.2 klein |
 | oil-classic.webp | Old Master | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho | legacy |
 | pair-2-before.webp (photo), pair-2-after.webp | Watercolor | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | FLUX.2 klein |
 | watercolor.webp | Watercolor | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | legacy |
