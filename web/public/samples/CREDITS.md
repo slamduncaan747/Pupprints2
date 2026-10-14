@@ -23,10 +23,9 @@ text or jewellery, no watermarks).
   1200×1500, light unsharp mask, WebP quality 84 (Pillow).
 - Style prompts are adapted from `STYLES[].prompt` in `web/src/lib/catalog.ts`.
 
-Files still marked "legacy" in the table were made with the earlier pipeline: DreamShaper 8
-(`Lykon/dreamshaper-8`, CreativeML OpenRAIL-M, commercial use of outputs allowed,
-https://huggingface.co/Lykon/dreamshaper-8), img2img at 512×640, upscaled with Real-ESRGAN
-`realesr-general-x4v3` (BSD-3-Clause) to 960×1200. They are being replaced.
+All files in this folder now come from this pipeline (the earlier DreamShaper 8 / SD 1.5 set was fully
+replaced on Oct 14). For gallery-4.webp, fine-line.webp and astronaut.webp the reference photo was first
+scaled down and seated on its own extended backdrop, to leave headroom in the composition.
 
 ## Source photos
 
