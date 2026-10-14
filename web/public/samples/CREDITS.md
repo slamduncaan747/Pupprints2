@@ -38,19 +38,21 @@ anyway. None are Unsplash+ photos. Local copies (4:5 crops) live in `web/scripts
 | admiral.webp | The Admiral | Beagle | beagle.jpg | Nathanaël Desmeules | https://unsplash.com/photos/527_3nFNAPo | legacy |
 | oil-classic.webp | Old Master | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho | legacy |
 | pair-2-before.webp (photo), pair-2-after.webp | Watercolor | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | FLUX.2 klein |
-| watercolor.webp, gallery-2.webp | Watercolor / Pop Art | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | legacy |
+| watercolor.webp | Watercolor | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | legacy |
+| gallery-2.webp | Pop Art | French Bulldog | french-bulldog-sitting.jpg | Eric Tan | https://unsplash.com/photos/WqveMpe3QTA | FLUX.2 klein |
 | fine-line.webp | Fine Line | Labrador Retriever | labrador-2.jpg | Not identified yet (free Unsplash CDN image) | https://images.unsplash.com/photo-1761797732084-eed42f058516 | legacy |
 | pop-art.webp | Pop Art | Dachshund | dachshund.jpg | Alexandre Daoust | https://unsplash.com/photos/DoMqElrLS5M | legacy |
 | storybook.webp | Storybook | Poodle / Doodle puppy | doodle-puppy.jpg | Erick Lee Hodge | https://unsplash.com/photos/U8pgck1dgtQ | legacy |
 | botanical.webp | Botanical | Cavalier King Charles Spaniel | cavalier.jpg | Izabelly Marques | https://unsplash.com/photos/-d-q58LA1ds | legacy |
-| astronaut.webp, gallery-4.webp | Space Cadet / Admiral | Siberian Husky | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI | legacy |
+| astronaut.webp | Space Cadet | Siberian Husky | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI | legacy |
+| gallery-4.webp | The Admiral | Siberian Husky | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI | FLUX.2 klein |
 | charcoal.webp | Charcoal Study | Border Collie | border-collie-2.jpg | Chung Nguyen | https://unsplash.com/photos/kJlk-jW2nLI | legacy |
 | mid-century.webp, holiday.webp | Mid-Century / Holiday Cozy | Pembroke Welsh Corgi | corgi.jpg | Ivana La | https://unsplash.com/photos/tycZhR54Ddk | legacy |
 | pair-1-before.webp (photo), pair-1-after.webp | The Royal | Golden Retriever | golden-retriever.jpg | Faber Leonardo | https://unsplash.com/photos/ktujYJX35-E | FLUX.2 klein |
-| gallery-1.webp | Old Master | Golden Retriever | golden-retriever-2.jpg | Victor G | https://unsplash.com/photos/x5oPmHmY3kQ | legacy |
-| gallery-3.webp | Watercolor | Cavapoo | cavapoo.jpg | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM | legacy |
-| gallery-5.webp | Storybook | Cavalier King Charles Spaniel | cavalier-3.jpg | Courtney Mihaka | https://unsplash.com/photos/8rdX9FraXug | legacy |
-| gallery-6.webp | Charcoal Study | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 | legacy |
+| gallery-1.webp | Old Master | Golden Retriever | golden-retriever-2.jpg | Victor G | https://unsplash.com/photos/x5oPmHmY3kQ | FLUX.2 klein |
+| gallery-3.webp | Watercolor | Cavapoo | cavapoo.jpg | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM | FLUX.2 klein |
+| gallery-5.webp | Storybook | Cavalier King Charles Spaniel | cavalier-3.jpg | Courtney Mihaka | https://unsplash.com/photos/8rdX9FraXug | FLUX.2 klein |
+| gallery-6.webp | Charcoal Study | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 | FLUX.2 klein |
 
 ## Site-wide images made from these samples
 
