@@ -118,7 +118,7 @@ Breeds covered (AKC 2025 rank order): French Bulldog (1), Labrador Retriever (2)
 
 | When | Action |
 |---|---|
-| **Now (Oct 13)** | Christmas guide live (cutoff Sat Dec 12 US / Dec 5 CA, Gift Reveal until Dec 25). Submit sitemap to Search Console. Submit `/feeds/google.xml` to Merchant Center. |
+| **Now (Oct 13)** | Christmas guide live (cutoff Sat Dec 10 US / Dec 5 CA, Gift Reveal until Dec 25). Submit sitemap to Search Console. Submit `/feeds/google.xml` to Merchant Center. |
 | Nov 1–20 | Refresh the Christmas guide (`updated` date) if the cutoffs or carrier guidance change. Internal links from the home page and `/gifts` to the guide. |
 | Dec 13–25 | Shift messaging to Gift Reveal (last-minute). Content is already in place. |
 | Jan | Memorial content push (first holidays without a pet). Refresh the sympathy-card article. |

@@ -19,7 +19,7 @@ function messages(now: number = Date.now()): TopLineMessage[] {
       href: "/create",
     });
   }
-  // From Nov 1 to the Dec 12 cutoff: the US Christmas cutoff; then Gift Reveal until Christmas Day.
+  // From Nov 1 to the Dec 10 cutoff: the US Christmas cutoff; then Gift Reveal until Christmas Day.
   const holiday = holidayNotice(now, { physical: true, shipCountry: "US" });
   if (holiday) {
     const key = holiday === HOLIDAY.label ? "holiday-2026" : "reveal-2026";

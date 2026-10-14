@@ -19,6 +19,8 @@ export const OFFER = {
   /** Primary call to action, used site-wide. Clarity beats cleverness. */
   cta: "Create your free portrait",
   ctaShort: "Start free",
+  /** Effort-reduction line shown under primary CTAs. */
+  effort: "No account. No card. About a minute.",
   /** One-line promise that states the whole offer. */
   promise: "See your dog as a work of art in about a minute — free. Love it, or it's free.",
   /** Real market anchor (from docs/research/competitors.md). */
@@ -171,12 +173,12 @@ export function staticFoundingStatus(now: number = Date.now()): OfferStatus["fou
 
 /** Real holiday deadlines (US standard delivery guidance, not a guarantee). */
 export const HOLIDAY = {
-  cutoffIso: "2026-12-12T23:59:59-08:00",
+  cutoffIso: "2026-12-10T23:59:59-08:00",
   /** The cutoff line is shown from Nov 1 (before that it is not yet urgent, so nothing is shown). */
   showFromIso: "2026-11-01T00:00:00-07:00",
   /** Christmas Day, end of day PT: after this the reveal line is no longer relevant. */
   revealUntilIso: "2026-12-25T23:59:59-08:00",
-  label: "Order by Dec 12 for Christmas delivery in the US",
+  label: "Order by Dec 10 for Christmas delivery in the US",
   reveal: "Gift Reveal can be sent instantly, right up to Christmas Day",
 } as const;
 

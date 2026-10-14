@@ -34,7 +34,7 @@ export function keepHyphenated(text: string): ReactNode {
 export const GUARANTEE_IN_SENTENCE = GUARANTEE.name.replace(/^The\s+/, "the ");
 
 /** The effort lever, said plainly under every primary call to action. */
-export const EFFORT_LINE = "No account. No card. About a minute.";
+export const EFFORT_LINE = OFFER.effort;
 
 /** "From $35": the lowest physical price, straight from the catalog. */
 export const FROM_PRICE = `From ${formatPrice(STARTING_PHYSICAL_PRICE)}`;

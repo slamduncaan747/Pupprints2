@@ -41,7 +41,7 @@ Raise the top, shrink the bottom. Our product is unusually strong on all four, b
 |---|---|---|
 | Preview | "See it in a minute" appeared once, mid-page. | "About a minute" is in the hero promise, the effort line under every primary CTA, the proof steps, and the /how-it-works headline ("One photo. About a minute."). |
 | The gift moment | Gift Reveal was one clause in the /gifts lede; its steps sat below six occasion stories. | Gift Reveal is in the value stack ("Instant Gift Reveal to send the same day"), the proof steps, the top of /gifts, and the home FAQ. |
-| Delivery | Ship windows on product pages and the /shop price list. | Ship windows (from `catalog.shipDays`) in the /shop comparison, the proof steps and the FAQ. `HOLIDAY.label` and `HOLIDAY.reveal` lead /gifts until the Dec 12 cutoff. |
+| Delivery | Ship windows on product pages and the /shop price list. | Ship windows (from `catalog.shipDays`) in the /shop comparison, the proof steps and the FAQ. `HOLIDAY.label` and `HOLIDAY.reveal` lead /gifts until the Dec 10 cutoff. |
 
 ### 1.4 Effort and sacrifice: "what do I have to do, and what does it cost me to find out?"
 
@@ -59,7 +59,7 @@ Raise the top, shrink the bottom. Our product is unusually strong on all four, b
 | **Value stack** | A 5-row "With every physical piece" list on /shop only. | `VALUE_STACK` as a hairline list (item left, value right: *Free* / *Included*) on the home page, /shop and every physical product page, closing with The Love-It Guarantee, then the price and the CTA. No invented "worth $X" figures: items we don't sell alone say *Included*, and the digital file's real standalone price ($29) is stated. |
 | **Price anchor** | None. | `OFFER.anchor` beside "From $35": hand-painted commissions typically cost $150–$500 and take weeks (from `docs/research/competitors.md`). The anchor is a real market range, not a fake "compare at" price. |
 | **Scarcity** | None. | **The Founding 100**: 15% off our first 100 orders, a real cap counted by Stripe. A black band on the home page, a line near prices on /shop and physical product pages, and the top line. When `/api/offer` returns a real `remaining` number we show "N of 100 founding spots left"; otherwise no count at all. |
-| **Urgency** | None. | Real deadlines only: founding ends Oct 31 at 11:59pm PT ("Never extended"); from Nov 1 the top line switches to "Order by Dec 12 for Christmas delivery in the US"; after Dec 12, "Gift Reveal can be sent instantly, right up to Christmas Day". No timers. Pages regenerate hourly, and the browser hides founding copy the moment the API says the offer is closed. |
+| **Urgency** | None. | Real deadlines only: founding ends Oct 31 at 11:59pm PT ("Never extended"); from Nov 1 the top line switches to "Order by Dec 10 for Christmas delivery in the US"; after Dec 10, "Gift Reveal can be sent instantly, right up to Christmas Day". No timers. Pages regenerate hourly, and the browser hides founding copy the moment the API says the offer is closed. |
 | **Bonuses / bundle** | Add-ons listed on /shop. | **The Heirloom Set** (`HEIRLOOM_SET`): the portrait plus the matching ornament ($19) and mug ($25), $34 together instead of $44. Shown as a premium option on the home page and /shop, always "added at checkout, never pre-selected". |
 | **Naming** | Generic. | Named things are easier to remember and believe: *The Love-It Guarantee*, *The Founding 100*, *The Heirloom Set*, *Gift Reveal*. |
 | **Free value up front** (*$100M Leads*: give away the best thing for free) | Present, under-sold. | The free preview is the lead magnet and now the headline promise. Every CTA leads to it. |
@@ -92,7 +92,7 @@ Raise the top, shrink the bottom. Our product is unusually strong on all four, b
 
 ### Home page, top to bottom (each section moves one lever)
 
-1. **Top line** (site-wide, dismissible): the single best real offer right now. Founding (to Oct 31), then the Christmas cutoff (Nov 1 to Dec 12), then Gift Reveal (to Dec 25), then the standing promise.
+1. **Top line** (site-wide, dismissible): the single best real offer right now. Founding (to Oct 31), then the Christmas cutoff (Nov 1 to Dec 10), then Gift Reveal (to Dec 25), then the standing promise.
 2. **Hero**: dream outcome ("Your dog, immortalized."), free and fast (`OFFER.promise`), one button, the effort line. On phones the image is cropped square so the button sits above the fold at 390×844.
 3. **Proof**: a real phone photo beside its portrait, labelled as a studio example, plus the three timed steps.
 4. **The Collection**: 12 styles, each a one-tap start.
@@ -181,4 +181,4 @@ These complement the create-flow backlog in `docs/research/growth.md` §3.4 (ema
 - **The founding line says "Applied automatically."** `/api/checkout` auto-applies FOUNDING100 while Stripe says it's redeemable (`pickCheckoutDiscount`); a better creator discount wins. If that logic ever changes, change `FOUNDING_OFFER.line` with it.
 - **The Heirloom Set saving** ($10 off when both add-ons are in an order with a physical piece) is applied by `/api/checkout` (`heirloomSets()`). The home page and /shop quote it from `HEIRLOOM_SET`.
 - **Value-stack rows are literally true per product.** Physical product pages use `valueStackFor({ productType, shipCountry: "US" })`, so the Fine Art Print says "Free US shipping, tracked" rather than "ready to hang". The home page and /shop use the generic `VALUE_STACK`.
-- **The top line's holiday logic** uses `holidayNotice()`: the cutoff line from Nov 1 to Dec 12, then Gift Reveal until Dec 25. /gifts shows the Dec 12 cutoff now, because gift planners want it early.
+- **The top line's holiday logic** uses `holidayNotice()`: the cutoff line from Nov 1 to Dec 10, then Gift Reveal until Dec 25. /gifts shows the Dec 10 cutoff now, because gift planners want it early.

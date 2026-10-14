@@ -77,7 +77,7 @@ export const STYLES: ArtStyle[] = [
     name: "Watercolor",
     blurb: "Soft washes and loose, luminous color.",
     description:
-      "A hand-painted look with soft watercolor washes that bloom into textured cold-press paper. Light, airy and full of feeling — a favorite for memorial pieces.",
+      "Soft watercolor washes that bloom into textured cold-press paper. Light, airy and full of feeling, and well suited to memorial pieces.",
     prompt: `A delicate loose watercolor painting of the dog on textured white cold-press watercolor paper. Soft translucent washes, gentle color blooms and bleeds, fine ink-free detail around the eyes and nose, lots of white negative space around the subject, airy and luminous. ${IDENTITY}`,
     swatch: "#7fa6b5",
     goodFor: ["memorial", "gift", "decor"],

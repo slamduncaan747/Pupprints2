@@ -165,7 +165,7 @@ Within a few hours of each of the first ~30 orders, reply to the customer from y
   >
   > **[See [Pet] in Holiday Cozy →]**
   >
-  > Planning gifts? We recommend ordering physical pieces by **Dec 12** for standard US delivery before Christmas (Dec 5 for Canada), and a Gift Reveal can go out any day, including Christmas morning.
+  > Planning gifts? We recommend ordering physical pieces by **Dec 10** for standard US delivery before Christmas (Dec 5 for Canada), and a Gift Reveal can go out any day, including Christmas morning.
 - **Notes:** these are the dates the site publishes (`CHRISTMAS_2026` in `web/src/components/marketing/commerce.ts`, shown on /shipping). It's guidance, not a guarantee, so don't word it as a promise; if ops moves the date, change it there and here together. **No discount in W1.** The new style is the reason to come back.
 
 ### W2: bought once, 45–60 days after delivery
@@ -179,8 +179,8 @@ Within a few hours of each of the first ~30 orders, reply to the customer from y
   > Want [Pet] on a mug or ornament too? Reply and we'll set it up from your original portrait. No new photo needed.
 
 ### W3: lapsed leads before a real deadline (only when the deadline is real)
-- **Subject:** Ordering for Christmas? Our recommended order-by date is Dec 12
-- **Body:** a plain, factual cutoff reminder (Dec 12 US, Dec 5 Canada, matching /shipping), plus "the Gift Reveal works right up to Christmas Day." No countdown timers, no fake "final hours."
+- **Subject:** Ordering for Christmas? Our recommended order-by date is Dec 10
+- **Body:** a plain, factual cutoff reminder (Dec 10 US, Dec 5 Canada, matching /shipping), plus "the Gift Reveal works right up to Christmas Day." No countdown timers, no fake "final hours."
 
 ---
 
