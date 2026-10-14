@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { FOUNDING } from "@/lib/launch";
-import { pickCheckoutDiscount, staticFoundingStatus, type OfferStatus } from "@/lib/offer";
+import { staticFoundingStatus, type DiscountOption, type OfferStatus } from "@/lib/offer";
 import { foundingStatus } from "@/lib/stripe";
 import { normalizeCode } from "@/components/partners/program";
 
@@ -16,14 +16,14 @@ function safeDecode(v: string) {
 }
 
 /**
- * GET /api/offer[?code=CREATOR]: the live offer for this visitor, for the purchase moment.
+ * GET /api/offer[?code=CODE]: the live offer for this visitor, for the purchase moment.
  *
  * - `founding`: FOUNDING100 status. `remaining` is maxRedemptions − times_redeemed straight from
  *   Stripe (cached ~60s per instance), or null when Stripe isn't configured or can't be read:
  *   a count is never guessed. Without Stripe, `open` follows the static deadline only.
- * - `discount`: what /api/checkout will apply automatically for this visitor, using the same
- *   rule (creator code from ?code= or the pp_ref cookie, else FOUNDING100), so the price shown is
- *   the price charged.
+ * - `discounts`: every automatic discount /api/checkout would consider for this visitor (a
+ *   creator or referral code from ?code= or the pp_ref cookie, and FOUNDING100). The product step
+ *   runs the same pickCheckoutDiscount on its subtotal, so the price shown is the price charged.
  */
 export async function GET(req: Request) {
   const live = await (foundingStatus() ?? Promise.resolve(null));
@@ -34,34 +34,44 @@ export async function GET(req: Request) {
   const rawTyped = new URL(req.url).searchParams.get("code");
   const typed = rawTyped ? normalizeCode(rawTyped.slice(0, 64)) : null;
   const store = await cookies();
-  const cookieCode = normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
+  const ownCode = normalizeCode(safeDecode(store.get("pp_own_ref")?.value ?? ""));
+  const cookieRaw = normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
+  const cookieCode = cookieRaw && cookieRaw !== ownCode ? cookieRaw : null;
 
-  let partner: { code: string; discountPercent: number } | null = null;
-  let typedValid: boolean | undefined;
+  type Found = Awaited<ReturnType<typeof import("@/lib/partners").getPartnerByCode>>;
+  let partner: Found = null;
+  let typedResult: OfferStatus["code"];
   if (typed || cookieCode) {
     const { getPartnerByCode } = await import("@/lib/partners");
     if (typed) {
-      partner = await getPartnerByCode(typed).catch(() => null);
-      typedValid = Boolean(partner);
+      const found = await getPartnerByCode(typed).catch(() => null);
+      if (found && typed === ownCode) {
+        typedResult = { code: found.code, valid: false, kind: found.kind, reason: "own_code" };
+      } else {
+        partner = found;
+        typedResult = { code: found?.code ?? typed, valid: Boolean(found), ...(found ? { kind: found.kind } : {}) };
+      }
     }
     if (!partner && cookieCode) partner = await getPartnerByCode(cookieCode).catch(() => null);
   }
 
-  const partnerPercent = partner && partner.discountPercent > 0 ? partner.discountPercent : null;
+  const discounts: DiscountOption[] = [];
+  if (partner?.kind === "customer") {
+    const { referralOption } = await import("@/lib/referrals");
+    discounts.push(referralOption(partner));
+  } else if (partner && partner.discountPercent > 0) {
+    discounts.push({ source: "partner", code: partner.code, percentOff: partner.discountPercent });
+  }
   // With Stripe, only a live, redeemable FOUNDING100 counts (exactly what checkout applies).
   // Without Stripe there is no checkout to disagree with, so the static deadline decides.
-  const choice = pickCheckoutDiscount({ partnerPercent, foundingOpen: live ? live.open : founding.open });
-  const discount: OfferStatus["discount"] =
-    choice === "partner" && partner && partnerPercent
-      ? { source: "partner", percentOff: partnerPercent, code: partner.code }
-      : choice === "founding"
-        ? { source: "founding", percentOff: FOUNDING.percentOff, code: FOUNDING.code }
-        : null;
+  if (live ? live.open : founding.open) {
+    discounts.push({ source: "founding", code: FOUNDING.code, percentOff: FOUNDING.percentOff });
+  }
 
   const body: OfferStatus = {
     founding,
-    discount,
-    ...(rawTyped ? { code: { code: typed ?? rawTyped.trim().toUpperCase().slice(0, 64), valid: Boolean(typedValid) } } : {}),
+    discounts,
+    ...(rawTyped ? { code: typedResult ?? { code: rawTyped.trim().toUpperCase().slice(0, 64), valid: false } } : {}),
   };
   return Response.json(body, { headers: { "Cache-Control": "private, no-store" } });
 }

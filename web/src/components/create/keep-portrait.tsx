@@ -120,7 +120,7 @@ export function KeepPortrait({
 
   if (!open) return null;
   const offer = peekOffer();
-  const foundingApplies = offer?.discount?.source === "founding";
+  const foundingApplies = Boolean(offer?.discounts?.some((d) => d.source === "founding"));
 
   return (
     <dialog

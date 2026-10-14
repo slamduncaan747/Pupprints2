@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, Gift } from "lucide-react";
+import { Download, ExternalLink, Gift, Layers, Printer } from "lucide-react";
 import { z } from "zod";
 import { db } from "@/lib/supabase/server";
 import { daysAgoIso, getPartnerStats, partnerShareLink, partnerStatsLink, partnerStatsToken, type PartnerRow } from "@/lib/partners";
 import { PartnerForm } from "@/components/admin/partner-form";
 import { CopyButton, PartnerQuickActions } from "@/components/admin/partner-controls";
 import { REDEEMABLE_STATUSES } from "@/components/partners/program";
+import { nicheCampaign, partnerQrUrl, qrSvg, qrSvgDataUrl } from "@/components/admin/partner-qr";
 import { Card, DbMissing, PageHeader, StatusPill, adminButton, fmtDate, fmtMoney, fmtNum } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
@@ -115,6 +116,8 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
   const since30 = daysAgoIso(30);
   const [all, last30] = p.code ? await Promise.all([getPartnerStats(p.code), getPartnerStats(p.code, since30)]) : [null, null];
   const redeemable = (REDEEMABLE_STATUSES as readonly string[]).includes(p.status);
+  const qrUrl = p.code ? partnerQrUrl(p.code, p.niche) : null;
+  const qrImage = qrUrl ? qrSvgDataUrl(await qrSvg(qrUrl)) : null;
 
   return (
     <>
@@ -142,6 +145,9 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
                 Profile <ExternalLink className="h-3.5 w-3.5" />
               </a>
             )}
+            <Link href={`/admin/gifts/batch?partner=${p.id}`} className={adminButton("secondary")}>
+              <Layers className="h-4 w-4" /> Batch gifts
+            </Link>
             <Link href={`/admin/partners/${p.id}/gift`} className={adminButton("accent")}>
               <Gift className="h-4 w-4" /> Gift a portrait
             </Link>
@@ -205,6 +211,38 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
               )}
             </div>
           </Card>
+
+          {p.code && qrUrl && qrImage && (
+            <Card title="QR code & counter card">
+              <div className="space-y-3 p-4">
+                <div className="flex gap-4">
+                  {/* Inline SVG data URL generated server-side. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={qrImage} alt={`QR code for ${p.code}`} className="h-32 w-32 shrink-0 ring-1 ring-line" />
+                  <div className="min-w-0 text-xs text-ink-3">
+                    <p>Opens</p>
+                    <p className="break-all font-mono text-ink-2">{qrUrl}</p>
+                    <p className="mt-2">
+                      utm_campaign <span className="font-mono text-ink-2">{nicheCampaign(p.niche)}</span>
+                      {p.niche ? " (from niche)" : ": set a niche above to tag the campaign"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <a href={`/api/admin/partners/${p.id}/qr?format=svg`} download className={adminButton("secondary", "h-8 text-xs")}>
+                    <Download className="h-3.5 w-3.5" /> SVG
+                  </a>
+                  <a href={`/api/admin/partners/${p.id}/qr?format=png`} download className={adminButton("secondary", "h-8 text-xs")}>
+                    <Download className="h-3.5 w-3.5" /> PNG
+                  </a>
+                  <Link href={`/admin/partners/${p.id}/card`} target="_blank" className={adminButton("primary", "h-8 text-xs")}>
+                    <Printer className="h-3.5 w-3.5" /> A6 counter card
+                  </Link>
+                  <CopyButton value={qrUrl} label="Copy QR link" />
+                </div>
+              </div>
+            </Card>
+          )}
 
           <Card title="Performance">
             {all && last30 ? (

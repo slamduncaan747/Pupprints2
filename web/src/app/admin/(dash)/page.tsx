@@ -4,7 +4,10 @@ import Link from "next/link";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { getStyle } from "@/lib/catalog";
 import { RANGES, loadDashboard, type FunnelStep, type RangeKey } from "@/components/admin/dashboard-data";
+import { DAILY_TARGET } from "@/components/admin/scorecard";
+import { loadTodayActionTotal } from "@/components/admin/scorecard-data";
 import {
+  adminButton,
   Card,
   DbMissing,
   EmptyState,
@@ -82,11 +85,13 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
 
   let data: Awaited<ReturnType<typeof loadDashboard>> | null = null;
   let error: string | null = null;
+  const todayActions = loadTodayActionTotal(c);
   try {
     data = await loadDashboard(c, range);
   } catch (err) {
     error = err instanceof Error ? err.message : "Could not load dashboard";
   }
+  const actionsToday = await todayActions;
   const rangeLabel = RANGES.find((r) => r.key === range)!.label;
 
   return (
@@ -94,6 +99,11 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
       <PageHeader
         title="Dashboard"
         subtitle={range === "today" ? "Since midnight Eastern time" : `Last ${rangeLabel.toLowerCase()}`}
+        actions={
+          <Link href="/admin/scorecard" className={adminButton("primary")}>
+            Rule of 100 · {actionsToday ?? 0}/{DAILY_TARGET} today →
+          </Link>
+        }
       />
       <FilterTabs
         current={range}

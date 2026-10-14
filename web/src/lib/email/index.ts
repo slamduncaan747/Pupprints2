@@ -30,7 +30,7 @@ export function marketingCtx(kind: string): EmailCtx | null {
 }
 
 /** Lead sources that get the preview nurture series instead of the newsletter welcome. */
-export const NURTURE_SOURCES = ["save_preview", "ai_unavailable", "checkout_unavailable"] as const;
+export const NURTURE_SOURCES = ["save_preview", "ai_unavailable", "checkout_unavailable", "phone_wallpaper"] as const;
 
 /** Newsletter-type sign-ups (footer, home, gift_cards, …) get one welcome email. */
 export function isNewsletterSource(source: string): boolean {

@@ -118,6 +118,8 @@ export type OrderRow = {
   confirmation_sent_at: string | null;
   shipped_email_sent_at: string | null;
   review_request_sent_at: string | null;
+  /** "Give $15, get $15" reminder (migration 0005). */
+  referral_reminder_sent_at?: string | null;
 };
 
 /** Orders that have been paid for (the reveal + downloads work for these). */
@@ -299,7 +301,12 @@ export async function appendNote(id: string, note: string) {
   }
 }
 
-type ClaimColumn = "confirmation_sent_at" | "reveal_sent_at" | "shipped_email_sent_at" | "review_request_sent_at";
+type ClaimColumn =
+  | "confirmation_sent_at"
+  | "reveal_sent_at"
+  | "shipped_email_sent_at"
+  | "review_request_sent_at"
+  | "referral_reminder_sent_at";
 
 /**
  * Atomically mark a once-only side effect (e.g. an email) as done. Returns true only for the
@@ -450,7 +457,10 @@ async function markLeadConverted(order: OrderRow) {
   if (error) console.error("[orders] lead conversion failed", error.message);
 }
 
-export async function sendConfirmationEmail(order: OrderRow, opts: { giftEmailedNow: boolean }) {
+export async function sendConfirmationEmail(
+  order: OrderRow,
+  opts: { giftEmailedNow: boolean; referralCode?: string | null },
+) {
   // Without an email provider nothing is claimed, so nothing is wrongly marked as sent.
   if (!order.email || !features.email) return;
   if (!(await claimOnce(order.id, "confirmation_sent_at"))) return;
@@ -478,6 +488,12 @@ export async function sendConfirmationEmail(order: OrderRow, opts: { giftEmailed
       order.gift_recipient_email || order.gift_recipient_name
         ? { name: order.gift_recipient_name, emailedNow: opts.giftEmailedNow }
         : null,
+    referral: opts.referralCode
+      ? {
+          code: opts.referralCode,
+          shareUrl: `${site.url.replace(/\/$/, "")}/?ref=${encodeURIComponent(opts.referralCode)}`,
+        }
+      : null,
   });
   const res = await sendEmail({ to: order.email, ...email, tag: "order_confirmation", idempotencyKey: `confirm-${order.id}` });
   if (!res.ok && !res.skipped) await releaseClaim(order.id, "confirmation_sent_at");
@@ -532,10 +548,13 @@ export async function sendShippedEmail(order: OrderRow) {
 
 /**
  * Fast, once-only side effects after payment (safe to call on every webhook retry):
- * lead conversion, partner attribution, confirmation email, optional Gift Reveal email.
+ * lead conversion, partner / referral attribution, the buyer's own "Give $15, get $15" code,
+ * confirmation email, optional Gift Reveal email.
  */
 export async function runPostPaymentTasks(order: OrderRow, opts: { giftSendNow: boolean }) {
-  const tasks: Promise<unknown>[] = [markLeadConverted(order)];
+  const { ensureCustomerReferral, isLiveReferral } = await import("@/lib/referrals");
+  const referral = ensureCustomerReferral(order);
+  const tasks: Promise<unknown>[] = [markLeadConverted(order), referral];
   if (order.referral_code) {
     tasks.push(
       import("@/lib/partners").then(({ recordReferralOrder }) =>
@@ -556,7 +575,10 @@ export async function runPostPaymentTasks(order: OrderRow, opts: { giftSendNow: 
       return false;
     });
   }
-  await sendConfirmationEmail(order, { giftEmailedNow }).catch((err) => console.error("[orders] confirmation failed", err));
+  const own = await referral.catch(() => null);
+  await sendConfirmationEmail(order, { giftEmailedNow, referralCode: isLiveReferral(own) ? own.code : null }).catch((err) =>
+    console.error("[orders] confirmation failed", err),
+  );
 }
 
 /**

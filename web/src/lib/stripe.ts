@@ -2,6 +2,7 @@ import "server-only";
 import Stripe from "stripe";
 import { env, features } from "@/lib/env";
 import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
+import { REFERRAL } from "@/lib/offer";
 
 /**
  * Stripe client + idempotent coupon helpers.
@@ -287,22 +288,144 @@ export function ensurePartnerPromotionCode(code: string, percent: number, opts: 
   return p;
 }
 
-/** Deactivate a creator's typeable code (partner paused/ended, or code renamed). Never throws. */
+/** Deactivate a creator's or customer's typeable code (paused/ended, or code renamed). Never throws. */
 export async function deactivatePartnerPromotionCode(code: string): Promise<void> {
   const stripe = getStripe();
   const normalized = code.trim().toUpperCase();
   if (!stripe || !normalized) return;
   for (const key of partnerPromos.keys()) if (key.startsWith(`${normalized}:`)) partnerPromos.delete(key);
+  referralPromos.delete(normalized);
   try {
     const { data } = await stripe.promotionCodes.list({ code: normalized, active: true, limit: 10 });
     for (const pc of data) {
-      if (pc.code.toUpperCase() === normalized && pc.metadata?.source === "partner") {
+      if (pc.code.toUpperCase() === normalized && (pc.metadata?.source === "partner" || pc.metadata?.source === REFERRAL_SOURCE)) {
         await stripe.promotionCodes.update(pc.id, { active: false });
       }
     }
   } catch (err) {
     console.error(`[stripe] deactivate ${normalized} failed`, err instanceof Error ? err.message : err);
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* "Give $15, get $15" customer referrals                              */
+/* ------------------------------------------------------------------ */
+
+const REFERRAL_SOURCE = "customer-referral";
+let referralCouponPromise: Promise<string> | null = null;
+
+/** PP_REFER_15: the friend's $15 off (amount-off, USD, once). Shared by every customer code. */
+export function ensureReferralCoupon(): Promise<string> | null {
+  const stripe = getStripe();
+  if (!stripe) return null;
+  if (!referralCouponPromise) {
+    referralCouponPromise = ensureCoupon(stripe, {
+      id: REFERRAL.couponId,
+      amount_off: REFERRAL.friendCents,
+      currency: "usd",
+      duration: "once",
+      name: `Referral: $${REFERRAL.friendCents / 100} off a first order`,
+    }).then((c) => c.id);
+    referralCouponPromise.catch(() => {
+      referralCouponPromise = null;
+    });
+  }
+  return referralCouponPromise;
+}
+
+const referralPromos = new Map<string, Promise<boolean>>();
+
+/**
+ * Make a customer's referral code (e.g. BISCUIT-7K2) a typeable Stripe promotion code on
+ * PP_REFER_15, restricted to first-time customers and a $59 minimum, so it also works in Stripe's
+ * promo box. (With ?ref= or the code field, checkout applies the coupon itself after the same
+ * checks.) Idempotent; never throws; resolves false on failure.
+ */
+export function ensureReferralPromotionCode(code: string, opts: { force?: boolean } = {}): Promise<boolean> {
+  const stripe = getStripe();
+  const normalized = code.trim().toUpperCase();
+  if (!stripe || !/^[A-Z0-9-]{2,40}$/.test(normalized)) return Promise.resolve(false);
+  const couponPromise = ensureReferralCoupon();
+  if (!couponPromise) return Promise.resolve(false);
+  let p = opts.force ? undefined : referralPromos.get(normalized);
+  if (!p) {
+    p = (async () => {
+      const couponId = await couponPromise;
+      const { data } = await stripe.promotionCodes.list({ code: normalized, active: true, limit: 10 });
+      const sameCode = data.filter((pc) => pc.code.toUpperCase() === normalized);
+      const couponOf = (pc: Stripe.PromotionCode) =>
+        typeof pc.promotion.coupon === "string" ? pc.promotion.coupon : (pc.promotion.coupon?.id ?? null);
+      if (sameCode.some((pc) => couponOf(pc) === couponId)) return true;
+      if (sameCode.length > 0) {
+        console.warn(`[stripe] promotion code ${normalized} already exists for another offer; not replacing it`);
+        return false;
+      }
+      await stripe.promotionCodes.create({
+        promotion: { type: "coupon", coupon: couponId },
+        code: normalized,
+        restrictions: {
+          first_time_transaction: true,
+          minimum_amount: REFERRAL.minimumCents,
+          minimum_amount_currency: "usd",
+        },
+        metadata: { source: REFERRAL_SOURCE, partner_code: normalized },
+      });
+      return true;
+    })().catch((err) => {
+      console.error(`[stripe] ensureReferralPromotionCode ${normalized} failed`, err instanceof Error ? err.message : err);
+      referralPromos.delete(normalized);
+      return false;
+    });
+    referralPromos.set(normalized, p);
+  }
+  return p;
+}
+
+/**
+ * The referrer's thank-you: a single-use $15-off promotion code (PP_REFER_THANKS_15) valid for a
+ * year. The code string is derived from the reward id, so a retry finds the code it already made
+ * instead of minting a second one. null when Stripe is unavailable or creation fails.
+ */
+export async function createReferralRewardCode(
+  rewardId: string,
+  code: string,
+  opts: { referrerCode: string; validDays?: number },
+): Promise<{ code: string; expiresAt: Date } | null> {
+  const stripe = getStripe();
+  if (!stripe) return null;
+  try {
+    const coupon = await ensureCoupon(stripe, {
+      id: REFERRAL.rewardCouponId,
+      amount_off: REFERRAL.rewardCents,
+      currency: "usd",
+      duration: "once",
+      name: `Referral thank-you: $${REFERRAL.rewardCents / 100} off`,
+    });
+    const existing = await stripe.promotionCodes.list({ code, limit: 10 });
+    const mine = existing.data.find((pc) => pc.code.toUpperCase() === code && pc.metadata?.reward_id === rewardId);
+    if (mine) {
+      return { code: mine.code, expiresAt: mine.expires_at ? new Date(mine.expires_at * 1000) : addDays(new Date(), opts.validDays ?? REFERRAL.rewardValidDays) };
+    }
+    const expiresAt = addDays(new Date(), opts.validDays ?? REFERRAL.rewardValidDays);
+    const created = await stripe.promotionCodes.create(
+      {
+        promotion: { type: "coupon", coupon: coupon.id },
+        code,
+        max_redemptions: 1,
+        expires_at: Math.floor(expiresAt.getTime() / 1000),
+        metadata: { source: "referral-reward", reward_id: rewardId, referrer_code: opts.referrerCode },
+      },
+      { idempotencyKey: `pp-referral-reward-${rewardId}` },
+    );
+    return { code: created.code, expiresAt };
+  } catch (err) {
+    console.error("[stripe] referral reward code failed", err instanceof Error ? err.message : err);
+    return null;
+  }
+}
+
+function addDays(d: Date, days: number): Date {
+  return new Date(d.getTime() + days * 24 * 60 * 60 * 1000);
 }
 
 /** The customer-facing promotion codes a completed Checkout Session used (upper-cased). */

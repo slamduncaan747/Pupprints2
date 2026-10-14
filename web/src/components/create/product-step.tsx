@@ -15,13 +15,18 @@ import {
   type ProductType,
 } from "@/lib/catalog";
 import {
+  discountLabel,
+  discountSaving,
   FOUNDING_OFFER,
   GUARANTEE,
   HEIRLOOM_SET,
   heirloomSets,
   holidayNotice,
   percentOffCents,
+  pickCheckoutDiscount,
+  REFERRAL,
   valueStackFor,
+  type DiscountOption,
   type OfferStatus,
 } from "@/lib/offer";
 import { buttonClasses } from "@/components/ui/button";
@@ -131,16 +136,39 @@ export function ProductStep({
   const shipping = physical ? SHIPPING_RATES[selection.shipCountry] : 0;
 
   // Same pricing rules as /api/checkout: catalog prices, the Heirloom Set saving, then the one
-  // automatic discount (FOUNDING100 or a creator code), which never touches shipping.
+  // automatic discount that saves the most (FOUNDING100, a creator code or a friend's referral
+  // code), which never touches shipping.
   const heirloom = heirloomSets(chosenAddons.map((a) => ({ variantId: a.id, quantity: 1 })), physical) > 0;
   const addonPrice = (a: Addon) => a.price - (heirloom ? (HEIRLOOM_SET.unitDiscount[a.id] ?? 0) : 0);
   const merchandise = variant.price + chosenAddons.reduce((sum, a) => sum + addonPrice(a), 0);
   const offer = useOffer(flow.creatorCode);
-  const discount = offer?.discount ?? null;
-  const discountCents = discount ? percentOffCents(merchandise, discount.percentOff) : 0;
+  const options = offer?.discounts ?? [];
+  const discount = pickCheckoutDiscount(options, merchandise);
+  const discountCents = discount ? discountSaving(discount, merchandise) : 0;
   const total = merchandise - discountCents + shipping;
-  const discounted = (cents: number) => (discount ? cents - percentOffCents(cents, discount.percentOff) : cents);
-  const priceTag = discount?.source === "founding" ? "Founding price" : "With your code";
+  const addonsCents = merchandise - variant.price;
+  /** A size's price with the discount checkout would apply if that size were chosen (same add-ons). */
+  const priceFor = (variantCents: number) => {
+    const opt = pickCheckoutDiscount(options, variantCents + addonsCents);
+    const off = !opt
+      ? 0
+      : opt.source === "referral"
+        ? Math.min(discountSaving(opt, variantCents + addonsCents), variantCents)
+        : percentOffCents(variantCents, opt.percentOff);
+    return { cents: variantCents - off, option: off > 0 ? opt : null };
+  };
+  const tagFor = (opt: DiscountOption | null) =>
+    opt?.source === "founding" ? "Founding price" : opt?.source === "referral" ? "With a friend's code" : "With your code";
+  const priceTag = tagFor(discount);
+  const headline = priceFor(variant.price);
+  /** A friend's referral code that isn't the discount applied (below $59, or founding saves more). */
+  const referral = options.find((o): o is Extract<DiscountOption, { source: "referral" }> => o.source === "referral") ?? null;
+  const referralNote =
+    referral && discount?.source !== "referral"
+      ? merchandise < referral.minimumCents
+        ? `Referral code ${referral.code}: $${referral.amountOffCents / 100} off first orders of $${referral.minimumCents / 100} or more`
+        : `The founding offer saves you more on this order. Code ${referral.code} still thanks your friend.`
+      : null;
   const style = getStyle(active.style);
   const name = (giftToken ? (active.petName ?? "") : flow.petName).trim();
 
@@ -351,7 +379,7 @@ export function ProductStep({
           {name || "Your dog"}, as {style?.name ?? "a portrait"}
         </p>
         <h1 className="mt-3 font-display text-[40px] leading-[1.04] sm:text-[52px]">{product.name}</h1>
-        {discount ? (
+        {discount && headline.option ? (
           <div className="mt-4 motion-safe:animate-fade-up">
             <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="sr-only">Regular price</span>
@@ -359,7 +387,7 @@ export function ProductStep({
                 {formatPrice(variant.price)}
               </s>
               <span className="sr-only">, {priceTag.toLowerCase()}</span>
-              <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(discounted(variant.price))}</span>
+              <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(headline.cents)}</span>
               <span aria-hidden className="label text-ink-3">
                 {priceTag}
               </span>
@@ -372,15 +400,23 @@ export function ProductStep({
                     <span className="text-ink-3 tabular-nums"> · {offer.founding.remaining} remaining</span>
                   )}
                 </>
-              ) : (
+              ) : discount.source === "partner" ? (
                 <>
                   Creator code {discount.code} — {discount.percentOff}% off, applied at checkout
                 </>
+              ) : (
+                <>
+                  Referral code {discount.code} — ${discount.amountOffCents / 100} off your first order, applied at checkout
+                </>
               )}
             </p>
+            {referralNote && <p className="label mt-2 leading-relaxed text-ink-3">{referralNote}</p>}
           </div>
         ) : (
-          <p className="mt-4 font-display text-[26px] leading-none tabular-nums">{formatPrice(variant.price)}</p>
+          <>
+            <p className="mt-4 font-display text-[26px] leading-none tabular-nums">{formatPrice(variant.price)}</p>
+            {referralNote && <p className="label mt-3 leading-relaxed text-ink-3">{referralNote}</p>}
+          </>
         )}
         <p className="mt-6 text-[14px] leading-relaxed text-ink-2">{product.tagline}</p>
         <details className="group mt-2">
@@ -415,16 +451,18 @@ export function ProductStep({
                       {v.label}
                     </span>
                     <span className={cn("tabular-nums", sel ? "text-ink" : "text-ink-3 group-hover:text-ink")}>
-                      {discount ? (
-                        <>
-                          <span className="sr-only">Regular price </span>
-                          <s className="mr-2.5 text-ink-3 decoration-1">{formatPrice(v.price)}</s>
-                          <span className="sr-only">{priceTag.toLowerCase()} </span>
-                          {formatPrice(discounted(v.price))}
-                        </>
-                      ) : (
-                        formatPrice(v.price)
-                      )}
+                      {(() => {
+                        const p = priceFor(v.price);
+                        if (!p.option) return formatPrice(v.price);
+                        return (
+                          <>
+                            <span className="sr-only">Regular price </span>
+                            <s className="mr-2.5 text-ink-3 decoration-1">{formatPrice(v.price)}</s>
+                            <span className="sr-only">{tagFor(p.option).toLowerCase()} </span>
+                            {formatPrice(p.cents)}
+                          </>
+                        );
+                      })()}
                     </span>
                   </button>
                 );
@@ -629,14 +667,7 @@ export function ProductStep({
             ))}
             {physical && shipping > 0 && <StackRow item={`Tracked shipping to ${COUNTRY_LABEL[selection.shipCountry]}`} value={formatPrice(shipping)} />}
             {discount && discountCents > 0 && (
-              <StackRow
-                item={
-                  discount.source === "founding"
-                    ? `Founding offer, ${discount.percentOff}% off`
-                    : `Creator code ${discount.code}, ${discount.percentOff}% off`
-                }
-                value={`−${formatPrice(discountCents)}`}
-              />
+              <StackRow item={discountLabel(discount)} value={`−${formatPrice(discountCents)}`} />
             )}
           </dl>
           <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-4">
@@ -653,7 +684,7 @@ export function ProductStep({
             </p>
           </div>
           <p className="mt-3 text-[12px] text-ink-3">No hidden fees. Sales tax, if any, is shown before you pay.</p>
-          <CreatorCode code={flow.creatorCode} className="mt-4" />
+          <CreatorCode code={flow.creatorCode} kind={offer?.code?.kind} className="mt-4" />
         </section>
 
         {/* Risk reversal: the last thing read before the button */}
@@ -812,15 +843,16 @@ function StackRow({ item, value, quiet }: { item: string; value: ReactNode; quie
 }
 
 /**
- * "Have a creator code?": while FOUNDING100 is applied automatically Stripe's promo-code box is
- * off, so a creator's code is entered here. It's checked against /api/offer before it's kept,
- * and sent with the checkout so the creator is credited (and their discount applies).
+ * "Have a creator or friend's code?": while FOUNDING100 is applied automatically Stripe's promo-code
+ * box is off, so a creator's code or a friend's referral code is entered here. It's checked against
+ * /api/offer before it's kept, and sent with the checkout so its owner is credited (and the best
+ * discount applies).
  */
-function CreatorCode({ code, className }: { code: string; className?: string }) {
+function CreatorCode({ code, kind, className }: { code: string; kind?: "creator" | "customer"; className?: string }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const [state, setState] = useState<"idle" | "checking" | "invalid" | "error">("idle");
+  const [state, setState] = useState<"idle" | "checking" | "invalid" | "own" | "error">("idle");
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -835,7 +867,7 @@ function CreatorCode({ code, className }: { code: string; className?: string }) 
         setValue("");
         setOpen(false);
       } else {
-        setState("invalid");
+        setState(res.code?.reason === "own_code" ? "own" : "invalid");
       }
     } catch {
       setState("error");
@@ -846,7 +878,7 @@ function CreatorCode({ code, className }: { code: string; className?: string }) 
     return (
       <p className={cn("flex flex-wrap items-center gap-x-4 text-[12px] text-ink-3", className)}>
         <span>
-          Creator code <span className="text-ink">{code}</span> applied.
+          {kind === "customer" ? "Referral code" : "Creator code"} <span className="text-ink">{code}</span> applied.
         </span>
         <button
           type="button"
@@ -861,14 +893,14 @@ function CreatorCode({ code, className }: { code: string; className?: string }) 
   if (!open) {
     return (
       <button type="button" onClick={() => setOpen(true)} className={cn("link-cta inline-flex min-h-11 items-center text-ink-3", className)}>
-        Have a creator code?
+        Have a creator or friend&apos;s code?
       </button>
     );
   }
   return (
     <form onSubmit={onSubmit} noValidate className={className}>
       <label htmlFor={id} className="label text-ink-3">
-        Creator code
+        Creator or referral code
       </label>
       <div className="mt-1 flex items-end gap-4">
         <input
@@ -883,10 +915,10 @@ function CreatorCode({ code, className }: { code: string; className?: string }) 
             setValue(e.target.value);
             if (state !== "checking") setState("idle");
           }}
-          aria-invalid={state === "invalid" || undefined}
-          aria-describedby={state === "invalid" || state === "error" ? `${id}-msg` : undefined}
+          aria-invalid={state === "invalid" || state === "own" || undefined}
+          aria-describedby={state === "invalid" || state === "own" || state === "error" ? `${id}-msg` : undefined}
           className="h-11 min-w-0 flex-1 rounded-none border-0 border-b border-line bg-transparent px-0 text-[16px] uppercase text-ink outline-none transition-colors placeholder:normal-case placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none"
-          placeholder="e.g. the code from a creator's post"
+          placeholder="e.g. a creator's or a friend's code"
         />
         <button
           type="submit"
@@ -897,9 +929,13 @@ function CreatorCode({ code, className }: { code: string; className?: string }) 
           Apply
         </button>
       </div>
-      {(state === "invalid" || state === "error") && (
+      {(state === "invalid" || state === "own" || state === "error") && (
         <p id={`${id}-msg`} role="alert" className="mt-2 text-[12px] text-ink">
-          {state === "invalid" ? "We don't recognize that code." : "We couldn't check that code just now. Please try again."}
+          {state === "invalid"
+            ? "We don't recognize that code."
+            : state === "own"
+              ? `That's your own code. Share it with a friend: they take $${REFERRAL.friendCents / 100} off, and you get $${REFERRAL.rewardCents / 100}.`
+              : "We couldn't check that code just now. Please try again."}
         </p>
       )}
     </form>

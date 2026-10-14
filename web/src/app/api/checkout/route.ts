@@ -4,22 +4,25 @@ import { after } from "next/server";
 import { z } from "zod";
 import { ADDONS, findAddon, findVariant, PRODUCT_MAP, SHIPPING_RATES, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site } from "@/lib/config";
-import { HEIRLOOM_SET, heirloomSets, pickCheckoutDiscount } from "@/lib/offer";
+import { FOUNDING } from "@/lib/launch";
+import { HEIRLOOM_SET, heirloomSets, pickCheckoutDiscount, type DiscountOption } from "@/lib/offer";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { getSessionId } from "@/lib/session";
 import {
   ensurePartnerCoupon,
   ensurePartnerPromotionCode,
+  ensureReferralCoupon,
+  ensureReferralPromotionCode,
   ensureWelcomePromo,
   forgetFoundingStatus,
   foundingStatus,
   getStripe,
   isDiscountError,
 } from "@/lib/stripe";
-import { itemLabel, styleNameOf, type OrderItem } from "@/lib/orders";
+import { itemLabel, PAID_STATUSES, styleNameOf, type OrderItem } from "@/lib/orders";
 import type { RedeemablePartner } from "@/lib/partners";
 import { shipWindow } from "@/components/order/timeline";
-import { normalizeCode } from "@/components/partners/program";
+import { escapeLike, normalizeCode } from "@/components/partners/program";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -130,6 +133,24 @@ function parseUtm(raw: string | undefined): Record<string, string> | null {
 
 function siteUrl() {
   return site.url.replace(/\/$/, "");
+}
+
+/**
+ * A friend's referral code only discounts a first order, never the code owner's own. Checkout
+ * usually doesn't know the email yet (Stripe collects it), so the webhook re-checks both before
+ * the referrer is rewarded.
+ */
+async function referralAllowed(partner: RedeemablePartner, email: string | undefined): Promise<boolean> {
+  if (!email) return true;
+  const e = email.toLowerCase();
+  if (partner.email && partner.email === e) return false;
+  const { data } = await db()!
+    .from("orders")
+    .select("id")
+    .ilike("email", escapeLike(e))
+    .in("status", [...PAID_STATUSES, "refunded"])
+    .limit(1);
+  return !(data && data.length > 0);
 }
 
 /**
@@ -276,14 +297,17 @@ export async function POST(req: Request) {
 
   // --- Attribution -------------------------------------------------------------------
   const store = await cookies();
-  // A creator code typed on the product step wins over an earlier ?ref= link (most recent intent).
-  const typedCode = normalizeCode(body.code);
+  // The visitor's own referral code (set on their order page): never a discount or credit for them.
+  const ownCode = normalizeCode(safeDecode(store.get("pp_own_ref")?.value ?? ""));
+  const notOwn = (code: string | null) => (code && code !== ownCode ? code : null);
+  // A creator or referral code typed on the product step wins over an earlier ?ref= link (most recent intent).
+  const typedCode = notOwn(normalizeCode(body.code));
   let typedPartner: RedeemablePartner | null = null;
   if (typedCode) {
     const { getPartnerByCode } = await import("@/lib/partners");
     typedPartner = await getPartnerByCode(typedCode).catch(() => null);
   }
-  let referralCode = typedPartner?.code ?? normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
+  let referralCode = typedPartner?.code ?? notOwn(normalizeCode(safeDecode(store.get("pp_ref")?.value ?? "")));
   // A gift from a creator credits that creator when the visitor has no other referral.
   if (!referralCode && gift?.partnerId) {
     const { data: partner } = await supabase
@@ -320,30 +344,50 @@ export async function POST(req: Request) {
 
   try {
     // --- Discounts ---------------------------------------------------------------------
-    // 1. A creator code (?ref= link, gift from a creator, or typed on the product step).
-    // 2. Otherwise FOUNDING100, applied automatically while it can really be redeemed.
-    // 3. Otherwise Stripe's promo-code box (WELCOME10, personal codes, creator codes).
+    // Stripe takes one discount per session, so every automatic discount the visitor qualifies
+    // for competes and the one that saves them the most on this order wins:
+    //   - a creator code (?ref= link, gift from a creator, or typed on the product step), % off;
+    //   - a friend's referral code ($15 off a first order of $59+);
+    //   - FOUNDING100, while it can really be redeemed.
+    // The code's owner is credited either way (orders.referral_code). With none of them, Stripe's
+    // promo-code box opens (WELCOME10, personal codes, typed creator / referral codes).
     let discounts: Stripe.Checkout.SessionCreateParams.Discount[] | undefined;
-    let applied: "partner" | "founding" | null = null;
+    let applied: DiscountOption["source"] | null = null;
     let partner = typedPartner;
     if (!partner && referralCode) {
       const { getPartnerByCode } = await import("@/lib/partners");
       partner = await getPartnerByCode(referralCode).catch(() => null);
     }
-    const partnerPercent = partner && partner.discountPercent > 0 ? partner.discountPercent : null;
-    // Lazily make their code typeable too (cached per instance; never blocks checkout).
-    if (partner && partnerPercent) {
+    const merchandise = items.filter((i) => !i.included).reduce((sum, i) => sum + i.unitAmount * i.quantity, 0);
+    const options: DiscountOption[] = [];
+    if (partner?.kind === "customer") {
+      if (await referralAllowed(partner, body.email)) {
+        const { referralOption } = await import("@/lib/referrals");
+        options.push(referralOption(partner));
+      }
+      // Lazily make the code typeable in Stripe's box too (cached per instance; never blocks).
+      const { code } = partner;
+      after(() => ensureReferralPromotionCode(code));
+    } else if (partner && partner.discountPercent > 0) {
+      options.push({ source: "partner", code: partner.code, percentOff: partner.discountPercent });
       const { code, discountPercent } = partner;
       after(() => ensurePartnerPromotionCode(code, discountPercent));
     }
     const founding = await (foundingStatus() ?? Promise.resolve(null));
     const foundingOpen = Boolean(founding?.open && founding.promotionCodeId);
-    const choice = pickCheckoutDiscount({ partnerPercent, foundingOpen });
-    if (choice === "partner" && partnerPercent) {
-      const coupon = await (ensurePartnerCoupon(partnerPercent) ?? Promise.resolve(null)).catch(() => null);
+    if (foundingOpen) options.push({ source: "founding", code: FOUNDING.code, percentOff: FOUNDING.percentOff });
+    const choice = pickCheckoutDiscount(options, merchandise);
+    if (choice?.source === "partner") {
+      const coupon = await (ensurePartnerCoupon(choice.percentOff) ?? Promise.resolve(null)).catch(() => null);
       if (coupon) {
         discounts = [{ coupon }];
         applied = "partner";
+      }
+    } else if (choice?.source === "referral") {
+      const coupon = await (ensureReferralCoupon() ?? Promise.resolve(null)).catch(() => null);
+      if (coupon) {
+        discounts = [{ coupon }];
+        applied = "referral";
       }
     }
     if (!discounts && foundingOpen && founding?.promotionCodeId) {
@@ -352,6 +396,8 @@ export async function POST(req: Request) {
     }
     // Promo-code box: make sure WELCOME10 exists (idempotent, cached per instance).
     if (!discounts) await ensureWelcomePromo();
+    // The founding offer won (or nothing applies) although a referral code was used: say so.
+    const referralUsed = partner?.kind === "customer" && applied !== "referral";
 
     // --- Line items ------------------------------------------------------------------
     const automaticTax = process.env.STRIPE_AUTOMATIC_TAX === "1";
@@ -391,6 +437,7 @@ export async function POST(req: Request) {
       orderNumber: order.order_number,
       giftSendNow: body.giftRecipientEmail && body.giftSendNow !== false ? "1" : "0",
       ...(applied ? { offer: applied } : {}),
+      ...(referralUsed && partner ? { referral: partner.code } : {}),
       ...(sets > 0 ? { heirloomSets: String(sets) } : {}),
     };
 

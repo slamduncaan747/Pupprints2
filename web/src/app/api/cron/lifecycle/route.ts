@@ -13,6 +13,7 @@ import {
 } from "@/lib/email";
 import { FOUNDING } from "@/lib/launch";
 import { syncPartnerPromo } from "@/lib/partners";
+import { issueDueReferralRewards, sendReferralReminders } from "@/lib/referrals";
 import {
   claimOnce,
   downloadUrl,
@@ -243,12 +244,16 @@ async function runOrderEmails() {
   return stats;
 }
 
-/** Backfill/repair: every active or gifted creator's code exists as a typeable Stripe promotion code. */
+/**
+ * Backfill/repair: every active or gifted creator's code exists as a typeable Stripe promotion code.
+ * (Customer referral codes are made when the order is paid and again lazily at checkout.)
+ */
 async function syncPartnerPromos() {
   const { data, error } = await db()!
     .from("partners")
     .select("code, status, discount_percent")
     .in("status", [...REDEEMABLE_STATUSES])
+    .neq("kind", "customer")
     .not("code", "is", null)
     .limit(500);
   if (error) throw new Error(`partners query failed: ${error.message}`);
@@ -277,17 +282,25 @@ export async function GET(req: Request) {
   const skip = Promise.resolve({ skipped: "RESEND_API_KEY not set" });
   // Marketing emails need a postal address (CAN-SPAM); leads stay untouched until it's set.
   const nurtureCtx = features.email ? marketingCtx("nurture") : null;
-  const [nurture, orders, stalePending, partnerPromos] = await Promise.allSettled([
+  // "Give $15, get $15" reminder is marketing too (postal address + unsubscribe).
+  const referralCtx = features.email ? marketingCtx("referral_reminder") : null;
+  const [nurture, orders, stalePending, partnerPromos, referralRewards, referralReminders] = await Promise.allSettled([
     !features.email ? skip : nurtureCtx ? runNurture(nurtureCtx) : Promise.resolve({ skipped: "BUSINESS_POSTAL_ADDRESS not set" }),
     features.email ? runOrderEmails() : skip,
     countStalePending(),
     features.stripe ? syncPartnerPromos() : Promise.resolve({ skipped: "STRIPE_SECRET_KEY not set" }),
+    // Referrer rewards: single-use $15 codes once the friend's order is past its guarantee window.
+    issueDueReferralRewards(),
+    !features.email
+      ? skip
+      : referralCtx
+        ? sendReferralReminders(referralCtx, unsubscribedEmails)
+        : Promise.resolve({ skipped: "BUSINESS_POSTAL_ADDRESS not set" }),
   ]);
-  result.nurture = nurture.status === "fulfilled" ? nurture.value : { error: String(nurture.reason) };
-  result.orders = orders.status === "fulfilled" ? orders.value : { error: String(orders.reason) };
+  const settled = { nurture, orders, partnerPromos, referralRewards, referralReminders };
+  for (const [key, r] of Object.entries(settled)) result[key] = r.status === "fulfilled" ? r.value : { error: String(r.reason) };
   result.stalePendingOrders = stalePending.status === "fulfilled" ? stalePending.value : null;
-  result.partnerPromos = partnerPromos.status === "fulfilled" ? partnerPromos.value : { error: String(partnerPromos.reason) };
-  if ([nurture, orders, stalePending, partnerPromos].some((r) => r.status === "rejected")) result.ok = false;
+  if ([...Object.values(settled), stalePending].some((r) => r.status === "rejected")) result.ok = false;
   console.info("[cron/lifecycle]", JSON.stringify(result));
   return Response.json(result, { headers: { "Cache-Control": "no-store" } });
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Layers, Plus } from "lucide-react";
 import { db } from "@/lib/supabase/server";
 import { GiftList } from "@/components/admin/gift-list";
 import { loadGifts } from "@/components/admin/gifts";
@@ -35,9 +35,14 @@ export default async function GiftsPage() {
         title="Gifts"
         subtitle={`${gifts.length} gift portraits · ${opened} opened (${gifts.length ? Math.round((opened / gifts.length) * 100) : 0}%) · ${views} total views`}
         actions={
-          <Link href="/admin/gifts/new" className={adminButton("primary")}>
-            <Plus className="h-4 w-4" /> New gift
-          </Link>
+          <>
+            <Link href="/admin/gifts/batch" className={adminButton("secondary")}>
+              <Layers className="h-4 w-4" /> Batch (up to 20)
+            </Link>
+            <Link href="/admin/gifts/new" className={adminButton("primary")}>
+              <Plus className="h-4 w-4" /> New gift
+            </Link>
+          </>
         }
       />
       {error && <ErrorNote message={error} />}

@@ -124,21 +124,77 @@ export function percentOffCents(cents: number, percentOff: number): number {
 }
 
 /**
- * Which automatic discount checkout applies, given the visitor's creator code (if any) and
- * whether FOUNDING100 can really be redeemed. Creator codes win (they credit the creator), unless
- * the founding offer is strictly better for the customer; the creator is still credited then.
+ * "Give $15, get $15": the customer referral program. Every paying customer gets a personal code
+ * (e.g. BISCUIT-7K2). A friend takes $15 off a first order of $59+; the referrer gets a single-use
+ * $15 code once the friend's order is past its 30-day guarantee window. Real terms: /terms#referrals.
  */
-export function pickCheckoutDiscount({
-  partnerPercent,
-  foundingOpen,
-}: {
-  partnerPercent: number | null;
-  foundingOpen: boolean;
-}): "partner" | "founding" | null {
-  const partner = partnerPercent && partnerPercent > 0 ? partnerPercent : 0;
-  if (partner && !(foundingOpen && FOUNDING.percentOff > partner)) return "partner";
-  if (foundingOpen) return "founding";
-  return null;
+export const REFERRAL = {
+  /** Friend's saving on a first order (merchandise subtotal, never shipping). */
+  friendCents: 1500,
+  /** Minimum merchandise subtotal for the friend's saving (protects poster margin). */
+  minimumCents: 5900,
+  /** The referrer's thank-you, issued as a single-use promotion code. */
+  rewardCents: 1500,
+  /** Days after the friend's delivery before the reward is issued (the guarantee window). */
+  holdDays: 30,
+  /** Rewards per referrer per rolling year ($60). */
+  maxRewardsPerYear: 4,
+  /** Days a reward code stays valid. */
+  rewardValidDays: 365,
+  /** Shared Stripe coupons: the friend's $15 (on every customer code) and the referrer's $15. */
+  couponId: "PP_REFER_15",
+  rewardCouponId: "PP_REFER_THANKS_15",
+  headline: "Give $15, get $15",
+  /** Appended to every share text: the referrer earns something, so the share says so (FTC). */
+  disclosure: "(we both get $15)",
+} as const;
+
+/** Short terms line used on the success page, the reveal and in emails. */
+export const REFERRAL_TERMS = `$15 off a first order of $${REFERRAL.minimumCents / 100} or more. Your $15 arrives as a single-use code once their order is past its ${REFERRAL.holdDays}-day guarantee window. Up to $${(REFERRAL.rewardCents * REFERRAL.maxRewardsPerYear) / 100} a year; not for your own orders.`;
+
+/**
+ * An automatic discount this visitor qualifies for. Stripe applies one per order, so checkout
+ * picks the one that saves the customer the most (pickCheckoutDiscount).
+ */
+export type DiscountOption =
+  | { source: "founding"; code: string; percentOff: number }
+  | { source: "partner"; code: string; percentOff: number }
+  | { source: "referral"; code: string; amountOffCents: number; minimumCents: number };
+
+/** Cents an option takes off a merchandise subtotal (0 when the order is below its minimum). */
+export function discountSaving(option: DiscountOption, merchandiseCents: number): number {
+  const merch = Math.max(0, Math.round(merchandiseCents));
+  if (option.source === "referral") return merch >= option.minimumCents ? Math.min(option.amountOffCents, merch) : 0;
+  return percentOffCents(merch, option.percentOff);
+}
+
+/** Ties go to a code (it credits a creator or a friend), then to the founding offer. */
+const TIE_ORDER: Record<DiscountOption["source"], number> = { partner: 0, referral: 1, founding: 2 };
+
+/**
+ * Which automatic discount checkout applies to an order: whichever saves the customer more on this
+ * merchandise subtotal. A creator or friend whose code was used is still credited when another
+ * discount wins (the order keeps its referral code); this only decides the price.
+ */
+export function pickCheckoutDiscount(options: DiscountOption[], merchandiseCents: number): DiscountOption | null {
+  let best: DiscountOption | null = null;
+  let bestSaving = 0;
+  for (const option of options) {
+    const saving = discountSaving(option, merchandiseCents);
+    if (saving <= 0) continue;
+    if (!best || saving > bestSaving || (saving === bestSaving && TIE_ORDER[option.source] < TIE_ORDER[best.source])) {
+      best = option;
+      bestSaving = saving;
+    }
+  }
+  return best;
+}
+
+/** Customer-facing name of an applied discount, e.g. "Founding offer, 15% off". */
+export function discountLabel(option: DiscountOption): string {
+  if (option.source === "founding") return `Founding offer, ${option.percentOff}% off`;
+  if (option.source === "partner") return `Creator code ${option.code}, ${option.percentOff}% off`;
+  return `Referral code ${option.code}, $${option.amountOffCents / 100} off`;
 }
 
 /** GET /api/offer response. Every number is real: `remaining` is null unless it comes from Stripe. */
@@ -153,10 +209,13 @@ export type OfferStatus = {
     deadline: string;
     deadlineLabel: string;
   };
-  /** The discount checkout will apply automatically for this visitor, if any. */
-  discount: { source: "founding" | "partner"; percentOff: number; code: string } | null;
-  /** Present when a creator code was checked (?code=): whether it is a live creator code. */
-  code?: { code: string; valid: boolean };
+  /**
+   * Every automatic discount this visitor qualifies for (FOUNDING100, their creator code, a
+   * friend's referral code). Checkout applies pickCheckoutDiscount(discounts, merchandise).
+   */
+  discounts: DiscountOption[];
+  /** Present when a code was checked (?code=): whether it is a live creator or referral code. */
+  code?: { code: string; valid: boolean; kind?: "creator" | "customer"; reason?: "own_code" };
 };
 
 /** Static fallback (no Stripe, or before /api/offer answers): deadline only, never a count. */

@@ -1,5 +1,6 @@
 import { PROMISES } from "@/lib/catalog";
 import { FOUNDING } from "@/lib/launch";
+import { REFERRAL, REFERRAL_TERMS } from "@/lib/offer";
 import {
   button,
   callout,
@@ -56,7 +57,23 @@ export type ConfirmationInput = {
   downloads: { label: string; url: string }[];
   trackUrl: string;
   giftRecipient?: { name: string | null; emailedNow: boolean } | null;
+  /** The buyer's own "Give $15, get $15" code, once it exists. */
+  referral?: { code: string; shareUrl: string } | null;
 };
+
+const dollars = (cents: number) => `$${cents / 100}`;
+
+/** The referral share line, always with the disclosure that the sharer gets $15 too. */
+function shareLine(code: string, pet: string | null | undefined) {
+  return `I had a portrait made of ${pet?.trim() || "my dog"} at Pup Prints. See yours free, then take ${dollars(REFERRAL.friendCents)} off your first order with my code ${code} ${REFERRAL.disclosure}`;
+}
+
+/** Centered code box (the code in the display serif). */
+function codeBox(code: string, label: string, detail: string) {
+  return callout(
+    `<div style="text-align:center;"><div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#7a7368;">${esc(label)}</div><div style="font-family:Georgia,serif;font-size:28px;color:#1b1814;margin:6px 0;">${esc(code)}</div><div style="font-size:13px;color:#7a7368;">${esc(detail)}</div></div>`,
+  );
+}
 
 export function orderConfirmationEmail(i: ConfirmationInput): RenderedEmail {
   const hi = firstName(i.customerName);
@@ -120,6 +137,14 @@ export function orderConfirmationEmail(i: ConfirmationInput): RenderedEmail {
       `<strong style="color:#1b1814;">Our love-it guarantee.</strong> If it isn't right, we'll remake it or refund you in full. Just reply to this email.`,
       "sage",
     ),
+    i.referral ? divider() : "",
+    i.referral ? subheading(REFERRAL.headline) : "",
+    i.referral
+      ? para(
+          `Know someone who would love one of their dog? Your code <strong style="color:#1b1814;">${esc(i.referral.code)}</strong> takes ${dollars(REFERRAL.friendCents)} off their first order of ${dollars(REFERRAL.minimumCents)} or more, and you get ${dollars(REFERRAL.rewardCents)} too once their order is past its ${REFERRAL.holdDays}-day guarantee window. ${link(i.referral.shareUrl, "Your link")}`,
+          { size: 14 },
+        )
+      : "",
   ].join("\n");
 
   const text = lines(
@@ -149,10 +174,170 @@ export function orderConfirmationEmail(i: ConfirmationInput): RenderedEmail {
     "",
     `Our love-it guarantee: ${PROMISES.guarantee}. Just reply to this email.`,
     "",
+    i.referral ? REFERRAL.headline.toUpperCase() : null,
+    i.referral
+      ? `Your code ${i.referral.code} takes ${dollars(REFERRAL.friendCents)} off a friend's first order of ${dollars(REFERRAL.minimumCents)}+, and you get ${dollars(REFERRAL.rewardCents)} too once their order is past its ${REFERRAL.holdDays}-day guarantee window.`
+      : null,
+    i.referral ? `Your link: ${i.referral.shareUrl}` : null,
+    i.referral ? "" : null,
     textFooter(i.ctx),
   );
 
   return { subject, preheader, html: shell({ ...i.ctx, preheader, body }), text };
+}
+
+/* ------------------------------------------------------------------ */
+/* (a2) "Give $15, get $15": reminder, ~7 days after delivery           */
+/* ------------------------------------------------------------------ */
+
+export type ReferralReminderInput = {
+  ctx: EmailCtx;
+  customerName: string | null;
+  petName: string | null;
+  code: string;
+  shareUrl: string;
+  portraitUrl: string | null;
+  unsubscribeUrl: string;
+};
+
+export function referralReminderEmail(i: ReferralReminderInput): RenderedEmail {
+  const hi = firstName(i.customerName);
+  const pet = i.petName?.trim() || null;
+  const subject = pet ? `${pet}'s portrait, and $15 for a friend` : "Give $15, get $15";
+  const preheader = `Your code ${i.code} takes ${dollars(REFERRAL.friendCents)} off a friend's first portrait. You get ${dollars(REFERRAL.rewardCents)} too.`;
+  const footerNote = "You're receiving this because you ordered from Pup Prints.";
+  const share = shareLine(i.code, pet);
+  const body = [
+    heading(REFERRAL.headline),
+    para(
+      `${hi ? `${esc(hi)}, we` : "We"} hope ${pet ? `${esc(pet)}'s portrait` : "your portrait"} has found its wall. If a friend has a dog worth framing, your code takes ${dollars(REFERRAL.friendCents)} off their first order of ${dollars(REFERRAL.minimumCents)} or more, and we send you ${dollars(REFERRAL.rewardCents)} once their order is past its ${REFERRAL.holdDays}-day guarantee window.`,
+    ),
+    i.portraitUrl ? framedImage(i.portraitUrl, pet ? `Portrait of ${pet}` : "Your portrait", 220) : "",
+    codeBox(i.code, "Your code", `${dollars(REFERRAL.friendCents)} off a friend's first order of ${dollars(REFERRAL.minimumCents)}+`),
+    button(i.shareUrl, "Share your link"),
+    para(`Or copy this: &ldquo;${esc(share)} ${esc(i.shareUrl)}&rdquo;`, { muted: true, size: 14 }),
+    para(esc(REFERRAL_TERMS), { muted: true, size: 13 }),
+  ].join("\n");
+  const text = lines(
+    REFERRAL.headline,
+    "",
+    `Your code ${i.code} takes ${dollars(REFERRAL.friendCents)} off a friend's first order of ${dollars(REFERRAL.minimumCents)}+. We send you ${dollars(REFERRAL.rewardCents)} once their order is past its ${REFERRAL.holdDays}-day guarantee window.`,
+    `Your link: ${i.shareUrl}`,
+    "",
+    `Or copy this: "${share} ${i.shareUrl}"`,
+    "",
+    REFERRAL_TERMS,
+    "",
+    textFooter({ ...i.ctx, unsubscribeUrl: i.unsubscribeUrl, footerNote }),
+  );
+  return {
+    subject,
+    preheader,
+    html: shell({ ...i.ctx, preheader, body, unsubscribeUrl: i.unsubscribeUrl, footerNote }),
+    text,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* (a3) Referral reward: the referrer's single-use $15 code            */
+/* ------------------------------------------------------------------ */
+
+export type ReferralRewardInput = {
+  ctx: EmailCtx;
+  customerName: string | null;
+  /** The single-use reward code. */
+  code: string;
+  expiresAt: Date;
+  createUrl: string;
+  /** Their own referral link and code (still working). */
+  shareUrl: string;
+  referralCode: string;
+};
+
+export function referralRewardEmail(i: ReferralRewardInput): RenderedEmail {
+  const hi = firstName(i.customerName);
+  const until = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" }).format(i.expiresAt);
+  const subject = `Thank you. Here's ${dollars(REFERRAL.rewardCents)}.`;
+  const preheader = `A friend ordered with your code. Your ${dollars(REFERRAL.rewardCents)} code: ${i.code}`;
+  const body = [
+    heading(hi ? `Thank you, ${hi}.` : "Thank you."),
+    para(
+      `A friend ordered a portrait with your code, and their order is now past its ${REFERRAL.holdDays}-day guarantee window. Here is your ${dollars(REFERRAL.rewardCents)}.`,
+    ),
+    codeBox(i.code, `Your ${dollars(REFERRAL.rewardCents)} code`, `Single use, on any order. Valid until ${until}.`),
+    button(i.createUrl, "Commission another portrait"),
+    para(
+      `Your own code ${esc(i.referralCode)} keeps working: ${link(i.shareUrl, i.shareUrl.replace(/^https?:\/\//, ""))}. ${esc(REFERRAL_TERMS)}`,
+      { muted: true, size: 13 },
+    ),
+  ].join("\n");
+  const text = lines(
+    hi ? `Thank you, ${hi}.` : "Thank you.",
+    "",
+    `A friend ordered with your code, and their order is past its ${REFERRAL.holdDays}-day guarantee window.`,
+    `Your ${dollars(REFERRAL.rewardCents)} code: ${i.code} (single use, on any order, valid until ${until})`,
+    `Commission another portrait: ${i.createUrl}`,
+    "",
+    `Your own code ${i.referralCode} keeps working: ${i.shareUrl}`,
+    REFERRAL_TERMS,
+    "",
+    textFooter(i.ctx),
+  );
+  return { subject, preheader, html: shell({ ...i.ctx, preheader, body }), text };
+}
+
+/* ------------------------------------------------------------------ */
+/* (a4) Free Phone Portrait (lead magnet)                              */
+/* ------------------------------------------------------------------ */
+
+export type PhoneWallpaperInput = {
+  ctx: EmailCtx;
+  petName: string | null;
+  styleName: string | null;
+  downloadUrl: string;
+  createUrl: string;
+  unsubscribeUrl: string;
+};
+
+export function phoneWallpaperEmail(i: PhoneWallpaperInput): RenderedEmail {
+  const pet = i.petName?.trim() || null;
+  const subject = pet ? `${pet}, for your lock screen` : "Your phone portrait";
+  const preheader = "1080 × 1920, no watermark. Tap to download.";
+  const footerNote = "You asked for this phone portrait. We may send a note or two about your portrait; unsubscribe any time.";
+  const body = [
+    heading(pet ? `${pet}, for your lock screen.` : "Your portrait, for your lock screen."),
+    para(`Your free phone portrait${i.styleName ? ` (${esc(i.styleName)})` : ""}: 1080 × 1920, no watermark.`),
+    button(i.downloadUrl, "Download the wallpaper"),
+    para(
+      "On iPhone: open it, tap Share, then Use as Wallpaper. On Android: open it, then Set as wallpaper.",
+      { muted: true, size: 14 },
+    ),
+    divider(),
+    subheading("Hang it"),
+    para(
+      "The same portrait as a gallery canvas or framed print, checked by a person before printing. Free US shipping, and the print-quality file is included.",
+    ),
+    button(i.createUrl, "Choose your piece", { variant: "outline" }),
+  ].join("\n");
+  const text = lines(
+    subject,
+    "",
+    "Your free phone portrait: 1080 x 1920, no watermark.",
+    `Download: ${i.downloadUrl}`,
+    "On iPhone: open it, tap Share, then Use as Wallpaper. On Android: open it, then Set as wallpaper.",
+    "",
+    "HANG IT",
+    "The same portrait as a gallery canvas or framed print, checked by a person before printing. Free US shipping.",
+    `Choose your piece: ${i.createUrl}`,
+    "",
+    textFooter({ ...i.ctx, unsubscribeUrl: i.unsubscribeUrl, footerNote }),
+  );
+  return {
+    subject,
+    preheader,
+    html: shell({ ...i.ctx, preheader, body, unsubscribeUrl: i.unsubscribeUrl, footerNote }),
+    text,
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -343,7 +528,20 @@ export function nurtureEmail(i: NurtureInput): RenderedEmail {
   let text: string[];
 
   if (i.step === 1) {
-    if (i.source === "ai_unavailable") {
+    if (i.source === "phone_wallpaper") {
+      subject = pet ? `${pet}, from lock screen to wall` : "From lock screen to wall";
+      preheader = "The same portrait on canvas or framed, checked by a person before printing.";
+      body = [
+        heading(subject),
+        para(
+          `You have ${esc(theirPortrait)} on your phone. The same portrait, as a gallery canvas or a framed print, is a few taps away. Every piece is checked by a person before printing.`,
+        ),
+        i.previewUrl ? framedImage(i.previewUrl, pet ? `Preview of ${pet}` : "Your preview", 260) : "",
+        button(i.createUrl, "Hang it"),
+        para("Previews are always free. Try another style any time.", { muted: true, size: 14 }),
+      ];
+      text = [subject, "", `You have ${theirPortrait} on your phone. The same portrait, on canvas or framed, is a few taps away.`, `Hang it: ${i.createUrl}`];
+    } else if (i.source === "ai_unavailable") {
       subject = pet ? `Our studio is ready for ${pet}` : "Our studio is ready for your dog";
       preheader = "Sorry we were busy earlier. Your free preview takes about a minute now.";
       body = [

@@ -3,7 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { db } from "@/lib/supabase/server";
 import { env } from "@/lib/env";
 import { site } from "@/lib/config";
-import { deactivatePartnerPromotionCode, ensurePartnerPromotionCode } from "@/lib/stripe";
+import { deactivatePartnerPromotionCode, ensurePartnerPromotionCode, ensureReferralPromotionCode } from "@/lib/stripe";
 import {
   PROGRAM,
   REDEEMABLE_STATUSES,
@@ -23,9 +23,16 @@ export type RedeemablePartner = {
   code: string;
   name: string | null;
   handle: string | null;
+  /** Creators get a percent-off code; customers a "Give $15, get $15" amount-off referral code. */
+  kind: "creator" | "customer";
   discountPercent: number;
+  /** Amount-off codes (customer referrals): cents off, and the minimum merchandise subtotal. */
+  discountCents: number | null;
+  minOrderCents: number | null;
   commissionRate: number;
   status: string;
+  /** Lower-cased; used to refuse self-referrals. */
+  email: string | null;
 };
 
 export type PartnerRow = {
@@ -48,9 +55,14 @@ export type PartnerRow = {
   notes: string | null;
   last_contacted_at: string | null;
   application: Record<string, unknown> | null;
+  kind?: "creator" | "customer";
+  discount_cents?: number | null;
+  min_order_cents?: number | null;
+  referrer_order_id?: string | null;
 };
 
-const PARTNER_SELECT = "id, code, name, handle, email, discount_percent, commission_rate, status";
+const PARTNER_SELECT = "id, code, name, handle, email, discount_percent, commission_rate, status, kind, discount_cents, min_order_cents";
+const PARTNER_SELECT_LEGACY = "id, code, name, handle, email, discount_percent, commission_rate, status";
 
 type PartnerCodeRow = {
   id: string;
@@ -61,17 +73,25 @@ type PartnerCodeRow = {
   discount_percent: number | null;
   commission_rate: number | string | null;
   status: string;
+  kind?: string | null;
+  discount_cents?: number | null;
+  min_order_cents?: number | null;
 };
 
 function toRedeemable(row: PartnerCodeRow): RedeemablePartner {
+  const customer = row.kind === "customer";
   return {
     id: row.id,
     code: row.code,
     name: row.name,
     handle: row.handle,
-    discountPercent: Number(row.discount_percent ?? PROGRAM.discountPercent),
-    commissionRate: Number(row.commission_rate ?? PROGRAM.commissionRate),
+    kind: customer ? "customer" : "creator",
+    discountPercent: customer ? 0 : Number(row.discount_percent ?? PROGRAM.discountPercent),
+    discountCents: row.discount_cents ?? null,
+    minOrderCents: row.min_order_cents ?? null,
+    commissionRate: customer ? 0 : Number(row.commission_rate ?? PROGRAM.commissionRate),
     status: row.status,
+    email: row.email?.trim().toLowerCase() || null,
   };
 }
 
@@ -80,9 +100,14 @@ async function findPartnerByCode(code: string, statuses?: readonly string[]): Pr
   const normalized = normalizeCode(code);
   if (!c || !normalized) return null;
   // normalizeCode only allows [A-Z0-9-], so ilike here is an exact case-insensitive match (no wildcards).
-  let q = c.from("partners").select(PARTNER_SELECT).ilike("code", normalized);
-  if (statuses) q = q.in("status", [...statuses]);
-  const { data, error } = await q.limit(1).maybeSingle<PartnerCodeRow>();
+  const run = (select: string) => {
+    let q = c.from("partners").select(select).ilike("code", normalized);
+    if (statuses) q = q.in("status", [...statuses]);
+    return q.limit(1).maybeSingle<PartnerCodeRow>();
+  };
+  let { data, error } = await run(PARTNER_SELECT);
+  // Before migration 0005 (no kind / discount_cents columns) every partner is a creator.
+  if (error?.code === "42703") ({ data, error } = await run(PARTNER_SELECT_LEGACY));
   if (error) {
     console.error("[partners] lookup failed", error.message);
     return null;
@@ -130,6 +155,11 @@ export async function recordReferralOrder({
     if (!c) return;
     const partner = await findPartnerByCode(code);
     if (!partner) return;
+    if (partner.kind === "customer") {
+      const { recordCustomerReferral } = await import("@/lib/referrals");
+      await recordCustomerReferral(toRedeemable(partner), orderId, Number(amountCents) || 0);
+      return;
+    }
 
     const { data: existing } = await c
       .from("referral_events")
@@ -155,7 +185,7 @@ export async function recordReferralOrder({
       amount_cents: amount,
       commission_cents: Math.round(amount * (Number.isFinite(rate) ? rate : 0)),
     });
-    if (error) console.error("[partners] recordReferralOrder insert failed", error.message);
+    if (error && error.code !== "23505") console.error("[partners] recordReferralOrder insert failed", error.message);
   } catch (err) {
     console.error("[partners] recordReferralOrder failed", err);
   }
@@ -205,7 +235,7 @@ export async function uniquePartnerCode(
  * renamed code retires the old one. Never throws (run it in `after()` from admin routes).
  */
 export async function syncPartnerPromo(
-  partner: { code: string | null; status: string; discount_percent?: number | null },
+  partner: { code: string | null; status: string; discount_percent?: number | null; kind?: string | null },
   previousCode?: string | null,
 ): Promise<void> {
   try {
@@ -213,6 +243,12 @@ export async function syncPartnerPromo(
     const prev = normalizeCode(previousCode);
     if (prev && prev !== code) await deactivatePartnerPromotionCode(prev);
     if (!code) return;
+    if (partner.kind === "customer") {
+      // A customer's "Give $15, get $15" code: amount-off, first orders of $59+.
+      if ((REDEEMABLE_STATUSES as readonly string[]).includes(partner.status)) await ensureReferralPromotionCode(code, { force: true });
+      else await deactivatePartnerPromotionCode(code);
+      return;
+    }
     if ((REDEEMABLE_STATUSES as readonly string[]).includes(partner.status)) {
       await ensurePartnerPromotionCode(code, Number(partner.discount_percent ?? PROGRAM.discountPercent), { force: true });
     } else {
