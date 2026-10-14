@@ -172,12 +172,12 @@ Hormozi's order: **attraction** (get cash) → **upsell** (more cash) → **down
 | Attraction | **Free preview** (the lead magnet: about $0.08 a portrait, about $0.40 per uploader) | Live |
 | Attraction | **Founding offer**, 15% off for the first 100 orders through Oct 31, real cap | Live. Never extended or restarted |
 | Attraction | **Free Phone Portrait**: your preview as a 1080×1920 lock screen, emailed | Live |
-| Attraction | **Buy two portraits, get two matching ornaments free**, Nov 1–Dec 10 (replaces "25% off the second") | Decision §11; build §12 |
+| Attraction | **Buy two portraits, get two matching ornaments free**, Nov 1–Dec 10 (replaces "25% off the second") | Live (switches on Nov 1) |
 | Attraction | **Monthly Portrait Draw**: make a free preview to enter, one framed winner a month, $15 five-day voucher for everyone else | January, after official rules are written |
 | Upsell | Anchor ladder (show the largest real piece first, then "Our pick") · prescribe size by wall · second dog +$15 · Diptych $139 · Triptych $199 | Partly live; bundles in §12 |
 | Upsell | Bumps: ornament $19, mug $25, Heirloom Set (save $10), never pre-checked | Live |
 | Upsell | Thank-you page: "Family Copy", the same portrait shipped to someone else at 20% off, one click with the card on file | Later (needs Stripe card-on-file) |
-| Downsell | Nurture emails step down: canvas → framed → fine-art print from $35 → the file alone $29. Same portrait, smaller scope, never a discount on the same item | Next (today's nurture: reminder → what's included → Founding code) |
+| Downsell | Nurture emails step down: canvas → framed → fine-art print from $35 → the file alone $29. Same portrait, smaller scope, never a discount on the same item | Live (step 3 after the Founding offer closes) |
 | Downsell | Test "order in 48 hours and the matching ornament is on us" against a 10% code | Build §12 |
 | Continuity | **The Holiday Portrait**: opt in at checkout; each October we make this year's holiday edition of their dog, and they approve it with one tap (never auto-charged) | Q1 build, first harvest Oct 2027 |
 | Continuity | Dog's birthday captured at checkout → a free new-style preview each year | Q1 build |
@@ -428,16 +428,13 @@ December lands at about 45 orders, which is the §1.2 base case.
 
 **Live since Oct 14:** Give $15 / Get $15 referral program (success page, Gift Reveal, confirmation email, 7-day reminder, rewards issued by the daily cron after the guarantee window) · Free Phone Portrait lead magnet · partner QR code and printable A6 counter card with the fee disclosure · batch gift tool (20 at a time) · Rule-of-100 scorecard (`/admin/scorecard`) · new hero and before/after portraits (more styles in progress).
 
-**Next, by Oct 31:**
-1. "How did you hear about us?" on the success page (attribution for every order).
-2. Second dog +$15; Diptych $139 and Triptych $199 as real-saving bundles.
-3. Buy-two-get-two-ornaments, server-side, dated Nov 1–Dec 10 (if decision 3 stands).
-4. "Is this in memory?" toggle in the create flow: routes to the gentle track and suppresses urgency.
-5. Recipient's Choice in gift and guarantee copy (if decision 5 stands).
-6. Google Customer Reviews opt-in on the success page.
-7. Creator attribution window from 30 to 60 days (Crown & Paw uses 60 [S]).
-8. Nurture step 3 after Oct 31: the feature downsell (print from $35, file $29) and the 48-hour free-ornament test.
-9. Holiday Cozy retires Dec 31 (if decision 10 stands).
+**Live since Oct 14 (round 2):** "How did you hear about us?" on the success page, with a breakdown on the scorecard · Buy two portraits, get two matching ornaments free (switches on Nov 1, off after Dec 10, server-priced; quantity control in the product step) · "This portrait is in memory of my dog" toggle: no urgency, no promos, no referral asks, gentle nurture · Recipient's Choice in the guarantee, gift copy, Gift Reveal, terms and FAQ · creator/partner attribution 60 days · Holiday Cozy as the 2026 edition, retired automatically after Dec 31 · nurture step 3 becomes the print-from-$35 / file-$29 downsell once the Founding offer closes.
+
+**Next:**
+1. Google Customer Reviews opt-in on the success page (needs the domain and a Merchant Center ID).
+2. Second dog +$15 and the Diptych $139 (needs two-dog generation).
+3. The Triptych $199 (needs a three-style picker that doesn't clutter the product step).
+4. "Help me choose" for memorial orders (founder replies with the best version).
 
 **Q1:** card-on-file one-click (Family Copy) · gift cards · Holiday Portrait opt-in and birthday capture · Monthly Portrait Draw with official rules · Wall Fit preview · digital-to-canvas rollover credit.
 
