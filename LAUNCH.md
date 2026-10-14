@@ -17,6 +17,8 @@ Everything below is done in **Vercel → pup-prints → Settings → Environment
 | Order + gift emails | resend.com → API key (verify the sending domain once you own it) | `RESEND_API_KEY` |
 | Marketing-email legal footer (CAN-SPAM) | Your business mailing address (a PO box is fine) | `BUSINESS_POSTAL_ADDRESS` |
 
+Without `RESEND_API_KEY`, referral rewards (Give $15 / Get $15) stay owed in Admin → Partners instead of being emailed, and the Free Phone Portrait link is shown on screen instead of emailed. Without `BUSINESS_POSTAL_ADDRESS`, the 7-day referral reminder and nurture emails don't send.
+
 Already configured: Supabase DB + storage, `SUPABASE_SERVER_KEY`, `ADMIN_PASSWORD`, `CRON_SECRET`, site URL, support email.
 
 ## 2. Domain

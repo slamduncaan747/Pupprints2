@@ -171,7 +171,7 @@ Hormozi's order: **attraction** (get cash) → **upsell** (more cash) → **down
 |---|---|---|
 | Attraction | **Free preview** (the lead magnet: about $0.08 a portrait, about $0.40 per uploader) | Live |
 | Attraction | **Founding offer**, 15% off for the first 100 orders through Oct 31, real cap | Live. Never extended or restarted |
-| Attraction | **Free Phone Portrait**: your preview as a 1080×1920 lock screen, emailed | Building today |
+| Attraction | **Free Phone Portrait**: your preview as a 1080×1920 lock screen, emailed | Live |
 | Attraction | **Buy two portraits, get two matching ornaments free**, Nov 1–Dec 10 (replaces "25% off the second") | Decision §11; build §12 |
 | Attraction | **Monthly Portrait Draw**: make a free preview to enter, one framed winner a month, $15 five-day voucher for everyone else | January, after official rules are written |
 | Upsell | Anchor ladder (show the largest real piece first, then "Our pick") · prescribe size by wall · second dog +$15 · Diptych $139 · Triptych $199 | Partly live; bundles in §12 |
@@ -246,7 +246,7 @@ Cold paid social typically lands at a $37–84 CAC [S]. Paid ads alone can reach
 
 | Lead getter | Our version | Status |
 |---|---|---|
-| **Customers** | Give $15 / Get $15: the friend gets $15 off a first physical order of $59+; the referrer gets $15 credit once the friend's order clears the 30-day guarantee. Shown on the success page, the Gift Reveal page and 7 days after delivery | Building today |
+| **Customers** | Give $15 / Get $15: the friend gets $15 off a first physical order of $59+; the referrer gets a single-use $15 code by email once the friend's order clears the 30-day guarantee (capped at $60 a year). Shown on the success page, the Gift Reveal page, the confirmation email and 7 days after delivery | Live |
 | Customers | "Who else's dog deserves this?" on the thank-you page: send a free private preview to a friend | Next |
 | Customers | The Gift Reveal page's "Make one of your dog" (every recipient is a prospect) | Live |
 | **Affiliates and partners** | Creators and businesses (§5.1–5.2). 15% code + 15% commission, 20% for the first 25 partners to activate (decision §11). Commission is paid 30 days after delivery, so it is client-financed by design. FTC: partners disclose (#ad / Paid partnership), and our partner materials say so | Live |
@@ -426,7 +426,7 @@ December lands at about 45 orders, which is the §1.2 base case.
 
 **Live:** free preview with OpenAI/Gemini · value stack, Founding auto-apply with the real Stripe count, Heirloom Set, never-pre-checked bumps, "keep your portrait" modal · Gift Reveal · creator codes, gift tool and attribution · nurture emails and lifecycle cron · admin (orders, approve-to-print, partners, gifts) · breed pages, feeds.
 
-**Building today:** Give $15 / Get $15 referral program (database migration applied) · Free Phone Portrait lead magnet · partner QR code and printable counter card · batch gift tool · Rule-of-100 scorecard (migration applied) · new sample portraits.
+**Live since Oct 14:** Give $15 / Get $15 referral program (success page, Gift Reveal, confirmation email, 7-day reminder, rewards issued by the daily cron after the guarantee window) · Free Phone Portrait lead magnet · partner QR code and printable A6 counter card with the fee disclosure · batch gift tool (20 at a time) · Rule-of-100 scorecard (`/admin/scorecard`) · new hero and before/after portraits (more styles in progress).
 
 **Next, by Oct 31:**
 1. "How did you hear about us?" on the success page (attribution for every order).
