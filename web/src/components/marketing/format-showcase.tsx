@@ -82,8 +82,10 @@ export function FormatTile({
           frameColor={frameColor}
           printSize={SHOWCASE_SIZE}
           priority={priority}
-          // Without a backdrop the piece hangs on the section's own wall, so it can be larger.
-          className={cn("max-w-none", backdrop ? (type === "digital" ? "w-[58%]" : "w-[66%]") : type === "digital" ? "w-[70%]" : "w-[80%]")}
+          // One width for every format: FrameMockup draws the art at the same size in each and only
+          // the format changes around it. Without a backdrop the piece hangs on the section's own wall,
+          // so it can be larger.
+          className={cn("max-w-none", backdrop ? "w-[66%]" : "w-[80%]")}
         />
       </div>
     </div>
