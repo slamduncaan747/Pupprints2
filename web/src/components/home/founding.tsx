@@ -14,15 +14,16 @@ export function Founding() {
     <FoundingGate>
       <section aria-labelledby="founding-title" className="bg-ink text-paper">
         <Container className="flex flex-col items-center py-24 text-center sm:py-32">
-          <p className="label text-paper/70">Through {FOUNDING.deadlineLong}</p>
+          <p className="label text-paper/70">Launch offer</p>
           <h2
             id="founding-title"
-            className="mt-6 font-display text-[40px] leading-[1.02] tracking-[-0.02em] sm:text-[64px] lg:text-[76px]"
+            className="mt-6 font-display text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[64px] lg:text-[76px]"
           >
-            {FOUNDING_OFFER.headline}
+            The Founding {FOUNDING.maxRedemptions}
           </h2>
-          <p className="mt-6 max-w-md text-[15px] leading-relaxed text-paper/80 sm:text-[16px]">{FOUNDING_OFFER.line}</p>
+          <p className="mt-6 max-w-md text-[15px] leading-relaxed text-paper/85 sm:text-[17px]">{FOUNDING_OFFER.line}</p>
           <FoundingRemaining className="label mt-6 text-paper" />
+          <p className="label mt-6 text-paper/60">Ends {FOUNDING.deadlineLong}. Never extended.</p>
           <Link href="/create" className="link-cta mt-10 text-paper">
             {OFFER.cta}
           </Link>

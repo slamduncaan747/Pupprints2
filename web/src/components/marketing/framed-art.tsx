@@ -1,5 +1,5 @@
 import { SampleImage } from "@/components/ui/sample-image";
-import { STYLE_MAP, type FrameColor, type ProductType, type StyleSlug } from "@/lib/catalog";
+import { STYLE_MAP, type FrameColor, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { styleContent } from "@/components/marketing/style-content";
 import { cn } from "@/lib/utils";
@@ -59,43 +59,6 @@ export function FramedArt({
   return (
     <div className={cn(FRAME_CLASS[f], className)}>
       <div className={cn(mat && "mat")}>{art}</div>
-    </div>
-  );
-}
-
-/** Default way to show each product type. */
-export const FINISH_FOR_PRODUCT: Record<ProductType, Finish> = {
-  digital: "plain",
-  poster: "print",
-  framed: "black",
-  canvas: "canvas",
-};
-
-/** A product's example art on a 4:5 ivory backdrop, like a product photograph, so tiles line up. */
-export function ProductArt({
-  type,
-  style,
-  finish,
-  className,
-  sizes = "(max-width: 640px) 50vw, 22vw",
-  priority,
-}: {
-  type: ProductType;
-  style: StyleSlug;
-  finish?: Finish;
-  className?: string;
-  sizes?: string;
-  priority?: boolean;
-}) {
-  return (
-    <div className={cn("flex aspect-[4/5] items-center justify-center bg-paper-2", className)}>
-      <FramedArt
-        style={style}
-        finish={finish ?? FINISH_FOR_PRODUCT[type]}
-        priority={priority}
-        sizes={sizes}
-        className="w-[58%]"
-      />
     </div>
   );
 }

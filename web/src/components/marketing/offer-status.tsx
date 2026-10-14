@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { FOUNDING } from "@/lib/launch";
+import type { OfferStatus } from "@/lib/offer";
 import { cn } from "@/lib/utils";
 
 /**
@@ -10,10 +11,6 @@ import { cn } from "@/lib/utils";
  * founding line stays as it is and no count is shown. A count is only ever shown when the API returns
  * a real number, so it can never be invented or stale-by-design.
  */
-export type OfferStatus = {
-  founding: { open: boolean; remaining: number | null; percentOff: number; deadline: string };
-};
-
 let request: Promise<OfferStatus | null> | null = null;
 
 function isOfferStatus(value: unknown): value is OfferStatus {

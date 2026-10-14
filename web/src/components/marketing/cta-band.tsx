@@ -2,14 +2,12 @@ import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { STYLE_MAP, type StyleSlug } from "@/lib/catalog";
-import { GUARANTEE, OFFER } from "@/lib/offer";
+import { OFFER } from "@/lib/offer";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { CampaignImage } from "@/components/marketing/campaign";
 import { BLEED_PAD_RIGHT } from "@/components/marketing/page-hero";
 import { EFFORT_LINE } from "@/components/marketing/offer";
 import { cn } from "@/lib/utils";
-
-export const PROMISE_LINE = `Free preview · ${GUARANTEE.short} · Free US shipping`;
 
 /**
  * The one call to action at the end of a page: a Bodoni line and a single black button (OFFER.cta),

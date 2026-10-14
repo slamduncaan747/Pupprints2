@@ -1,5 +1,5 @@
 /** Extra copy for /shop/[type] pages. Facts (materials, sizes, prices, timing) come from @/lib/catalog. */
-import type { ProductType, StyleSlug } from "@/lib/catalog";
+import type { ProductType } from "@/lib/catalog";
 import type { FaqItem } from "@/components/marketing/faq";
 import { CANADA_SHIPPING_LABEL } from "@/components/marketing/commerce";
 
@@ -8,8 +8,6 @@ export type ProductContent = {
   metaDescription: string;
   h1: string;
   intro: string;
-  /** Style used for the example visuals. */
-  exampleStyle: StyleSlug;
   care: string[];
   faq: FaqItem[];
 };
@@ -22,7 +20,6 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
     h1: "Your dog on gallery canvas",
     intro:
       "Printed on poly-cotton canvas and hand-stretched over a solid wood stretcher bar, with the image wrapping around the edges. No frame needed: it arrives ready to hang.",
-    exampleStyle: "oil-classic",
     care: [
       "Dust gently with a soft, dry cloth or a feather duster.",
       "Keep it out of strong direct sunlight and away from damp rooms like bathrooms.",
@@ -50,7 +47,6 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
     h1: "Framed, and ready to hang",
     intro:
       "Your portrait on archival matte paper, framed in solid wood behind shatter-resistant acrylic. Choose black, white or natural oak. Hanging hardware is included, so it can go straight on the wall.",
-    exampleStyle: "royal",
     care: [
       "Dust the frame with a soft, dry cloth.",
       "Clean the acrylic with a microfiber cloth and a little water. Avoid ammonia-based glass cleaners, which can cloud acrylic.",
@@ -78,7 +74,6 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
     h1: "A fine art print of your dog",
     intro:
       "Archival, acid-free matte paper printed with fade-resistant pigment inks for rich, gallery-quality color. Every size is a standard frame size, so it's easy to frame your own way.",
-    exampleStyle: "watercolor",
     care: [
       "Handle by the edges with clean, dry hands.",
       "If it arrives rolled, let it relax flat for a day under a couple of books, with clean paper in between.",
@@ -106,7 +101,6 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
     h1: "Your portrait, delivered instantly",
     intro:
       "The full-resolution, unwatermarked file of your portrait, delivered to your inbox right after checkout. Use it as a lock screen, post it, or print it for your own home. It's included free with every print, framed print and canvas.",
-    exampleStyle: "pop-art",
     care: [
       "Download it and keep a backup somewhere safe, like your photo library or cloud storage.",
       "For printing at home or at a local print shop, use the original file rather than a screenshot.",

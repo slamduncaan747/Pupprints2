@@ -17,6 +17,22 @@ export function beforeHolidayCutoff(now: number = Date.now()) {
   return now < Date.parse(HOLIDAY.cutoffIso);
 }
 
+/** Keeps hyphenated words whole in large display type ("Love-It" never breaks after the hyphen). */
+export function keepHyphenated(text: string): ReactNode {
+  return text.split(/(\S+-\S+)/).map((part, i) =>
+    /\S+-\S+/.test(part) ? (
+      <span key={i} className="whitespace-nowrap">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
+/** The guarantee's name mid-sentence: "covered by the Love-It Guarantee". */
+export const GUARANTEE_IN_SENTENCE = GUARANTEE.name.replace(/^The\s+/, "the ");
+
 /** The effort lever, said plainly under every primary call to action. */
 export const EFFORT_LINE = "No account. No card. About a minute.";
 

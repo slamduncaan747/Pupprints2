@@ -82,7 +82,8 @@ export function FormatTile({
           frameColor={frameColor}
           printSize={SHOWCASE_SIZE}
           priority={priority}
-          className={cn("max-w-none", type === "digital" ? "w-[54%]" : "w-[60%]")}
+          // Without a backdrop the piece hangs on the section's own wall, so it can be larger.
+          className={cn("max-w-none", backdrop ? (type === "digital" ? "w-[58%]" : "w-[66%]") : type === "digital" ? "w-[70%]" : "w-[80%]")}
         />
       </div>
     </div>

@@ -17,6 +17,7 @@ import {
   joinWords,
   shipWindow,
 } from "@/components/marketing/commerce";
+import { GUARANTEE_IN_SENTENCE } from "@/components/marketing/offer";
 
 const print = PRODUCT_MAP.poster;
 const framed = PRODUCT_MAP.framed;
@@ -57,7 +58,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: "Can I change or cancel my order?",
-        a: "Yes, just email us as soon as you can. If your piece hasn't gone to print yet, we'll update or cancel it at no charge. Once it's printed, our love-it guarantee still has you covered.",
+        a: `Yes, just email us as soon as you can. If your piece hasn't gone to print yet, we'll update or cancel it at no charge. Once it's printed, ${GUARANTEE_IN_SENTENCE} still has you covered.`,
       },
       {
         q: "What payment methods do you accept?",
@@ -210,7 +211,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       {
         q: "What if I don't love my printed piece?",
         a: "Tell us within 30 days of delivery and we'll remake it free or refund you in full. Your choice.",
-        link: { href: "/guarantee", label: "Read the love-it guarantee" },
+        link: { href: "/guarantee", label: `Read ${GUARANTEE_IN_SENTENCE}` },
       },
       {
         q: "My order arrived damaged. What now?",

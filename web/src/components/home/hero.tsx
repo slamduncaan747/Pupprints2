@@ -58,7 +58,7 @@ export function Hero() {
         </div>
         <div className="mt-4 w-full max-w-md sm:mt-6 lg:col-span-5 lg:mt-0 lg:max-w-none lg:pb-1.5">
           <p className="text-[15px] leading-relaxed text-ink-2 sm:text-[16px]">{OFFER.promise}</p>
-          <OfferCta className="mt-6 lg:justify-start" align="center" inline />
+          <OfferCta className="mt-6 lg:items-start lg:text-left" align="center" />
         </div>
       </Container>
     </section>

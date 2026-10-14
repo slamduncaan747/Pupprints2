@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PRODUCT_MAP, PRODUCTS, type ProductType } from "@/lib/catalog";
-import { FORMAT_SHOWCASE, OFFER, VALUE_STACK } from "@/lib/offer";
+import { FORMAT_SHOWCASE, GUARANTEE, OFFER, valueStackFor } from "@/lib/offer";
 import { site } from "@/lib/config";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
-import { ProductLayout, ProductTitle } from "@/components/marketing/campaign";
+import { CampaignImage, ProductLayout, ProductTitle } from "@/components/marketing/campaign";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd, type FaqItem } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
@@ -28,17 +28,6 @@ import {
   shipWindow,
   toPrice,
 } from "@/components/marketing/commerce";
-
-/**
- * The value stack for one product. A fine-art print ships unframed, so its shipping line says what is
- * true for it rather than "ready to hang".
- */
-function stackFor(type: ProductType) {
-  if (type !== "poster") return VALUE_STACK;
-  return VALUE_STACK.map((row) =>
-    /ready to hang/i.test(row.item) ? { ...row, item: "Free US shipping, tracked to your door" } : row,
-  );
-}
 
 export const dynamicParams = false;
 
@@ -111,7 +100,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
       a: physical
         ? "Tell us within 30 days of delivery and we'll remake it free or refund you in full. If it arrives damaged, send us a photo and we'll replace it."
         : "You see the exact art before you pay, but if something isn't right with your file, write to us and we'll make it right.",
-      link: { href: "/guarantee", label: "Our love-it guarantee" },
+      link: { href: "/guarantee", label: GUARANTEE.name },
     },
   ];
 
@@ -143,8 +132,12 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           </figure>
         ) : (
           <figure key="art">
-            <FormatTile type="digital" zoom={false} backdrop={false} alt="The portrait file, full resolution" className="bg-paper" />
-            <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">The file</figcaption>
+            <CampaignImage
+              src={FORMAT_SHOWCASE.src}
+              alt="The portrait file, full resolution"
+              sizes="(max-width: 640px) 86vw, (max-width: 1024px) 70vw, 58vw"
+            />
+            <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">The file, full frame</figcaption>
           </figure>
         ),
       ];
@@ -222,7 +215,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           intro={`${multi ? "From " : ""}${formatPrice(fromPrice(product))}, with free US shipping. Nothing is added at checkout.`}
         >
           <ValueStack
-            items={stackFor(product.type)}
+            items={valueStackFor({ productType: product.type, shipCountry: "US" })}
             total={{ label: "Your price", value: `${multi ? "From " : ""}${formatPrice(fromPrice(product))}` }}
           />
         </Block>

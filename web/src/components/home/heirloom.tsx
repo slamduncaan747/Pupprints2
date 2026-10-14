@@ -19,14 +19,14 @@ export function Heirloom() {
   return (
     <section aria-labelledby="heirloom-title" className="py-24 sm:py-36">
       <Container className="grid gap-12 md:grid-cols-12 md:items-center md:gap-x-10">
-        <div className="flex aspect-[4/5] items-center justify-center bg-paper-2 md:col-span-6 lg:col-span-5">
+        <div className="flex aspect-[5/4] items-center justify-center bg-paper-2 md:col-span-6 md:aspect-[4/5] lg:col-span-5">
           <FrameMockup
             src={FORMAT_SHOWCASE.src}
             alt="The portrait in a natural oak frame"
             productType="framed"
             frameColor="oak"
             printSize={{ widthIn: 8, heightIn: 10 }}
-            className="w-[58%] max-w-none"
+            className="w-[40%] max-w-none md:w-[58%]"
           />
         </div>
 

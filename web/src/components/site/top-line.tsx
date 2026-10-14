@@ -1,15 +1,12 @@
-import { FOUNDING_OFFER, GUARANTEE, HOLIDAY, OFFER } from "@/lib/offer";
+import { FOUNDING_OFFER, GUARANTEE, HOLIDAY, OFFER, holidayNotice } from "@/lib/offer";
 import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
-import { beforeHolidayCutoff } from "@/components/marketing/offer";
 import { TopLineBar, TOP_LINE_ID, TOP_LINE_STORAGE_KEY, type TopLineMessage } from "@/components/site/top-line-bar";
-
-/** Dec 25, end of day Pacific: the last day a Gift Reveal is still a Christmas gift. */
-const REVEAL_UNTIL = Date.parse("2026-12-25T23:59:59-08:00");
 
 /**
  * The single most compelling real offer right now, in date order. Every line is true when shown:
- * the founding offer until its deadline (the browser also hides it once the cap is reached),
- * then the Christmas cutoff, then Gift Reveal up to Christmas Day, then the standing promise.
+ * the founding offer until its deadline (the browser swaps it for the next line if the cap is
+ * reached first), the Christmas cutoff from Nov 1, Gift Reveal up to Christmas Day, then the
+ * standing promise.
  */
 function messages(now: number = Date.now()): TopLineMessage[] {
   const list: TopLineMessage[] = [];
@@ -22,10 +19,11 @@ function messages(now: number = Date.now()): TopLineMessage[] {
       href: "/create",
     });
   }
-  if (beforeHolidayCutoff(now)) {
-    list.push({ key: "holiday-2026", kind: "other", short: HOLIDAY.label, long: HOLIDAY.label, href: "/create" });
-  } else if (now < REVEAL_UNTIL) {
-    list.push({ key: "reveal-2026", kind: "other", short: HOLIDAY.reveal, long: HOLIDAY.reveal, href: "/create" });
+  // From Nov 1 to the Dec 12 cutoff: the US Christmas cutoff; then Gift Reveal until Christmas Day.
+  const holiday = holidayNotice(now, { physical: true, shipCountry: "US" });
+  if (holiday) {
+    const key = holiday === HOLIDAY.label ? "holiday-2026" : "reveal-2026";
+    list.push({ key, kind: "other", short: holiday, long: holiday, href: "/create" });
   }
   list.push({
     key: "promise",

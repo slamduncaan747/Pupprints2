@@ -11,7 +11,7 @@ import { FaqList, faqJsonLd } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
 import { faq } from "@/components/marketing/faq-data";
 import { PHYSICAL_SHIP_WINDOW } from "@/components/marketing/commerce";
-import { OfferCta } from "@/components/marketing/offer";
+import { GUARANTEE_IN_SENTENCE, OfferCta } from "@/components/marketing/offer";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
 
@@ -81,7 +81,7 @@ const MADE = [
   },
   {
     title: "Our team checks every print",
-    body: "A person reviews every portrait and print file before it's printed, and our love-it guarantee covers what arrives.",
+    body: `A person reviews every portrait and print file before it's printed, and ${GUARANTEE_IN_SENTENCE} covers what arrives.`,
   },
 ];
 

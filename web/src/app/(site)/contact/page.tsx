@@ -5,6 +5,7 @@ import { PageHero } from "@/components/marketing/page-hero";
 import { Container } from "@/components/ui/container";
 import { textLink } from "@/components/marketing/blocks";
 import { ContactForm } from "@/components/marketing/contact-form";
+import { GUARANTEE } from "@/lib/offer";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -16,7 +17,7 @@ const QUICK = [
   { href: "/track", label: "Track an order" },
   { href: "/faq", label: "Read the FAQ" },
   { href: "/shipping", label: "Shipping & holiday dates" },
-  { href: "/guarantee", label: "Love-it guarantee" },
+  { href: "/guarantee", label: GUARANTEE.name },
 ];
 
 export default async function ContactPage({ searchParams }: PageProps<"/contact">) {

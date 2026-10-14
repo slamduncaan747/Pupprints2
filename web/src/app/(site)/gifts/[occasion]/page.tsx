@@ -23,6 +23,7 @@ import {
   PHYSICAL_SHIP_WINDOW,
   formatDay,
 } from "@/components/marketing/commerce";
+import { GUARANTEE_IN_SENTENCE } from "@/components/marketing/offer";
 
 export const dynamicParams = false;
 
@@ -173,7 +174,7 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
             items={[
               { title: "Send it instantly", body: "By text or email, or show it in person, even on the day." },
               { title: "Ship it where you like", body: "Send the print straight to them, or to you to wrap." },
-              { title: "Covered", body: "Every piece is covered by our love-it guarantee." },
+              { title: "Covered", body: `Every piece is covered by ${GUARANTEE_IN_SENTENCE}.` },
             ]}
           />
         </Block>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/lib/config";
 import { GUARANTEE } from "@/lib/offer";
+import { keepHyphenated } from "@/components/marketing/offer";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Note, Rows, Statement, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
@@ -46,7 +47,7 @@ export default function GuaranteePage() {
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
         eyebrow={GUARANTEE.short}
-        title={GUARANTEE.name}
+        title={keepHyphenated(GUARANTEE.name)}
         lede={GUARANTEE.body}
       />
 

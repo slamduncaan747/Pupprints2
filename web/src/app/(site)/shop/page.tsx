@@ -141,8 +141,7 @@ export default function ShopPage() {
             },
           ]}
         />
-        <FoundingLine className="mt-10" />
-        <Note className="mt-6">
+        <Note className="mt-8">
           Prices in USD. Arrival times are US business days. Shipping to Canada is a flat {CANADA_SHIPPING_LABEL} per
           order.{" "}
           <Link href="/shipping" className={textLink}>
