@@ -2,8 +2,9 @@ import type { StyleSlug } from "@/lib/catalog";
 
 /**
  * Example portraits shown across the marketing site. Files live in web/public/samples/.
- * All portraits are 4:5 (e.g. 960×1200) WebP. Owned by the visual-assets pipeline
- * (web/scripts/generate-samples.ts); components must tolerate a missing file (use <SampleImage>).
+ * All portraits are 4:5, 1200×1500 WebP (FLUX.2 klein renders of the real photos in
+ * web/scripts/sample-sources/; provenance in web/public/samples/CREDITS.md). Before/after "before"
+ * images are the real photo crops. Components must tolerate a missing file (use <SampleImage>).
  */
 export const STYLE_SAMPLES: Record<StyleSlug, string> = {
   royal: "/samples/royal.webp",
