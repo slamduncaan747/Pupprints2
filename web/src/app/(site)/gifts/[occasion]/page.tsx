@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: PageProps<"/gifts/[occasion]"
       locale: "en_US",
       // The featured style sample first; the site-wide card is the fallback while samples are still being generated.
       images: [
-        { url: STYLE_SAMPLES[featuredSlug(o)], width: 960, height: 1200, alt: `${STYLE_MAP[featuredSlug(o)]?.name} dog portrait` },
+        { url: STYLE_SAMPLES[featuredSlug(o)], width: 1200, height: 1500, alt: `${STYLE_MAP[featuredSlug(o)]?.name} dog portrait` },
         DEFAULT_OG_IMAGE,
       ],
     },

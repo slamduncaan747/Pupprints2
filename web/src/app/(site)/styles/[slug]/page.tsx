@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: PageProps<"/styles/[slug]">):
       locale: "en_US",
       // The style sample first; the site-wide card is the fallback while samples are still being generated.
       images: [
-        { url: STYLE_SAMPLES[style.slug], width: 960, height: 1200, alt: `${style.name} dog portrait example` },
+        { url: STYLE_SAMPLES[style.slug], width: 1200, height: 1500, alt: `${style.name} dog portrait example` },
         DEFAULT_OG_IMAGE,
       ],
     },
