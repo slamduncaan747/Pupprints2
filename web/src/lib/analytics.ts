@@ -17,7 +17,8 @@ export type FunnelEvent =
   | "InitiateCheckout"
   | "Purchase"
   | "Lead"
-  | "PartnerApply";
+  | "PartnerApply"
+  | "ReferralShare";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 

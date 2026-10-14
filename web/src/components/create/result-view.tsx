@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EmailCapture } from "./email-capture";
 import { markPortraitSaved } from "./keep-portrait";
+import { PhoneWallpaper } from "./phone-wallpaper";
 import type { Generation } from "./store";
 
 const textLink = "link-cta inline-flex min-h-11 items-center";
@@ -33,7 +34,8 @@ export function ResultView({
 }) {
   const style = getStyle(active.style);
   const name = petName.trim();
-  const [showEmail, setShowEmail] = useState(false);
+  /** One quiet panel at a time: email the preview, or the free phone wallpaper. */
+  const [panel, setPanel] = useState<"email" | "wallpaper" | null>(null);
   const strip = [...generations].reverse(); // oldest → newest, reads left to right
 
   return (
@@ -127,7 +129,9 @@ export function ResultView({
         )}
 
         <div className={cn("mt-10", strip.length > 1 ? "" : "border-t border-line pt-7")}>
-          {showEmail ? (
+          {panel === "wallpaper" ? (
+            <PhoneWallpaper key={active.generationId} generationId={active.generationId} petName={name || undefined} />
+          ) : panel === "email" ? (
             <div className="text-left">
               <p className="text-[13px] leading-relaxed text-ink-2">
                 We&apos;ll email you this preview so you can return to it.
@@ -143,9 +147,14 @@ export function ResultView({
               />
             </div>
           ) : (
-            <button type="button" onClick={() => setShowEmail(true)} className={cn(textLink, "text-ink-3")}>
-              Email me this preview
-            </button>
+            <div className="flex flex-wrap items-center justify-center gap-x-10 lg:justify-start">
+              <button type="button" onClick={() => setPanel("email")} className={cn(textLink, "text-ink-3")}>
+                Email me this preview
+              </button>
+              <button type="button" onClick={() => setPanel("wallpaper")} className={cn(textLink, "text-ink-3")}>
+                Get it as a free phone wallpaper
+              </button>
+            </div>
           )}
         </div>
 

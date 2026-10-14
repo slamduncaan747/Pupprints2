@@ -11,10 +11,21 @@ import {
   primaryItem,
   webImagePath,
 } from "@/lib/orders";
+import { REFERRAL } from "@/lib/offer";
 import { ensureWebImage } from "@/lib/print-file";
+import { getCustomerReferral, isLiveReferral } from "@/lib/referrals";
 import { BUCKETS, db } from "@/lib/supabase/server";
 
-export type RevealCta = { href: string; label: string; note?: string; primary?: boolean };
+export type RevealCta = {
+  href: string;
+  label: string;
+  note?: string;
+  /** Short line above the button (e.g. the friend's referral offer). */
+  lead?: string;
+  /** Fine print under the button (terms, disclosure). */
+  fine?: string;
+  primary?: boolean;
+};
 
 export type RevealData = {
   kind: "order" | "gift";
@@ -76,7 +87,13 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
           ? null
           : `Your ${product ?? "portrait"} is being made and will arrive soon.`
       : null;
-    const ref = normalizeCode(order.referral_code);
+    // The giver's own "Give $15, get $15" code: the recipient takes $15 off their first portrait.
+    const own = await getCustomerReferral(order.email);
+    const giverCode = isLiveReferral(own) ? own.code : null;
+    const ref = giverCode ?? normalizeCode(order.referral_code);
+    const giverFirst = (order.gift_sender_name || order.customer_name || "").trim().split(/\s+/)[0] || null;
+    const giverName = giverFirst ? `${giverFirst.charAt(0).toUpperCase()}${giverFirst.slice(1)}` : null;
+    const friend = `$${REFERRAL.friendCents / 100}`;
     return {
       kind: "order",
       token,
@@ -89,7 +106,20 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
       message: order.gift_message,
       productNote,
       frame: "gold",
-      ctas: [{ href: `${base()}/${ref ? `?ref=${encodeURIComponent(ref)}` : ""}`, label: "Make one for your own dog", primary: true }],
+      ctas: [
+        {
+          href: `${base()}/${ref ? `?ref=${encodeURIComponent(ref)}` : ""}`,
+          label: "Make one for your own dog",
+          primary: true,
+          ...(giverCode
+            ? {
+                note: "Want one of your own dog?",
+                lead: `${friend} off with ${giverName ? `${giverName}'s` : "their"} code, ${giverCode}`,
+                fine: `Your preview is free. ${friend} off a first order of $${REFERRAL.minimumCents / 100} or more, applied through this link. ${giverName ?? "Your giver"} gets $${REFERRAL.rewardCents / 100} too, as a thank-you.`,
+              }
+            : {}),
+        },
+      ],
     };
   }
 

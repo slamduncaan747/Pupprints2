@@ -4,6 +4,9 @@ import { site } from "@/lib/config";
 import { LegalPage, type LegalSection } from "@/components/marketing/legal-page";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { CANADA_SHIPPING_LABEL } from "@/components/marketing/commerce";
+import { REFERRAL } from "@/lib/offer";
+
+const usd = (cents: number) => `$${cents / 100}`;
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -12,7 +15,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/terms" },
 };
 
-const UPDATED = "October 12, 2026";
+const UPDATED = "October 14, 2026";
 
 const email = <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>;
 
@@ -195,6 +198,35 @@ const SECTIONS: LegalSection[] = [
         only with the people you intend to. Digital gift cards are not yet available; their terms will be published here
         before they go on sale.
       </p>
+    ),
+  },
+  {
+    id: "referrals",
+    title: `${REFERRAL.headline}: referral terms`,
+    body: (
+      <ul>
+        <li>
+          Every customer gets a personal referral code and link after their order is paid. A friend who uses it takes{" "}
+          {usd(REFERRAL.friendCents)} off their first order of {usd(REFERRAL.minimumCents)} or more (before shipping and tax).
+        </li>
+        <li>
+          When that friend&apos;s order is past its {REFERRAL.holdDays}-day guarantee window (counted from delivery) and
+          hasn&apos;t been refunded, we email you a single-use {usd(REFERRAL.rewardCents)} code, valid for one year on any
+          order. Up to {usd(REFERRAL.rewardCents * REFERRAL.maxRewardsPerYear)} in rewards per year.
+        </li>
+        <li>
+          One discount applies per order. If another offer (such as our founding offer) saves your friend more, they get that
+          one instead and you still receive your {usd(REFERRAL.rewardCents)}.
+        </li>
+        <li>
+          Codes can&apos;t be used on your own orders, by people at your address, or on a second order. Rewards aren&apos;t
+          cash and can&apos;t be exchanged or transferred. We may withhold rewards that don&apos;t follow these terms.
+        </li>
+        <li>
+          Because you receive a reward when friends order, please say so when you share (our share text includes &ldquo;
+          {REFERRAL.disclosure}&rdquo;). Please don&apos;t post your code on coupon sites or spam anyone with it.
+        </li>
+      </ul>
     ),
   },
   {

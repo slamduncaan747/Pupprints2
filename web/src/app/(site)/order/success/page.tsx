@@ -10,6 +10,7 @@ import { InviteCard } from "@/components/order/invite-card";
 import { OrderTimeline } from "@/components/order/order-timeline";
 import { PaymentPending } from "@/components/order/payment-pending";
 import { PurchaseTracker } from "@/components/order/purchase-tracker";
+import { ReferralCard } from "@/components/order/referral-card";
 import { buildTimeline } from "@/components/order/timeline";
 import { site } from "@/lib/config";
 import { features } from "@/lib/env";
@@ -34,6 +35,7 @@ import {
   type OrderRow,
 } from "@/lib/orders";
 import { ensureWebImage } from "@/lib/print-file";
+import { ensureCustomerReferral, isLiveReferral, referralLink, referralShareText } from "@/lib/referrals";
 import { getStripe } from "@/lib/stripe";
 import { BUCKETS, db } from "@/lib/supabase/server";
 
@@ -173,6 +175,9 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
   const hi = firstName(order.customer_name);
   const sentTo = order.reveal_sent_at && order.gift_recipient_email ? order.gift_recipient_name || order.gift_recipient_email : null;
   const purchase = purchaseEvent(order);
+  // The buyer's own "Give $15, get $15" code (made here if the webhook hasn't run yet).
+  const own = await ensureCustomerReferral(order);
+  const referral = isLiveReferral(own) ? own : null;
 
   const section = "grid gap-5 py-12 sm:grid-cols-[220px_minmax(0,1fr)] sm:gap-12 sm:py-14";
   const sectionTitle = "font-display text-[30px] leading-[1.08] sm:text-[34px]";
@@ -278,6 +283,10 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             </div>
           </section>
 
+          {referral && (
+            <ReferralCard code={referral.code} shareUrl={referralLink(referral.code)} shareText={referralShareText(pet, referral.code)} />
+          )}
+
           <section aria-labelledby="summary-title" className={section}>
             <h2 id="summary-title" className={sectionTitle}>
               Your order
@@ -311,7 +320,7 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             </div>
           </section>
 
-          <InviteCard siteUrl={site.url} instagramUrl={site.social.instagram} />
+          {!referral && <InviteCard siteUrl={site.url} instagramUrl={site.social.instagram} />}
         </div>
 
         <p className="mx-auto mt-14 max-w-md text-center text-[13px] leading-relaxed text-ink-3">

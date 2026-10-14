@@ -10,6 +10,7 @@ import { CopyButton, PartnerQuickActions } from "@/components/admin/partner-cont
 import { REDEEMABLE_STATUSES } from "@/components/partners/program";
 import { nicheCampaign, partnerQrUrl, qrSvg, qrSvgDataUrl } from "@/components/admin/partner-qr";
 import { Card, DbMissing, PageHeader, StatusPill, adminButton, fmtDate, fmtMoney, fmtNum } from "@/components/admin/ui";
+import { ReferralRewardsCard } from "@/components/admin/referral-rewards";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Partner", robots: { index: false, follow: false } };
@@ -176,7 +177,9 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
                 <p className="text-xs text-ink-3">Discount code</p>
                 <p className="mt-0.5 font-mono text-xl font-semibold tracking-wide">{p.code ?? "—"}</p>
                 <p className="mt-0.5 text-xs text-ink-3">
-                  {Math.round(Number(p.commission_rate) * 1000) / 10}% commission · {p.discount_percent}% off for their audience
+                  {p.kind === "customer"
+                    ? `Customer referral code · $${(p.discount_cents ?? 0) / 100} off a friend's first order`
+                    : `${Math.round(Number(p.commission_rate) * 1000) / 10}% commission · ${p.discount_percent}% off for their audience`}
                   {p.code && !redeemable && (
                     <span className="mt-1 block text-clay-dark">Code only redeems at checkout once status is Gifted or Active.</span>
                   )}
@@ -243,6 +246,8 @@ export default async function PartnerDetailPage({ params }: PageProps<"/admin/pa
               </div>
             </Card>
           )}
+
+          {p.kind === "customer" && p.code && <ReferralRewardsCard code={p.code} referrerOrderId={p.referrer_order_id} />}
 
           <Card title="Performance">
             {all && last30 ? (

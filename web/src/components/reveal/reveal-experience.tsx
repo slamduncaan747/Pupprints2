@@ -16,7 +16,7 @@ export type RevealViewProps = {
   styleName: string | null;
   message: string | null;
   productNote: string | null;
-  ctas: { href: string; label: string; note?: string; primary?: boolean }[];
+  ctas: { href: string; label: string; note?: string; lead?: string; fine?: string; primary?: boolean }[];
 };
 
 type Phase = "sealed" | "opening" | "open";
@@ -205,6 +205,7 @@ export function RevealExperience(p: RevealViewProps) {
                         {cta.note}
                       </p>
                     )}
+                    {cta.lead && <p className="label -mt-2 mb-6 text-ink-2">{cta.lead}</p>}
                     <a
                       href={cta.href}
                       className={buttonClasses(
@@ -215,6 +216,11 @@ export function RevealExperience(p: RevealViewProps) {
                     >
                       {cta.label}
                     </a>
+                    {cta.fine && (
+                      <p className="mx-auto mt-4 max-w-xs text-[12px] leading-relaxed text-ink-3">
+                        {cta.fine}
+                      </p>
+                    )}
                   </div>
                 ) : (
                   <a
