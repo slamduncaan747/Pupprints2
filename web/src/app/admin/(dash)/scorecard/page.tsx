@@ -13,7 +13,7 @@ import {
   isDayKey,
   rule100Day,
 } from "@/components/admin/scorecard";
-import { loadDayEntries, loadScorecard, totals, type DayRow, type Totals } from "@/components/admin/scorecard-data";
+import { loadDayEntries, loadHeardFrom, loadScorecard, totals, type DayRow, type HeardFromRow, type Totals } from "@/components/admin/scorecard-data";
 import { ScorecardLogger } from "@/components/admin/scorecard-logger";
 import { Card, DbMissing, ErrorNote, PageHeader, Table, Td, Th, adminButton, fmtMoney, fmtNum, fmtPct, inputClass } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
@@ -87,6 +87,39 @@ function ConversionTable({ week, month }: { week: Totals; month: Totals }) {
         ))}
       </tbody>
     </table>
+  );
+}
+
+function HeardFromTable({ rows, total, other }: { rows: HeardFromRow[]; total: number; other: string[] }) {
+  return (
+    <>
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr>
+            <Th className="text-left">Answer</Th>
+            <Th className="text-right">Orders</Th>
+            <Th className="text-right">% of orders</Th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.id}>
+              <Td className={cn("py-2", r.id === "none" && "text-ink-3")}>{r.label}</Td>
+              <Td className="py-2 text-right">
+                <Num n={r.orders} />
+              </Td>
+              <Td className="py-2 text-right tabular-nums">{r.orders ? fmtPct(r.share) : <span className="text-ink-3/50">—</span>}</Td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="space-y-1.5 border-t border-line px-4 py-3">
+        <p className="text-[11px] text-ink-3">
+          {total} paid {total === 1 ? "order" : "orders"} in the last 30 days. Asked once, optionally, on the order success page.
+        </p>
+        {other.length > 0 && <p className="text-[11px] text-ink-3">Other: {other.join(" · ")}</p>}
+      </div>
+    </>
   );
 }
 
@@ -234,12 +267,13 @@ export default async function ScorecardPage({ searchParams }: PageProps<"/admin/
     );
   }
 
-  const [scoreRes, dayData] = await Promise.all([
+  const [scoreRes, dayData, heard] = await Promise.all([
     loadScorecard(c, { today, days: 30 }).then(
       (value) => ({ value, error: null }),
       (err: unknown) => ({ value: null, error: err instanceof Error ? err.message : "Could not load the scorecard" }),
     ),
     loadDayEntries(c, day),
+    loadHeardFrom(c, { today, days: 30 }),
   ]);
   const score = scoreRes.value;
   const loadError = scoreRes.error;
@@ -329,6 +363,14 @@ export default async function ScorecardPage({ searchParams }: PageProps<"/admin/
               </div>
             </Card>
           )}
+
+          <Card title="How they heard about us · last 30 days">
+            {heard.error ? (
+              <p className="p-4 text-sm text-ink-3">Couldn&apos;t load answers: {heard.error}</p>
+            ) : (
+              <HeardFromTable rows={heard.rows} total={heard.total} other={heard.other} />
+            )}
+          </Card>
         </div>
       </div>
 

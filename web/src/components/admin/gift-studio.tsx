@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Gift, ImageUp, Link2, RefreshCw, Wand2 } from "lucide-react";
-import { STYLES } from "@/lib/catalog";
+import { availableStyles, STYLES } from "@/lib/catalog";
 import { CopyButton } from "@/components/admin/partner-controls";
 import { adminButton, inputClass, labelClass } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
@@ -188,7 +188,7 @@ export function GiftStudio({
         <div>
           <span className={labelClass}>Style</span>
           <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3" role="radiogroup" aria-label="Style">
-            {STYLES.map((s) => (
+            {availableStyles().map((s) => (
               <button
                 key={s.slug}
                 type="button"

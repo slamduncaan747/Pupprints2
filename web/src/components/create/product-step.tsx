@@ -9,23 +9,25 @@ import {
   PRODUCT_MAP,
   PRODUCTS,
   SHIPPING_RATES,
-  type Addon,
   type FrameColor,
   type Product,
   type ProductType,
 } from "@/lib/catalog";
 import {
+  applyBundles,
   discountLabel,
   discountSaving,
   FOUNDING_OFFER,
+  GIFT_TWO,
+  giftTwoActive,
   GUARANTEE,
   HEIRLOOM_SET,
-  heirloomSets,
   holidayNotice,
   percentOffCents,
   pickCheckoutDiscount,
   REFERRAL,
   valueStackFor,
+  type BundleLine,
   type DiscountOption,
   type OfferStatus,
 } from "@/lib/offer";
@@ -35,7 +37,7 @@ import { FrameMockup } from "@/components/product/frame-mockup";
 import { shipWindow } from "@/components/order/timeline";
 import { ApiError, fetchOffer, peekOffer, startCheckout, type CheckoutRequest } from "./api";
 import { EmailCapture, isEmail } from "./email-capture";
-import { updateFlow, type FlowState, type Generation, type ShipCountry } from "./store";
+import { MAX_QUANTITY, updateFlow, type FlowState, type Generation, type ShipCountry } from "./store";
 
 const FRAME_LABEL: Record<FrameColor, string> = { black: "Black", white: "White", oak: "Natural oak" };
 const FRAME_SWATCH: Record<FrameColor, string> = { black: "#121212", white: "#fcfcfb", oak: "#c4a582" };
@@ -58,6 +60,17 @@ const noopSubscribe = () => () => {};
 /** Today's date on the client; null during SSR (so the server never renders a stale date). */
 function useToday() {
   return useSyncExternalStore(noopSubscribe, getToday, () => null);
+}
+
+let nowCache: number | null = null;
+function getNow() {
+  if (nowCache === null) nowCache = Date.now();
+  return nowCache;
+}
+
+/** The current time on the client (one snapshot per page load); null during SSR. */
+function useNow() {
+  return useSyncExternalStore(noopSubscribe, getNow, () => null);
 }
 
 function addBusinessDays(from: number, days: number) {
@@ -134,28 +147,47 @@ export function ProductStep({
   const physical = product.type !== "digital";
   const chosenAddons = physical ? ADDONS.filter((a) => selection.addons.includes(a.id)) : [];
   const shipping = physical ? SHIPPING_RATES[selection.shipCountry] : 0;
+  /** Pieces of this portrait (add-ons come one per piece). The digital file is always one. */
+  const qty = physical ? Math.min(MAX_QUANTITY, Math.max(1, selection.quantity || 1)) : 1;
+  /** "This portrait is in memory of my dog": no urgency, no promotions, no referral asks. */
+  const memorial = flow.memorial;
 
-  // Same pricing rules as /api/checkout: catalog prices, the Heirloom Set saving, then the one
-  // automatic discount that saves the most (FOUNDING100, a creator code or a friend's referral
-  // code), which never touches shipping.
-  const heirloom = heirloomSets(chosenAddons.map((a) => ({ variantId: a.id, quantity: 1 })), physical) > 0;
-  const addonPrice = (a: Addon) => a.price - (heirloom ? (HEIRLOOM_SET.unitDiscount[a.id] ?? 0) : 0);
-  const merchandise = variant.price + chosenAddons.reduce((sum, a) => sum + addonPrice(a), 0);
+  // Same pricing as /api/checkout (applyBundles): catalog prices, "two portraits, two ornaments"
+  // (Nov 1–Dec 10, on the server's clock via /api/offer), the Heirloom Set on paid ornaments, then
+  // the one automatic discount that saves the most (FOUNDING100, a creator code or a friend's
+  // referral code) on the paid merchandise, never on shipping.
   const offer = useOffer(flow.creatorCode);
+  const now = useNow();
+  const giftTwoOn = physical && (offer ? offer.giftTwo : now !== null && giftTwoActive(now));
+  const bundled = applyBundles<BundleLine>(
+    [
+      { kind: "product", productType: product.type, variantId: variant.id, quantity: qty, unitAmount: variant.price },
+      ...chosenAddons.map((a): BundleLine => ({ kind: "addon", productType: "addon", variantId: a.id, quantity: qty, unitAmount: a.price })),
+    ],
+    { giftTwo: giftTwoOn },
+  );
+  const addonLines = bundled.lines.filter((l) => l.kind === "addon");
+  const addonTotal = (id: string) => addonLines.filter((l) => l.variantId === id).reduce((sum, l) => sum + l.unitAmount * l.quantity, 0);
+  const heirloom = bundled.heirloomSets > 0;
+  const freeOrnaments = bundled.freeOrnaments;
+  const hasOrnament = selection.addons.includes(GIFT_TWO.ornamentId);
+  const hasMug = chosenAddons.some((a) => a.id !== GIFT_TWO.ornamentId);
+  const merchandise = bundled.lines.reduce((sum, l) => sum + l.unitAmount * l.quantity, 0);
   const options = offer?.discounts ?? [];
   const discount = pickCheckoutDiscount(options, merchandise);
   const discountCents = discount ? discountSaving(discount, merchandise) : 0;
   const total = merchandise - discountCents + shipping;
-  const addonsCents = merchandise - variant.price;
-  /** A size's price with the discount checkout would apply if that size were chosen (same add-ons). */
+  const addonsCents = merchandise - variant.price * qty;
+  /** A size's unit price with the discount checkout would apply if that size were chosen (same add-ons). */
   const priceFor = (variantCents: number) => {
-    const opt = pickCheckoutDiscount(options, variantCents + addonsCents);
+    const subtotal = variantCents * qty + addonsCents;
+    const opt = pickCheckoutDiscount(options, subtotal);
     const off = !opt
       ? 0
       : opt.source === "referral"
-        ? Math.min(discountSaving(opt, variantCents + addonsCents), variantCents)
+        ? Math.min(discountSaving(opt, subtotal), variantCents)
         : percentOffCents(variantCents, opt.percentOff);
-    return { cents: variantCents - off, option: off > 0 ? opt : null };
+    return { cents: variantCents - off, option: off > 0 && !memorial ? opt : null };
   };
   const tagFor = (opt: DiscountOption | null) =>
     opt?.source === "founding" ? "Founding price" : opt?.source === "referral" ? "With a friend's code" : "With your code";
@@ -164,7 +196,7 @@ export function ProductStep({
   /** A friend's referral code that isn't the discount applied (below $59, or founding saves more). */
   const referral = options.find((o): o is Extract<DiscountOption, { source: "referral" }> => o.source === "referral") ?? null;
   const referralNote =
-    referral && discount?.source !== "referral"
+    referral && discount?.source !== "referral" && !memorial
       ? merchandise < referral.minimumCents
         ? `Referral code ${referral.code}: $${referral.amountOffCents / 100} off first orders of $${referral.minimumCents / 100} or more`
         : `The founding offer saves you more on this order. Code ${referral.code} still thanks your friend.`
@@ -176,7 +208,7 @@ export function ProductStep({
   const [checkout, setCheckout] = useState<CheckoutState>({ kind: "idle" });
   const [giftError, setGiftError] = useState<string | null>(null);
   const today = useToday();
-  const ids = { gift: useId(), from: useId(), to: useId(), email: useId(), msg: useId(), stack: useId() };
+  const ids = { gift: useId(), from: useId(), to: useId(), email: useId(), msg: useId(), stack: useId(), qty: useId() };
 
   const printSize = variant.widthIn > 0 ? { widthIn: variant.widthIn, heightIn: variant.heightIn } : undefined;
   const showRoom = physical && view === "room";
@@ -203,6 +235,11 @@ export function ProductStep({
     setSelection({ addons: has ? selection.addons.filter((a) => a !== id) : [...selection.addons, id] });
   }
 
+  function setQuantity(n: number) {
+    const next = Math.min(MAX_QUANTITY, Math.max(1, n));
+    if (next !== qty) setSelection({ quantity: next });
+  }
+
   async function onCheckout() {
     if (gift.enabled && gift.recipientEmail.trim() && !isEmail(gift.recipientEmail)) {
       setGiftError("Please check the recipient's email address, or leave it blank.");
@@ -218,13 +255,14 @@ export function ProductStep({
           generationId: active.generationId,
           variantId: variant.id,
           frameColor: product.type === "framed" ? selection.frameColor : undefined,
-          quantity: 1,
+          quantity: qty,
         },
-        ...chosenAddons.map((a) => ({ generationId: active.generationId, variantId: a.id, quantity: 1 })),
+        ...chosenAddons.map((a) => ({ generationId: active.generationId, variantId: a.id, quantity: qty })),
       ],
       shipCountry: physical ? selection.shipCountry : undefined,
       ...(giftToken ? { giftToken } : {}),
       ...(flow.creatorCode ? { code: flow.creatorCode } : {}),
+      ...(memorial ? { memorial: true } : {}),
     };
     if (gift.enabled) {
       body.giftSenderName = gift.senderName.trim() || undefined;
@@ -238,8 +276,14 @@ export function ProductStep({
       value: total / 100,
       currency: "USD",
       items: [
-        { id: variant.id, name: product.name, price: variant.price / 100, quantity: 1, category: product.type, variant: variant.id },
-        ...chosenAddons.map((a) => ({ id: a.id, name: a.name, price: addonPrice(a) / 100, quantity: 1, category: "addon" })),
+        { id: variant.id, name: product.name, price: variant.price / 100, quantity: qty, category: product.type, variant: variant.id },
+        ...addonLines.map((l) => ({
+          id: l.variantId,
+          name: ADDONS.find((a) => a.id === l.variantId)?.name,
+          price: l.unitAmount / 100,
+          quantity: l.quantity,
+          category: "addon",
+        })),
       ],
     };
     track("AddToCart", { product: product.type, variant: variant.id }, ecommerce);
@@ -250,9 +294,11 @@ export function ProductStep({
         currency: "USD",
         product: product.type,
         variant: variant.id,
-        num_items: body.items.length,
+        num_items: body.items.reduce((n, i) => n + i.quantity, 0),
         gift: gift.enabled,
         offer: discount?.source ?? null,
+        free_ornaments: freeOrnaments || undefined,
+        memorial: memorial || undefined,
       },
       ecommerce,
     );
@@ -285,7 +331,8 @@ export function ProductStep({
     delivery = `Delivered in ${product.shipDays[0]}–${product.shipDays[1]} business days`;
   }
 
-  const holiday = today !== null ? holidayNotice(today, { physical, shipCountry: selection.shipCountry }) : null;
+  // The real holiday cutoff, never on the gentle track.
+  const holiday = today !== null && !memorial ? holidayNotice(today, { physical, shipCountry: selection.shipCountry }) : null;
   const stack = valueStackFor({ productType: product.type, shipCountry: selection.shipCountry });
   const checkoutLabel = `Proceed to checkout — ${formatPrice(total)}`;
   const loading = checkout.kind === "loading";
@@ -379,7 +426,7 @@ export function ProductStep({
           {name || "Your dog"}, as {style?.name ?? "a portrait"}
         </p>
         <h1 className="mt-3 font-display text-[40px] leading-[1.04] sm:text-[52px]">{product.name}</h1>
-        {discount && headline.option ? (
+        {discount && headline.option && !memorial ? (
           <div className="mt-4 motion-safe:animate-fade-up">
             <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="sr-only">Regular price</span>
@@ -504,6 +551,45 @@ export function ProductStep({
           </fieldset>
         )}
 
+        {/* Quantity: one to keep, one to give (add-ons come one per piece) */}
+        {physical && (
+          <div className="mt-10">
+            <div role="group" aria-labelledby={ids.qty} className="flex min-h-12 items-center justify-between gap-4 border-y border-line">
+              <span id={ids.qty} className={LEGEND}>
+                Quantity
+              </span>
+              <span className="flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(qty - 1)}
+                  disabled={qty <= 1}
+                  aria-label="One fewer"
+                  className="label inline-flex h-11 w-11 items-center justify-center text-[15px] text-ink transition-opacity hover:opacity-60 disabled:text-ink-3/50 disabled:hover:opacity-100"
+                >
+                  −
+                </button>
+                <output aria-live="polite" className="w-6 text-center text-[14px] text-ink tabular-nums">
+                  {qty}
+                </output>
+                <button
+                  type="button"
+                  onClick={() => setQuantity(qty + 1)}
+                  disabled={qty >= MAX_QUANTITY}
+                  aria-label="One more"
+                  className="label -mr-3 inline-flex h-11 w-11 items-center justify-center text-[15px] text-ink transition-opacity hover:opacity-60 disabled:text-ink-3/50 disabled:hover:opacity-100"
+                >
+                  +
+                </button>
+              </span>
+            </div>
+            {qty > 1 && (
+              <p className="mt-2.5 text-[12px] leading-snug text-ink-3">
+                {qty} identical pieces, shipped together to one address. Add-ons come one per piece.
+              </p>
+            )}
+          </div>
+        )}
+
         {/* Ship to */}
         {physical && (
           <fieldset className="mt-10">
@@ -534,14 +620,29 @@ export function ProductStep({
           </fieldset>
         )}
 
-        {/* Add-ons: the order bump, with the Heirloom Set saving shown as it happens */}
+        {/* Add-ons: the order bump, with the bundle savings shown as they happen. Never pre-checked. */}
         {physical && (
           <fieldset className="mt-10">
             <legend className={LEGEND}>Complete the set</legend>
+            {giftTwoOn && !memorial && !(qty >= GIFT_TWO.minPieces && hasOrnament) && (
+              <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <p className="text-[13px] leading-snug text-ink">{GIFT_TWO.prompt}</p>
+                {qty < GIFT_TWO.minPieces ? (
+                  <button type="button" onClick={() => setQuantity(GIFT_TWO.minPieces)} className="link-cta inline-flex min-h-11 items-center">
+                    Add a second {product.shortName.toLowerCase()}
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => toggleAddon(GIFT_TWO.ornamentId)} className="link-cta inline-flex min-h-11 items-center">
+                    Add the ornaments
+                  </button>
+                )}
+              </div>
+            )}
             <div className="mt-3 border-t border-line">
               {ADDONS.map((a) => {
                 const checked = selection.addons.includes(a.id);
-                const price = addonPrice(a);
+                const regular = a.price * qty;
+                const price = checked ? addonTotal(a.id) : regular;
                 return (
                   <label key={a.id} className="flex min-h-14 cursor-pointer items-start gap-3.5 border-b border-line py-3.5">
                     <input
@@ -555,26 +656,37 @@ export function ProductStep({
                       <span className="mt-1 block text-[12px] leading-snug text-ink-3">{a.description}</span>
                     </span>
                     <span className="shrink-0 text-[13px] text-ink tabular-nums">
-                      {price < a.price && checked ? (
+                      {price < regular && checked ? (
                         <>
                           <span className="sr-only">Regular price </span>
-                          <s className="mr-2 text-ink-3 decoration-1">{formatPrice(a.price)}</s>
-                          <span className="sr-only">{HEIRLOOM_SET.name} price </span>
-                          {formatPrice(price)}
+                          <s className="mr-2 text-ink-3 decoration-1">{formatPrice(regular)}</s>
+                          <span className="sr-only">Your price </span>
+                          {price === 0 ? "Free" : formatPrice(price)}
                         </>
                       ) : (
-                        `+ ${formatPrice(a.price)}`
+                        `+ ${formatPrice(a.price)}${qty > 1 ? " each" : ""}`
                       )}
                     </span>
                   </label>
                 );
               })}
             </div>
-            <p aria-live="polite" className={cn("mt-3 text-[12px] leading-snug", heirloom ? "label text-ink" : "text-ink-3")}>
-              {heirloom
-                ? `${HEIRLOOM_SET.name.replace(/^The /, "")} — you save ${formatPrice(HEIRLOOM_SET.discountCents)}`
-                : HEIRLOOM_SET.line}
-            </p>
+            <div aria-live="polite">
+              {freeOrnaments > 0 && (
+                <p className="label mt-3 text-[12px] leading-snug text-ink">
+                  {freeOrnaments >= GIFT_TWO.freeOrnaments ? GIFT_TWO.applied : "A matching ornament, on us"}
+                </p>
+              )}
+              {heirloom ? (
+                <p className="label mt-3 text-[12px] leading-snug text-ink">
+                  {`${HEIRLOOM_SET.name.replace(/^The /, "")} — you save ${formatPrice(HEIRLOOM_SET.discountCents * bundled.heirloomSets)}`}
+                </p>
+              ) : freeOrnaments > 0 ? (
+                hasMug && <p className="mt-3 text-[12px] leading-snug text-ink-3">Free ornaments don&apos;t count toward the Heirloom Set saving.</p>
+              ) : (
+                !memorial && <p className="mt-3 text-[12px] leading-snug text-ink-3">{HEIRLOOM_SET.line}</p>
+              )}
+            </div>
           </fieldset>
         )}
 
@@ -637,6 +749,10 @@ export function ProductStep({
                   {gift.message.length}/{GIFT_MESSAGE_MAX}
                 </p>
               </div>
+              <p className="text-[12px] leading-snug text-ink-3 sm:col-span-2">
+                <span className="label text-ink">{GUARANTEE.recipientName}</span>
+                <span className="mt-1.5 block">{GUARANTEE.recipient}</span>
+              </p>
             </div>
           )}
         </div>
@@ -644,6 +760,11 @@ export function ProductStep({
         {/* Delivery (+ the real holiday cutoff, from Nov 1 only) */}
         <p className="mt-6 text-[13px] leading-relaxed text-ink-3">{delivery}</p>
         {holiday && <p className="label mt-2 text-ink">{holiday}</p>}
+        {memorial && (
+          <p className="mt-2 text-[13px] leading-relaxed text-ink-2">
+            There&apos;s no rush. Your portrait is saved here whenever you&apos;re ready.
+          </p>
+        )}
 
         {/* The value stack: everything in the bag, then the price, then the guarantee, then the button */}
         <section aria-labelledby={ids.stack} className="mt-10" aria-live="polite">
@@ -652,16 +773,20 @@ export function ProductStep({
           </h2>
           <dl className="mt-3 border-t border-line pt-3 text-[13px]">
             <StackRow
-              item={`${product.name}${variant.widthIn ? ` · ${variant.label}` : ""}${product.type === "framed" ? ` · ${FRAME_LABEL[selection.frameColor]}` : ""}`}
-              value={formatPrice(variant.price)}
+              item={`${product.name}${variant.widthIn ? ` · ${variant.label}` : ""}${product.type === "framed" ? ` · ${FRAME_LABEL[selection.frameColor]}` : ""}${qty > 1 ? ` × ${qty}` : ""}`}
+              value={formatPrice(variant.price * qty)}
             />
-            {chosenAddons.map((a) => (
-              <StackRow
-                key={a.id}
-                item={heirloom ? `${a.name} · ${HEIRLOOM_SET.name.replace(/^The /, "")}` : a.name}
-                value={formatPrice(addonPrice(a))}
-              />
-            ))}
+            {addonLines.map((l) => {
+              const name = ADDONS.find((a) => a.id === l.variantId)?.name ?? l.variantId;
+              const tag = l.bundle === "heirloom" ? ` · ${HEIRLOOM_SET.name.replace(/^The /, "")}` : "";
+              return (
+                <StackRow
+                  key={`${l.variantId}-${l.bundle ?? "regular"}`}
+                  item={`${name}${tag}${l.quantity > 1 ? ` × ${l.quantity}` : ""}`}
+                  value={l.bundle === "gift-two" ? "Free" : formatPrice(l.unitAmount * l.quantity)}
+                />
+              );
+            })}
             {stack.map((row) => (
               <StackRow key={row.item} item={row.item} value={row.value} quiet />
             ))}
@@ -673,7 +798,7 @@ export function ProductStep({
           <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-4">
             <p className="label text-ink">Today</p>
             <p className="flex items-baseline gap-3">
-              {discountCents > 0 && (
+              {discountCents > 0 && !memorial && (
                 <>
                   <span className="sr-only">Regular total </span>
                   <s className="text-[14px] text-ink-3 tabular-nums decoration-1">{formatPrice(merchandise + shipping)}</s>
@@ -684,13 +809,18 @@ export function ProductStep({
             </p>
           </div>
           <p className="mt-3 text-[12px] text-ink-3">No hidden fees. Sales tax, if any, is shown before you pay.</p>
-          <CreatorCode code={flow.creatorCode} kind={offer?.code?.kind} className="mt-4" />
+          <CreatorCode code={flow.creatorCode} kind={offer?.code?.kind} memorial={memorial} className="mt-4" />
         </section>
 
         {/* Risk reversal: the last thing read before the button */}
         <div className="mt-9 border-t border-line pt-7">
           <p className="font-display text-[24px] leading-tight">{GUARANTEE.name}</p>
           <p className="mt-2.5 text-[13px] leading-relaxed text-ink-2">{GUARANTEE.body}</p>
+          {gift.enabled && (
+            <p className="mt-2.5 text-[13px] leading-relaxed text-ink-2">
+              <span className="text-ink">{GUARANTEE.recipientName}.</span> {GUARANTEE.recipient}
+            </p>
+          )}
         </div>
 
         <div className="mt-8">
@@ -706,6 +836,7 @@ export function ProductStep({
                 source="checkout_unavailable"
                 generationId={active.generationId}
                 petName={name || undefined}
+                memorial={memorial}
                 cta="Send link"
                 doneMessage="Thank you. We'll email your checkout link shortly."
               />
@@ -740,14 +871,14 @@ export function ProductStep({
             <div className="min-w-0 flex-1" aria-hidden>
               <p className="flex items-baseline gap-2.5">
                 <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(total)}</span>
-                {discountCents > 0 && (
+                {discountCents > 0 && !memorial && (
                   <s className="text-[13px] text-ink-3 tabular-nums decoration-1">{formatPrice(merchandise + shipping)}</s>
                 )}
               </p>
               <p className="label mt-1.5 truncate text-ink-3">
-                {discountCents > 0
+                {discountCents > 0 && !memorial
                   ? `${priceTag} · ${variant.widthIn ? variant.label : product.shortName}`
-                  : `${product.shortName} · ${variant.widthIn ? variant.label : "Hi-res file"}`}
+                  : `${product.shortName} · ${variant.widthIn ? variant.label : "Hi-res file"}${qty > 1 ? ` × ${qty}` : ""}`}
               </p>
             </div>
             <button
@@ -848,7 +979,18 @@ function StackRow({ item, value, quiet }: { item: string; value: ReactNode; quie
  * /api/offer before it's kept, and sent with the checkout so its owner is credited (and the best
  * discount applies).
  */
-function CreatorCode({ code, kind, className }: { code: string; kind?: "creator" | "customer"; className?: string }) {
+function CreatorCode({
+  code,
+  kind,
+  memorial,
+  className,
+}: {
+  code: string;
+  kind?: "creator" | "customer";
+  /** The gentle track: no "share your code" ask. */
+  memorial?: boolean;
+  className?: string;
+}) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -934,7 +1076,9 @@ function CreatorCode({ code, kind, className }: { code: string; kind?: "creator"
           {state === "invalid"
             ? "We don't recognize that code."
             : state === "own"
-              ? `That's your own code. Share it with a friend: they take $${REFERRAL.friendCents / 100} off, and you get $${REFERRAL.rewardCents / 100}.`
+              ? memorial
+                ? "That's your own code, so it can't be used on your order."
+                : `That's your own code. Share it with a friend: they take $${REFERRAL.friendCents / 100} off, and you get $${REFERRAL.rewardCents / 100}.`
               : "We couldn't check that code just now. Please try again."}
         </p>
       )}

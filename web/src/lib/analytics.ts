@@ -18,7 +18,11 @@ export type FunnelEvent =
   | "Purchase"
   | "Lead"
   | "PartnerApply"
-  | "ReferralShare";
+  | "ReferralShare"
+  /** "How did you hear about us?" answered on the success page. */
+  | "HeardFrom"
+  /** "This portrait is in memory of my dog" switched on or off in the create flow. */
+  | "MemorialToggle";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 

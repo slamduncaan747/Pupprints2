@@ -8,7 +8,7 @@ import { CampaignImage } from "@/components/marketing/campaign";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Note, Prose, Rows, textLink } from "@/components/marketing/blocks";
 import { StyleCard } from "@/components/marketing/style-card";
-import { PRODUCTS, STYLE_MAP } from "@/lib/catalog";
+import { PRODUCTS, STYLE_MAP, styleAvailable } from "@/lib/catalog";
 import { breadcrumbJsonLd, faqJsonLd, pageMetadata, productJsonLd } from "@/lib/seo";
 import { formatPrice } from "@/lib/utils";
 import { BREEDS, breedSample, getBreed, relatedBreeds } from "@/content/breeds";
@@ -30,8 +30,13 @@ function shortName(b: Breed) {
   return b.slug === "mixed-breed" ? "dog" : (b.nickname ?? b.name);
 }
 
+/** The breed's suggested styles that can be chosen now (a retired dated edition drops out). */
+function liveStyles(b: Breed) {
+  return b.styles.filter((s) => styleAvailable(STYLE_MAP[s.slug]));
+}
+
 function metaDescription(b: Breed) {
-  const [s1, s2] = b.styles.map((s) => STYLE_MAP[s.slug].name);
+  const [s1, s2] = liveStyles(b).map((s) => STYLE_MAP[s.slug].name);
   const subject =
     b.slug === "mixed-breed"
       ? "Custom portraits of your one-of-a-kind rescue or mixed-breed dog"
@@ -41,7 +46,7 @@ function metaDescription(b: Breed) {
 
 function buildFaq(b: Breed): FaqItem[] {
   const nick = shortName(b);
-  const [first, second] = b.styles;
+  const [first, second] = liveStyles(b);
   const styleQ: FaqItem = {
     q:
       b.slug === "mixed-breed"
@@ -119,7 +124,8 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
 
   const nick = shortName(breed);
   const sample = breedSample(breed);
-  const top = breed.styles[0].slug;
+  const styles = liveStyles(breed);
+  const top = styles[0].slug;
   const faq = buildFaq(breed);
   const path = `/breeds/${breed.slug}`;
   const crumbs = [
@@ -236,7 +242,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
         layout="stack"
       >
         <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:grid-cols-4 sm:gap-x-4">
-          {breed.styles.map(({ slug: s, why }) => (
+          {styles.map(({ slug: s, why }) => (
             <li key={s}>
               <StyleCard style={STYLE_MAP[s]} note={why} sizes="(max-width: 640px) 50vw, 25vw" />
             </li>

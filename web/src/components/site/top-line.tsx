@@ -1,4 +1,4 @@
-import { FOUNDING_OFFER, GUARANTEE, HOLIDAY, OFFER, holidayNotice } from "@/lib/offer";
+import { FOUNDING_OFFER, GIFT_TWO, GUARANTEE, HOLIDAY, OFFER, giftTwoActive, holidayNotice } from "@/lib/offer";
 import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
 import { TopLineBar, type TopLineMessage } from "@/components/site/top-line-bar";
 import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-keys";
@@ -6,8 +6,8 @@ import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-ke
 /**
  * The single most compelling real offer right now, in date order. Every line is true when shown:
  * the founding offer until its deadline (the browser swaps it for the next line if the cap is
- * reached first), the Christmas cutoff from Nov 1, Gift Reveal up to Christmas Day, then the
- * standing promise.
+ * reached first), "two portraits, two ornaments" with the Christmas cutoff (both end Dec 10) from
+ * Nov 1, Gift Reveal up to Christmas Day, then the standing promise.
  */
 function messages(now: number = Date.now()): TopLineMessage[] {
   const list: TopLineMessage[] = [];
@@ -17,6 +17,16 @@ function messages(now: number = Date.now()): TopLineMessage[] {
       kind: "founding",
       short: `${FOUNDING_OFFER.headline}, through ${FOUNDING.deadlineLabel}`,
       long: `${FOUNDING_OFFER.headline} for our first ${FOUNDING.maxRedemptions} orders, through ${FOUNDING.deadlineLabel}`,
+      href: "/create",
+    });
+  }
+  // Nov 1–Dec 10: two portraits, two ornaments on us (it ends with the US Christmas cutoff).
+  if (giftTwoActive(now)) {
+    list.push({
+      key: "gift-two-2026",
+      kind: "other",
+      short: GIFT_TWO.short,
+      long: `${GIFT_TWO.short}. ${HOLIDAY.label}.`,
       href: "/create",
     });
   }

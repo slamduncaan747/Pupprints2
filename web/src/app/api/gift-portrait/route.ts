@@ -3,14 +3,15 @@ import { getStyle } from "@/lib/catalog";
 import { makeWatermarkedPreview } from "@/lib/image";
 import { storeObject } from "@/lib/image/storage";
 import { BUCKETS, db, previewUrl } from "@/lib/supabase/server";
-import { normalizeCode } from "@/components/partners/program";
+import { normalizeCode, PROGRAM } from "@/components/partners/program";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 const TOKEN_RE = /^[a-f0-9]{16,64}$/i;
-const REF_MAX_AGE = 60 * 60 * 24 * 30;
+/** Same window as a creator's ?ref= link (components/site/tracking.tsx). */
+const REF_MAX_AGE = 60 * 60 * 24 * PROGRAM.attributionDays;
 
 type GiftRow = { generation_id: string | null; partner_id: string | null; pet_name: string | null };
 type GenerationRow = {

@@ -20,6 +20,8 @@ const Body = z.object({
     .regex(/^[a-z0-9][a-z0-9_:./-]*$/i),
   petName: z.string().trim().max(60).nullish(),
   generationId: z.uuid().nullish(),
+  /** "This portrait is in memory of my dog": nurture skips every offer for this lead. */
+  memorial: z.boolean().optional(),
   // Honeypots: real users never fill these (hidden fields). Bots that do get a fake success.
   website: z.string().max(500).optional(),
   company: z.string().max(500).optional(),
@@ -92,6 +94,13 @@ export async function POST(req: Request) {
   const c = db();
   if (!c) return ok();
 
+  // The gentle track sticks: set from the create flow's toggle, or from the preview it was made with.
+  let memorial = parsed.data.memorial === true;
+  if (!memorial && generationId) {
+    const { data: gen } = await c.from("generations").select("memorial").eq("id", generationId).maybeSingle<{ memorial: boolean | null }>();
+    memorial = gen?.memorial === true;
+  }
+
   const store = await cookies();
   const referralCode = normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
   const utm = parseUtm(store.get("pp_utm")?.value);
@@ -113,6 +122,7 @@ export async function POST(req: Request) {
       if (generationId) patch.generation_id = generationId;
       if (!lead.referral_code && referralCode) patch.referral_code = referralCode;
       if (!lead.utm && utm) patch.utm = utm;
+      if (memorial) patch.memorial = true;
       if (Object.keys(patch).length === 0) return;
       let { error } = await c.from("leads").update(patch).eq("id", lead.id);
       if (error?.code === "23503" && patch.generation_id) {
@@ -136,6 +146,7 @@ export async function POST(req: Request) {
       generation_id: generationId || null,
       referral_code: referralCode,
       utm,
+      ...(memorial ? { memorial: true } : {}),
     };
     let { error } = await c.from("leads").insert(row);
     if (error?.code === "23503") {

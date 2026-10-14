@@ -33,6 +33,14 @@ export type ArtStyle = {
   /** Featured in merchandising. Label it "Featured"/"Staff pick" — never "Popular"/"Best-selling" (no sales data yet). */
   popular?: boolean;
   isNew?: boolean;
+  /**
+   * A dated edition: the last moment (ISO, with offset) the style can be chosen. After it, the
+   * style leaves every picker, its page shows it as retired and /api/generate refuses it. Checked
+   * at request time (styleAvailable), so it retires without a redeploy.
+   */
+  availableUntil?: string;
+  /** One honest line about the edition, shown wherever the style is offered. */
+  edition?: string;
 };
 
 const IDENTITY =
@@ -164,6 +172,8 @@ export const STYLES: ArtStyle[] = [
     swatch: "#7d2b2b",
     goodFor: ["holiday", "gift"],
     isNew: true,
+    availableUntil: "2026-12-31T23:59:59-08:00",
+    edition: "The 2026 holiday edition, available through Dec 31.",
   },
 ];
 
@@ -171,6 +181,17 @@ export const STYLE_MAP = Object.fromEntries(STYLES.map((s) => [s.slug, s])) as R
 
 export function getStyle(slug: string): ArtStyle | undefined {
   return STYLE_MAP[slug as StyleSlug];
+}
+
+/** False once a dated edition has passed its availableUntil (evaluate at request time). */
+export function styleAvailable(style: Pick<ArtStyle, "availableUntil"> | undefined, now: number = Date.now()): boolean {
+  if (!style) return false;
+  return !style.availableUntil || now <= Date.parse(style.availableUntil);
+}
+
+/** The styles that can be chosen right now, in catalog order. */
+export function availableStyles(now: number = Date.now()): ArtStyle[] {
+  return STYLES.filter((s) => styleAvailable(s, now));
 }
 
 /* ------------------------------------------------------------------ */

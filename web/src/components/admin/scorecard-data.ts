@@ -143,6 +143,50 @@ export async function loadScorecard(c: SupabaseClient, { today = dayKey(), days 
   return { rows: [...byDay.values()], tableMissing, actionsError };
 }
 
+export type HeardFromRow = { id: string; label: string; orders: number; share: number | null };
+
+/**
+ * "How did you hear about us?" over the last `days` days (admin timezone): paid orders per answer,
+ * plus "No answer", each with its share of all paid orders. `other` lists recent free-text answers.
+ */
+export async function loadHeardFrom(
+  c: SupabaseClient,
+  { today = dayKey(), days = 30 }: { today?: string; days?: number } = {},
+): Promise<{ rows: HeardFromRow[]; total: number; other: string[]; error: string | null }> {
+  const { HEARD_FROM } = await import("@/lib/heard-from");
+  const firstDay = addDays(today, -(days - 1));
+  const sinceIso = new Date(Date.parse(`${firstDay}T00:00:00Z`) - 86_400_000).toISOString();
+  type Row = { created_at: string; status: string; heard_from: string | null; heard_from_detail: string | null };
+  let orders: Row[];
+  try {
+    orders = await fetchAll<Row>((f, t) =>
+      c
+        .from("orders")
+        .select("created_at, status, heard_from, heard_from_detail")
+        .gte("created_at", sinceIso)
+        .order("created_at", { ascending: false })
+        .range(f, t),
+    );
+  } catch (err) {
+    return { rows: [], total: 0, other: [], error: err instanceof Error ? err.message : "Could not load answers" };
+  }
+  const paid = PAID_STATUSES as readonly string[];
+  const inWindow = orders.filter((o) => paid.includes(o.status) && dayKey(o.created_at) >= firstDay && dayKey(o.created_at) <= today);
+  const total = inWindow.length;
+  const count = (id: string | null) => inWindow.filter((o) => (o.heard_from ?? null) === id).length;
+  const share = (n: number) => (total > 0 ? n / total : null);
+  const rows: HeardFromRow[] = HEARD_FROM.map((o) => ({ id: o.id, label: o.label, orders: count(o.id), share: share(count(o.id)) }));
+  const known = new Set<string>(HEARD_FROM.map((o) => o.id));
+  const unanswered = inWindow.filter((o) => !o.heard_from || !known.has(o.heard_from)).length;
+  rows.sort((a, b) => b.orders - a.orders);
+  rows.push({ id: "none", label: "No answer", orders: unanswered, share: share(unanswered) });
+  const other = inWindow
+    .filter((o) => o.heard_from === "other" && o.heard_from_detail?.trim())
+    .map((o) => (o.heard_from_detail as string).trim())
+    .slice(0, 12);
+  return { rows, total, other, error: null };
+}
+
 /** Sums the newest `n` rows (rows are newest first). */
 export function totals(rows: DayRow[], n = rows.length, target = 100): Totals {
   const slice = rows.slice(0, n);

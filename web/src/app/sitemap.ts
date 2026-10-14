@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { PRODUCTS, STYLES } from "@/lib/catalog";
+import { availableStyles, PRODUCTS } from "@/lib/catalog";
 import { siteUrl } from "@/lib/seo";
 import { BREEDS_SORTED, BREEDS_UPDATED } from "@/content/breeds";
 import { ARTICLES } from "@/content/articles";
@@ -9,6 +9,9 @@ import { ARTICLES } from "@/content/articles";
  * /partners/stats) are deliberately excluded and blocked in robots.ts.
  * Static marketing pages omit lastModified rather than reporting a fake "today" on every build.
  */
+
+/** Re-generated hourly, so a retired dated edition (Holiday Cozy 2026) leaves without a redeploy. */
+export const revalidate = 3600;
 
 type Entry = MetadataRoute.Sitemap[number];
 type Freq = Entry["changeFrequency"];
@@ -44,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: r.priority,
   }));
 
-  for (const style of STYLES) {
+  for (const style of availableStyles()) {
     entries.push({ url: siteUrl(`/styles/${style.slug}`), changeFrequency: "monthly", priority: 0.8 });
   }
 

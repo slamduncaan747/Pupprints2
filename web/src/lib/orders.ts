@@ -4,6 +4,7 @@ import { findAddon, findVariant, getStyle, PRODUCT_MAP, type FrameColor, type Pr
 import { site, socialHandle } from "@/lib/config";
 import { features } from "@/lib/env";
 import { db, previewUrl, requireDb } from "@/lib/supabase/server";
+import type { BundleTag } from "@/lib/offer";
 import { formatPrice } from "@/lib/utils";
 import { computeEta, formatArrival, type OrderStatus } from "@/components/order/timeline";
 import { escapeLike } from "@/components/partners/program";
@@ -30,8 +31,11 @@ export type OrderItem = {
   /** Cents charged per unit (0 when the digital file is included with a physical piece). */
   unitAmount: number;
   included?: boolean;
-  /** Set when the unit is part of a bundle priced below its catalog price. */
-  bundle?: "heirloom";
+  /**
+   * Set when the unit is priced below its catalog price by a bundle: "heirloom" (ornament + mug
+   * together) or "gift-two" (a free ornament with two or more pieces, Nov 1–Dec 10 2026).
+   */
+  bundle?: BundleTag;
   /** Catalog price per unit before the bundle saving (only set with `bundle`). */
   regularUnitAmount?: number;
   style: string;
@@ -120,6 +124,11 @@ export type OrderRow = {
   review_request_sent_at: string | null;
   /** "Give $15, get $15" reminder (migration 0005). */
   referral_reminder_sent_at?: string | null;
+  /** "How did you hear about us?" answer from the success page (migration 0007). */
+  heard_from?: string | null;
+  heard_from_detail?: string | null;
+  /** Ordered with "This portrait is in memory of my dog" on: no referral asks (migration 0007). */
+  memorial?: boolean | null;
 };
 
 /** Orders that have been paid for (the reveal + downloads work for these). */
@@ -230,9 +239,15 @@ export function styleNameOf(slug: string) {
 export function summarizeOrder(order: OrderRow) {
   const items = itemsOf(order).map((i) => ({
     label: i.label,
-    detail: [i.styleName, i.petName ? `Portrait of ${i.petName}` : null].filter(Boolean).join(" · "),
+    detail: [
+      i.styleName,
+      i.petName ? `Portrait of ${i.petName}` : null,
+      i.bundle === "gift-two" ? "Free with two portraits" : i.bundle === "heirloom" ? "Heirloom Set" : null,
+    ]
+      .filter(Boolean)
+      .join(" · "),
     quantity: i.quantity,
-    amount: i.included ? "Included" : formatPrice(i.unitAmount * i.quantity),
+    amount: i.included ? "Included" : i.bundle === "gift-two" && i.unitAmount === 0 ? "Free" : formatPrice(i.unitAmount * i.quantity),
   }));
   const physical = hasPhysical(order);
   const totals: { label: string; value: string; strong?: boolean; muted?: boolean }[] = [];
@@ -576,7 +591,9 @@ export async function runPostPaymentTasks(order: OrderRow, opts: { giftSendNow: 
     });
   }
   const own = await referral.catch(() => null);
-  await sendConfirmationEmail(order, { giftEmailedNow, referralCode: isLiveReferral(own) ? own.code : null }).catch((err) =>
+  // A portrait made in memory: no "Give $15, get $15" ask in the confirmation.
+  const referralCode = isLiveReferral(own) && !order.memorial ? own.code : null;
+  await sendConfirmationEmail(order, { giftEmailedNow, referralCode }).catch((err) =>
     console.error("[orders] confirmation failed", err),
   );
 }

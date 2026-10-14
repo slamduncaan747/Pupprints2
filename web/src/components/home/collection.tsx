@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { SampleImage } from "@/components/ui/sample-image";
-import { STYLES } from "@/lib/catalog";
+import { availableStyles } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 
 /**
@@ -9,6 +9,8 @@ import { STYLE_SAMPLES } from "@/lib/samples";
  * portrait opens the creator in that style, so choosing a style is the first step, not a detour.
  */
 export function Collection() {
+  // Styles that can be chosen now (a dated edition leaves on its last day; pages re-render hourly).
+  const styles = availableStyles();
   return (
     <section id="collection" aria-labelledby="collection-title" className="scroll-mt-20 pb-24 sm:pb-36">
       <Container className="mb-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-4 sm:mb-12">
@@ -17,7 +19,7 @@ export function Collection() {
             The Collection
           </h2>
           <p className="mt-3 text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
-            {STYLES.length} styles. Try every one with your own photo, free.
+            {styles.length} styles. Try every one with your own photo, free.
           </p>
         </div>
         <Link href="/styles" className="link-cta">
@@ -29,7 +31,7 @@ export function Collection() {
         aria-label="Styles"
         className="flex snap-x snap-mandatory gap-[2px] overflow-x-auto px-0 [scrollbar-width:none] lg:grid lg:grid-cols-6 lg:overflow-visible [&::-webkit-scrollbar]:hidden"
       >
-        {STYLES.map((style) => (
+        {styles.map((style) => (
           <li key={style.slug} className="w-[42%] shrink-0 snap-start sm:w-[30%] lg:w-auto">
             <Link
               href={`/create?style=${style.slug}`}

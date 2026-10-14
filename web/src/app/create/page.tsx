@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getStyle } from "@/lib/catalog";
+import { getStyle, styleAvailable } from "@/lib/catalog";
 import { CreateFlow } from "@/components/create/create-flow";
 
 export const metadata: Metadata = {
@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 export default async function CreatePage({ searchParams }: PageProps<"/create">) {
   const params = await searchParams;
   const raw = Array.isArray(params.style) ? params.style[0] : params.style;
-  const initialStyle = raw ? getStyle(raw)?.slug : undefined;
+  // A retired dated edition (e.g. an old ?style=holiday link) is not preselected.
+  const style = raw ? getStyle(raw) : undefined;
+  const initialStyle = style && styleAvailable(style) ? style.slug : undefined;
   // ?gift=<reveal token>: order the gift portrait from a reveal link.
   const rawGift = Array.isArray(params.gift) ? params.gift[0] : params.gift;
   const giftToken = rawGift && /^[a-f0-9]{16,64}$/i.test(rawGift) ? rawGift : undefined;

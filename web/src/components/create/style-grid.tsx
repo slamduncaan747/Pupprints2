@@ -1,9 +1,20 @@
 "use client";
 
-import { STYLES, type StyleSlug } from "@/lib/catalog";
+import { availableStyles, type ArtStyle, type StyleSlug } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 import { StyleThumb } from "./style-thumb";
 import type { Generation, UploadInfo } from "./store";
+
+/** Suggested first on the gentle track ("This portrait is in memory of my dog"), in this order. */
+export const MEMORIAL_FIRST: StyleSlug[] = ["watercolor", "oil-classic", "charcoal", "botanical"];
+
+/** Styles that can be chosen now; on the gentle track the four quietest styles lead. */
+export function pickerStyles(memorial: boolean): ArtStyle[] {
+  const styles = availableStyles();
+  if (!memorial) return styles;
+  const first = MEMORIAL_FIRST.map((slug) => styles.find((s) => s.slug === slug)).filter((s): s is ArtStyle => Boolean(s));
+  return [...first, ...styles.filter((s) => !MEMORIAL_FIRST.includes(s.slug))];
+}
 
 export function StyleGrid({
   upload,
@@ -13,6 +24,7 @@ export function StyleGrid({
   onPick,
   onChangePhoto,
   onBackToResult,
+  memorial = false,
 }: {
   upload: UploadInfo;
   petName: string;
@@ -22,6 +34,8 @@ export function StyleGrid({
   onPick: (style: StyleSlug) => void;
   onChangePhoto: () => void;
   onBackToResult?: () => void;
+  /** The gentle track: Watercolor, Old Master, Charcoal Study and Botanical first. */
+  memorial?: boolean;
 }) {
   const latestByStyle = new Map<StyleSlug, Generation>();
   for (const g of generations) if (!latestByStyle.has(g.style)) latestByStyle.set(g.style, g);
@@ -35,7 +49,9 @@ export function StyleGrid({
           {name ? `A style for ${name}.` : "Choose a style."}
         </h1>
         <p className="mx-auto mt-5 max-w-[20rem] text-[14px] leading-relaxed text-balance text-ink-2 sm:max-w-md sm:text-[15px]">
-          Every preview is complimentary. Try as many as you like.
+          {memorial
+            ? "Every preview is complimentary. We've placed the gentlest styles first; take all the time you need."
+            : "Every preview is complimentary. Try as many as you like."}
         </p>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-1">
@@ -55,7 +71,7 @@ export function StyleGrid({
       </div>
 
       <ul className="mt-12 grid grid-cols-2 gap-x-px gap-y-10 sm:mt-16 sm:grid-cols-3 sm:gap-x-5 sm:gap-y-14 lg:grid-cols-4">
-        {STYLES.map((style) => {
+        {pickerStyles(memorial).map((style) => {
           const made = latestByStyle.get(style.slug);
           const isHighlighted = highlighted === style.slug;
           return (
@@ -77,7 +93,13 @@ export function StyleGrid({
                   >
                     {style.name}
                   </span>
-                  {made && <span className="label text-ink-3">Composed</span>}
+                  {made ? (
+                    <span className="label text-ink-3">Composed</span>
+                  ) : memorial && MEMORIAL_FIRST.includes(style.slug) ? (
+                    <span className="label text-ink-3">Suggested</span>
+                  ) : style.edition && !memorial ? (
+                    <span className="text-[12px] leading-snug text-ink-3">{style.edition}</span>
+                  ) : null}
                 </span>
               </button>
             </li>

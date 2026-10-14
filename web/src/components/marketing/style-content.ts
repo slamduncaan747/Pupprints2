@@ -3,7 +3,7 @@
  * Style names, blurbs and descriptions come from @/lib/catalog; this only adds page copy.
  */
 import { honestText } from "@/components/marketing/honest";
-import { STYLES, type ArtStyle, type FrameColor, type ProductType, type StyleSlug } from "@/lib/catalog";
+import { availableStyles, type ArtStyle, type FrameColor, type ProductType, type StyleSlug } from "@/lib/catalog";
 
 export type GoodFor = ArtStyle["goodFor"][number];
 
@@ -233,9 +233,9 @@ export function honestDescription(style: ArtStyle) {
   return honestText(style.description);
 }
 
-/** Styles ranked by how many of the wanted tags they match (ties keep catalog order). */
+/** Styles that can be chosen now, ranked by how many of the wanted tags they match (ties keep catalog order). */
 export function stylesFor(tags: GoodFor[], limit = 4, exclude?: StyleSlug) {
-  return STYLES.filter((s) => s.slug !== exclude)
+  return availableStyles().filter((s) => s.slug !== exclude)
     .map((s, i) => ({ s, i, score: s.goodFor.filter((g) => tags.includes(g)).length, lead: tags.includes(s.goodFor[0]) ? 1 : 0 }))
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score || b.lead - a.lead || a.i - b.i)

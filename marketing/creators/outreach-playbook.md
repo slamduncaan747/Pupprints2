@@ -218,7 +218,7 @@ This is the law (FTC Endorsement Guides, 16 CFR Part 255), and our partner terms
 
 **Creating a partner:**
 1. Partner page → **Generate code** (e.g. `RUFUS15`). Set commission: 0.15, or 0.20 for Founding Partners.
-2. **Copy share link** gives their link: `https://pup-prints.vercel.app/?ref=RUFUS15`. The discount applies automatically at checkout, and attribution lasts 30 days from the click.
+2. **Copy share link** gives their link: `https://pup-prints.vercel.app/?ref=RUFUS15`. The discount applies automatically at checkout, and attribution lasts 60 days from the click.
 3. **Copy stats link** gives their private page with live clicks, orders and commission.
 
 **Important: typed codes don't work out of the box.**

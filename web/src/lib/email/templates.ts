@@ -1,6 +1,7 @@
-import { PROMISES } from "@/lib/catalog";
+import { PRODUCT_MAP, PROMISES } from "@/lib/catalog";
 import { FOUNDING } from "@/lib/launch";
-import { REFERRAL, REFERRAL_TERMS } from "@/lib/offer";
+import { GUARANTEE, REFERRAL, REFERRAL_TERMS } from "@/lib/offer";
+import { formatPrice } from "@/lib/utils";
 import {
   button,
   callout,
@@ -501,10 +502,25 @@ export type NurtureInput = {
   unsubscribeUrl: string;
   /**
    * Step 3 only, and only when a real code with a real expiry exists: the public Founding 100
-   * code while it can still be redeemed, otherwise a personal single-use WELCOME10 code.
+   * code while it can still be redeemed (never for memorial leads). A personal code is still
+   * supported here, but the lifecycle cron no longer sends one: after the Founding window, step 3
+   * is the feature downsell (no discount codes).
    */
   offer?: { code: string; expiresAt: Date; percentOff: number; kind?: "personal" | "founding" } | null;
+  /**
+   * "This portrait is in memory of my dog": step 3 is a gentle note (take your time; remakes are
+   * free until it's them), never an offer, a deadline or a downsell.
+   */
+  memorial?: boolean;
 };
+
+/** The two smaller ways to keep the same portrait, from the catalog (never hardcoded). */
+export function downsellPrices() {
+  return {
+    printFrom: Math.min(...PRODUCT_MAP.poster.variants.map((v) => v.price)),
+    file: PRODUCT_MAP.digital.variants[0].price,
+  };
+}
 
 function expiryText(d: Date) {
   return new Intl.DateTimeFormat("en-US", {
@@ -591,8 +607,33 @@ export function nurtureEmail(i: NurtureInput): RenderedEmail {
       `Choose a size: ${i.createUrl}`,
     ];
   } else {
-    const offer = i.offer;
-    if (offer?.kind === "founding") {
+    const offer = i.memorial ? null : i.offer;
+    const { printFrom, file } = downsellPrices();
+    if (i.memorial) {
+      subject = "Take your time";
+      preheader = pet ? `${pet}'s portrait is saved for whenever you're ready.` : "Your portrait is saved for whenever you're ready.";
+      body = [
+        heading("Take your time."),
+        para(
+          `${pet ? `${esc(pet)}'s portrait is` : "Your portrait is"} saved, and it will be here whenever you're ready. There's no deadline and nothing to decide today.`,
+        ),
+        i.previewUrl ? framedImage(i.previewUrl, pet ? `Preview of ${pet}` : "Your preview", 220) : "",
+        para(
+          `If it isn't quite ${pet ? esc(pet) : "them"} yet, try another style or another photo, as often as you like. Remakes are free until it's them. And if you'd like a hand choosing, reply to this email and we'll help.`,
+        ),
+        button(i.createUrl, pet ? `See ${pet}'s portrait` : "See your portrait", { variant: "outline" }),
+        para("This is the last email we'll send about this preview.", { muted: true, size: 14 }),
+      ];
+      text = [
+        "Take your time.",
+        "",
+        `${pet ? `${pet}'s portrait is` : "Your portrait is"} saved, and it will be here whenever you're ready. There's no deadline.`,
+        `If it isn't quite ${pet ?? "them"} yet, try another style or photo as often as you like. Remakes are free until it's them. Reply if you'd like a hand choosing.`,
+        `See it: ${i.createUrl}`,
+        "",
+        "This is the last email we'll send about this preview.",
+      ];
+    } else if (offer?.kind === "founding") {
       subject = `${offer.percentOff}% off ${theirPortrait}, through ${FOUNDING.deadlineLabel}`;
       preheader = `Code ${offer.code} takes ${offer.percentOff}% off for our first ${FOUNDING.maxRedemptions} orders, through ${FOUNDING.deadlineLong}.`;
       body = [
@@ -638,15 +679,34 @@ export function nurtureEmail(i: NurtureInput): RenderedEmail {
         `Use it: ${i.createUrl}`,
       ];
     } else {
-      subject = pet ? `Still thinking about ${pet}'s portrait?` : "Still thinking it over?";
-      preheader = "Your preview is saved. This is our last reminder about it.";
+      // The feature downsell: the same portrait, smaller scope. Real catalog prices, no code.
+      subject = pet ? `${pet}'s portrait, from ${formatPrice(printFrom)}` : `Your portrait, from ${formatPrice(printFrom)}`;
+      preheader = `The same portrait as a fine-art print from ${formatPrice(printFrom)}, or the hi-res file for ${formatPrice(file)}.`;
       body = [
-        heading(subject),
-        para("Your preview is still saved, and you can try other styles for free. This is the last reminder we'll send about it."),
+        heading(pet ? `A smaller way to keep ${pet}` : "A smaller way to keep it"),
+        para(
+          `If a canvas or a frame is more than you had in mind, ${esc(theirPortrait)} also comes as a fine-art print from <strong style="color:#1b1814;">${formatPrice(printFrom)}</strong>, ready for a frame of your own, or as the hi-res file alone for <strong style="color:#1b1814;">${formatPrice(file)}</strong>, delivered the moment you order.`,
+        ),
         i.previewUrl ? framedImage(i.previewUrl, pet ? `Preview of ${pet}` : "Your preview", 220) : "",
-        button(i.createUrl, "See my portrait"),
+        steps([
+          { title: `Fine-art print, from ${formatPrice(printFrom)}`, detail: "Archival matte paper, pigment inks, checked by a person before printing. Free US shipping, and the hi-res file is included." },
+          { title: `The hi-res file, ${formatPrice(file)}`, detail: "Full resolution, no watermark. Print it, frame it, post it." },
+        ]),
+        callout(`<strong style="color:#1b1814;">${esc(GUARANTEE.name)}.</strong> ${esc(GUARANTEE.body)}`),
+        button(i.createUrl, "Choose your piece"),
+        para("This is the last email we'll send about this preview.", { muted: true, size: 14 }),
       ];
-      text = [subject, "", "Your preview is still saved. This is our last reminder about it.", `See it: ${i.createUrl}`];
+      text = [
+        subject,
+        "",
+        `${theirPortrait.charAt(0).toUpperCase()}${theirPortrait.slice(1)} also comes as a fine-art print from ${formatPrice(printFrom)} (hi-res file included, free US shipping) or as the hi-res file alone for ${formatPrice(file)}.`,
+        "",
+        `${GUARANTEE.name}: ${GUARANTEE.body}`,
+        "",
+        `Choose your piece: ${i.createUrl}`,
+        "",
+        "This is the last email we'll send about this preview.",
+      ];
     }
   }
 

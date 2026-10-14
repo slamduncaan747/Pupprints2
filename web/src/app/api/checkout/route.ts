@@ -5,7 +5,7 @@ import { z } from "zod";
 import { ADDONS, findAddon, findVariant, PRODUCT_MAP, SHIPPING_RATES, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site } from "@/lib/config";
 import { FOUNDING } from "@/lib/launch";
-import { HEIRLOOM_SET, heirloomSets, pickCheckoutDiscount, type DiscountOption } from "@/lib/offer";
+import { applyBundles, GIFT_TWO, HEIRLOOM_SET, pickCheckoutDiscount, type DiscountOption } from "@/lib/offer";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { getSessionId } from "@/lib/session";
 import {
@@ -92,6 +92,8 @@ const Body = z.object({
     .max(64)
     .optional()
     .transform((v) => (v ? v : undefined)),
+  /** "This portrait is in memory of my dog" was on in the create flow: no referral asks afterwards. */
+  memorial: z.boolean().optional(),
 });
 
 type GenerationRow = {
@@ -270,30 +272,15 @@ export async function POST(req: Request) {
     });
   }
 
-  // --- The Heirloom Set: ornament + mug together (with a physical piece) cost less ----------
-  // Each complete set takes HEIRLOOM_SET.discountCents off, split across the two add-ons as real
-  // per-unit prices. A line only partly in a set is split so every stored unit price is exact.
-  const sets = heirloomSets(items, hasPhysical);
-  const bundledItems: OrderItem[] = [];
-  const setsLeft: Record<string, number> = Object.fromEntries(HEIRLOOM_SET.addonIds.map((id) => [id, sets]));
-  for (const item of items) {
-    const off = HEIRLOOM_SET.unitDiscount[item.variantId] ?? 0;
-    const inSet = item.kind === "addon" && off > 0 ? Math.min(item.quantity, setsLeft[item.variantId] ?? 0) : 0;
-    if (inSet === 0) {
-      bundledItems.push(item);
-      continue;
-    }
-    setsLeft[item.variantId] -= inSet;
-    bundledItems.push({
-      ...item,
-      quantity: inSet,
-      unitAmount: Math.max(0, item.unitAmount - off),
-      regularUnitAmount: item.unitAmount,
-      bundle: "heirloom",
-    });
-    if (item.quantity > inSet) bundledItems.push({ ...item, quantity: item.quantity - inSet });
-  }
-  items.splice(0, items.length, ...bundledItems);
+  // --- Bundles, priced from the catalog on the server's clock --------------------------
+  // GIFT_TWO first (Nov 1–Dec 10: two or more pieces → up to two ornaments at $0), then the
+  // Heirloom Set (ornament + mug together, $10 off a set) on the ornaments still paid for, so a
+  // free ornament is never discounted twice. Lines only partly in a bundle are split so every
+  // stored unit price is exact. Same function the product step uses for the price it shows.
+  const bundled = applyBundles(items);
+  items.splice(0, items.length, ...bundled.lines);
+  const sets = bundled.heirloomSets;
+  const freeOrnaments = bundled.freeOrnaments;
 
   // --- Attribution -------------------------------------------------------------------
   const store = await cookies();
@@ -333,6 +320,7 @@ export async function POST(req: Request) {
       gift_sender_name: body.giftSenderName ?? null,
       gift_recipient_name: body.giftRecipientName ?? null,
       gift_recipient_email: body.giftRecipientEmail ?? null,
+      ...(body.memorial ? { memorial: true } : {}),
       currency: "usd",
     })
     .select("id, order_number")
@@ -400,10 +388,16 @@ export async function POST(req: Request) {
     const referralUsed = partner?.kind === "customer" && applied !== "referral";
 
     // --- Line items ------------------------------------------------------------------
+    // $0 lines (the included digital file, GIFT_TWO ornaments) stay on our order for fulfillment
+    // but aren't sent to Stripe; the free ornaments are named in the piece's description instead.
     const automaticTax = process.env.STRIPE_AUTOMATIC_TAX === "1";
+    const freeOrnamentNote = freeOrnaments > 0 ? `With ${freeOrnaments === 1 ? "a matching ornament" : "two matching ornaments"}, free` : null;
+    let notedFree = false;
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items
-      .filter((i) => !i.included)
+      .filter((i) => !i.included && !(i.bundle === "gift-two" && i.unitAmount === 0))
       .map((i) => {
+        const freeNote = freeOrnamentNote && !notedFree && i.kind === "product" && i.productType !== "digital" ? freeOrnamentNote : null;
+        if (freeNote) notedFree = true;
         const preview = i.previewPath ? previewUrl(i.previewPath) : null;
         const description = [
           i.petName ? `Portrait of ${i.petName}` : null,
@@ -411,6 +405,7 @@ export async function POST(req: Request) {
           i.bundle === "heirloom" && i.regularUnitAmount
             ? `${HEIRLOOM_SET.name} price (regularly $${(i.regularUnitAmount / 100).toFixed(0)})`
             : null,
+          freeNote,
           i.productType === "digital" ? "Full-resolution file, no watermark. Delivered instantly." : null,
           i.frameColor ? `${i.frameColor.charAt(0).toUpperCase()}${i.frameColor.slice(1)} frame` : null,
         ]
@@ -439,6 +434,8 @@ export async function POST(req: Request) {
       ...(applied ? { offer: applied } : {}),
       ...(referralUsed && partner ? { referral: partner.code } : {}),
       ...(sets > 0 ? { heirloomSets: String(sets) } : {}),
+      ...(freeOrnaments > 0 ? { giftTwoOrnaments: String(freeOrnaments) } : {}),
+      ...(body.memorial ? { memorial: "1" } : {}),
     };
 
     const params: Stripe.Checkout.SessionCreateParams = {
@@ -490,6 +487,10 @@ export async function POST(req: Request) {
       params.custom_text = {
         submit: {
           message: `Every portrait is checked by a person before printing. Your hi-res digital file is included free.${
+            freeOrnaments > 0
+              ? ` ${freeOrnaments === 1 ? "A matching ornament ships" : "Two matching ornaments ship"} free with your portraits (${GIFT_TWO.name.toLowerCase()}, through ${GIFT_TWO.endsLabel}).`
+              : ""
+          }${
             body.giftRecipientEmail && body.giftSendNow !== false
               ? " We'll email the Gift Reveal to your recipient as soon as payment clears."
               : ""

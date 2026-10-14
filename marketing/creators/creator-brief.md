@@ -15,7 +15,7 @@ We turn one photo of a dog into a fine-art portrait. Your followers can **see th
 | **Your portrait** | [Dog]'s portrait is yours. Digital now; we'll ship the print free if you'd like it. **No posting required.** |
 | **Your followers get** | **15% off** through your link. It applies automatically at checkout. |
 | **You earn** | **15% commission** on every order through your link ([20% as one of our first 25 Founding Partners]) |
-| **Your link** | `https://pup-prints.vercel.app/?ref=[CODE]` (it remembers visitors for **30 days**) |
+| **Your link** | `https://pup-prints.vercel.app/?ref=[CODE]` (it remembers visitors for **60 days**) |
 | **Your stats** | A private page with live clicks, orders and earnings: [stats link] |
 | **Payouts** | Monthly, on the 15th, via **PayPal**. Commission locks **30 days after an order is delivered** (our love-it guarantee window); refunded orders don't count. W-9 needed before your first payout. |
 | **Paid post (if agreed)** | $[__] via PayPal the day it goes live. Plus the above. |

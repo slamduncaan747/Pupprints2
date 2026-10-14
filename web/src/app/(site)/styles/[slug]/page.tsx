@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PRODUCT_MAP, PRODUCTS, STYLES, getStyle } from "@/lib/catalog";
+import { PRODUCT_MAP, PRODUCTS, STYLES, getStyle, styleAvailable, type ArtStyle } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
 import { OFFER } from "@/lib/offer";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
 import { CampaignImage, ProductLayout, ProductShot, ProductTitle } from "@/components/marketing/campaign";
 import { ProductCard } from "@/components/marketing/product-card";
@@ -25,6 +26,11 @@ import { breedsForStyle } from "@/content/breeds";
 
 export const dynamicParams = false;
 
+/**
+ * Every style is prerendered, including dated editions: the page re-renders at most hourly (the
+ * (site) layout's revalidate), and a dated edition past its availableUntil renders as retired
+ * (noindex, out of the sitemap) without a redeploy.
+ */
 export function generateStaticParams() {
   return STYLES.map((s) => ({ slug: s.slug }));
 }
@@ -33,6 +39,14 @@ export async function generateMetadata({ params }: PageProps<"/styles/[slug]">):
   const { slug } = await params;
   const style = getStyle(slug);
   if (!style) return {};
+  if (!styleAvailable(style)) {
+    return {
+      title: `${style.name} (retired)`,
+      description: `${style.name} has been retired. Explore the rest of the collection and preview any style free.`,
+      alternates: { canonical: `/styles/${style.slug}` },
+      robots: { index: false, follow: true },
+    };
+  }
   const c = styleContent(style);
   return {
     title: c.title,
@@ -64,6 +78,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
   const { slug } = await params;
   const style = getStyle(slug);
   if (!style) notFound();
+  if (!styleAvailable(style)) return <RetiredStyle style={style} />;
 
   const c = styleContent(style);
   const best = c.bestOn.map((t) => PRODUCT_MAP[t]).filter(Boolean);
@@ -139,6 +154,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
           price={`From ${formatPrice(lowest)}`}
         />
         <p className="mt-7 max-w-md text-[15px] leading-relaxed text-ink-2">{firstSentences(honestDescription(style))}</p>
+        {style.edition && <p className="label mt-4 text-ink-3">{style.edition}</p>}
         <Facts
           className="mt-9"
           items={[
@@ -251,6 +267,39 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
         body={`Upload one photo and you'll see your own dog in ${style.name} in about a minute, before you pay anything.`}
         href={`/create?style=${style.slug}`}
       />
+    </>
+  );
+}
+
+/** A dated edition after its last day: a quiet note and the way back to the collection. */
+function RetiredStyle({ style }: { style: ArtStyle }) {
+  const others = stylesFor(style.goodFor, 4, style.slug);
+  return (
+    <>
+      <Container className="py-24 text-center sm:py-36">
+        <p className="label text-ink-3">The Collection</p>
+        <h1 className="mx-auto mt-5 max-w-2xl font-display text-[44px] leading-[1.02] sm:text-[72px]">{style.name}</h1>
+        <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
+          {style.edition ? `${style.edition} ` : ""}It has been retired. Every other style is here, and every preview is
+          free.
+        </p>
+        <div className="mt-12 flex flex-col items-center gap-5">
+          <ButtonLink href="/styles" variant="primary" size="lg" className="w-full max-w-xs">
+            Discover the collection
+          </ButtonLink>
+        </div>
+      </Container>
+      {others.length > 0 && (
+        <Block eyebrow="From the collection" title="Where to begin instead" layout="stack">
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-4 sm:gap-x-4">
+            {others.map((s) => (
+              <li key={s.slug}>
+                <StyleCard style={s} compact sizes="(max-width: 640px) 50vw, 25vw" />
+              </li>
+            ))}
+          </ul>
+        </Block>
+      )}
     </>
   );
 }

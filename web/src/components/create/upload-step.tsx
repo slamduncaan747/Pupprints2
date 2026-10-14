@@ -26,6 +26,7 @@ export function UploadStep({
 }) {
   const inputId = useId();
   const nameId = useId();
+  const memorialId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [progress, setProgress] = useState(0);
@@ -200,6 +201,33 @@ export function UploadStep({
           className="mt-1 h-12 w-full rounded-none border-0 border-b border-line bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none"
         />
         <p className="mt-2.5 text-[12px] text-ink-3">It never appears on the art.</p>
+      </div>
+
+      {/* The gentle track: unchecked by default, never mentioned anywhere else. */}
+      <div className="mt-8 border-y border-line">
+        <label htmlFor={memorialId} className="flex min-h-14 cursor-pointer items-start gap-3.5 py-4">
+          <input
+            id={memorialId}
+            type="checkbox"
+            checked={flow.memorial}
+            onChange={(e) => {
+              const memorial = e.target.checked;
+              updateFlow((s) => ({ ...s, memorial }));
+              track("MemorialToggle", { on: memorial });
+            }}
+            aria-describedby={flow.memorial ? `${memorialId}-note` : undefined}
+            className="mt-[3px] h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-none border border-ink-3 bg-paper transition-colors checked:border-ink checked:bg-ink checked:shadow-[inset_0_0_0_3px_var(--color-paper)] hover:border-ink"
+          />
+          <span className="min-w-0">
+            <span className="block text-[14px] text-ink">This portrait is in memory of my dog</span>
+            {flow.memorial && (
+              <span id={`${memorialId}-note`} className="mt-1.5 block text-[12px] leading-relaxed text-ink-3">
+                We&apos;re so sorry. Take all the time you need: every preview is free and stays saved, and we&apos;ll
+                show the gentlest styles first.
+              </span>
+            )}
+          </span>
+        </label>
       </div>
 
       {displayUrl && (

@@ -22,6 +22,7 @@ export function ResultView({
   onLoveIt,
   onTryAnother,
   onRegenerate,
+  memorial = false,
 }: {
   active: Generation;
   /** This upload's generations, newest first. */
@@ -31,6 +32,8 @@ export function ResultView({
   onLoveIt: () => void;
   onTryAnother: () => void;
   onRegenerate: () => void;
+  /** The gentle track: passed to the lead so its emails skip every offer. */
+  memorial?: boolean;
 }) {
   const style = getStyle(active.style);
   const name = petName.trim();
@@ -130,7 +133,7 @@ export function ResultView({
 
         <div className={cn("mt-10", strip.length > 1 ? "" : "border-t border-line pt-7")}>
           {panel === "wallpaper" ? (
-            <PhoneWallpaper key={active.generationId} generationId={active.generationId} petName={name || undefined} />
+            <PhoneWallpaper key={active.generationId} generationId={active.generationId} petName={name || undefined} memorial={memorial} />
           ) : panel === "email" ? (
             <div className="text-left">
               <p className="text-[13px] leading-relaxed text-ink-2">
@@ -141,6 +144,7 @@ export function ResultView({
                 source="save_preview"
                 generationId={active.generationId}
                 petName={name || undefined}
+                memorial={memorial}
                 cta="Send"
                 doneMessage="Sent. Your preview is on its way."
                 onDone={markPortraitSaved}

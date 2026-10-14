@@ -6,7 +6,7 @@ import { BlockList, isIP } from "node:net";
 import { after, NextResponse } from "next/server";
 import sharp from "sharp";
 import { z } from "zod";
-import { getStyle, type StyleSlug } from "@/lib/catalog";
+import { getStyle, styleAvailable, type StyleSlug } from "@/lib/catalog";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { ImageError, makeWatermarkedPreview, normalizeUpload, toPrintMaster } from "@/lib/image";
 import { BUCKETS, db, signedUrl } from "@/lib/supabase/server";
@@ -36,7 +36,8 @@ const Fields = z.object({
   giftId: z.uuid().optional(),
   partnerId: z.uuid().optional(),
   imageUrl: optText(2000),
-  style: z.string().refine((s) => Boolean(getStyle(s)), "Pick a style"),
+  // Available styles only: a retired dated edition (Holiday Cozy 2026 after Dec 31) is refused.
+  style: z.string().refine((s) => styleAvailable(getStyle(s)), "Pick a style"),
   petName: optText(40),
   recipientName: optText(80),
   senderName: optText(80),

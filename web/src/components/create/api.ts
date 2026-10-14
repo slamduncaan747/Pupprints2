@@ -93,7 +93,10 @@ export type GenerateResponse = {
   height: number;
 };
 
-export function generatePortrait(body: { uploadId: string; style: StyleSlug; petName?: string }, signal?: AbortSignal) {
+export function generatePortrait(
+  body: { uploadId: string; style: StyleSlug; petName?: string; memorial?: boolean },
+  signal?: AbortSignal,
+) {
   return postJson<GenerateResponse>("/api/generate", body, signal);
 }
 
@@ -139,6 +142,8 @@ export type CheckoutRequest = {
   giftToken?: string;
   /** A creator code entered on the product step. */
   code?: string;
+  /** The gentle track ("This portrait is in memory of my dog"). */
+  memorial?: boolean;
 };
 
 export function startCheckout(body: CheckoutRequest) {
@@ -147,7 +152,7 @@ export function startCheckout(body: CheckoutRequest) {
 
 export type LeadSource = "save_preview" | "checkout_unavailable" | "ai_unavailable";
 
-export function saveLead(body: { email: string; source: LeadSource; generationId?: string; petName?: string }) {
+export function saveLead(body: { email: string; source: LeadSource; generationId?: string; petName?: string; memorial?: boolean }) {
   return postJson<{ ok?: boolean }>("/api/leads", body);
 }
 

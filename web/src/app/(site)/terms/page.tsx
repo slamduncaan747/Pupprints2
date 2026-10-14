@@ -4,7 +4,7 @@ import { site } from "@/lib/config";
 import { LegalPage, type LegalSection } from "@/components/marketing/legal-page";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { CANADA_SHIPPING_LABEL } from "@/components/marketing/commerce";
-import { REFERRAL } from "@/lib/offer";
+import { GUARANTEE, REFERRAL } from "@/lib/offer";
 
 const usd = (cents: number) => `$${cents / 100}`;
 
@@ -117,6 +117,11 @@ const SECTIONS: LegalSection[] = [
           <li>
             <strong>Don&apos;t love your printed piece?</strong> Tell us within 30 days of delivery and we&apos;ll remake it
             free or refund you in full. You choose.
+          </li>
+          <li>
+            <strong>Bought it as a gift?</strong> With {GUARANTEE.recipientName}, the person you give it to can ask for a
+            different style within 30 days of delivery, and we&apos;ll remake it free. They or you can ask by email; no receipt or
+            return is needed.
           </li>
           <li>
             <strong>Damaged, defective or wrong item?</strong> Send us a photo and we&apos;ll send a free replacement. You

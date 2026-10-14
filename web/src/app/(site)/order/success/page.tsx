@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { FramedPortrait, finishFor } from "@/components/order/framed-portrait";
 import { GiftRevealCard } from "@/components/order/gift-reveal-card";
+import { HeardFromCard } from "@/components/order/heard-from";
 import { InviteCard } from "@/components/order/invite-card";
 import { OrderTimeline } from "@/components/order/order-timeline";
 import { PaymentPending } from "@/components/order/payment-pending";
@@ -175,9 +176,11 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
   const hi = firstName(order.customer_name);
   const sentTo = order.reveal_sent_at && order.gift_recipient_email ? order.gift_recipient_name || order.gift_recipient_email : null;
   const purchase = purchaseEvent(order);
-  // The buyer's own "Give $15, get $15" code (made here if the webhook hasn't run yet).
+  // The buyer's own "Give $15, get $15" code (made here if the webhook hasn't run yet). A portrait
+  // made in memory gets no referral ask, here or by email.
+  const memorial = order.memorial === true;
   const own = await ensureCustomerReferral(order);
-  const referral = isLiveReferral(own) ? own : null;
+  const referral = isLiveReferral(own) && !memorial ? own : null;
 
   const section = "grid gap-5 py-12 sm:grid-cols-[220px_minmax(0,1fr)] sm:gap-12 sm:py-14";
   const sectionTitle = "font-display text-[30px] leading-[1.08] sm:text-[34px]";
@@ -283,6 +286,8 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             </div>
           </section>
 
+          <HeardFromCard sessionId={sessionId} initial={order.heard_from ?? null} initialDetail={order.heard_from_detail ?? null} />
+
           {referral && (
             <ReferralCard code={referral.code} shareUrl={referralLink(referral.code)} shareText={referralShareText(pet, referral.code)} />
           )}
@@ -320,7 +325,7 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             </div>
           </section>
 
-          {!referral && <InviteCard siteUrl={site.url} instagramUrl={site.social.instagram} />}
+          {!referral && !memorial && <InviteCard siteUrl={site.url} instagramUrl={site.social.instagram} />}
         </div>
 
         <p className="mx-auto mt-14 max-w-md text-center text-[13px] leading-relaxed text-ink-3">

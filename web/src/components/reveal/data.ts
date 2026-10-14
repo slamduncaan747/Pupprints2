@@ -11,7 +11,7 @@ import {
   primaryItem,
   webImagePath,
 } from "@/lib/orders";
-import { REFERRAL } from "@/lib/offer";
+import { GUARANTEE, REFERRAL } from "@/lib/offer";
 import { ensureWebImage } from "@/lib/print-file";
 import { getCustomerReferral, isLiveReferral } from "@/lib/referrals";
 import { BUCKETS, db } from "@/lib/supabase/server";
@@ -43,6 +43,8 @@ export type RevealData = {
   productNote: string | null;
   frame: "gold" | "wood";
   ctas: RevealCta[];
+  /** Recipient's Choice, for the person who received an order as a gift (copy + a way to ask). */
+  choice: { title: string; body: string; href: string; label: string } | null;
 };
 
 type GiftRow = {
@@ -88,7 +90,8 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
           : `Your ${product ?? "portrait"} is being made and will arrive soon.`
       : null;
     // The giver's own "Give $15, get $15" code: the recipient takes $15 off their first portrait.
-    const own = await getCustomerReferral(order.email);
+    // A portrait made in memory carries no referral offer to the person who receives it.
+    const own = order.memorial ? null : await getCustomerReferral(order.email);
     const giverCode = isLiveReferral(own) ? own.code : null;
     const ref = giverCode ?? normalizeCode(order.referral_code);
     const giverFirst = (order.gift_sender_name || order.customer_name || "").trim().split(/\s+/)[0] || null;
@@ -106,6 +109,15 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
       message: order.gift_message,
       productNote,
       frame: "gold",
+      // Remakes are arranged by client services (no self-serve flow): the recipient writes to us.
+      choice: {
+        title: GUARANTEE.recipientName,
+        body: hasPhysical(order)
+          ? "Prefer a different style? Ask within 30 days of delivery and we'll remake it, free."
+          : "Prefer a different style? Ask within 30 days and we'll remake it, free.",
+        href: `mailto:${site.supportEmail}?subject=${encodeURIComponent(`Recipient's Choice: order ${order.order_number}`)}`,
+        label: "Ask for another style",
+      },
       ctas: [
         {
           href: `${base()}/${ref ? `?ref=${encodeURIComponent(ref)}` : ""}`,
@@ -187,6 +199,7 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
     message: gift.message,
     productNote: null,
     frame: "gold",
+    choice: null,
     ctas: [
       buyable
         ? {

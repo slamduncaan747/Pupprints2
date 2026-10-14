@@ -25,6 +25,7 @@ const STEPS = [
 
 const COVERED = [
   { title: "You don't love it", body: "Remake it free or get a full refund, within 30 days of delivery." },
+  { title: `It was a gift: ${GUARANTEE.recipientName}`, body: GUARANTEE.recipient },
   { title: "Damaged in transit", body: "Send us a photo of the damage and we'll send a free replacement." },
   { title: "A printing defect", body: "Smudges, color problems or anything that isn't up to standard: free replacement." },
   { title: "Lost in the mail", body: "If tracking shows it never arrived, we'll replace it or refund you." },

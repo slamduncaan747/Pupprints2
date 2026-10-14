@@ -24,6 +24,7 @@ export function EmailCapture({
   className,
   tone = "light",
   onDone,
+  memorial,
 }: {
   source: LeadSource;
   generationId?: string;
@@ -35,6 +36,8 @@ export function EmailCapture({
   tone?: "light" | "paper";
   /** Called once the email is saved. */
   onDone?: () => void;
+  /** The gentle track: the lead's emails skip any offer. */
+  memorial?: boolean;
 }) {
   const id = useId();
   const [email, setEmail] = useState("");
@@ -55,6 +58,7 @@ export function EmailCapture({
         source,
         generationId,
         petName: petName || undefined,
+        ...(memorial ? { memorial: true } : {}),
       });
       track("Lead", { source });
       setState("done");

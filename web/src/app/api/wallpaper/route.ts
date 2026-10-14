@@ -19,6 +19,8 @@ const Body = z.object({
   email: z.string().trim().toLowerCase().max(254).pipe(z.email()),
   generationId: z.uuid(),
   petName: z.string().trim().max(60).nullish(),
+  /** "This portrait is in memory of my dog": nurture skips every offer for this lead. */
+  memorial: z.boolean().optional(),
   // Honeypots: real users never fill these.
   website: z.string().max(500).optional(),
   company: z.string().max(500).optional(),
@@ -83,7 +85,7 @@ export async function POST(req: Request) {
   const sessionId = await getSessionId();
   const { data: gen, error: genError } = await c
     .from("generations")
-    .select("id, session_id, status, full_path, pet_name, style, preview_path")
+    .select("id, session_id, status, full_path, pet_name, style, preview_path, memorial")
     .eq("id", body.generationId)
     .maybeSingle<{
       id: string;
@@ -93,6 +95,7 @@ export async function POST(req: Request) {
       pet_name: string | null;
       style: string;
       preview_path: string | null;
+      memorial: boolean | null;
     }>();
   if (genError) {
     console.error("[wallpaper] generation lookup failed", genError.message);
@@ -123,7 +126,8 @@ export async function POST(req: Request) {
   }
 
   const petName = body.petName || gen.pet_name || null;
-  await recordLead(body.email, gen.id, petName).catch((err) => console.error("[wallpaper] lead failed", err));
+  const memorial = body.memorial === true || gen.memorial === true;
+  await recordLead(body.email, gen.id, petName, memorial).catch((err) => console.error("[wallpaper] lead failed", err));
 
   const url = wallpaperUrl(gen.id);
   if (!features.email) return json({ ok: true, emailed: false, url });
@@ -150,7 +154,7 @@ export async function POST(req: Request) {
 }
 
 /** Upsert the lead on lower(email): first source wins; this portrait becomes their preview. */
-async function recordLead(email: string, generationId: string, petName: string | null) {
+async function recordLead(email: string, generationId: string, petName: string | null, memorial: boolean) {
   const c = db()!;
   const store = await cookies();
   const referralCode = normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
@@ -170,6 +174,7 @@ async function recordLead(email: string, generationId: string, petName: string |
     if (petName) patch.pet_name = petName;
     if (!lead.referral_code && referralCode) patch.referral_code = referralCode;
     if (!lead.utm && utm) patch.utm = utm;
+    if (memorial) patch.memorial = true;
     const { error } = await c.from("leads").update(patch).eq("id", lead.id);
     if (error) throw new Error(error.message);
   };
@@ -182,6 +187,7 @@ async function recordLead(email: string, generationId: string, petName: string |
     generation_id: generationId,
     referral_code: referralCode,
     utm,
+    ...(memorial ? { memorial: true } : {}),
   });
   if (error?.code === "23505") {
     const again = await find();

@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { FOUNDING } from "@/lib/launch";
-import { staticFoundingStatus, type DiscountOption, type OfferStatus } from "@/lib/offer";
+import { giftTwoActive, staticFoundingStatus, type DiscountOption, type OfferStatus } from "@/lib/offer";
 import { foundingStatus } from "@/lib/stripe";
 import { normalizeCode } from "@/components/partners/program";
 
@@ -24,6 +24,7 @@ function safeDecode(v: string) {
  * - `discounts`: every automatic discount /api/checkout would consider for this visitor (a
  *   creator or referral code from ?code= or the pp_ref cookie, and FOUNDING100). The product step
  *   runs the same pickCheckoutDiscount on its subtotal, so the price shown is the price charged.
+ * - `giftTwo`: "two portraits, two ornaments" is live on the server's clock (checkout uses the same).
  */
 export async function GET(req: Request) {
   const live = await (foundingStatus() ?? Promise.resolve(null));
@@ -71,6 +72,7 @@ export async function GET(req: Request) {
   const body: OfferStatus = {
     founding,
     discounts,
+    giftTwo: giftTwoActive(),
     ...(rawTyped ? { code: typedResult ?? { code: rawTyped.trim().toUpperCase().slice(0, 64), valid: false } } : {}),
   };
   return Response.json(body, { headers: { "Cache-Control": "private, no-store" } });

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { STYLE_MAP, STYLES, type StyleSlug } from "@/lib/catalog";
+import { availableStyles, STYLE_MAP, styleAvailable, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
@@ -9,11 +9,14 @@ import { CtaBand } from "@/components/marketing/cta-band";
 import { ZoomImage } from "@/components/marketing/campaign";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Dog Portrait Styles — Oil Painting, Watercolor, Royal & More",
-  description: `Browse all ${STYLES.length} custom dog portrait styles, from royal oil paintings to watercolor, line art and pop art. Try every style free with your own photo.`,
-  alternates: { canonical: "/styles" },
-};
+/** Evaluated per render (hourly at most), so a retired dated edition leaves the count with it. */
+export function generateMetadata(): Metadata {
+  return {
+    title: "Dog Portrait Styles — Oil Painting, Watercolor, Royal & More",
+    description: `Browse all ${availableStyles().length} custom dog portrait styles, from royal oil paintings to watercolor, line art and pop art. Try every style free with your own photo.`,
+    alternates: { canonical: "/styles" },
+  };
+}
 
 /** Curated edits. The first slug leads with its portrait. */
 const EDITS: { title: string; body: string; slugs: StyleSlug[] }[] = [
@@ -35,9 +38,11 @@ const EDITS: { title: string; body: string; slugs: StyleSlug[] }[] = [
 ];
 
 export default function StylesPage() {
-  const edits = EDITS.map((e) => ({ ...e, styles: e.slugs.map((slug) => STYLE_MAP[slug]).filter(Boolean) })).filter(
-    (e) => e.styles.length > 0,
-  );
+  const styles = availableStyles();
+  const edits = EDITS.map((e) => ({
+    ...e,
+    styles: e.slugs.map((slug) => STYLE_MAP[slug]).filter((s) => styleAvailable(s)),
+  })).filter((e) => e.styles.length > 0);
 
   return (
     <>
@@ -45,7 +50,7 @@ export default function StylesPage() {
         align="center"
         eyebrow="The Portrait Collection"
         title="The Collection"
-        lede={`${STYLES.length} styles, each made for one subject: your dog. Preview any of them free with your own photo.`}
+        lede={`${styles.length} styles, each made for one subject: your dog. Preview any of them free with your own photo.`}
       />
 
       <section aria-labelledby="all-styles" className="pb-24 sm:pb-36">
@@ -54,7 +59,7 @@ export default function StylesPage() {
         </h2>
         <div className="mx-auto max-w-[1440px] sm:px-10">
           <ul className="grid grid-cols-2 gap-x-0.5 gap-y-12 sm:gap-x-4 sm:gap-y-16 lg:grid-cols-3 lg:gap-y-24">
-            {STYLES.map((style, i) => (
+            {styles.map((style, i) => (
               <li key={style.slug}>
                 <StyleCard
                   style={style}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { STYLE_MAP } from "@/lib/catalog";
+import { STYLE_MAP, styleAvailable, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -13,7 +13,7 @@ import { JsonLd } from "@/components/marketing/json-ld";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Facts, Prose, Rows, textLink } from "@/components/marketing/blocks";
 import { StyleCard } from "@/components/marketing/style-card";
-import { OCCASIONS, getOccasion } from "@/components/marketing/gift-occasions";
+import { OCCASIONS, getOccasion, type Occasion } from "@/components/marketing/gift-occasions";
 import { stylesFor } from "@/components/marketing/style-content";
 import { firstSentences } from "@/components/marketing/honest";
 import {
@@ -24,6 +24,12 @@ import {
   formatDay,
 } from "@/components/marketing/commerce";
 import { GUARANTEE_IN_SENTENCE } from "@/components/marketing/offer";
+
+
+/** The occasion's featured style, or its best available match once a dated edition has retired. */
+function featuredSlug(o: Occasion): StyleSlug {
+  return styleAvailable(STYLE_MAP[o.feature]) ? o.feature : (stylesFor(o.goodFor, 1)[0]?.slug ?? o.feature);
+}
 
 export const dynamicParams = false;
 
@@ -48,7 +54,7 @@ export async function generateMetadata({ params }: PageProps<"/gifts/[occasion]"
       locale: "en_US",
       // The featured style sample first; the site-wide card is the fallback while samples are still being generated.
       images: [
-        { url: STYLE_SAMPLES[o.feature], width: 960, height: 1200, alt: `${STYLE_MAP[o.feature]?.name} dog portrait` },
+        { url: STYLE_SAMPLES[featuredSlug(o)], width: 960, height: 1200, alt: `${STYLE_MAP[featuredSlug(o)]?.name} dog portrait` },
         DEFAULT_OG_IMAGE,
       ],
     },
@@ -75,8 +81,9 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
 
   const memorial = o.slug === "memorial";
   const christmas = o.slug === "christmas";
-  const feature = STYLE_MAP[o.feature];
-  const styles = [...(feature ? [feature] : []), ...stylesFor(o.goodFor, 4, o.feature)].slice(0, 4);
+  const featureSlug = featuredSlug(o);
+  const feature = STYLE_MAP[featureSlug];
+  const styles = [...(feature ? [feature] : []), ...stylesFor(o.goodFor, 4, featureSlug)].slice(0, 4);
 
   return (
     <>
@@ -89,7 +96,7 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
         media={
           feature && (
             <CampaignImage
-              src={STYLE_SAMPLES[o.feature]}
+              src={STYLE_SAMPLES[featureSlug]}
               alt={`Example ${feature.name} dog portrait`}
               swatch={feature.swatch}
               priority

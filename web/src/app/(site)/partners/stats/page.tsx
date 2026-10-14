@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container, Eyebrow } from "@/components/ui/container";
 import { CopyField } from "@/components/partners/copy-field";
-import { REDEEMABLE_STATUSES, normalizeCode } from "@/components/partners/program";
+import { PROGRAM, REDEEMABLE_STATUSES, normalizeCode } from "@/components/partners/program";
 import { EMPTY_STATS, daysAgoIso, getPartnerStats, getPartnerSummary, partnerShareLink, verifyPartnerStatsToken } from "@/lib/partners";
 import { site } from "@/lib/config";
 import { formatPrice } from "@/lib/utils";
@@ -117,7 +117,7 @@ export default async function PartnerStatsPage({ searchParams }: PageProps<"/par
         <div>
           <h2 id="share" className="font-display text-[32px] leading-[1.06] sm:text-[40px]">Share</h2>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-2">
-            Your audience gets {partner.discountPercent}% off with your code, and your link remembers them for 30 days.
+            Your audience gets {partner.discountPercent}% off with your code, and your link remembers them for {PROGRAM.attributionDays} days.
           </p>
           <div className="mt-10 space-y-8">
             <CopyField label="Your link" value={partnerShareLink(partner.code)} />

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Download, ExternalLink, ImageUp, Link2, Loader2, RotateCcw, Square, Trash2, Wand2, X } from "lucide-react";
-import { STYLES } from "@/lib/catalog";
+import { availableStyles, STYLES } from "@/lib/catalog";
 import { prepareImage } from "@/components/create/prepare-image";
 import { csvCell } from "@/components/admin/csv";
 import { labelize } from "@/components/admin/constants";
@@ -421,7 +421,7 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
             </label>
             <div className="flex gap-2">
               <select id="batch-style" value={defaultStyle} onChange={(e) => setDefaultStyle(e.target.value)} className={cn(inputClass, "pr-8")} disabled={running}>
-                {STYLES.map((s) => (
+                {availableStyles().map((s) => (
                   <option key={s.slug} value={s.slug}>
                     {s.name}
                   </option>
@@ -651,7 +651,7 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
                           disabled={locked}
                           className={cn(inputClass, "h-9 min-w-[130px] pr-7")}
                         >
-                          {STYLES.map((s) => (
+                          {availableStyles().map((s) => (
                             <option key={s.slug} value={s.slug}>
                               {s.name}
                             </option>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { site } from "@/lib/config";
 import { LegalPage, type LegalSection } from "@/components/marketing/legal-page";
 import { CtaBand } from "@/components/marketing/cta-band";
+import { PROGRAM } from "@/components/partners/program";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -169,7 +170,7 @@ const SECTIONS: LegalSection[] = [
           </li>
           <li>
             <strong>Attribution</strong>: when you arrive from a creator&apos;s link or an ad, we store the referral code and
-            campaign details in a first-party cookie for 30 days so we can credit the right partner.
+            campaign details in a first-party cookie for {PROGRAM.attributionDays} days so we can credit the right partner.
           </li>
           <li>
             <strong>Analytics</strong>: to understand which pages are useful and where the site can be improved.

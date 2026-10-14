@@ -22,7 +22,7 @@ You're joining the Pup Prints creator and affiliate program. You may share Pup P
 
 - We'll give you a personal link (`https://pup-prints.vercel.app/?ref=[CODE]`, or the same path on our future domain) and a code name.
 - **Your audience discount:** [15]% off their first order through your link. It applies automatically at checkout. Discounts don't stack with other codes or promotions.
-- **Attribution window (cookie): 30 days.** An order counts as yours if the customer clicked your link within the 30 days before buying, on the same device and browser. If they clicked several partner links, the **most recent** partner link clicked wins. Orders placed with your code typed in at checkout also count, where we've set one up for you.
+- **Attribution window (cookie): 60 days.** An order counts as yours if the customer clicked your link within the 60 days before buying, on the same device and browser. If they clicked several partner links, the **most recent** partner link clicked wins. Orders placed with your code typed in at checkout also count, where we've set one up for you.
 - We'll give you a private stats page showing clicks, orders and commission.
 
 ## 3. Commission
@@ -103,7 +103,7 @@ If a post is missing a disclosure, we'll ask you to fix it. If it's not fixed wi
 - **Either side** can end this at any time, for any reason, by email or DM.
 - **After it ends:**
   - your link stops earning for clicks after the end date;
-  - orders from earlier clicks (within the 30-day window) still earn and are paid on the normal schedule;
+  - orders from earlier clicks (within the 60-day window) still earn and are paid on the normal schedule;
   - you remove unpublished drafts, and we stop resharing your content within 7 days;
   - ad rights end on the date in section 4, or immediately if we end the agreement for a breach.
 - We may end it immediately if you seriously break sections 5 or 6. Commission from fraudulent or prohibited orders isn't paid.

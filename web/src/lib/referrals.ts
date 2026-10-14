@@ -451,7 +451,9 @@ export async function sendReferralReminders(
       .ilike("email", escapeLike(email))
       .not("referral_reminder_sent_at", "is", null)
       .limit(1);
-    if (unsubscribed.has(email) || reminded.has(email) || (other && other.length > 0)) {
+    // Unsubscribed, already reminded about another order, or a portrait made in memory (no
+    // referral asks on the gentle track) → mark it handled and move on.
+    if (order.memorial || unsubscribed.has(email) || reminded.has(email) || (other && other.length > 0)) {
       await claimOnce(order.id, "referral_reminder_sent_at");
       stats.skipped++;
       continue;

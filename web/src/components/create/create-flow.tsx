@@ -215,7 +215,10 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
 
     try {
       const petName = s.petName.trim() || undefined;
-      const res = await generatePortrait({ uploadId: upload.uploadId, style, petName }, controller.signal);
+      const res = await generatePortrait(
+        { uploadId: upload.uploadId, style, petName, ...(s.memorial ? { memorial: true } : {}) },
+        controller.signal,
+      );
       const gen: Generation = {
         generationId: res.generationId,
         style: res.style,
@@ -301,6 +304,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
           active={active}
           generations={currentGens}
           petName={flow.petName}
+          memorial={flow.memorial}
           onSelect={(id) => updateFlow((s) => ({ ...s, activeId: id }))}
           onLoveIt={() => goTo("product")}
           onTryAnother={() => {
@@ -317,6 +321,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
             <JobError
               job={job}
               petName={flow.petName}
+              memorial={flow.memorial}
               hasPreviews={currentGens.length > 0}
               onRetry={() => void generate(job.style, { force: true })}
               onDismiss={() => setJob({ kind: "idle" })}
@@ -329,6 +334,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
           <StyleGrid
             upload={flow.upload}
             petName={flow.petName}
+            memorial={flow.memorial}
             generations={currentGens}
             highlighted={job.kind === "error" ? job.style : preselected}
             onPick={(style) => void generate(style)}
@@ -383,6 +389,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
           petName={flow.petName}
           watchIdle={step === "product"}
           suppressed={checkingOut}
+          memorial={flow.memorial}
         />
       )}
       {flow.upload && step === "upload" && (
@@ -470,6 +477,7 @@ function GiftOrder({
 function JobError({
   job,
   petName,
+  memorial,
   hasPreviews,
   onRetry,
   onDismiss,
@@ -477,6 +485,7 @@ function JobError({
 }: {
   job: Extract<Job, { kind: "error" }>;
   petName: string;
+  memorial: boolean;
   hasPreviews: boolean;
   onRetry: () => void;
   onDismiss: () => void;
@@ -501,9 +510,22 @@ function JobError({
           source="ai_unavailable"
           generationId={job.generationId}
           petName={petName.trim() || undefined}
+          memorial={memorial}
           cta="Notify me"
           doneMessage="Thank you. We'll email your preview as soon as it's ready."
         />
+      </div>
+    );
+  }
+
+  if (job.code === "style_retired") {
+    return (
+      <div role="alert" className={box}>
+        <p className={title}>{style ? `${style.name} has been retired.` : "That style has been retired."}</p>
+        <p className={body}>Every other style is still here, and every preview is free.</p>
+        <button type="button" onClick={onDismiss} className={buttonClasses("primary", "lg", "mt-7")}>
+          Choose another style
+        </button>
       </div>
     );
   }

@@ -46,6 +46,7 @@ export default async function RevealPage({ params }: PageProps<"/reveal/[token]"
       message={data.message}
       productNote={data.productNote}
       ctas={data.ctas}
+      choice={data.choice}
     />
   );
 }

@@ -52,7 +52,7 @@ export const OCCASIONS: Occasion[] = [
     feature: "holiday",
     ideas: [
       { title: "For the one who's hard to shop for", body: "Nobody else will give them this. A framed print of their own dog is personal in a way a gift card never is." },
-      { title: "For the whole family", body: `Hang a fireside ${n("holiday")} portrait every December, or choose a classic style that stays up all year.` },
+      { title: "For the whole family", body: `Hang ${n("holiday")}, our 2026 holiday edition, by the fire this December, or choose a classic style that stays up all year.` },
       { title: "For the tree, too", body: `Add a matching ornament${ORNAMENT ? ` (${formatPrice(ORNAMENT.price)})` : ""} to any print, frame or canvas, and use the included digital file for your holiday cards.` },
     ],
     timing: {

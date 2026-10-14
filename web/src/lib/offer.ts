@@ -31,6 +31,9 @@ export const GUARANTEE = {
   name: "The Love-It Guarantee",
   short: "Love it, or it's free",
   body: "If you don't love your piece, tell us within 30 days of delivery. We'll remake it in any style or refund you in full. No forms, no hoops.",
+  /** Recipient's Choice: the guarantee extends to the person who receives a gift (handled by client services). */
+  recipientName: "Recipient's Choice",
+  recipient: "The person you give it to can ask for a different style within 30 days of delivery, remade free.",
 } as const;
 
 const digitalPrice = PRODUCT_MAP.digital.variants[0].price;
@@ -78,6 +81,9 @@ export function valueStackFor({
   return rows;
 }
 
+/** Product types that count as a physical piece (a portrait on the wall, not an add-on or the file). */
+export const PHYSICAL_TYPES: readonly ProductType[] = ["canvas", "framed", "poster"];
+
 /**
  * The Heirloom Set: a physical piece + both matching add-ons, with a real bundle saving
  * applied server-side in checkout (the add-ons are cheaper together).
@@ -99,13 +105,121 @@ export const HEIRLOOM_SET = {
 } as const;
 
 /**
- * Number of complete Heirloom Sets in an order: one ornament + one mug each, and only alongside
- * a physical piece. Each set takes HEIRLOOM_SET.discountCents off (applied by /api/checkout).
+ * "Buy two portraits, get two matching ornaments free": a dated holiday offer. An order with two or
+ * more physical pieces (canvas, framed or print, any mix; quantity counts) gets up to two matching
+ * ornaments at $0. List prices never change, ornaments are never added for the customer, and outside
+ * the window the offer is invisible everywhere. Checked server-side by /api/checkout (applyBundles).
  */
-export function heirloomSets(lines: { variantId: string; quantity: number }[], hasPhysical: boolean): number {
-  if (!hasPhysical) return 0;
-  const qty = (id: string) => lines.filter((l) => l.variantId === id).reduce((n, l) => n + l.quantity, 0);
-  return Math.min(...HEIRLOOM_SET.addonIds.map(qty));
+export const GIFT_TWO = {
+  name: "Two portraits, two ornaments",
+  /** Sun Nov 1 2026, 00:00 PT (still PDT at midnight; DST ends at 2am). */
+  startsAtIso: "2026-11-01T00:00:00-07:00",
+  /** Thu Dec 10 2026, 23:59:59 PT (PST), the same day as the US Christmas cutoff. */
+  endsAtIso: "2026-12-10T23:59:59-08:00",
+  endsLabel: "Dec 10",
+  minPieces: 2,
+  freeOrnaments: 2,
+  ornamentId: "addon-ornament",
+  /** Shown in the product step when the customer could use the offer but hasn't. */
+  prompt: "Two portraits? Two matching ornaments are on us through Dec 10.",
+  /** Shown once the ornaments are in the order. */
+  applied: "Two matching ornaments, on us",
+  /** Top line. */
+  short: "Two portraits, two ornaments on us, through Dec 10",
+} as const;
+
+/** True from Nov 1 00:00 PT to Dec 10 23:59:59 PT. Pass `now` to test. */
+export function giftTwoActive(now: number = Date.now()): boolean {
+  return now >= Date.parse(GIFT_TWO.startsAtIso) && now <= Date.parse(GIFT_TWO.endsAtIso);
+}
+
+/** Ornaments that are free under GIFT_TWO: up to two, with two or more physical pieces, in the window. */
+export function giftTwoFreeOrnaments(physicalPieces: number, ornaments: number, now: number = Date.now()): number {
+  if (!giftTwoActive(now) || physicalPieces < GIFT_TWO.minPieces) return 0;
+  return Math.max(0, Math.min(GIFT_TWO.freeOrnaments, ornaments));
+}
+
+export type BundleTag = "heirloom" | "gift-two";
+
+/** The fields bundle pricing reads and writes on an order line (OrderItem satisfies it). */
+export type BundleLine = {
+  kind: "product" | "addon";
+  productType: ProductType | "addon";
+  variantId: string;
+  quantity: number;
+  /** Cents charged per unit. */
+  unitAmount: number;
+  included?: boolean;
+  /** Catalog price per unit before a bundle (set with `bundle`). */
+  regularUnitAmount?: number;
+  bundle?: BundleTag;
+};
+
+/** Number of physical pieces in an order (quantity counts). */
+export function physicalPieceCount(lines: Pick<BundleLine, "kind" | "productType" | "quantity">[]): number {
+  return lines
+    .filter((l) => l.kind === "product" && (PHYSICAL_TYPES as readonly string[]).includes(l.productType))
+    .reduce((n, l) => n + l.quantity, 0);
+}
+
+/** Give `units` units of an add-on (not already in a bundle) a bundle price, splitting a line if needed. */
+function bundleUnits<T extends BundleLine>(lines: T[], variantId: string, units: number, priced: (line: T) => Partial<BundleLine>): T[] {
+  let left = units;
+  const out: T[] = [];
+  for (const line of lines) {
+    const take = left > 0 && line.kind === "addon" && !line.bundle && line.variantId === variantId ? Math.min(line.quantity, left) : 0;
+    if (take === 0) {
+      out.push(line);
+      continue;
+    }
+    left -= take;
+    out.push({ ...line, quantity: take, ...priced(line) });
+    if (line.quantity > take) out.push({ ...line, quantity: line.quantity - take });
+  }
+  return out;
+}
+
+/**
+ * Prices an order's lines with every bundle, exactly as /api/checkout charges them (the product
+ * step runs the same function, so the price shown is the price charged). Catalog unit prices in,
+ * bundle prices out; a line only partly in a bundle is split so every stored unit price is exact.
+ *
+ * 1. GIFT_TWO first: up to two ornaments at $0 with two or more physical pieces (in the window).
+ * 2. The Heirloom Set on what is left: each paid ornament + mug pair takes HEIRLOOM_SET.discountCents
+ *    off. Free ornaments never count toward a set, so the same ornament is never discounted twice.
+ *
+ * The one automatic discount (FOUNDING100, a creator's percent off or a friend's $15) is applied by
+ * Stripe afterwards to the paid merchandise only: $0 ornaments are not charged, so a percent off
+ * never touches them and they never count toward a minimum order.
+ */
+export function applyBundles<T extends BundleLine>(
+  lines: T[],
+  opts: {
+    /** Clock for the GIFT_TWO window (tests inject it). Defaults to now. */
+    now?: number;
+    /** Whether GIFT_TWO is live, when the caller already knows (the product step uses the server's answer). */
+    giftTwo?: boolean;
+  } = {},
+): { lines: T[]; physicalPieces: number; freeOrnaments: number; heirloomSets: number } {
+  const pieces = physicalPieceCount(lines);
+  const qty = (all: T[], id: string) =>
+    all.filter((l) => l.kind === "addon" && !l.bundle && l.variantId === id).reduce((n, l) => n + l.quantity, 0);
+
+  const live = opts.giftTwo ?? giftTwoActive(opts.now ?? Date.now());
+  const ornaments = qty(lines, GIFT_TWO.ornamentId);
+  const free = live && pieces >= GIFT_TWO.minPieces ? Math.min(GIFT_TWO.freeOrnaments, ornaments) : 0;
+  let out = bundleUnits(lines, GIFT_TWO.ornamentId, free, (l) => ({ unitAmount: 0, regularUnitAmount: l.unitAmount, bundle: "gift-two" }));
+
+  const sets = pieces > 0 ? Math.min(...HEIRLOOM_SET.addonIds.map((id) => qty(out, id))) : 0;
+  for (const id of HEIRLOOM_SET.addonIds) {
+    const off = HEIRLOOM_SET.unitDiscount[id] ?? 0;
+    out = bundleUnits(out, id, sets, (l) => ({
+      unitAmount: Math.max(0, l.unitAmount - off),
+      regularUnitAmount: l.unitAmount,
+      bundle: "heirloom",
+    }));
+  }
+  return { lines: out, physicalPieces: pieces, freeOrnaments: free, heirloomSets: sets };
 }
 
 /** Founding 100 launch offer: real cap (100 orders) and real deadline, auto-applied while open. */
@@ -214,6 +328,8 @@ export type OfferStatus = {
    * friend's referral code). Checkout applies pickCheckoutDiscount(discounts, merchandise).
    */
   discounts: DiscountOption[];
+  /** GIFT_TWO is live on the server's clock right now (checkout decides with the same clock). */
+  giftTwo: boolean;
   /** Present when a code was checked (?code=): whether it is a live creator or referral code. */
   code?: { code: string; valid: boolean; kind?: "creator" | "customer"; reason?: "own_code" };
 };

@@ -2,7 +2,8 @@
  * The site FAQ. Every number is pulled from @/lib/catalog (via ./commerce) so answers match checkout.
  * Answers are plain text (blank line = new paragraph) because they also feed FAQPage JSON-LD.
  */
-import { PRODUCT_MAP, PRODUCTS, PROMISES, STYLES } from "@/lib/catalog";
+import { availableStyles, PRODUCT_MAP, PRODUCTS, PROMISES } from "@/lib/catalog";
+import { GUARANTEE } from "@/lib/offer";
 import { site } from "@/lib/config";
 import { formatPrice } from "@/lib/utils";
 import type { FaqItem } from "@/components/marketing/faq";
@@ -125,7 +126,10 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: "How many styles are there, and can I try more than one?",
-        a: `There are ${STYLES.length} styles right now, from classic oil painting to pop art. You can try as many as you like with your photo, free.`,
+        // A getter, so the count is read at render time (a dated edition leaves on its last day).
+        get a() {
+          return `There are ${availableStyles().length} styles right now, from classic oil painting to pop art. You can try as many as you like with your photo, free.`;
+        },
         link: { href: "/styles", label: "Browse all styles" },
       },
       {
@@ -211,6 +215,11 @@ export const FAQ_GROUPS: FaqGroup[] = [
       {
         q: "What if I don't love my printed piece?",
         a: "Tell us within 30 days of delivery and we'll remake it free or refund you in full. Your choice.",
+        link: { href: "/guarantee", label: `Read ${GUARANTEE_IN_SENTENCE}` },
+      },
+      {
+        q: "What if the person I give it to would prefer a different style?",
+        a: `That's ${GUARANTEE.recipientName}. ${GUARANTEE.recipient} They (or you) just write to us; no receipt or return needed.`,
         link: { href: "/guarantee", label: `Read ${GUARANTEE_IN_SENTENCE}` },
       },
       {

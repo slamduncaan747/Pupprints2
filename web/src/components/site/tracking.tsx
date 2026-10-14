@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { useEffect } from "react";
+import { PROGRAM } from "@/components/partners/program";
 
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const TIKTOK_PIXEL_ID = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID;
@@ -10,8 +11,9 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const ATTRIBUTION_KEYS = ["ref", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 
 /**
- * Loads ad pixels when their IDs are configured and stores first-touch attribution
- * (?ref= partner code + UTM params) in a 30-day cookie that checkout reads.
+ * Loads ad pixels when their IDs are configured and stores attribution (?ref= partner code, the
+ * most recent link wins, + first-touch UTM params) in cookies that checkout reads, kept for
+ * PROGRAM.attributionDays (60 days).
  */
 export function Tracking() {
   useEffect(() => {
@@ -23,7 +25,7 @@ export function Tracking() {
         if (v) found[key] = v.slice(0, 100);
       }
       if (Object.keys(found).length === 0) return;
-      const maxAge = 60 * 60 * 24 * 30;
+      const maxAge = 60 * 60 * 24 * PROGRAM.attributionDays;
       if (found.ref) {
         document.cookie = `pp_ref=${encodeURIComponent(found.ref.toUpperCase())}; path=/; max-age=${maxAge}; samesite=lax`;
         fetch("/api/ref", {

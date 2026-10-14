@@ -17,6 +17,8 @@ export type RevealViewProps = {
   message: string | null;
   productNote: string | null;
   ctas: { href: string; label: string; note?: string; lead?: string; fine?: string; primary?: boolean }[];
+  /** Recipient's Choice (orders only): ask for a different style, remade free. */
+  choice?: { title: string; body: string; href: string; label: string } | null;
 };
 
 type Phase = "sealed" | "opening" | "open";
@@ -231,6 +233,15 @@ export function RevealExperience(p: RevealViewProps) {
                     {cta.label}
                   </a>
                 ),
+              )}
+              {p.choice && (
+                <div className="mt-12 w-full border-t border-line pt-10">
+                  <p className="label text-ink">{p.choice.title}</p>
+                  <p className="mx-auto mt-3 max-w-xs text-[13px] leading-relaxed text-ink-2">{p.choice.body}</p>
+                  <a href={p.choice.href} className="link-cta mt-2 inline-flex min-h-11 items-center">
+                    {p.choice.label}
+                  </a>
+                </div>
               )}
               {p.kind === "order" && <p className="label mt-12 text-ink-3">Every portrait is checked by a person</p>}
             </div>

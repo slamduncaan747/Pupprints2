@@ -53,6 +53,9 @@ export function StyleCard({
           )}
         </div>
         {line && <p className={cn("mt-1.5 text-[13px] leading-snug text-ink-3", bleed && "px-3 sm:px-0")}>{line}</p>}
+        {style.edition && !compact && !note && (
+          <p className={cn("mt-1 text-[13px] leading-snug text-ink-3", bleed && "px-3 sm:px-0")}>{style.edition}</p>
+        )}
       </Link>
     </article>
   );

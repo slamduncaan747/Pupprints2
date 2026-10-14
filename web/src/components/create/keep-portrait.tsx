@@ -46,6 +46,7 @@ export function KeepPortrait({
   petName,
   watchIdle,
   suppressed,
+  memorial = false,
 }: {
   generationId: string;
   previewUrl: string;
@@ -54,6 +55,8 @@ export function KeepPortrait({
   watchIdle: boolean;
   /** True once the visitor is on the way to checkout. */
   suppressed: boolean;
+  /** The gentle track: no offer line, and the saved lead gets no offers by email. */
+  memorial?: boolean;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const shownRef = useRef(false);
@@ -67,9 +70,9 @@ export function KeepPortrait({
     if (read("local", DONE_KEY) || read("session", SHOWN_KEY)) return;
     shownRef.current = true;
     write("session", SHOWN_KEY, "1");
-    void fetchOffer().catch(() => {});
+    if (!memorial) void fetchOffer().catch(() => {});
     setOpen(true);
-  }, [suppressed]);
+  }, [suppressed, memorial]);
 
   // Desktop exit intent: the cursor leaves the window through the top edge.
   useEffect(() => {
@@ -120,7 +123,7 @@ export function KeepPortrait({
 
   if (!open) return null;
   const offer = peekOffer();
-  const foundingApplies = Boolean(offer?.discounts?.some((d) => d.source === "founding"));
+  const foundingApplies = !memorial && Boolean(offer?.discounts?.some((d) => d.source === "founding"));
 
   return (
     <dialog
@@ -157,6 +160,7 @@ export function KeepPortrait({
             source="save_preview"
             generationId={generationId}
             petName={name || undefined}
+            memorial={memorial}
             cta="Send"
             doneMessage="Sent. Your portrait is waiting in your inbox."
             onDone={() => {

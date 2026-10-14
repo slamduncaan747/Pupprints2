@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { STYLES, type StyleSlug } from "@/lib/catalog";
+import { getStyle, styleAvailable, STYLES, type StyleSlug } from "@/lib/catalog";
 import { env } from "@/lib/env";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { makeWatermarkedPreview, toPrintMaster } from "@/lib/image";
@@ -23,6 +23,8 @@ const Body = z.object({
     .max(40)
     .optional()
     .transform((v) => (v ? v : undefined)),
+  /** "This portrait is in memory of my dog" (the gentle track), stored on the generation. */
+  memorial: z.boolean().optional(),
 });
 
 function json(body: unknown, status = 200) {
@@ -38,6 +40,15 @@ export async function POST(req: Request) {
   } catch {
     return json({ error: "invalid_request", message: "Please choose a photo and a style." }, 400);
   }
+  // A dated edition (Holiday Cozy 2026) is refused once it has retired, checked on every request.
+  const style = getStyle(body.style);
+  if (!styleAvailable(style)) {
+    return json(
+      { error: "style_retired", message: `${style?.name ?? "That style"} has been retired. Please choose another style.` },
+      410,
+    );
+  }
+  const memorial = body.memorial ? { memorial: true } : {};
 
   const supabase = db();
   if (!supabase) {
@@ -81,6 +92,7 @@ export async function POST(req: Request) {
         style: body.style,
         status: "pending",
         error: "ai_unavailable",
+        ...memorial,
       })
       .select("id")
       .single();
@@ -98,6 +110,7 @@ export async function POST(req: Request) {
       pet_name: body.petName ?? null,
       style: body.style,
       status: "processing",
+      ...memorial,
     })
     .select("id")
     .single();

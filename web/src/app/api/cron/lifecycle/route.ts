@@ -11,7 +11,7 @@ import {
   unsubscribeUrl,
   type EmailCtx,
 } from "@/lib/email";
-import { FOUNDING } from "@/lib/launch";
+import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
 import { syncPartnerPromo } from "@/lib/partners";
 import { issueDueReferralRewards, sendReferralReminders } from "@/lib/referrals";
 import {
@@ -23,7 +23,7 @@ import {
   sendShippedEmail,
   type OrderRow,
 } from "@/lib/orders";
-import { createPersonalWelcomeCode, foundingOfferAvailable, WELCOME } from "@/lib/stripe";
+import { foundingOfferAvailable } from "@/lib/stripe";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { escapeLike, REDEEMABLE_STATUSES } from "@/components/partners/program";
 
@@ -54,6 +54,8 @@ type LeadRow = {
   referral_code: string | null;
   nurture_step: number;
   last_nurture_at: string | null;
+  /** "This portrait is in memory of my dog" (migration 0007): the gentle track. */
+  memorial: boolean | null;
 };
 
 
@@ -64,24 +66,27 @@ async function unsubscribedEmails(emails: string[]): Promise<Set<string>> {
   return new Set((data ?? []).map((r: { email: string }) => r.email.toLowerCase()));
 }
 
-/** Preview nurture: step 1 at ~2h, step 2 at ~24h, step 3 at ~72h (one step per lead per run). */
+/**
+ * Preview nurture: step 1 at ~2h, step 2 at ~24h, step 3 at ~72h (one step per lead per run).
+ * Step 3: memorial leads get a gentle note (never an offer). Everyone else gets FOUNDING100 while
+ * it can really be redeemed (before its deadline and under its cap, per Stripe); once the Founding
+ * offer is closed, the feature downsell instead (the same portrait as a print or the file, at
+ * catalog prices, with the guarantee). No discount codes are created here.
+ */
 async function runNurture(ctx: EmailCtx) {
   const c = db()!;
-  // Step 3 offers FOUNDING100 while it can really be redeemed, else a personal WELCOME10 code.
   let founding: Promise<boolean> | null = null;
-  const step3Offer = async (email: string) => {
+  const step3Offer = async () => {
+    if (!foundingOfferOpen()) return null;
     founding ??= foundingOfferAvailable();
-    if (await founding) {
-      return { code: FOUNDING.code, expiresAt: FOUNDING.expiresAt, percentOff: FOUNDING.percentOff, kind: "founding" as const };
-    }
-    const personal = await createPersonalWelcomeCode(email, 48);
-    return personal ? { ...personal, percentOff: WELCOME.percentOff, kind: "personal" as const } : null;
+    if (!(await founding)) return null;
+    return { code: FOUNDING.code, expiresAt: FOUNDING.expiresAt, percentOff: FOUNDING.percentOff, kind: "founding" as const };
   };
   const now = Date.now();
   const stats = { considered: 0, sent: 0, skipped: 0, converted: 0, failed: 0 };
   const { data, error } = await c
     .from("leads")
-    .select("id, created_at, email, source, pet_name, generation_id, referral_code, nurture_step, last_nurture_at")
+    .select("id, created_at, email, source, pet_name, generation_id, referral_code, nurture_step, last_nurture_at, memorial")
     .in("source", [...NURTURE_SOURCES])
     .is("unsubscribed_at", null)
     .is("converted_order_id", null)
@@ -130,17 +135,19 @@ async function runNurture(ctx: EmailCtx) {
     }
 
     let preview: string | null = null;
+    let memorial = lead.memorial === true;
     if (lead.generation_id) {
       const { data: gen } = await c
         .from("generations")
-        .select("preview_path, pet_name")
+        .select("preview_path, pet_name, memorial")
         .eq("id", lead.generation_id)
-        .maybeSingle<{ preview_path: string | null; pet_name: string | null }>();
+        .maybeSingle<{ preview_path: string | null; pet_name: string | null; memorial: boolean | null }>();
       preview = gen?.preview_path ? previewUrl(gen.preview_path) : null;
       lead.pet_name ??= gen?.pet_name ?? null;
+      memorial ||= gen?.memorial === true;
     }
     const createUrl = `${ctx.siteUrl}/create${lead.referral_code ? `?ref=${encodeURIComponent(lead.referral_code)}` : ""}`;
-    const offer = next === 3 ? await step3Offer(lead.email) : null;
+    const offer = next === 3 && !memorial ? await step3Offer() : null;
 
     const email = nurtureEmail({
       ctx,
@@ -151,6 +158,7 @@ async function runNurture(ctx: EmailCtx) {
       createUrl,
       unsubscribeUrl: unsubscribeUrl(lead.email),
       offer,
+      memorial,
     });
     const res = await sendEmail({
       to: lead.email,

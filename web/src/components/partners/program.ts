@@ -8,8 +8,12 @@
 export const PROGRAM = {
   commissionRate: 0.15,
   discountPercent: 15,
-  /** Matches the first-touch `pp_ref` cookie written by `components/site/tracking.tsx`. */
-  attributionDays: 30,
+  /**
+   * How long a creator's or partner's link is remembered after a click: the max-age of the `pp_ref`
+   * cookie written by `components/site/tracking.tsx` and /api/gift-portrait. 60 days (Oct 2026;
+   * was 30). Commission still locks 30 days after delivery, which is a different window.
+   */
+  attributionDays: 60,
 } as const;
 
 export const PARTNER_STATUSES = [

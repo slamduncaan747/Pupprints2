@@ -35,9 +35,15 @@ export type Selection = {
   productType: ProductType;
   variantId: string;
   frameColor: FrameColor;
+  /** Add-ons, one of each per piece (a matching ornament for every portrait). */
   addons: string[];
   shipCountry: ShipCountry;
+  /** How many of this piece (physical only). */
+  quantity: number;
 };
+
+/** Most of one piece the product step offers in a single order. */
+export const MAX_QUANTITY = 5;
 
 export type Gift = {
   enabled: boolean;
@@ -58,6 +64,11 @@ export type FlowState = {
   gift: Gift;
   /** A creator code the visitor entered on the product step (validated by /api/offer). */
   creatorCode: string;
+  /**
+   * "This portrait is in memory of my dog": the gentle track. No urgency or promotions anywhere in
+   * the flow; passed to /api/generate, /api/leads and /api/checkout so emails stay gentle too.
+   */
+  memorial: boolean;
   /** Set by "Start over": server-side history older than this is not restored. */
   resetAt: number | null;
 };
@@ -77,9 +88,11 @@ export const INITIAL: FlowState = {
     frameColor: "black",
     addons: [],
     shipCountry: "US",
+    quantity: 1,
   },
   gift: { enabled: false, senderName: "", recipientName: "", recipientEmail: "", message: "" },
   creatorCode: "",
+  memorial: false,
   resetAt: null,
 };
 
@@ -103,6 +116,7 @@ function sanitize(raw: unknown): FlowState {
     frameColor: (["black", "white", "oak"] as const).includes(s.selection?.frameColor) ? s.selection.frameColor : "black",
     addons: Array.isArray(s.selection?.addons) ? s.selection.addons.filter((a) => typeof a === "string") : [],
     shipCountry: s.selection?.shipCountry === "CA" ? "CA" : "US",
+    quantity: Number.isInteger(s.selection?.quantity) ? Math.min(MAX_QUANTITY, Math.max(1, s.selection.quantity)) : 1,
   };
   const upload = s.upload && typeof s.upload.uploadId === "string" ? s.upload : null;
   const activeId = generations.some((g) => g.generationId === s.activeId) ? s.activeId : null;
@@ -119,6 +133,7 @@ function sanitize(raw: unknown): FlowState {
     selection,
     gift: { ...INITIAL.gift, ...(s.gift ?? {}) },
     creatorCode: typeof s.creatorCode === "string" ? s.creatorCode.slice(0, 40) : "",
+    memorial: s.memorial === true,
     resetAt: typeof s.resetAt === "number" ? s.resetAt : null,
   };
 }
