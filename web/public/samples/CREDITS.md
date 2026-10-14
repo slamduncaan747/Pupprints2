@@ -49,8 +49,9 @@ anyway. None are Unsplash+ photos. Local copies (4:5 crops) live in `web/scripts
 | botanical.webp | Botanical | Cavapoo | cavapoo.jpg | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM | FLUX.2 klein |
 | astronaut.webp | Space Cadet | Siberian Husky | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI | FLUX.2 klein |
 | gallery-4.webp | The Admiral | Siberian Husky | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI | FLUX.2 klein |
-| charcoal.webp | Charcoal Study | Border Collie | border-collie-2.jpg | Chung Nguyen | https://unsplash.com/photos/kJlk-jW2nLI | legacy |
-| mid-century.webp, holiday.webp | Mid-Century / Holiday Cozy | Pembroke Welsh Corgi | corgi.jpg | Ivana La | https://unsplash.com/photos/tycZhR54Ddk | legacy |
+| charcoal.webp | Charcoal Study | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho | FLUX.2 klein |
+| mid-century.webp | Mid-Century | Pembroke Welsh Corgi | corgi.jpg | Ivana La | https://unsplash.com/photos/tycZhR54Ddk | FLUX.2 klein |
+| holiday.webp | Holiday Cozy | Golden Retriever | golden-retriever-2.jpg | Victor G | https://unsplash.com/photos/x5oPmHmY3kQ | FLUX.2 klein |
 | pair-1-before.webp (photo), pair-1-after.webp | The Royal | Golden Retriever | golden-retriever.jpg | Faber Leonardo | https://unsplash.com/photos/ktujYJX35-E | FLUX.2 klein |
 | gallery-1.webp | Old Master | Golden Retriever | golden-retriever-2.jpg | Victor G | https://unsplash.com/photos/x5oPmHmY3kQ | FLUX.2 klein |
 | gallery-3.webp | Watercolor | Cavapoo | cavapoo.jpg | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM | FLUX.2 klein |
