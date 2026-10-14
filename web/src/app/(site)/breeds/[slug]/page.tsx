@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OFFER } from "@/lib/offer";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CtaBand } from "@/components/marketing/cta-band";
@@ -205,7 +206,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
             : `Shown: an example ${STYLE_MAP[sample.style].name} portrait`}
         </p>
         <Link href={`/create?style=${top}`} className="link-cta mt-8 inline-block">
-          Commission yours
+          {OFFER.cta}
         </Link>
       </PageHero>
 

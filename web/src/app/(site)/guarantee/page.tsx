@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/lib/config";
+import { GUARANTEE } from "@/lib/offer";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Note, Rows, Statement, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
@@ -9,7 +10,7 @@ import { JsonLd } from "@/components/marketing/json-ld";
 import { FAQ_GROUPS } from "@/components/marketing/faq-data";
 
 export const metadata: Metadata = {
-  title: "Love-It Guarantee — Free Remake or Full Refund",
+  title: `${GUARANTEE.name} — Free Remake or Full Refund`,
   description:
     "If you don't love your printed portrait, tell us within 30 days of delivery and we'll remake it free or refund you in full. Damaged? Send a photo for a free replacement. No fine print.",
   alternates: { canonical: "/guarantee" },
@@ -44,9 +45,9 @@ export default function GuaranteePage() {
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
-        eyebrow="The Love-It Guarantee"
-        title="Love it, or it's on us."
-        lede="If you don't love your printed portrait, tell us within 30 days of delivery. We'll remake it free or refund you in full, your choice."
+        eyebrow={GUARANTEE.short}
+        title={GUARANTEE.name}
+        lede={GUARANTEE.body}
       />
 
       <Block eyebrow="The process" title="Three steps, no runaround">
@@ -71,7 +72,7 @@ export default function GuaranteePage() {
 
       <Statement
         className="bg-paper-2"
-        eyebrow="Before you pay"
+        eyebrow="Before you pay, and after"
         body={
           <>
             <p>
@@ -87,7 +88,7 @@ export default function GuaranteePage() {
           </>
         }
       >
-        You see it before you pay.
+        You see it before you pay. Then you&apos;re covered after.
       </Statement>
 
       <Block
@@ -106,7 +107,7 @@ export default function GuaranteePage() {
         <FaqList items={FAQS} />
       </Block>
 
-      <CtaBand eyebrow="Without risk" title="See it free. Love it, or it's on us." />
+      <CtaBand eyebrow="Without risk" title={`See it free. ${GUARANTEE.short}.`} />
     </>
   );
 }

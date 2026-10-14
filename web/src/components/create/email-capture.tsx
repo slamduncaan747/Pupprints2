@@ -23,6 +23,7 @@ export function EmailCapture({
   placeholder = "you@email.com",
   className,
   tone = "light",
+  onDone,
 }: {
   source: LeadSource;
   generationId?: string;
@@ -32,6 +33,8 @@ export function EmailCapture({
   placeholder?: string;
   className?: string;
   tone?: "light" | "paper";
+  /** Called once the email is saved. */
+  onDone?: () => void;
 }) {
   const id = useId();
   const [email, setEmail] = useState("");
@@ -55,6 +58,7 @@ export function EmailCapture({
       });
       track("Lead", { source });
       setState("done");
+      onDone?.();
     } catch {
       setState("error");
       setError("We couldn't save that just now. Please try again.");

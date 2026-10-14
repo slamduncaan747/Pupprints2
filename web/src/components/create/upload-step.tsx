@@ -12,6 +12,9 @@ import { updateFlow, type FlowState } from "./store";
 
 type Phase = "idle" | "preparing" | "uploading" | "error";
 
+/** Effort reduction, stated where the decision is made. */
+const NO_FRICTION = "No account. No card.";
+
 export function UploadStep({
   flow,
   preselected,
@@ -85,7 +88,7 @@ export function UploadStep({
         {style ? (
           <>Your dog, as {style.name}. A complimentary preview in about a minute.</>
         ) : (
-          <>A complimentary preview in about a minute. No card required.</>
+          <>A complimentary preview in about a minute.</>
         )}
       </p>
 
@@ -163,6 +166,7 @@ export function UploadStep({
                 <span className="hidden sm:inline">Or drop it here</span>
               </span>
             </label>
+            <p className="label mt-4 text-center text-ink-2">{NO_FRICTION}</p>
             <PhotoTips className="mt-9" />
           </>
         )}
@@ -203,7 +207,8 @@ export function UploadStep({
           <Button type="button" size="lg" onClick={onContinue} disabled={!ready} className="w-full">
             {continueLabel}
           </Button>
-          <p className="mt-4 text-center text-[12px] text-ink-3">
+          <p className="label mt-4 text-center text-ink-2">{NO_FRICTION}</p>
+          <p className="mt-2 text-center text-[12px] text-ink-3">
             Your photograph stays private and is used only for your portrait.
           </p>
         </div>

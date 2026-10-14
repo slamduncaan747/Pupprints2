@@ -11,13 +11,24 @@ import { FaqList, faqJsonLd } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
 import { faq } from "@/components/marketing/faq-data";
 import { PHYSICAL_SHIP_WINDOW } from "@/components/marketing/commerce";
+import { OfferCta } from "@/components/marketing/offer";
+import { Container } from "@/components/ui/container";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "How It Works — From Your Photo to a Framed Dog Portrait",
+  title: "How It Works — One Photo, About a Minute, Free",
   description:
-    "Upload a photo, see your dog's portrait free in about a minute, choose a print, frame or canvas, and we check, print and ship it. Plus photo tips and how the art is made.",
+    "Upload one photo and see your dog's portrait free in about a minute: no account, no card. Then choose a print, frame or canvas, and we check, print and ship it.",
   alternates: { canonical: "/how-it-works" },
 };
+
+/** The effort lever, in four short facts. */
+const EFFORT = [
+  { label: "What you need", value: "One photo" },
+  { label: "Until you see it", value: "About a minute" },
+  { label: "To sign up", value: "Nothing" },
+  { label: "To preview", value: "Free, no card" },
+];
 
 const STEPS = [
   {
@@ -99,9 +110,31 @@ export default function HowItWorksPage() {
       <PageHero
         align="center"
         eyebrow="The Process"
-        title="From photograph to portrait"
-        lede="See it now. Give it now. Hang it in days. Here is exactly what happens, from your phone to your wall."
-      />
+        title="One photo. About a minute."
+        lede="No account, no card, nothing to install. Upload a photo of your dog and see the portrait before you decide anything. Here is exactly what happens, from your phone to your wall."
+      >
+        <OfferCta align="center" note={null} />
+      </PageHero>
+
+      <section aria-label="What it takes" className="pb-20 sm:pb-28">
+        <Container>
+          <dl className="grid grid-cols-2 border-t border-line lg:grid-cols-4">
+            {EFFORT.map((e, i) => (
+              <div
+                key={e.label}
+                className={cn(
+                  "border-b border-line py-7 sm:py-9 lg:border-b-0 lg:px-6 lg:first:pl-0",
+                  i % 2 === 0 ? "border-r pr-4" : "pl-4 sm:pl-6",
+                  i === EFFORT.length - 1 ? "lg:border-r-0" : "lg:border-r",
+                )}
+              >
+                <dt className="label text-ink-3">{e.label}</dt>
+                <dd className="mt-3 font-display text-[28px] leading-[1.05] sm:text-[40px]">{e.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Container>
+      </section>
 
       <h2 className="sr-only">Step by step</h2>
       <Chapter

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/site/newsletter-form";
 import { site, socialLinks } from "@/lib/config";
+import { GUARANTEE } from "@/lib/offer";
 
 const COLUMNS = [
   {
@@ -26,7 +27,7 @@ const COLUMNS = [
       { href: "/how-it-works", label: "The process" },
       { href: "/faq", label: "FAQ" },
       { href: "/shipping", label: "Shipping" },
-      { href: "/guarantee", label: "Our guarantee" },
+      { href: "/guarantee", label: GUARANTEE.name },
       { href: "/track", label: "Track an order" },
       { href: "/contact", label: "Contact" },
     ],

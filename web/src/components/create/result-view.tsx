@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { getStyle, PROMISES } from "@/lib/catalog";
+import Link from "next/link";
+import { getStyle } from "@/lib/catalog";
+import { GUARANTEE } from "@/lib/offer";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EmailCapture } from "./email-capture";
+import { markPortraitSaved } from "./keep-portrait";
 import type { Generation } from "./store";
 
 const textLink = "link-cta inline-flex min-h-11 items-center";
@@ -65,6 +68,11 @@ export function ResultView({
         <Button type="button" size="lg" onClick={onLoveIt} className="mt-9 hidden w-full sm:inline-flex sm:max-w-sm lg:max-w-none">
           Choose your piece
         </Button>
+        <p className="mt-4 hidden sm:block">
+          <Link href="/guarantee" className="label text-ink-3 underline-offset-[5px] transition-colors hover:text-ink hover:underline">
+            {GUARANTEE.short}
+          </Link>
+        </p>
         <div className="mt-5 flex items-center justify-center gap-10 sm:mt-3 lg:justify-start">
           <button type="button" onClick={onTryAnother} className={textLink}>
             Another style
@@ -131,6 +139,7 @@ export function ResultView({
                 petName={name || undefined}
                 cta="Send"
                 doneMessage="Sent. Your preview is on its way."
+                onDone={markPortraitSaved}
               />
             </div>
           ) : (
@@ -140,7 +149,6 @@ export function ResultView({
           )}
         </div>
 
-        <p className="label mt-6 text-ink-3">{PROMISES.guarantee}</p>
       </div>
 
       {/* Phones: the one call to action stays within reach below the campaign image. */}
@@ -148,6 +156,11 @@ export function ResultView({
         <Button type="button" size="lg" onClick={onLoveIt} className="w-full">
           Choose your piece
         </Button>
+        <p className="mt-2 text-center">
+          <Link href="/guarantee" className="label inline-flex min-h-8 items-center text-ink-3">
+            {GUARANTEE.short}
+          </Link>
+        </p>
       </div>
     </section>
   );

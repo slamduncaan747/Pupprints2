@@ -4,10 +4,20 @@ import { after } from "next/server";
 import { z } from "zod";
 import { ADDONS, findAddon, findVariant, PRODUCT_MAP, SHIPPING_RATES, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site } from "@/lib/config";
+import { HEIRLOOM_SET, heirloomSets, pickCheckoutDiscount } from "@/lib/offer";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { getSessionId } from "@/lib/session";
-import { ensureFoundingPromo, ensurePartnerCoupon, ensurePartnerPromotionCode, ensureWelcomePromo, getStripe } from "@/lib/stripe";
+import {
+  ensurePartnerCoupon,
+  ensurePartnerPromotionCode,
+  ensureWelcomePromo,
+  forgetFoundingStatus,
+  foundingStatus,
+  getStripe,
+  isDiscountError,
+} from "@/lib/stripe";
 import { itemLabel, styleNameOf, type OrderItem } from "@/lib/orders";
+import type { RedeemablePartner } from "@/lib/partners";
 import { shipWindow } from "@/components/order/timeline";
 import { normalizeCode } from "@/components/partners/program";
 
@@ -68,6 +78,17 @@ const Body = z.object({
     .optional()
     .transform((v) => (v ? v : undefined))
     .pipe(z.email().optional()),
+  /**
+   * A creator code typed on the product step (e.g. RUFUS15). While FOUNDING100 is auto-applied
+   * Stripe's promo-code box is off, so this is where a creator's code is entered; it credits the
+   * creator and applies their discount. Unknown codes are ignored.
+   */
+  code: z
+    .string()
+    .trim()
+    .max(64)
+    .optional()
+    .transform((v) => (v ? v : undefined)),
 });
 
 type GenerationRow = {
@@ -228,9 +249,41 @@ export async function POST(req: Request) {
     });
   }
 
+  // --- The Heirloom Set: ornament + mug together (with a physical piece) cost less ----------
+  // Each complete set takes HEIRLOOM_SET.discountCents off, split across the two add-ons as real
+  // per-unit prices. A line only partly in a set is split so every stored unit price is exact.
+  const sets = heirloomSets(items, hasPhysical);
+  const bundledItems: OrderItem[] = [];
+  const setsLeft: Record<string, number> = Object.fromEntries(HEIRLOOM_SET.addonIds.map((id) => [id, sets]));
+  for (const item of items) {
+    const off = HEIRLOOM_SET.unitDiscount[item.variantId] ?? 0;
+    const inSet = item.kind === "addon" && off > 0 ? Math.min(item.quantity, setsLeft[item.variantId] ?? 0) : 0;
+    if (inSet === 0) {
+      bundledItems.push(item);
+      continue;
+    }
+    setsLeft[item.variantId] -= inSet;
+    bundledItems.push({
+      ...item,
+      quantity: inSet,
+      unitAmount: Math.max(0, item.unitAmount - off),
+      regularUnitAmount: item.unitAmount,
+      bundle: "heirloom",
+    });
+    if (item.quantity > inSet) bundledItems.push({ ...item, quantity: item.quantity - inSet });
+  }
+  items.splice(0, items.length, ...bundledItems);
+
   // --- Attribution -------------------------------------------------------------------
   const store = await cookies();
-  let referralCode = normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
+  // A creator code typed on the product step wins over an earlier ?ref= link (most recent intent).
+  const typedCode = normalizeCode(body.code);
+  let typedPartner: RedeemablePartner | null = null;
+  if (typedCode) {
+    const { getPartnerByCode } = await import("@/lib/partners");
+    typedPartner = await getPartnerByCode(typedCode).catch(() => null);
+  }
+  let referralCode = typedPartner?.code ?? normalizeCode(safeDecode(store.get("pp_ref")?.value ?? ""));
   // A gift from a creator credits that creator when the visitor has no other referral.
   if (!referralCode && gift?.partnerId) {
     const { data: partner } = await supabase
@@ -266,19 +319,39 @@ export async function POST(req: Request) {
   }
 
   try {
-    // --- Discounts: creator code beats the generic promo-code box ---------------------
+    // --- Discounts ---------------------------------------------------------------------
+    // 1. A creator code (?ref= link, gift from a creator, or typed on the product step).
+    // 2. Otherwise FOUNDING100, applied automatically while it can really be redeemed.
+    // 3. Otherwise Stripe's promo-code box (WELCOME10, personal codes, creator codes).
     let discounts: Stripe.Checkout.SessionCreateParams.Discount[] | undefined;
-    if (referralCode) {
+    let applied: "partner" | "founding" | null = null;
+    let partner = typedPartner;
+    if (!partner && referralCode) {
       const { getPartnerByCode } = await import("@/lib/partners");
-      const partner = await getPartnerByCode(referralCode).catch(() => null);
-      const couponPromise = partner && partner.discountPercent > 0 ? ensurePartnerCoupon(partner.discountPercent) : null;
-      const coupon = couponPromise ? await couponPromise.catch(() => null) : null;
-      if (coupon) discounts = [{ coupon }];
-      // Lazily make their code typeable too (cached per instance; never blocks checkout).
-      if (partner && partner.discountPercent > 0) after(() => ensurePartnerPromotionCode(partner.code, partner.discountPercent));
+      partner = await getPartnerByCode(referralCode).catch(() => null);
     }
-    // Promo-code box: make sure WELCOME10 and FOUNDING100 exist (idempotent, cached per instance).
-    if (!discounts) await Promise.all([ensureWelcomePromo(), ensureFoundingPromo()]);
+    const partnerPercent = partner && partner.discountPercent > 0 ? partner.discountPercent : null;
+    // Lazily make their code typeable too (cached per instance; never blocks checkout).
+    if (partner && partnerPercent) {
+      const { code, discountPercent } = partner;
+      after(() => ensurePartnerPromotionCode(code, discountPercent));
+    }
+    const founding = await (foundingStatus() ?? Promise.resolve(null));
+    const foundingOpen = Boolean(founding?.open && founding.promotionCodeId);
+    const choice = pickCheckoutDiscount({ partnerPercent, foundingOpen });
+    if (choice === "partner" && partnerPercent) {
+      const coupon = await (ensurePartnerCoupon(partnerPercent) ?? Promise.resolve(null)).catch(() => null);
+      if (coupon) {
+        discounts = [{ coupon }];
+        applied = "partner";
+      }
+    }
+    if (!discounts && foundingOpen && founding?.promotionCodeId) {
+      discounts = [{ promotion_code: founding.promotionCodeId }];
+      applied = "founding";
+    }
+    // Promo-code box: make sure WELCOME10 exists (idempotent, cached per instance).
+    if (!discounts) await ensureWelcomePromo();
 
     // --- Line items ------------------------------------------------------------------
     const automaticTax = process.env.STRIPE_AUTOMATIC_TAX === "1";
@@ -289,6 +362,9 @@ export async function POST(req: Request) {
         const description = [
           i.petName ? `Portrait of ${i.petName}` : null,
           i.productType === "addon" ? findAddon(i.variantId)?.description : null,
+          i.bundle === "heirloom" && i.regularUnitAmount
+            ? `${HEIRLOOM_SET.name} price (regularly $${(i.regularUnitAmount / 100).toFixed(0)})`
+            : null,
           i.productType === "digital" ? "Full-resolution file, no watermark. Delivered instantly." : null,
           i.frameColor ? `${i.frameColor.charAt(0).toUpperCase()}${i.frameColor.slice(1)} frame` : null,
         ]
@@ -314,6 +390,8 @@ export async function POST(req: Request) {
       orderId: order.id,
       orderNumber: order.order_number,
       giftSendNow: body.giftRecipientEmail && body.giftSendNow !== false ? "1" : "0",
+      ...(applied ? { offer: applied } : {}),
+      ...(sets > 0 ? { heirloomSets: String(sets) } : {}),
     };
 
     const params: Stripe.Checkout.SessionCreateParams = {
@@ -375,7 +453,21 @@ export async function POST(req: Request) {
       params.custom_text = { submit: { message: "Your full-resolution file is delivered instantly after payment." } };
     }
 
-    const session = await stripe.checkout.sessions.create(params, { idempotencyKey: `checkout-${order.id}` });
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe.checkout.sessions.create(params, { idempotencyKey: `checkout-${order.id}` });
+    } catch (err) {
+      // FOUNDING100 can hit its cap between our cached check and this call: never lose the sale
+      // over it. Retry once without it (promo box back on) under a new idempotency key.
+      if (applied !== "founding" || !isDiscountError(err)) throw err;
+      console.warn("[checkout] founding offer refused by Stripe, retrying without it", err instanceof Error ? err.message : err);
+      forgetFoundingStatus();
+      await ensureWelcomePromo();
+      const retry: Stripe.Checkout.SessionCreateParams = { ...params, metadata: { ...metadata }, allow_promotion_codes: true };
+      delete retry.discounts;
+      delete retry.metadata!.offer;
+      session = await stripe.checkout.sessions.create(retry, { idempotencyKey: `checkout-${order.id}-nodiscount` });
+    }
     await supabase
       .from("orders")
       .update({ stripe_session_id: session.id, updated_at: new Date().toISOString() })

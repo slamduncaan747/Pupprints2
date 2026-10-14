@@ -199,7 +199,6 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
         eyebrow={o.eyebrow}
         title={o.cta.title}
         body={o.cta.body}
-        cta={o.cta.button}
         note={memorial ? "See it before you decide · Love it or we'll remake or refund it" : undefined}
       />
     </>

@@ -5,27 +5,35 @@ import { STYLES } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 
 /**
- * The Collection, set like a fashion e-shop: edge-to-edge portraits with hairline gutters,
- * the name beneath in small capitals. Each opens the creator in that style.
+ * The Collection as one quiet strip: a swipeable row on phones, two rows of six on desktop. Each
+ * portrait opens the creator in that style, so choosing a style is the first step, not a detour.
  */
 export function Collection() {
   return (
-    <section id="collection" aria-labelledby="collection-title" className="scroll-mt-20 pb-16 sm:pb-24">
-      <Container className="mb-8 flex items-baseline justify-between gap-6 sm:mb-12">
-        <h2 id="collection-title" className="font-display text-[34px] sm:text-[48px]">
-          The Collection
-        </h2>
-        <Link href="/styles" className="label text-ink-3 transition-colors hover:text-ink">
-          {STYLES.length} styles
+    <section id="collection" aria-labelledby="collection-title" className="scroll-mt-20 pb-24 sm:pb-36">
+      <Container className="mb-8 flex flex-wrap items-end justify-between gap-x-10 gap-y-4 sm:mb-12">
+        <div>
+          <h2 id="collection-title" className="font-display text-[34px] leading-[1.04] sm:text-[48px]">
+            The Collection
+          </h2>
+          <p className="mt-3 text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
+            {STYLES.length} styles. Try every one with your own photo, free.
+          </p>
+        </div>
+        <Link href="/styles" className="link-cta">
+          View the collection
         </Link>
       </Container>
 
-      <ul className="grid grid-cols-2 gap-x-[2px] lg:grid-cols-4">
+      <ul
+        aria-label="Styles"
+        className="flex snap-x snap-mandatory gap-[2px] overflow-x-auto px-0 [scrollbar-width:none] lg:grid lg:grid-cols-6 lg:overflow-visible [&::-webkit-scrollbar]:hidden"
+      >
         {STYLES.map((style) => (
-          <li key={style.slug}>
+          <li key={style.slug} className="w-[42%] shrink-0 snap-start sm:w-[30%] lg:w-auto">
             <Link
               href={`/create?style=${style.slug}`}
-              aria-label={`${style.name}: commission your portrait in this style`}
+              aria-label={`${style.name}: create your free portrait in this style`}
               className="group block focus-visible:outline-offset-[-3px]"
             >
               <div className="overflow-hidden">
@@ -34,11 +42,11 @@ export function Collection() {
                     src={STYLE_SAMPLES[style.slug]}
                     alt={`Example ${style.name} portrait`}
                     swatch={style.swatch}
-                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    sizes="(min-width: 1024px) 17vw, (min-width: 640px) 30vw, 42vw"
                   />
                 </div>
               </div>
-              <p className="label px-3 pb-9 pt-3.5 sm:px-4 sm:pb-12 sm:pt-4">{style.name}</p>
+              <p className="label px-3 pb-6 pt-3.5 sm:px-4 lg:pb-8">{style.name}</p>
             </Link>
           </li>
         ))}

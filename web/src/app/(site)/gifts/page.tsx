@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { STYLE_MAP } from "@/lib/catalog";
+import { STYLE_MAP, type ProductType } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
+import { FORMAT_SHOWCASE, HOLIDAY } from "@/lib/offer";
+import { FrameMockup } from "@/components/product/frame-mockup";
+import { OfferCta, beforeHolidayCutoff } from "@/components/marketing/offer";
 import { cn, formatPrice } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
@@ -9,7 +12,7 @@ import { Block, Facts, Rows, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { ZoomImage } from "@/components/marketing/campaign";
 import { EVERYTHING_CARD, OCCASIONS } from "@/components/marketing/gift-occasions";
-import { CHRISTMAS_US_CUTOFF, PRICE_BANDS, itemLabel, itemsInBand } from "@/components/marketing/commerce";
+import { PRICE_BANDS, itemLabel, itemsInBand, type PricedItem } from "@/components/marketing/commerce";
 
 export const metadata: Metadata = {
   title: "Gifts for Dog Lovers — Custom Dog Portrait Gift Guide",
@@ -17,6 +20,18 @@ export const metadata: Metadata = {
     "The gift guide for dog people: custom portraits of their dog for birthdays, Christmas, Mother's Day, memorials and new puppies. Preview free, send a Gift Reveal instantly, free US shipping.",
   alternates: { canonical: "/gifts" },
 };
+
+/**
+ * The piece pictured for each price band, always the same portrait, hung to scale on the same wall:
+ * the largest piece of this type the band covers. So the bands compare formats and sizes, not pictures.
+ */
+const BAND_PIECE: ProductType[] = ["poster", "framed", "canvas"];
+
+function bandPiece(items: PricedItem[], index: number) {
+  const type = BAND_PIECE[index];
+  const ofType = items.filter((i) => i.product.type === type);
+  return ofType.sort((a, b) => b.variant.widthIn * b.variant.heightIn - a.variant.widthIn * a.variant.heightIn)[0];
+}
 
 const REVEAL_STEPS = [
   { title: "Make it from any photo", body: "A photo of their dog from your phone or their social media. See the portrait free." },
@@ -38,18 +53,31 @@ const PLACEMENT = [
 ];
 
 export default function GiftsPage() {
+  const beforeCutoff = beforeHolidayCutoff();
   return (
     <>
       <PageHero
         align="center"
         eyebrow="The Gift Guide"
-        title="A portrait of their dog"
-        lede="Made from a photo you already have, seen free before you buy. Send a Gift Reveal the moment you order; the print follows."
+        title="Give it today. Hang it in days."
+        lede="Make a portrait of their dog from any photo and see it free. The moment you order, send a Gift Reveal they can open right away; the piece follows, ready to hang."
       >
-        <p className="label text-ink-3">
-          Christmas: order physical pieces by {CHRISTMAS_US_CUTOFF} for US delivery. Gift Reveal any time.
-        </p>
+        {beforeCutoff && (
+          <div className="mb-9 flex flex-col items-center gap-2">
+            <p className="label text-ink">{HOLIDAY.label}</p>
+            <p className="label text-ink-3">{HOLIDAY.reveal}</p>
+          </div>
+        )}
+        <OfferCta align="center" />
       </PageHero>
+
+      <Block
+        eyebrow="The Gift Reveal"
+        title="The moment they see it doesn't wait for the mail"
+        intro="The best part of a gift is the moment they see it. With a Gift Reveal, that moment is the day you order."
+      >
+        <Rows numbered items={REVEAL_STEPS} />
+      </Block>
 
       <section id="occasions" aria-labelledby="occasions-title" className="scroll-mt-24 pb-24 sm:pb-36">
         <Container>
@@ -110,25 +138,33 @@ export default function GiftsPage() {
       </section>
 
       <Block
-        eyebrow="The Gift Reveal"
-        title="Give it today. Hang it in days."
-        intro="The best part of a gift is the moment they see it. With a Gift Reveal, that moment doesn't wait for the mail."
-      >
-        <Rows numbered items={REVEAL_STEPS} />
-      </Block>
-
-      <Block
         eyebrow="By price"
         title="Gifts at every price"
         intro="Real prices, with free US shipping. Every physical piece comes with the hi-res digital file."
         layout="stack"
       >
-        <div className="grid gap-14 md:grid-cols-3 md:gap-10">
-          {PRICE_BANDS.map((band) => {
+        <div className="grid gap-16 md:grid-cols-3 md:gap-10">
+          {PRICE_BANDS.map((band, i) => {
             const items = itemsInBand(band.min, band.max);
             if (items.length === 0) return null;
+            const shown = bandPiece(items, i);
             return (
               <div key={band.title}>
+                {shown && (
+                  <figure className="mb-8">
+                    <FrameMockup
+                      src={FORMAT_SHOWCASE.src}
+                      alt={`The same portrait as a ${itemLabel(shown)}, on a wall to scale`}
+                      productType={shown.product.type}
+                      printSize={{ widthIn: shown.variant.widthIn, heightIn: shown.variant.heightIn }}
+                      room
+                      className="max-w-none"
+                    />
+                    <figcaption className="label mt-3 text-ink-3">
+                      Shown: {itemLabel(shown)}, to scale
+                    </figcaption>
+                  </figure>
+                )}
                 <h3 className="font-display text-[28px] leading-[1.08] sm:text-[32px]">{band.title}</h3>
                 <p className="mt-2 text-[13px] text-ink-3">{band.note}</p>
                 <Facts
@@ -152,8 +188,7 @@ export default function GiftsPage() {
       <CtaBand
         eyebrow="Begin a gift"
         title="A gift they'll never see coming"
-        body="Upload a photo of their dog and see the portrait free in about a minute. Only pay if you love it."
-        cta="Start a gift portrait"
+        body="Upload a photo of their dog and see the portrait free in about a minute. Send the Gift Reveal the moment you order."
         image="botanical"
       />
     </>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useState, useSyncExternalStore, type FormEvent, type ReactNode } from "react";
 import { LoaderCircle } from "lucide-react";
 import { track } from "@/lib/analytics";
 import {
@@ -8,17 +8,27 @@ import {
   getStyle,
   PRODUCT_MAP,
   PRODUCTS,
-  PROMISES,
   SHIPPING_RATES,
+  type Addon,
   type FrameColor,
   type Product,
   type ProductType,
 } from "@/lib/catalog";
+import {
+  FOUNDING_OFFER,
+  GUARANTEE,
+  HEIRLOOM_SET,
+  heirloomSets,
+  holidayNotice,
+  percentOffCents,
+  valueStackFor,
+  type OfferStatus,
+} from "@/lib/offer";
 import { buttonClasses } from "@/components/ui/button";
 import { cn, formatPrice } from "@/lib/utils";
 import { FrameMockup } from "@/components/product/frame-mockup";
 import { shipWindow } from "@/components/order/timeline";
-import { ApiError, startCheckout, type CheckoutRequest } from "./api";
+import { ApiError, fetchOffer, peekOffer, startCheckout, type CheckoutRequest } from "./api";
 import { EmailCapture, isEmail } from "./email-capture";
 import { updateFlow, type FlowState, type Generation, type ShipCountry } from "./store";
 
@@ -58,6 +68,33 @@ function addBusinessDays(from: number, days: number) {
 
 const fmtDate = (d: Date) => d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 
+/* ------------------------------ live offer ------------------------------ */
+
+/**
+ * The offer checkout will really apply for this visitor (FOUNDING100 or their creator code), from
+ * /api/offer. null until it answers (or if it can't): then only regular prices are shown.
+ */
+function useOffer(code: string): OfferStatus | null {
+  const [state, setState] = useState<{ code: string; offer: OfferStatus | null }>(() => ({
+    code,
+    offer: peekOffer(code || undefined),
+  }));
+  useEffect(() => {
+    let cancelled = false;
+    fetchOffer(code || undefined)
+      .then((offer) => {
+        if (!cancelled) setState({ code, offer });
+      })
+      .catch(() => {
+        // Offline or API down: regular prices only (never a discount we can't confirm).
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [code]);
+  return state.code === code ? state.offer : peekOffer(code || undefined);
+}
+
 /* ------------------------------ component ------------------------------ */
 
 type CheckoutState = { kind: "idle" } | { kind: "loading" } | { kind: "unavailable" } | { kind: "error"; message: string };
@@ -68,6 +105,7 @@ export function ProductStep({
   onBack,
   giftToken,
   backLabel = "to styles",
+  onCheckoutStart,
 }: {
   flow: FlowState;
   active: Generation;
@@ -76,6 +114,8 @@ export function ProductStep({
   giftToken?: string;
   /** Shown after "Back" on wider screens. */
   backLabel?: string;
+  /** Called when the visitor commits to checkout (e.g. to quiet the keep-your-portrait prompt). */
+  onCheckoutStart?: () => void;
 }) {
   const { selection, gift } = flow;
   const product = PRODUCT_MAP[selection.productType];
@@ -83,8 +123,18 @@ export function ProductStep({
   const physical = product.type !== "digital";
   const chosenAddons = physical ? ADDONS.filter((a) => selection.addons.includes(a.id)) : [];
   const shipping = physical ? SHIPPING_RATES[selection.shipCountry] : 0;
-  const subtotal = variant.price + chosenAddons.reduce((sum, a) => sum + a.price, 0);
-  const total = subtotal + shipping;
+
+  // Same pricing rules as /api/checkout: catalog prices, the Heirloom Set saving, then the one
+  // automatic discount (FOUNDING100 or a creator code), which never touches shipping.
+  const heirloom = heirloomSets(chosenAddons.map((a) => ({ variantId: a.id, quantity: 1 })), physical) > 0;
+  const addonPrice = (a: Addon) => a.price - (heirloom ? (HEIRLOOM_SET.unitDiscount[a.id] ?? 0) : 0);
+  const merchandise = variant.price + chosenAddons.reduce((sum, a) => sum + addonPrice(a), 0);
+  const offer = useOffer(flow.creatorCode);
+  const discount = offer?.discount ?? null;
+  const discountCents = discount ? percentOffCents(merchandise, discount.percentOff) : 0;
+  const total = merchandise - discountCents + shipping;
+  const discounted = (cents: number) => (discount ? cents - percentOffCents(cents, discount.percentOff) : cents);
+  const priceTag = discount?.source === "founding" ? "Founding price" : "With your code";
   const style = getStyle(active.style);
   const name = (giftToken ? (active.petName ?? "") : flow.petName).trim();
 
@@ -92,7 +142,7 @@ export function ProductStep({
   const [checkout, setCheckout] = useState<CheckoutState>({ kind: "idle" });
   const [giftError, setGiftError] = useState<string | null>(null);
   const today = useToday();
-  const ids = { gift: useId(), from: useId(), to: useId(), email: useId(), msg: useId() };
+  const ids = { gift: useId(), from: useId(), to: useId(), email: useId(), msg: useId(), stack: useId() };
 
   const printSize = variant.widthIn > 0 ? { widthIn: variant.widthIn, heightIn: variant.heightIn } : undefined;
   const showRoom = physical && view === "room";
@@ -126,6 +176,7 @@ export function ProductStep({
     }
     setGiftError(null);
     setCheckout({ kind: "loading" });
+    onCheckoutStart?.();
 
     const body: CheckoutRequest = {
       items: [
@@ -139,6 +190,7 @@ export function ProductStep({
       ],
       shipCountry: physical ? selection.shipCountry : undefined,
       ...(giftToken ? { giftToken } : {}),
+      ...(flow.creatorCode ? { code: flow.creatorCode } : {}),
     };
     if (gift.enabled) {
       body.giftSenderName = gift.senderName.trim() || undefined;
@@ -153,7 +205,7 @@ export function ProductStep({
       currency: "USD",
       items: [
         { id: variant.id, name: product.name, price: variant.price / 100, quantity: 1, category: product.type, variant: variant.id },
-        ...chosenAddons.map((a) => ({ id: a.id, name: a.name, price: a.price / 100, quantity: 1, category: "addon" })),
+        ...chosenAddons.map((a) => ({ id: a.id, name: a.name, price: addonPrice(a) / 100, quantity: 1, category: "addon" })),
       ],
     };
     track("AddToCart", { product: product.type, variant: variant.id }, ecommerce);
@@ -166,6 +218,7 @@ export function ProductStep({
         variant: variant.id,
         num_items: body.items.length,
         gift: gift.enabled,
+        offer: discount?.source ?? null,
       },
       ecommerce,
     );
@@ -198,11 +251,13 @@ export function ProductStep({
     delivery = `Delivered in ${product.shipDays[0]}–${product.shipDays[1]} business days`;
   }
 
-  const checkoutLabel = `Proceed to checkout, ${formatPrice(total)}`;
+  const holiday = today !== null ? holidayNotice(today, { physical, shipCountry: selection.shipCountry }) : null;
+  const stack = valueStackFor({ productType: product.type, shipCountry: selection.shipCountry });
+  const checkoutLabel = `Proceed to checkout — ${formatPrice(total)}`;
   const loading = checkout.kind === "loading";
-  /** Close-up: the piece's width inside the 4:5 ivory field, so tall pieces still fit its height. */
+  /** Close-up: the mockup's width inside the 4:5 ivory field, so tall pieces still fit its height. */
   const pieceRatio = printSize ? printSize.widthIn / printSize.heightIn : 3 / 4;
-  const closeupWidth = Math.min(70, 92 * pieceRatio);
+  const closeupWidth = Math.min(76, 100 * pieceRatio);
 
   return (
     <section className="mx-auto grid w-full max-w-[1440px] gap-10 pt-2 pb-36 sm:px-10 sm:pt-6 sm:pb-28 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16 xl:grid-cols-[minmax(0,1fr)_420px] xl:gap-28">
@@ -290,7 +345,37 @@ export function ProductStep({
           {name || "Your dog"}, as {style?.name ?? "a portrait"}
         </p>
         <h1 className="mt-3 font-display text-[40px] leading-[1.04] sm:text-[52px]">{product.name}</h1>
-        <p className="mt-4 font-display text-[26px] leading-none tabular-nums">{formatPrice(variant.price)}</p>
+        {discount ? (
+          <div className="mt-4 motion-safe:animate-fade-up">
+            <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="sr-only">Regular price</span>
+              <s className="font-display text-[20px] leading-none text-ink-3 tabular-nums decoration-1">
+                {formatPrice(variant.price)}
+              </s>
+              <span className="sr-only">, {priceTag.toLowerCase()}</span>
+              <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(discounted(variant.price))}</span>
+              <span aria-hidden className="label text-ink-3">
+                {priceTag}
+              </span>
+            </p>
+            <p className="label mt-3 leading-relaxed text-ink-2">
+              {discount.source === "founding" ? (
+                <>
+                  {FOUNDING_OFFER.label}
+                  {typeof offer?.founding.remaining === "number" && (
+                    <span className="text-ink-3 tabular-nums"> · {offer.founding.remaining} remaining</span>
+                  )}
+                </>
+              ) : (
+                <>
+                  Creator code {discount.code} — {discount.percentOff}% off, applied at checkout
+                </>
+              )}
+            </p>
+          </div>
+        ) : (
+          <p className="mt-4 font-display text-[26px] leading-none tabular-nums">{formatPrice(variant.price)}</p>
+        )}
         <p className="mt-6 text-[14px] leading-relaxed text-ink-2">{product.tagline}</p>
         <details className="group mt-2">
           <summary className="link-cta inline-flex min-h-11 cursor-pointer list-none items-center text-ink-3 [&::-webkit-details-marker]:hidden">
@@ -324,7 +409,16 @@ export function ProductStep({
                       {v.label}
                     </span>
                     <span className={cn("tabular-nums", sel ? "text-ink" : "text-ink-3 group-hover:text-ink")}>
-                      {formatPrice(v.price)}
+                      {discount ? (
+                        <>
+                          <span className="sr-only">Regular price </span>
+                          <s className="mr-2.5 text-ink-3 decoration-1">{formatPrice(v.price)}</s>
+                          <span className="sr-only">{priceTag.toLowerCase()} </span>
+                          {formatPrice(discounted(v.price))}
+                        </>
+                      ) : (
+                        formatPrice(v.price)
+                      )}
                     </span>
                   </button>
                 );
@@ -396,15 +490,16 @@ export function ProductStep({
           </fieldset>
         )}
 
-        {/* Add-ons */}
+        {/* Add-ons: the order bump, with the Heirloom Set saving shown as it happens */}
         {physical && (
-          <fieldset className="mt-9">
-            <legend className="sr-only">Add a matching piece (optional)</legend>
-            <div className="space-y-1">
+          <fieldset className="mt-10">
+            <legend className={LEGEND}>Complete the set</legend>
+            <div className="mt-3 border-t border-line">
               {ADDONS.map((a) => {
                 const checked = selection.addons.includes(a.id);
+                const price = addonPrice(a);
                 return (
-                  <label key={a.id} className="flex min-h-11 cursor-pointer items-start gap-3.5 py-2">
+                  <label key={a.id} className="flex min-h-14 cursor-pointer items-start gap-3.5 border-b border-line py-3.5">
                     <input
                       type="checkbox"
                       checked={checked}
@@ -412,15 +507,30 @@ export function ProductStep({
                       className="mt-[3px] h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-none border border-ink-3 bg-paper transition-colors checked:border-ink checked:bg-ink checked:shadow-[inset_0_0_0_3px_var(--color-paper)] hover:border-ink"
                     />
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[14px] text-ink">
-                        Add a {a.name.charAt(0).toLowerCase() + a.name.slice(1)} — {formatPrice(a.price)}
-                      </span>
+                      <span className="block text-[14px] text-ink">{a.name}</span>
                       <span className="mt-1 block text-[12px] leading-snug text-ink-3">{a.description}</span>
+                    </span>
+                    <span className="shrink-0 text-[13px] text-ink tabular-nums">
+                      {price < a.price && checked ? (
+                        <>
+                          <span className="sr-only">Regular price </span>
+                          <s className="mr-2 text-ink-3 decoration-1">{formatPrice(a.price)}</s>
+                          <span className="sr-only">{HEIRLOOM_SET.name} price </span>
+                          {formatPrice(price)}
+                        </>
+                      ) : (
+                        `+ ${formatPrice(a.price)}`
+                      )}
                     </span>
                   </label>
                 );
               })}
             </div>
+            <p aria-live="polite" className={cn("mt-3 text-[12px] leading-snug", heirloom ? "label text-ink" : "text-ink-3")}>
+              {heirloom
+                ? `${HEIRLOOM_SET.name.replace(/^The /, "")} — you save ${formatPrice(HEIRLOOM_SET.discountCents)}`
+                : HEIRLOOM_SET.line}
+            </p>
           </fieldset>
         )}
 
@@ -487,35 +597,68 @@ export function ProductStep({
           )}
         </div>
 
-        {/* Delivery */}
+        {/* Delivery (+ the real holiday cutoff, from Nov 1 only) */}
         <p className="mt-6 text-[13px] leading-relaxed text-ink-3">{delivery}</p>
+        {holiday && <p className="label mt-2 text-ink">{holiday}</p>}
 
-        {/* Summary */}
-        <div className="mt-8" aria-live="polite">
-          <dl className="space-y-2 text-[13px]">
-            <SummaryRow
-              label={`${product.name}${variant.widthIn ? ` · ${variant.label}` : ""}${product.type === "framed" ? ` · ${FRAME_LABEL[selection.frameColor]}` : ""}`}
+        {/* The value stack: everything in the bag, then the price, then the guarantee, then the button */}
+        <section aria-labelledby={ids.stack} className="mt-10" aria-live="polite">
+          <h2 id={ids.stack} className={LEGEND}>
+            Your commission
+          </h2>
+          <dl className="mt-3 border-t border-line pt-3 text-[13px]">
+            <StackRow
+              item={`${product.name}${variant.widthIn ? ` · ${variant.label}` : ""}${product.type === "framed" ? ` · ${FRAME_LABEL[selection.frameColor]}` : ""}`}
               value={formatPrice(variant.price)}
             />
-            {physical && <SummaryRow label="Hi-res digital file" value="Included" />}
             {chosenAddons.map((a) => (
-              <SummaryRow key={a.id} label={a.name} value={formatPrice(a.price)} />
+              <StackRow
+                key={a.id}
+                item={heirloom ? `${a.name} · ${HEIRLOOM_SET.name.replace(/^The /, "")}` : a.name}
+                value={formatPrice(addonPrice(a))}
+              />
             ))}
-            {physical && (
-              <SummaryRow
-                label={`Shipping to ${COUNTRY_LABEL[selection.shipCountry]}`}
-                value={shipping === 0 ? "Complimentary" : formatPrice(shipping)}
+            {stack.map((row) => (
+              <StackRow key={row.item} item={row.item} value={row.value} quiet />
+            ))}
+            {physical && shipping > 0 && <StackRow item={`Tracked shipping to ${COUNTRY_LABEL[selection.shipCountry]}`} value={formatPrice(shipping)} />}
+            {discount && discountCents > 0 && (
+              <StackRow
+                item={
+                  discount.source === "founding"
+                    ? `Founding offer, ${discount.percentOff}% off`
+                    : `Creator code ${discount.code}, ${discount.percentOff}% off`
+                }
+                value={`−${formatPrice(discountCents)}`}
               />
             )}
-            <div className="flex items-baseline justify-between border-t border-line pt-4">
-              <dt className="label text-ink">Total</dt>
-              <dd className="font-display text-[30px] leading-none tabular-nums">{formatPrice(total)}</dd>
-            </div>
           </dl>
+          <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-4">
+            <p className="label text-ink">Today</p>
+            <p className="flex items-baseline gap-3">
+              {discountCents > 0 && (
+                <>
+                  <span className="sr-only">Regular total </span>
+                  <s className="text-[14px] text-ink-3 tabular-nums decoration-1">{formatPrice(merchandise + shipping)}</s>
+                  <span className="sr-only">, today </span>
+                </>
+              )}
+              <span className="font-display text-[30px] leading-none tabular-nums">{formatPrice(total)}</span>
+            </p>
+          </div>
           <p className="mt-3 text-[12px] text-ink-3">No hidden fees. Sales tax, if any, is shown before you pay.</p>
+          <CreatorCode code={flow.creatorCode} className="mt-4" />
+        </section>
 
+        {/* Risk reversal: the last thing read before the button */}
+        <div className="mt-9 border-t border-line pt-7">
+          <p className="font-display text-[24px] leading-tight">{GUARANTEE.name}</p>
+          <p className="mt-2.5 text-[13px] leading-relaxed text-ink-2">{GUARANTEE.body}</p>
+        </div>
+
+        <div className="mt-8">
           {checkout.kind === "unavailable" ? (
-            <div className="mt-8 border-t border-line pt-7">
+            <div className="border-t border-line pt-7">
               <p className="font-display text-[26px] leading-tight">Checkout is paused for a moment.</p>
               <p className="mt-2 text-[13px] leading-relaxed text-ink-2">
                 Leave your email and we&apos;ll send a secure checkout link for this exact portrait and size. Your
@@ -537,10 +680,10 @@ export function ProductStep({
                 onClick={onCheckout}
                 disabled={loading}
                 aria-label={loading ? "Opening secure checkout" : checkoutLabel}
-                className={buttonClasses("primary", "lg", "mt-7 hidden w-full disabled:opacity-70 sm:inline-flex")}
+                className={buttonClasses("primary", "lg", "hidden w-full disabled:opacity-70 sm:inline-flex")}
               >
                 {loading && <LoaderCircle className="h-3.5 w-3.5 animate-spin" aria-hidden />}
-                {loading ? "Opening secure checkout…" : "Proceed to checkout"}
+                {loading ? "Opening secure checkout…" : checkoutLabel}
               </button>
               {checkout.kind === "error" && (
                 <p role="alert" className="mt-3 text-[13px] text-ink">
@@ -551,13 +694,6 @@ export function ProductStep({
             </>
           )}
         </div>
-
-        {/* Promises */}
-        <ul className="label mt-10 space-y-2.5 border-t border-line pt-7 text-ink-3">
-          {physical && <li>{PROMISES.digital}</li>}
-          {physical && <li>Checked by a person before printing</li>}
-          <li>{PROMISES.guarantee}</li>
-        </ul>
       </div>
 
       {/* Mobile sticky checkout */}
@@ -565,9 +701,16 @@ export function ProductStep({
         <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:hidden">
           <div className="flex items-center gap-4">
             <div className="min-w-0 flex-1" aria-hidden>
-              <p className="font-display text-[26px] leading-none tabular-nums">{formatPrice(total)}</p>
+              <p className="flex items-baseline gap-2.5">
+                <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(total)}</span>
+                {discountCents > 0 && (
+                  <s className="text-[13px] text-ink-3 tabular-nums decoration-1">{formatPrice(merchandise + shipping)}</s>
+                )}
+              </p>
               <p className="label mt-1.5 truncate text-ink-3">
-                {product.shortName} · {variant.widthIn ? variant.label : "Hi-res file"}
+                {discountCents > 0 ? `${priceTag} · ` : ""}
+                {product.shortName}
+                {variant.widthIn ? ` · ${variant.label}` : ""}
               </p>
             </div>
             <button
@@ -652,11 +795,107 @@ function Field({
   );
 }
 
-function SummaryRow({ label, value }: { label: string; value: string }) {
+/** One line of the value stack: what's in the bag on the left, its price (or Included) on the right. */
+function StackRow({ item, value, quiet }: { item: string; value: ReactNode; quiet?: boolean }) {
   return (
-    <div className="flex items-baseline justify-between gap-4">
-      <dt className="text-ink-2">{label}</dt>
-      <dd className="shrink-0 text-ink tabular-nums">{value}</dd>
+    <div className="flex items-baseline justify-between gap-6 py-[5px]">
+      <dt className={quiet ? "text-ink-2" : "text-ink"}>{item}</dt>
+      <dd className={cn("shrink-0 tabular-nums", quiet ? "label text-ink-3" : "text-ink")}>{value}</dd>
     </div>
+  );
+}
+
+/**
+ * "Have a creator code?": while FOUNDING100 is applied automatically Stripe's promo-code box is
+ * off, so a creator's code is entered here. It's checked against /api/offer before it's kept,
+ * and sent with the checkout so the creator is credited (and their discount applies).
+ */
+function CreatorCode({ code, className }: { code: string; className?: string }) {
+  const id = useId();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const [state, setState] = useState<"idle" | "checking" | "invalid" | "error">("idle");
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    const typed = value.trim().toUpperCase();
+    if (!typed) return;
+    setState("checking");
+    try {
+      const res = await fetchOffer(typed);
+      if (res.code?.valid) {
+        updateFlow((s) => ({ ...s, creatorCode: res.code!.code }));
+        setState("idle");
+        setValue("");
+        setOpen(false);
+      } else {
+        setState("invalid");
+      }
+    } catch {
+      setState("error");
+    }
+  }
+
+  if (code) {
+    return (
+      <p className={cn("flex flex-wrap items-center gap-x-4 text-[12px] text-ink-3", className)}>
+        <span>
+          Creator code <span className="text-ink">{code}</span> applied.
+        </span>
+        <button
+          type="button"
+          onClick={() => updateFlow((s) => ({ ...s, creatorCode: "" }))}
+          className="link-cta inline-flex min-h-11 items-center"
+        >
+          Remove
+        </button>
+      </p>
+    );
+  }
+  if (!open) {
+    return (
+      <button type="button" onClick={() => setOpen(true)} className={cn("link-cta inline-flex min-h-11 items-center text-ink-3", className)}>
+        Have a creator code?
+      </button>
+    );
+  }
+  return (
+    <form onSubmit={onSubmit} noValidate className={className}>
+      <label htmlFor={id} className="label text-ink-3">
+        Creator code
+      </label>
+      <div className="mt-1 flex items-end gap-4">
+        <input
+          id={id}
+          type="text"
+          value={value}
+          maxLength={40}
+          autoComplete="off"
+          autoCapitalize="characters"
+          spellCheck={false}
+          onChange={(e) => {
+            setValue(e.target.value);
+            if (state !== "checking") setState("idle");
+          }}
+          aria-invalid={state === "invalid" || undefined}
+          aria-describedby={state === "invalid" || state === "error" ? `${id}-msg` : undefined}
+          className="h-11 min-w-0 flex-1 rounded-none border-0 border-b border-line bg-transparent px-0 text-[16px] uppercase text-ink outline-none transition-colors placeholder:normal-case placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none"
+          placeholder="e.g. the code from a creator's post"
+        />
+        <button
+          type="submit"
+          disabled={state === "checking" || !value.trim()}
+          className={buttonClasses("secondary", "sm", "shrink-0 px-6")}
+        >
+          {state === "checking" ? <LoaderCircle className="h-3.5 w-3.5 animate-spin" aria-hidden /> : null}
+          Apply
+        </button>
+      </div>
+      {(state === "invalid" || state === "error") && (
+        <p id={`${id}-msg`} role="alert" className="mt-2 text-[12px] text-ink">
+          {state === "invalid" ? "We don't recognize that code." : "We couldn't check that code just now. Please try again."}
+        </p>
+      )}
+    </form>
   );
 }

@@ -56,6 +56,8 @@ export type FlowState = {
   activeId: string | null;
   selection: Selection;
   gift: Gift;
+  /** A creator code the visitor entered on the product step (validated by /api/offer). */
+  creatorCode: string;
   /** Set by "Start over": server-side history older than this is not restored. */
   resetAt: number | null;
 };
@@ -77,6 +79,7 @@ export const INITIAL: FlowState = {
     shipCountry: "US",
   },
   gift: { enabled: false, senderName: "", recipientName: "", recipientEmail: "", message: "" },
+  creatorCode: "",
   resetAt: null,
 };
 
@@ -115,6 +118,7 @@ function sanitize(raw: unknown): FlowState {
     activeId,
     selection,
     gift: { ...INITIAL.gift, ...(s.gift ?? {}) },
+    creatorCode: typeof s.creatorCode === "string" ? s.creatorCode.slice(0, 40) : "",
     resetAt: typeof s.resetAt === "number" ? s.resetAt : null,
   };
 }

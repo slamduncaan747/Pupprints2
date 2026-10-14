@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ADDONS, PRODUCT_MAP, PRODUCTS, STARTING_PHYSICAL_PRICE } from "@/lib/catalog";
+import { ADDONS, PRODUCT_MAP, STARTING_PHYSICAL_PRICE } from "@/lib/catalog";
+import { HEIRLOOM_SET } from "@/lib/offer";
 import { formatPrice } from "@/lib/utils";
+import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, DataTable, Facts, Note, Rows, textLink } from "@/components/marketing/blocks";
-import { ProductCard } from "@/components/marketing/product-card";
+import { Block, DataTable, Facts, Note, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
-import { PRODUCT_CONTENT } from "@/components/marketing/product-content";
+import { FormatShowcase } from "@/components/marketing/format-showcase";
+import { FROM_PRICE, FoundingLine, GuaranteeNote, OfferCta, PriceAnchor, ValueStack } from "@/components/marketing/offer";
 import { CANADA_SHIPPING_LABEL, PHYSICAL_PRODUCTS, shipWindow } from "@/components/marketing/commerce";
 
 export const metadata: Metadata = {
@@ -24,14 +26,6 @@ const SIZES = [...new Set(PHYSICAL_PRODUCTS.flatMap((p) => p.variants.map((v) =>
   return area(a) - area(b);
 });
 
-const INCLUDED = [
-  { title: "The hi-res digital file", body: "Emailed right after checkout, free with every physical piece." },
-  { title: "Free US shipping", body: "On every order, with tracking. No minimum, no surprise fees." },
-  { title: "A human check", body: "A person on our team checks your art before it's printed." },
-  { title: "Love-it guarantee", body: "Remake or full refund within 30 days of delivery." },
-  { title: "Gift Reveal", body: "Ordering a gift? Send a digital reveal the moment you order." },
-];
-
 export default function ShopPage() {
   const digital = PRODUCT_MAP.digital;
   return (
@@ -39,35 +33,51 @@ export default function ShopPage() {
       <PageHero
         eyebrow="The Shop"
         title="Made to hang"
-        lede="Canvas, framed and fine art prints, each made to order from your portrait. Every one begins with a free preview."
+        lede="Every piece begins with a free preview of your own dog. See the art first, then choose how to hang it."
       />
 
-      <section aria-labelledby="all-products" className="pb-24 sm:pb-36">
-        <h2 id="all-products" className="sr-only">
-          Products
-        </h2>
-        <div className="mx-auto max-w-[1440px] sm:px-10">
-          <ul className="grid grid-cols-2 gap-x-0.5 gap-y-12 sm:gap-x-4 lg:grid-cols-4">
-            {PRODUCTS.map((p, i) => (
-              <li key={p.type}>
-                <ProductCard
-                  product={p}
-                  style={PRODUCT_CONTENT[p.type].exampleStyle}
-                  priority={i < 2}
-                  bleed
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
-              </li>
-            ))}
-          </ul>
-          <p className="mt-14 px-5 text-[13px] text-ink-3 sm:px-0">
-            Every style works on every piece.{" "}
-            <Link href="/styles" className={textLink}>
-              The collection
-            </Link>
-          </p>
-        </div>
+      <section aria-labelledby="formats-title" className="pb-24 sm:pb-32">
+        <Container>
+          <div className="mb-10 flex flex-wrap items-baseline justify-between gap-x-10 gap-y-3 border-t border-line pt-8 sm:mb-14 sm:pt-10">
+            <h2 id="formats-title" className="font-display text-[30px] leading-[1.06] sm:text-[40px]">
+              Same portrait, four ways
+            </h2>
+            <p className="max-w-sm text-[14px] leading-relaxed text-ink-2">
+              One portrait shown in every format, so you can compare the pieces, not the pictures.
+            </p>
+          </div>
+          <FormatShowcase variant="compare" />
+
+          <div className="mt-16 grid gap-10 border-t border-line pt-8 sm:mt-20 md:grid-cols-2 md:gap-16">
+            <FoundingLine />
+            <div>
+              <p className="label text-ink">Every style, every piece</p>
+              <p className="mt-2 text-[14px] leading-relaxed text-ink-2">
+                Any of the styles works on any piece.{" "}
+                <Link href="/styles" className={textLink}>
+                  The collection
+                </Link>
+              </p>
+            </div>
+          </div>
+        </Container>
       </section>
+
+      <Block
+        id="included"
+        eyebrow="Everything included"
+        title="One price, everything included"
+        intro={
+          <>
+            <p className="font-display text-[36px] leading-none tracking-[-0.02em] text-ink sm:text-[44px]">{FROM_PRICE}</p>
+            <PriceAnchor className="mt-4" />
+          </>
+        }
+      >
+        <ValueStack />
+        <OfferCta className="mt-10" />
+        <GuaranteeNote className="mt-14" />
+      </Block>
 
       <Block
         id="prices"
@@ -131,6 +141,7 @@ export default function ShopPage() {
             },
           ]}
         />
+        <FoundingLine className="mt-10" />
         <Note className="mt-6">
           Prices in USD. Arrival times are US business days. Shipping to Canada is a flat {CANADA_SHIPPING_LABEL} per
           order.{" "}
@@ -140,17 +151,23 @@ export default function ShopPage() {
         </Note>
       </Block>
 
-      <Block eyebrow="Included" title="With every physical piece">
-        <Rows items={INCLUDED} />
-      </Block>
-
       {ADDONS.length > 0 && (
         <Block
-          eyebrow="Optional"
+          eyebrow={HEIRLOOM_SET.name}
           title="Small companions"
-          intro="With a print, framed print or canvas, you can add matching pieces. They're never pre-checked."
+          intro={`With a print, framed print or canvas, you can add matching pieces. They're never pre-checked. ${HEIRLOOM_SET.line}`}
         >
-          <Facts items={ADDONS.map((a) => ({ key: a.id, label: a.name, note: a.description, value: formatPrice(a.price) }))} />
+          <Facts
+            items={[
+              ...ADDONS.map((a) => ({ key: a.id, label: a.name, note: a.description, value: formatPrice(a.price) })),
+              {
+                key: "set",
+                label: "Both together",
+                note: `${HEIRLOOM_SET.name}: instead of ${formatPrice(HEIRLOOM_SET.addonsTotal)}`,
+                value: formatPrice(HEIRLOOM_SET.addonsTotal - HEIRLOOM_SET.discountCents),
+              },
+            ]}
+          />
         </Block>
       )}
 

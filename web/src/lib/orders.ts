@@ -30,6 +30,10 @@ export type OrderItem = {
   /** Cents charged per unit (0 when the digital file is included with a physical piece). */
   unitAmount: number;
   included?: boolean;
+  /** Set when the unit is part of a bundle priced below its catalog price. */
+  bundle?: "heirloom";
+  /** Catalog price per unit before the bundle saving (only set with `bundle`). */
+  regularUnitAmount?: number;
   style: string;
   styleName: string;
   petName: string | null;

@@ -78,7 +78,6 @@ export default function GiftCardsPage() {
         eyebrow="A gift today"
         title="Make their portrait today"
         body="Upload a photo of their dog, see it free in about a minute, and send a Gift Reveal instantly."
-        cta="Start a gift portrait"
       />
     </>
   );

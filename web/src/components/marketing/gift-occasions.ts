@@ -26,7 +26,8 @@ export type Occasion = {
   ideas: { title: string; body: string }[];
   timing?: { title: string; body: string };
   faq: FaqItem[];
-  cta: { title: string; body: string; button: string };
+  /** Closing call to action. The button itself is always OFFER.cta. */
+  cta: { title: string; body: string };
 };
 
 
@@ -75,7 +76,6 @@ export const OCCASIONS: Occasion[] = [
     cta: {
       title: "Start their Christmas portrait",
       body: "Upload a photo of their dog and see it free in about a minute.",
-      button: "Create a free preview",
     },
   },
   {
@@ -118,7 +118,6 @@ export const OCCASIONS: Occasion[] = [
     cta: {
       title: "Whenever you're ready",
       body: "Upload a photo you treasure and see their portrait, free. There's no rush and no obligation.",
-      button: "Create their portrait",
     },
   },
   {
@@ -156,7 +155,6 @@ export const OCCASIONS: Occasion[] = [
     cta: {
       title: "Make Mom's portrait",
       body: "Upload a photo of her dog and see it free in about a minute.",
-      button: "Create a free preview",
     },
   },
   {
@@ -194,7 +192,6 @@ export const OCCASIONS: Occasion[] = [
     cta: {
       title: "Make a birthday portrait",
       body: "Upload a photo of their dog and see it free in about a minute.",
-      button: "Create a free preview",
     },
   },
   {
@@ -229,7 +226,6 @@ export const OCCASIONS: Occasion[] = [
     cta: {
       title: "Capture them while they're tiny",
       body: "Upload a puppy photo and see the portrait free in about a minute.",
-      button: "Create a free preview",
     },
   },
   {
@@ -267,7 +263,6 @@ export const OCCASIONS: Occasion[] = [
     cta: {
       title: "Make Dad's portrait",
       body: "Upload a photo of his dog and see it free in about a minute.",
-      button: "Create a free preview",
     },
   },
 ];

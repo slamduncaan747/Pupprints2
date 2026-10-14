@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PRODUCT_MAP, PRODUCTS, STYLES, getStyle } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { site } from "@/lib/config";
+import { OFFER } from "@/lib/offer";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
@@ -18,6 +19,7 @@ import { Block, Facts, Note, Rows, textLink } from "@/components/marketing/block
 import { StyleCard } from "@/components/marketing/style-card";
 import { GOOD_FOR_LABELS, honestDescription, styleContent, stylesFor } from "@/components/marketing/style-content";
 import { fromPrice, toPrice, FRAME_LABELS } from "@/components/marketing/commerce";
+import { EFFORT_LINE, GuaranteeNote } from "@/components/marketing/offer";
 import { firstSentences } from "@/components/marketing/honest";
 import { breedsForStyle } from "@/content/breeds";
 
@@ -156,10 +158,14 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
             { label: "Preview", value: "Free" },
           ]}
         />
-        <ButtonLink href={`/create?style=${style.slug}`} size="lg" className="mt-9 w-full">
-          Commission in this style
+        <p className="mt-9 font-display text-[22px] leading-[1.25] sm:text-[24px]">
+          You&apos;ll see your own dog in {style.name} before you pay.
+        </p>
+        <ButtonLink href={`/create?style=${style.slug}`} size="lg" className="mt-7 w-full">
+          {OFFER.cta}
         </ButtonLink>
-        <p className="label mt-5 text-center text-ink-3">Pay only if you love it</p>
+        <p className="label mt-5 text-center text-ink-3">{EFFORT_LINE}</p>
+        <GuaranteeNote className="mt-9" link={false} />
         <Note className="mt-9 border-t border-line pt-6">Photo tip: {c.photoTip}</Note>
       </ProductLayout>
 
@@ -172,13 +178,14 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
       <Block
         eyebrow="Available as"
         title="Made to hang"
-        intro="Every style works on every piece. These suit it best."
+        intro={`Every style works on every piece. These suit ${style.name} best, shown here with the same portrait so you can compare the pieces.`}
         layout="stack"
       >
         <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-4 lg:grid-cols-3">
           {best.map((p) => (
             <li key={p.type}>
-              <ProductCard product={p} style={style.slug} sizes="(max-width: 640px) 50vw, 30vw" />
+              {/* One picture across every format: this style's own sample, so the page never shows another style. */}
+              <ProductCard product={p} src={STYLE_SAMPLES[style.slug]} />
             </li>
           ))}
         </ul>
@@ -241,8 +248,8 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
       <CtaBand
         eyebrow={style.name}
         title={`See your dog in ${style.name}`}
+        body={`Upload one photo and you'll see your own dog in ${style.name} in about a minute, before you pay anything.`}
         href={`/create?style=${style.slug}`}
-        cta="Commission in this style"
       />
     </>
   );

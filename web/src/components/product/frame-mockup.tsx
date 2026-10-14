@@ -8,6 +8,10 @@ import { cn } from "@/lib/utils";
  * Everything is sized in container-query units, so a mockup looks identical at thumbnail size
  * and full width. The room scene is a flat ivory wall with the piece hung to scale: no furniture.
  *
+ * The artwork window is the anchor: the same `src` is rendered at the same size, crop and position
+ * for every `productType`, and only the format is drawn around it. Compare formats by rendering
+ * the same image (e.g. FORMAT_SHOWCASE.src) at the same width.
+ *
  * Works in Server and Client Components (no hooks).
  *
  * @example
@@ -45,6 +49,21 @@ const ROOM_MAX_W = { sm: "max-w-[320px]", md: "max-w-[480px]", lg: "max-w-[640px
 /** A soft campaign shadow, close to the wall: the piece hangs, it doesn't float. */
 const HANG_SHADOW = "0 0.25cqw 0.6cqw rgb(0 0 0 / 0.08), 0 3cqw 5cqw -2.4cqw rgb(0 0 0 / 0.24)";
 
+/**
+ * Outside the room scene every format sits on the same stage: the artwork is always ART% of the
+ * stage width, centered, and the format (moulding, canvas edge, paper border, screen) is drawn
+ * AROUND it. So the same image renders at the same size, crop and position in every format,
+ * and side-by-side mockups differ only by the format itself.
+ */
+const ART = 92;
+
+/* Format chrome, as fractions of the ARTWORK width (1cqw = 1% of the artwork). */
+/** A fine moulding: about 6px on a 340px-wide piece. */
+const FRAME_CQW = 1.8;
+const MAT_CQW = 8;
+const CANVAS_DEPTH_CQW = 1.2;
+const PAPER_BORDER_CQW = 4;
+
 export function FrameMockup({
   src,
   alt,
@@ -63,34 +82,27 @@ export function FrameMockup({
 }: FrameMockupProps) {
   const ratio =
     printSize && printSize.widthIn > 0 && printSize.heightIn > 0 ? printSize.widthIn / printSize.heightIn : 3 / 4;
-  const art = (
-    <Artwork src={src} alt={alt} ratio={ratio} priority={priority} className={imgClassName} style={imgStyle}>
+  const piece = (
+    <Piece
+      productType={productType}
+      frameColor={frameColor}
+      mat={mat}
+      ratio={ratio}
+      src={src}
+      alt={alt}
+      priority={priority}
+      imgClassName={imgClassName}
+      imgStyle={imgStyle}
+    >
       {children}
-    </Artwork>
+    </Piece>
   );
-
-  const piece =
-    productType === "framed" ? (
-      <Framed color={frameColor} mat={mat}>
-        {art}
-      </Framed>
-    ) : productType === "canvas" ? (
-      <Canvas src={src} ratio={ratio}>
-        {art}
-      </Canvas>
-    ) : productType === "poster" ? (
-      <Paper>{art}</Paper>
-    ) : (
-      <Digital>{art}</Digital>
-    );
 
   if (room && productType !== "digital") {
     return (
       <RoomScene
         className={cn("w-full", ROOM_MAX_W[size], className)}
-        productType={productType}
         printSize={printSize ?? { widthIn: 12, heightIn: 16 }}
-        mat={mat}
         wall={wall}
       >
         {piece}
@@ -98,44 +110,71 @@ export function FrameMockup({
     );
   }
 
-  return <div className={cn("@container w-full", MAX_W[size], className)}>{piece}</div>;
+  // Stage: 100 wide, the artwork ART wide and centered, the same margin above and below.
+  const stageH = ART / ratio + (100 - ART);
+  return (
+    <div className={cn("w-full", MAX_W[size], className)}>
+      <div className="flex w-full items-center justify-center" style={{ aspectRatio: `100 / ${stageH}` }}>
+        <div style={{ width: `${ART}%` }}>{piece}</div>
+      </div>
+    </div>
+  );
 }
 
 /* ------------------------------------------------------------------ */
-/* Artwork window                                                      */
+/* The piece: artwork window + the format drawn around it              */
 /* ------------------------------------------------------------------ */
 
-function Artwork({
+function Piece({
+  productType,
+  frameColor,
+  mat,
+  ratio,
   src,
   alt,
-  ratio,
   priority,
-  className,
-  style,
+  imgClassName,
+  imgStyle,
   children,
 }: {
+  productType: ProductType;
+  frameColor: FrameColor;
+  mat: boolean;
+  ratio: number;
   src: string;
   alt: string;
-  ratio: number;
   priority?: boolean;
-  className?: string;
-  style?: CSSProperties;
+  imgClassName?: string;
+  imgStyle?: CSSProperties;
   children?: ReactNode;
 }) {
   return (
-    <div className="relative w-full overflow-hidden bg-paper-2" style={{ aspectRatio: String(ratio) }}>
-      {/* Arbitrary sources (Supabase previews, blob: URLs, /samples) — plain img keeps this component universal. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        draggable={false}
-        className={cn("absolute inset-0 h-full w-full select-none object-cover", className)}
-        style={style}
-      />
-      {children}
+    // The artwork box is the container: chrome sizes are relative to the art, never the reverse.
+    <div className="@container relative w-full" style={{ aspectRatio: String(ratio) }}>
+      {productType === "framed" && <FrameChrome color={frameColor} mat={mat} />}
+      {productType === "canvas" && <CanvasChrome src={src} ratio={ratio} />}
+      {productType === "poster" && <PaperChrome />}
+
+      <div className="absolute inset-0 overflow-hidden bg-paper-2">
+        {/* Arbitrary sources (Supabase previews, blob: URLs, /samples) — plain img keeps this component universal. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          draggable={false}
+          className={cn("absolute inset-0 h-full w-full select-none object-cover", imgClassName)}
+          style={imgStyle}
+        />
+        {children}
+      </div>
+
+      {/* Hairline where the moulding (or mat) meets the art. */}
+      {productType === "framed" && (
+        <div aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_0_1px_rgb(0_0_0/0.08)]" />
+      )}
+      {productType === "digital" && <div aria-hidden className="pointer-events-none absolute inset-0 ring-1 ring-ink/10" />}
     </div>
   );
 }
@@ -144,33 +183,28 @@ function Artwork({
 /* Framed print                                                        */
 /* ------------------------------------------------------------------ */
 
-/** A fine moulding: about 6px on a 340px-wide piece. */
-const FRAME_W = "1.8cqw";
-const FRAME_FRACTION = 0.018;
-
 const MOULDING: Record<FrameColor, string> = {
   black: "#121212",
   white: "#fcfcfb",
   oak: "#c4a582",
 };
 
-function Framed({ color, mat, children }: { color: FrameColor; mat: boolean; children: ReactNode }) {
+function FrameChrome({ color, mat }: { color: FrameColor; mat: boolean }) {
+  const matW = mat ? MAT_CQW : 0;
   return (
-    <div
-      className="relative"
-      style={{
-        padding: FRAME_W,
-        background: MOULDING[color],
-        // White needs a hairline to read against a pale wall.
-        boxShadow: color === "white" ? `inset 0 0 0 1px rgb(0 0 0 / 0.09), ${HANG_SHADOW}` : HANG_SHADOW,
-      }}
-    >
-      <div className="relative" style={{ padding: mat ? "8cqw" : 0, background: mat ? "#fdfdfb" : undefined }}>
-        {children}
-        {/* Hairline where the moulding meets the art (or mat). */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_0_1px_rgb(0_0_0/0.08)]" />
-      </div>
-    </div>
+    <>
+      <div
+        aria-hidden
+        className="absolute"
+        style={{
+          inset: `-${FRAME_CQW + matW}cqw`,
+          background: MOULDING[color],
+          // White needs a hairline to read against a pale wall.
+          boxShadow: color === "white" ? `inset 0 0 0 1px rgb(0 0 0 / 0.09), ${HANG_SHADOW}` : HANG_SHADOW,
+        }}
+      />
+      {mat && <div aria-hidden className="absolute" style={{ inset: `-${MAT_CQW}cqw`, background: "#fdfdfb" }} />}
+    </>
   );
 }
 
@@ -178,33 +212,31 @@ function Framed({ color, mat, children }: { color: FrameColor; mat: boolean; chi
 /* Gallery canvas                                                      */
 /* ------------------------------------------------------------------ */
 
-const DEPTH = "1.2cqw";
+const DEPTH = `${CANVAS_DEPTH_CQW}cqw`;
 
-function Canvas({ src, ratio, children }: { src: string; ratio: number; children: ReactNode }) {
+function CanvasChrome({ src, ratio }: { src: string; ratio: number }) {
   return (
-    <div style={{ marginRight: DEPTH, marginBottom: DEPTH }}>
-      <div className="relative" style={{ boxShadow: HANG_SHADOW }}>
-        {children}
-        {/* Right wrapped edge */}
-        <div
-          aria-hidden
-          className="absolute top-0 left-full h-full overflow-hidden"
-          style={{ width: DEPTH, transformOrigin: "0 0", transform: "skewY(45deg)" }}
-        >
-          <EdgeImage src={src} ratio={ratio} side="right" />
-          <div className="absolute inset-0 bg-black/35" />
-        </div>
-        {/* Bottom wrapped edge */}
-        <div
-          aria-hidden
-          className="absolute top-full left-0 w-full overflow-hidden"
-          style={{ height: DEPTH, transformOrigin: "0 0", transform: "skewX(45deg)" }}
-        >
-          <EdgeImage src={src} ratio={ratio} side="bottom" />
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
+    <>
+      <div aria-hidden className="absolute inset-0" style={{ boxShadow: HANG_SHADOW }} />
+      {/* Right wrapped edge */}
+      <div
+        aria-hidden
+        className="absolute top-0 left-full h-full overflow-hidden"
+        style={{ width: DEPTH, transformOrigin: "0 0", transform: "skewY(45deg)" }}
+      >
+        <EdgeImage src={src} ratio={ratio} side="right" />
+        <div className="absolute inset-0 bg-black/35" />
       </div>
-    </div>
+      {/* Bottom wrapped edge */}
+      <div
+        aria-hidden
+        className="absolute top-full left-0 w-full overflow-hidden"
+        style={{ height: DEPTH, transformOrigin: "0 0", transform: "skewX(45deg)" }}
+      >
+        <EdgeImage src={src} ratio={ratio} side="bottom" />
+        <div className="absolute inset-0 bg-black/50" />
+      </div>
+    </>
   );
 }
 
@@ -247,27 +279,18 @@ function EdgeImage({ src, ratio, side }: { src: string; ratio: number; side: "ri
 /* Fine-art print                                                      */
 /* ------------------------------------------------------------------ */
 
-function Paper({ children }: { children: ReactNode }) {
+function PaperChrome() {
   return (
     <div
-      className="relative"
+      aria-hidden
+      className="absolute"
       style={{
-        padding: "4cqw",
+        inset: `-${PAPER_BORDER_CQW}cqw`,
         background: "#fdfdfb",
         boxShadow: `inset 0 0 0 1px rgb(0 0 0 / 0.05), ${HANG_SHADOW}`,
       }}
-    >
-      {children}
-    </div>
+    />
   );
-}
-
-/* ------------------------------------------------------------------ */
-/* Digital file                                                        */
-/* ------------------------------------------------------------------ */
-
-function Digital({ children }: { children: ReactNode }) {
-  return <div className="relative overflow-hidden ring-1 ring-ink/10">{children}</div>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -278,45 +301,31 @@ function Digital({ children }: { children: ReactNode }) {
 // Wide enough for the largest piece (24×36) with air around it; small pieces read as small.
 const SCENE_W = 40;
 const SCENE_H = 50;
-/** The piece is centered a little above the middle of the view, at gallery eye level. */
+/** The artwork is centered a little above the middle of the view, at gallery eye level. */
 const CENTER_FROM_TOP = 0.46;
 
-/** How much larger the hanging piece is than the print itself (frame + mat, canvas depth...). */
-function outerScale(type: ProductType, mat: boolean) {
-  if (type === "framed") return 1 / (1 - 2 * (mat ? FRAME_FRACTION + 0.08 : FRAME_FRACTION));
-  if (type === "canvas") return 1.012;
-  return 1 / (1 - 2 * 0.04);
-}
-
 function RoomScene({
-  productType,
   printSize,
-  mat,
   wall = "#f6f4ef",
   className,
   children,
 }: {
-  productType: ProductType;
   printSize: { widthIn: number; heightIn: number };
-  mat: boolean;
   wall?: string;
   className?: string;
   children: ReactNode;
 }) {
-  const scale = outerScale(productType, mat);
-  const outerW = printSize.widthIn * scale;
-  const outerH = printSize.heightIn + (outerW - printSize.widthIn);
-  const topPct = Math.max(2, ((SCENE_H * CENTER_FROM_TOP - outerH / 2) / SCENE_H) * 100);
+  // The ARTWORK is drawn exactly to scale; the frame, canvas edge or paper border adds around it.
+  const topPct = Math.max(4, ((SCENE_H * CENTER_FROM_TOP - printSize.heightIn / 2) / SCENE_H) * 100);
 
   return (
     <div
       className={cn("relative w-full overflow-hidden", className)}
       style={{ aspectRatio: `${SCENE_W} / ${SCENE_H}`, backgroundColor: wall }}
     >
-      {/* Artwork, to scale on a flat wall */}
       <div
-        className="@container absolute left-1/2 -translate-x-1/2 transition-[width,top] duration-700 ease-out motion-reduce:transition-none"
-        style={{ width: `${(outerW / SCENE_W) * 100}%`, top: `${topPct}%` }}
+        className="absolute left-1/2 -translate-x-1/2 transition-[width,top] duration-700 ease-out motion-reduce:transition-none"
+        style={{ width: `${(printSize.widthIn / SCENE_W) * 100}%`, top: `${topPct}%` }}
       >
         {children}
       </div>

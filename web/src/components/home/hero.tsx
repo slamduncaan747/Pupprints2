@@ -1,13 +1,14 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { SampleImage } from "@/components/ui/sample-image";
+import { OfferCta } from "@/components/marketing/offer";
 import { STYLE_MAP } from "@/lib/catalog";
+import { OFFER } from "@/lib/offer";
 import { GALLERY } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
 /**
  * Three portraits, edge to edge: warm, dark, pale. Drawn from the gallery set so they don't repeat
- * the style samples in The Collection below. The middle one is the single image on phones.
+ * the style samples further down. The middle one is the single image on phones.
  */
 const TRIPTYCH = ["/samples/gallery-1.webp", "/samples/gallery-4.webp", "/samples/gallery-6.webp"]
   .map((src) => GALLERY.find((g) => g.src === src))
@@ -15,8 +16,9 @@ const TRIPTYCH = ["/samples/gallery-1.webp", "/samples/gallery-4.webp", "/sample
 const MOBILE_PANEL = 1;
 
 /**
- * The campaign: a full-width triptych (no gutters), then the line beneath it on white,
- * set like a caption bar on desktop: label · headline · call to action.
+ * The campaign, then the offer in one breath: the dream outcome as the headline, free and fast in the
+ * line beneath, one black button and the effort line. On phones the image is cropped square so the
+ * button sits above the fold.
  */
 export function Hero() {
   return (
@@ -33,8 +35,9 @@ export function Hero() {
               sizes="(min-width: 768px) 34vw, 100vw"
               priority={i === MOBILE_PANEL}
               className={cn(
-                // On short desktop screens, trim the panels a little so the line and link stay in view.
-                "md:aspect-auto md:h-[min(41.67vw,max(calc(100svh_-_15rem),32vw))]",
+                "aspect-square md:aspect-auto",
+                // Leave room below for the line, the button and the effort line on desktop screens.
+                "md:h-[min(41.67vw,max(calc(100svh_-_21rem),30vw))]",
                 i !== MOBILE_PANEL && "hidden md:block",
               )}
             />
@@ -42,18 +45,21 @@ export function Hero() {
         })}
       </div>
 
-      <Container className="flex flex-col items-center gap-5 pb-24 pt-9 text-center sm:pb-36 sm:pt-12 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-baseline lg:gap-10 lg:pt-10">
-        <p className="label text-ink-2 lg:justify-self-start">The Portrait Collection</p>
-        <h1
-          id="hero-title"
-          className="font-display text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[64px] lg:text-[60px] xl:text-[68px]"
-        >
-          Your dog, <br className="sm:hidden" />
-          immortalized.
-        </h1>
-        <Link href="/create" className="link-cta mt-2 lg:mt-0 lg:justify-self-end">
-          Commission yours
-        </Link>
+      <Container className="flex flex-col items-center pb-20 pt-7 text-center sm:pb-28 sm:pt-12 lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-10 lg:pb-24 lg:pt-10 lg:text-left">
+        <div className="lg:col-span-7">
+          <p className="label hidden text-ink-3 sm:block">The Portrait Collection</p>
+          <h1
+            id="hero-title"
+            className="font-display text-[44px] leading-[1.02] tracking-[-0.02em] sm:mt-5 sm:text-[64px] lg:text-[60px] xl:text-[72px]"
+          >
+            Your dog, <br className="sm:hidden" />
+            immortalized.
+          </h1>
+        </div>
+        <div className="mt-4 w-full max-w-md sm:mt-6 lg:col-span-5 lg:mt-0 lg:max-w-none lg:pb-1.5">
+          <p className="text-[15px] leading-relaxed text-ink-2 sm:text-[16px]">{OFFER.promise}</p>
+          <OfferCta className="mt-6 lg:justify-start" align="center" inline />
+        </div>
       </Container>
     </section>
   );

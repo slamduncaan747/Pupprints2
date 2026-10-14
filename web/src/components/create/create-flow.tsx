@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { track } from "@/lib/analytics";
 import { getStyle, type StyleSlug } from "@/lib/catalog";
 import { buttonClasses } from "@/components/ui/button";
-import { ApiError, fetchGenerations, fetchGiftPortrait, generatePortrait } from "./api";
+import { ApiError, fetchGenerations, fetchGiftPortrait, fetchOffer, generatePortrait } from "./api";
 import { EmailCapture } from "./email-capture";
 import { GeneratingView } from "./generating-view";
+import { KeepPortrait } from "./keep-portrait";
 import { ProductStep } from "./product-step";
 import { ResultView } from "./result-view";
 import { StepProgress } from "./step-progress";
@@ -57,6 +58,8 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
   const [job, setJob] = useState<Job>({ kind: "idle" });
   const [styleView, setStyleView] = useState<"grid" | "result">("result");
   const [preselected, setPreselected] = useState<StyleSlug | undefined>(initialStyle);
+  /** Set once the visitor heads to checkout: the keep-your-portrait prompt stays quiet after that. */
+  const [checkingOut, setCheckingOut] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   /** Steps we've pushed onto browser history in this visit (index 0 = the entry we landed on). */
   const historyRef = useRef<Step[]>([]);
@@ -75,6 +78,11 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Prefetch the live offer (founding price, creator code) so the product step shows real prices at once.
+  useEffect(() => {
+    void fetchOffer(readFlow().creatorCode || undefined).catch(() => {});
   }, []);
 
   // Gift link: load that portrait and go straight to choosing the piece.
@@ -338,6 +346,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
       <ProductStep
         flow={flow}
         active={active}
+        onCheckoutStart={() => setCheckingOut(true)}
         onBack={() => {
           setStyleView("result");
           goTo("style");
@@ -345,6 +354,11 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
       />
     );
   }
+
+  // A finished preview is on screen: offer to keep it (exit intent / idle on the product step).
+  const showingPreview =
+    Boolean(active) &&
+    (step === "product" || (step === "style" && styleView === "result" && job.kind === "idle"));
 
   return (
     <div className="flex min-h-full flex-col">
@@ -357,6 +371,15 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
         }}
       />
       {content}
+      {showingPreview && active && (
+        <KeepPortrait
+          generationId={active.generationId}
+          previewUrl={active.previewUrl}
+          petName={flow.petName}
+          watchIdle={step === "product"}
+          suppressed={checkingOut}
+        />
+      )}
       {flow.upload && step === "upload" && (
         <div className="mx-auto -mt-8 w-full max-w-[560px] px-5 pb-16 text-center sm:px-10">
           <button

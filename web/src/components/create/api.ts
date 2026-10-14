@@ -1,6 +1,7 @@
 "use client";
 
 import type { StyleSlug } from "@/lib/catalog";
+import type { OfferStatus } from "@/lib/offer";
 import type { Generation, ShipCountry, UploadInfo } from "./store";
 
 /** Error from one of our API routes, carrying the `error` code from the JSON body. */
@@ -136,6 +137,8 @@ export type CheckoutRequest = {
   giftRecipientEmail?: string;
   /** Reveal token when buying a gift portrait from its reveal page. */
   giftToken?: string;
+  /** A creator code entered on the product step. */
+  code?: string;
 };
 
 export function startCheckout(body: CheckoutRequest) {
@@ -146,4 +149,37 @@ export type LeadSource = "save_preview" | "checkout_unavailable" | "ai_unavailab
 
 export function saveLead(body: { email: string; source: LeadSource; generationId?: string; petName?: string }) {
   return postJson<{ ok?: boolean }>("/api/leads", body);
+}
+
+type OfferEntry = { at: number; value: Promise<OfferStatus>; resolved?: OfferStatus };
+const offerCache = new Map<string, OfferEntry>();
+const OFFER_TTL_MS = 60_000;
+const offerKey = (code?: string) => code?.trim().toUpperCase() ?? "";
+
+/**
+ * GET /api/offer (optionally checking a creator code). Cached for a minute per code in this tab,
+ * so the flow can prefetch it and the product step renders the real price without waiting.
+ */
+export function fetchOffer(code?: string): Promise<OfferStatus> {
+  const key = offerKey(code);
+  const hit = offerCache.get(key);
+  if (hit && Date.now() - hit.at < OFFER_TTL_MS) return hit.value;
+  const entry = { at: Date.now() } as OfferEntry;
+  entry.value = fetch(`/api/offer${key ? `?code=${encodeURIComponent(key)}` : ""}`, { cache: "no-store" })
+    .then((res) => parse<OfferStatus>(res))
+    .then((offer) => {
+      entry.resolved = offer;
+      return offer;
+    })
+    .catch((err) => {
+      if (offerCache.get(key) === entry) offerCache.delete(key);
+      throw err;
+    });
+  offerCache.set(key, entry);
+  return entry.value;
+}
+
+/** The last answer from /api/offer for this code, if it already arrived (no request). */
+export function peekOffer(code?: string): OfferStatus | null {
+  return offerCache.get(offerKey(code))?.resolved ?? null;
 }

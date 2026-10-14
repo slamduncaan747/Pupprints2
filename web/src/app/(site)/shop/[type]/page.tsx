@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PRODUCT_MAP, PRODUCTS, PROMISES, STYLE_MAP, type ProductType } from "@/lib/catalog";
-import { STYLE_SAMPLES } from "@/lib/samples";
+import { PRODUCT_MAP, PRODUCTS, type ProductType } from "@/lib/catalog";
+import { FORMAT_SHOWCASE, OFFER, VALUE_STACK } from "@/lib/offer";
 import { site } from "@/lib/config";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/marketing/breadcrumbs";
-import { CampaignImage, ProductLayout, ProductShot, ProductTitle } from "@/components/marketing/campaign";
+import { ProductLayout, ProductTitle } from "@/components/marketing/campaign";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd, type FaqItem } from "@/components/marketing/faq";
-import { FINISH_FOR_PRODUCT, FramedArt } from "@/components/marketing/framed-art";
 import { JsonLd } from "@/components/marketing/json-ld";
 import { Block, Bullets, Facts, Note, textLink } from "@/components/marketing/blocks";
 import { ProductCard } from "@/components/marketing/product-card";
+import { FormatTile } from "@/components/marketing/format-showcase";
+import { FrameMockup } from "@/components/product/frame-mockup";
+import { EFFORT_LINE, FoundingLine, GuaranteeNote, ValueStack } from "@/components/marketing/offer";
 import { PRODUCT_CONTENT } from "@/components/marketing/product-content";
 import { firstSentences } from "@/components/marketing/honest";
 import { SizeTable } from "@/components/marketing/size-table";
@@ -26,6 +28,17 @@ import {
   shipWindow,
   toPrice,
 } from "@/components/marketing/commerce";
+
+/**
+ * The value stack for one product. A fine-art print ships unframed, so its shipping line says what is
+ * true for it rather than "ready to hang".
+ */
+function stackFor(type: ProductType) {
+  if (type !== "poster") return VALUE_STACK;
+  return VALUE_STACK.map((row) =>
+    /ready to hang/i.test(row.item) ? { ...row, item: "Free US shipping, tracked to your door" } : row,
+  );
+}
 
 export const dynamicParams = false;
 
@@ -64,8 +77,6 @@ export async function generateMetadata({ params }: PageProps<"/shop/[type]">): P
   };
 }
 
-const FRAME_EXAMPLES = ["royal", "watercolor", "oil-classic"] as const;
-
 export default async function ProductTypePage({ params }: PageProps<"/shop/[type]">) {
   const { type } = await params;
   const product = getProduct(type);
@@ -76,21 +87,12 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
   const others = PRODUCTS.filter((p) => p.type !== product.type);
   const multi = product.variants.length > 1;
 
-  const included = physical
-    ? [
-        `Your portrait as a ${product.name.toLowerCase()}, in the size you choose`,
-        PROMISES.digital,
-        "Free US shipping with tracking",
-        "A person on our team checks it before it's printed",
-        "Our love-it guarantee: remake or full refund within 30 days of delivery",
-        "Ordering a gift? A Gift Reveal you can send instantly",
-      ]
-    : [
-        "The full-resolution, unwatermarked file of your portrait",
-        "Delivered to your inbox right after checkout",
-        "A personal-use license: print it, share it, post it",
-        "If anything's wrong with your file, we'll fix it",
-      ];
+  const digitalIncluded = [
+    "The full-resolution, unwatermarked file of your portrait",
+    "Delivered to your inbox right after checkout",
+    "A personal-use license: print it, share it, post it",
+    "If anything's wrong with your file, we'll fix it",
+  ];
 
   const faqs: FaqItem[] = [
     ...c.faq,
@@ -113,38 +115,43 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
     },
   ];
 
-  const fallbackFinish = FINISH_FOR_PRODUCT[product.type];
+  // Every image on the page shows the same portrait, so the differences you see are the format's.
+  const showcaseVariant = product.variants.find((v) => v.id === product.defaultVariantId) ?? product.variants[0];
   const gallery = product.frameColors
     ? product.frameColors.map((f, i) => (
         <figure key={f}>
-          <ProductShot>
-            <FramedArt
-              style={FRAME_EXAMPLES[i % FRAME_EXAMPLES.length]}
-              finish={f}
-              priority={i === 0}
-              showLabel={false}
-              sizes="(max-width: 1024px) 50vw, 34vw"
-            />
-          </ProductShot>
+          <FormatTile type={product.type} frameColor={f} priority={i === 0} zoom={false} alt={`The portrait in a ${FRAME_LABELS[f].toLowerCase()} frame`} />
           <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">{FRAME_LABELS[f]} frame</figcaption>
         </figure>
       ))
     : [
-        <ProductShot key="piece">
-          <FramedArt style={c.exampleStyle} finish={fallbackFinish} priority showLabel={false} sizes="(max-width: 1024px) 50vw, 34vw" />
-        </ProductShot>,
-        <CampaignImage
-          key="art"
-          src={STYLE_SAMPLES[c.exampleStyle]}
-          alt={`Example ${STYLE_MAP[c.exampleStyle].name} portrait of a dog`}
-          swatch={STYLE_MAP[c.exampleStyle].swatch}
-          sizes="(max-width: 640px) 86vw, (max-width: 1024px) 70vw, 58vw"
-        />,
+        <figure key="piece">
+          <FormatTile type={product.type} priority zoom={false} alt={`The portrait as a ${product.name.toLowerCase()}`} />
+          <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">{product.name}</figcaption>
+        </figure>,
+        physical ? (
+          <figure key="room">
+            <FrameMockup
+              src={FORMAT_SHOWCASE.src}
+              alt={`The portrait as a ${showcaseVariant.label} ${product.name.toLowerCase()} on a wall, to scale`}
+              productType={product.type}
+              printSize={{ widthIn: showcaseVariant.widthIn, heightIn: showcaseVariant.heightIn }}
+              room
+              className="max-w-none"
+            />
+            <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">{showcaseVariant.label}, to scale</figcaption>
+          </figure>
+        ) : (
+          <figure key="art">
+            <FormatTile type="digital" zoom={false} backdrop={false} alt="The portrait file, full resolution" className="bg-paper" />
+            <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">The file</figcaption>
+          </figure>
+        ),
       ];
 
   const details = [
     { title: physical ? "Materials" : "The file", items: product.details },
-    { title: "Included", items: included },
+    ...(physical ? [] : [{ title: "Included", items: digitalIncluded }]),
     { title: physical ? "Care" : "Keeping it safe", items: c.care },
   ];
 
@@ -156,7 +163,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           "@type": "Product",
           name: `Custom dog portrait — ${product.name}`,
           description: c.metaDescription,
-          image: absoluteUrl(STYLE_SAMPLES[c.exampleStyle]),
+          image: absoluteUrl(FORMAT_SHOWCASE.src),
           brand: { "@type": "Brand", name: site.name },
           url: absoluteUrl(`/shop/${product.type}`),
           offers: {
@@ -179,6 +186,15 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         />
         <p className="mt-7 max-w-md text-[15px] leading-relaxed text-ink-2">{firstSentences(c.intro)}</p>
 
+        <ButtonLink href="/create" size="lg" className="mt-9 w-full">
+          {OFFER.cta}
+        </ButtonLink>
+        <p className="label mt-5 text-center text-ink-3">{EFFORT_LINE}</p>
+        <p className="label mt-2 text-center text-ink-3">
+          {physical ? `Free US shipping · Arrives in ${shipWindow(product)}` : "Delivered instantly · Free with any print"}
+        </p>
+        {physical && <FoundingLine className="mt-9 border-t border-line pt-6" />}
+
         <div className="mt-10">
           <p className="label mb-4 text-ink-3">{multi ? "Sizes" : "Format"}</p>
           <SizeTable product={product} />
@@ -190,12 +206,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           />
         )}
 
-        <ButtonLink href="/create" size="lg" className="mt-9 w-full">
-          Commission yours
-        </ButtonLink>
-        <p className="label mt-5 text-center text-ink-3">
-          {physical ? `Free US shipping · Arrives in ${shipWindow(product)}` : "Delivered instantly · Free with any print"}
-        </p>
+        <GuaranteeNote className="mt-10" />
         <Note className="mt-9 border-t border-line pt-6">
           {physical
             ? "Prices include free US shipping and the hi-res digital file. Art above furniture looks best at about two-thirds of its width."
@@ -203,8 +214,22 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         </Note>
       </ProductLayout>
 
+      {physical && (
+        <Block
+          id="included"
+          eyebrow="Everything included"
+          title="Everything included, in one price"
+          intro={`${multi ? "From " : ""}${formatPrice(fromPrice(product))}, with free US shipping. Nothing is added at checkout.`}
+        >
+          <ValueStack
+            items={stackFor(product.type)}
+            total={{ label: "Your price", value: `${multi ? "From " : ""}${formatPrice(fromPrice(product))}` }}
+          />
+        </Block>
+      )}
+
       <Block eyebrow="The details" title={c.h1} layout="stack">
-        <div className="grid gap-12 md:grid-cols-3 md:gap-10">
+        <div className={details.length > 2 ? "grid gap-12 md:grid-cols-3 md:gap-10" : "grid gap-12 md:grid-cols-2 md:gap-10"}>
           {details.map((g) => (
             <div key={g.title}>
               <h3 className="label text-ink">{g.title}</h3>
@@ -269,7 +294,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-4 lg:grid-cols-3">
           {others.map((p) => (
             <li key={p.type}>
-              <ProductCard product={p} style={PRODUCT_CONTENT[p.type].exampleStyle} sizes="(max-width: 640px) 50vw, 30vw" />
+              <ProductCard product={p} />
             </li>
           ))}
         </ul>
