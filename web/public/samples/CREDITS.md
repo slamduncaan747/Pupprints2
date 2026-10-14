@@ -17,7 +17,8 @@ text or jewellery, no watermarks).
 - **Text encoder:** Qwen3-4B (`Qwen/Qwen3-4B`, as bundled in the FLUX.2-klein-4B repository), **Apache-2.0**
   (https://huggingface.co/Qwen/Qwen3-4B).
 - **Retouching:** on royal.webp and pair-1-after.webp the medallion was re-rendered with the same model's inpainting pipeline
-  (`Flux2KleinInpaintPipeline`, masked to the pendant only) to replace engraved pseudo-lettering with a plain gold pendant.
+  (`Flux2KleinInpaintPipeline`, masked to the pendant only) to replace engraved pseudo-lettering with a plain gold pendant. On oil-classic.webp a faint painted pseudo-signature in the lower-left corner was removed by cloning
+  the adjacent background (we never present these as signed or hand-painted).
 - **Finishing:** cropped 1.5% at the edges (removes the faint painted canvas edge), Lanczos resize to
   1200×1500, light unsharp mask, WebP quality 84 (Pillow).
 - Style prompts are adapted from `STYLES[].prompt` in `web/src/lib/catalog.ts`.
@@ -38,11 +39,11 @@ anyway. None are Unsplash+ photos. Local copies (4:5 crops) live in `web/scripts
 | royal.webp | The Royal | Cavalier King Charles Spaniel | cavalier-2.jpg | Tracy Anderson | https://unsplash.com/photos/OktYfwY5ZQI | FLUX.2 klein |
 | pair-3-before.webp (photo), pair-3-after.webp | The Admiral | Beagle | beagle.jpg | Nathanaël Desmeules | https://unsplash.com/photos/527_3nFNAPo | FLUX.2 klein |
 | admiral.webp | The Admiral | Labrador Retriever | labrador-2.jpg | Not identified yet (free Unsplash CDN image) | https://images.unsplash.com/photo-1761797732084-eed42f058516 | FLUX.2 klein |
-| oil-classic.webp | Old Master | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho | legacy |
+| oil-classic.webp | Old Master | Border Collie | border-collie.jpg | Pauline Loroy | https://unsplash.com/photos/XH8A0bvQ7iE | FLUX.2 klein |
 | pair-2-before.webp (photo), pair-2-after.webp | Watercolor | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | FLUX.2 klein |
-| watercolor.webp | Watercolor | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | legacy |
+| watercolor.webp | Watercolor | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 | FLUX.2 klein |
 | gallery-2.webp | Pop Art | French Bulldog | french-bulldog-sitting.jpg | Eric Tan | https://unsplash.com/photos/WqveMpe3QTA | FLUX.2 klein |
-| fine-line.webp | Fine Line | Labrador Retriever | labrador-2.jpg | Not identified yet (free Unsplash CDN image) | https://images.unsplash.com/photo-1761797732084-eed42f058516 | legacy |
+| fine-line.webp | Fine Line | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 | FLUX.2 klein |
 | pop-art.webp | Pop Art | Dachshund | dachshund.jpg | Alexandre Daoust | https://unsplash.com/photos/DoMqElrLS5M | legacy |
 | storybook.webp | Storybook | Poodle / Doodle puppy | doodle-puppy.jpg | Erick Lee Hodge | https://unsplash.com/photos/U8pgck1dgtQ | legacy |
 | botanical.webp | Botanical | Cavalier King Charles Spaniel | cavalier.jpg | Izabelly Marques | https://unsplash.com/photos/-d-q58LA1ds | legacy |
