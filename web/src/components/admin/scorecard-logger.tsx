@@ -151,7 +151,7 @@ export function ScorecardLogger({
     <section className="min-w-0 rounded-xl border border-line bg-white">
       <header className="border-b border-line px-4 py-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-semibold">{dayTitle}</h2>
+          <h2 className="font-sans text-sm font-semibold tracking-normal">{dayTitle}</h2>
           <span aria-live="polite" className="text-xs text-ink-3">
             {state.kind === "saving" && "Saving…"}
             {state.kind === "saved" && (
@@ -192,72 +192,66 @@ export function ScorecardLogger({
           const e = entries[ch.id];
           const d = drafts[ch.id];
           return (
-            <li
-              key={ch.id}
-              className={cn(
-                "grid items-center gap-x-4 gap-y-2 px-4 py-3 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,200px)_104px]",
-                !ch.counts && "bg-paper/50",
-              )}
-            >
-              <div className="min-w-0">
-                <p className="text-sm font-medium">{ch.label}</p>
-                <p className="text-xs text-ink-3">{ch.hint}</p>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => bump(ch.id, -1)}
-                  disabled={disabled || e.count === 0}
-                  aria-label={`${ch.label}: minus 1`}
-                  className={adminButton("secondary", "h-10 w-10 px-0")}
-                >
-                  <Minus className="h-4 w-4" />
-                </button>
-                <label htmlFor={`sc-${ch.id}-count`} className="sr-only">
-                  {ch.label} count
-                </label>
-                <input
-                  id={`sc-${ch.id}-count`}
-                  inputMode="numeric"
-                  value={d?.count ?? String(e.count)}
-                  onChange={(ev) => setDraft(ch.id, { count: ev.target.value.replace(/[^\d]/g, "") })}
-                  onBlur={() => commitCount(ch.id)}
-                  onKeyDown={blurOnEnter}
-                  disabled={disabled}
-                  className={cn(inputClass, "w-16 px-1 text-center text-base font-semibold tabular-nums")}
-                />
-                {[1, 5, 10].map((n) => (
+            <li key={ch.id} className={cn("px-4 py-3", !ch.counts && "bg-paper/50")}>
+              <p className="text-sm">
+                <span className="font-medium">{ch.label}</span>
+                <span className="text-xs text-ink-3"> · {ch.hint}</span>
+              </p>
+              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+                <div className="flex items-center gap-1.5">
                   <button
-                    key={n}
                     type="button"
-                    onClick={() => bump(ch.id, n)}
-                    disabled={disabled}
-                    aria-label={`${ch.label}: plus ${n}`}
-                    className={adminButton(n === 1 ? "primary" : "secondary", "h-10 min-w-11 px-2 tabular-nums")}
+                    onClick={() => bump(ch.id, -1)}
+                    disabled={disabled || e.count === 0}
+                    aria-label={`${ch.label}: minus 1`}
+                    className={adminButton("secondary", "h-10 w-10 px-0")}
                   >
-                    +{n}
+                    <Minus className="h-4 w-4" />
                   </button>
-                ))}
-              </div>
-              <div>
-                <label htmlFor={`sc-${ch.id}-notes`} className="sr-only">
-                  {ch.label} note
-                </label>
-                <input
-                  id={`sc-${ch.id}-notes`}
-                  value={d?.notes ?? e.notes}
-                  onChange={(ev) => setDraft(ch.id, { notes: ev.target.value })}
-                  onBlur={() => commitNotes(ch.id)}
-                  onKeyDown={blurOnEnter}
-                  maxLength={500}
-                  placeholder="Note"
-                  disabled={disabled}
-                  className={cn(inputClass, "h-9 text-xs")}
-                />
-              </div>
-              <div>
+                  <label htmlFor={`sc-${ch.id}-count`} className="sr-only">
+                    {ch.label} count
+                  </label>
+                  <input
+                    id={`sc-${ch.id}-count`}
+                    inputMode="numeric"
+                    value={d?.count ?? String(e.count)}
+                    onChange={(ev) => setDraft(ch.id, { count: ev.target.value.replace(/[^\d]/g, "") })}
+                    onBlur={() => commitCount(ch.id)}
+                    onKeyDown={blurOnEnter}
+                    disabled={disabled}
+                    className={cn(inputClass, "w-16 px-1 text-center text-base font-semibold tabular-nums")}
+                  />
+                  {[1, 5, 10].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => bump(ch.id, n)}
+                      disabled={disabled}
+                      aria-label={`${ch.label}: plus ${n}`}
+                      className={adminButton(n === 1 ? "primary" : "secondary", "h-10 min-w-11 px-2 tabular-nums")}
+                    >
+                      +{n}
+                    </button>
+                  ))}
+                </div>
+                <div className="min-w-[160px] flex-1">
+                  <label htmlFor={`sc-${ch.id}-notes`} className="sr-only">
+                    {ch.label} note
+                  </label>
+                  <input
+                    id={`sc-${ch.id}-notes`}
+                    value={d?.notes ?? e.notes}
+                    onChange={(ev) => setDraft(ch.id, { notes: ev.target.value })}
+                    onBlur={() => commitNotes(ch.id)}
+                    onKeyDown={blurOnEnter}
+                    maxLength={500}
+                    placeholder="Note"
+                    disabled={disabled}
+                    className={cn(inputClass, "h-9 text-xs")}
+                  />
+                </div>
                 {ch.paid && (
-                  <>
+                  <div className="w-28 shrink-0">
                     <label htmlFor={`sc-${ch.id}-spend`} className="sr-only">
                       {ch.label} ad spend in dollars
                     </label>
@@ -275,7 +269,7 @@ export function ScorecardLogger({
                         className={cn(inputClass, "h-9 pl-6 text-xs tabular-nums")}
                       />
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </li>

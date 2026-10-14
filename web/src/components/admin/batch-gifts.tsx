@@ -91,6 +91,7 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
   const [now, setNow] = useState(0);
   const [runError, setRunError] = useState<string | null>(null);
   const [csvCopied, setCsvCopied] = useState(false);
+  const [deleting, setDeleting] = useState<number | null>(null);
 
   const nextKey = useRef(1);
   const stopRef = useRef(false);
@@ -278,6 +279,23 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
     setRunning(false);
   }
 
+  /** Undo a gift made by mistake (only while its reveal link is unopened; the API enforces it). */
+  async function deleteGift(row: Row) {
+    if (!row.result) return;
+    if (!window.confirm(`Delete the gift portrait${row.petName ? ` of ${row.petName}` : ""}? Its reveal link stops working.`)) return;
+    setDeleting(row.key);
+    try {
+      const res = await fetch(`/api/admin/gifts/${row.result.giftId}`, { method: "DELETE" });
+      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (!res.ok || !json.ok) throw new Error(json.error ?? `HTTP ${res.status}`);
+      remove([row.key]);
+    } catch (err) {
+      window.alert(err instanceof Error ? err.message : "Delete failed");
+    } finally {
+      setDeleting(null);
+    }
+  }
+
   const done = rows.filter((r) => r.status === "done");
   const failed = rows.filter((r) => r.status === "failed");
   const pending = rows.filter((r) => r.status === "ready" || r.status === "failed");
@@ -334,7 +352,7 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
       {/* 1) Add photos */}
       <section className="rounded-xl border border-line bg-white">
         <header className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
-          <h2 className="text-sm font-semibold">1 · Add photos</h2>
+          <h2 className="font-sans text-sm font-semibold tracking-normal">1 · Add photos</h2>
           <span className="text-xs tabular-nums text-ink-3">
             {rows.length} / {MAX_ROWS}
           </span>
@@ -394,7 +412,7 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
       {/* 2) Batch settings */}
       <section className="rounded-xl border border-line bg-white">
         <header className="border-b border-line px-4 py-3">
-          <h2 className="text-sm font-semibold">2 · Settings for this batch</h2>
+          <h2 className="font-sans text-sm font-semibold tracking-normal">2 · Settings for this batch</h2>
         </header>
         <div className="grid gap-4 p-4 md:grid-cols-2 xl:grid-cols-4">
           <div>
@@ -491,7 +509,7 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
       {/* 3) Rows */}
       <section className="rounded-xl border border-line bg-white">
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
-          <h2 className="text-sm font-semibold">3 · Review and create</h2>
+          <h2 className="font-sans text-sm font-semibold tracking-normal">3 · Review and create</h2>
           <div className="flex flex-wrap items-center gap-2">
             {!running && rows.length > 0 && (
               <button type="button" onClick={() => remove(rows.map((r) => r.key))} className={adminButton("secondary", "h-8 text-xs")}>
@@ -680,7 +698,7 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
       {results.length > 0 && (
         <section className="rounded-xl border border-line bg-white">
           <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
-            <h2 className="text-sm font-semibold">
+            <h2 className="font-sans text-sm font-semibold tracking-normal">
               Results · {done.length} created{failed.length > 0 && `, ${failed.length} failed`}
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -755,6 +773,16 @@ export function BatchGiftStudio({ partners, defaultPartnerId = "" }: { partners:
                             <a href={r.result.revealUrl} target="_blank" rel="noreferrer" className={adminButton("secondary", "h-8 text-xs")}>
                               Open <ExternalLink className="h-3 w-3" />
                             </a>
+                            <button
+                              type="button"
+                              onClick={() => deleteGift(r)}
+                              disabled={running || deleting !== null}
+                              className={adminButton("danger", "h-8 w-8 px-0")}
+                              aria-label={`Delete gift ${idx}`}
+                              title="Delete this gift (only before the link is opened)"
+                            >
+                              {deleting === r.key ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                            </button>
                           </div>
                         ) : (
                           <button type="button" onClick={() => run([r.key])} disabled={running} className={adminButton("secondary", "h-8 text-xs")}>

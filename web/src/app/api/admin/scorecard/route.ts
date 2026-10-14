@@ -34,6 +34,19 @@ const Body = z.discriminatedUnion("op", [
   }),
 ]);
 
+/** Rows back at zero with no note or spend are removed, so the table only holds real activity. */
+async function dropIfEmpty(c: NonNullable<ReturnType<typeof db>>, day: string, channel: string) {
+  const { error } = await c
+    .from("daily_actions")
+    .delete()
+    .eq("day", day)
+    .eq("channel", channel)
+    .eq("count", 0)
+    .eq("ad_spend_cents", 0)
+    .is("notes", null);
+  if (error) console.error("[admin/scorecard] cleanup failed", error.message);
+}
+
 const MISSING = "The daily_actions table doesn't exist yet. Apply supabase/migrations/0006_daily_actions.sql.";
 
 /** Log Rule-of-100 actions for a day (admin timezone). */
@@ -52,7 +65,9 @@ export async function POST(req: Request) {
   if (input.op === "bump") {
     const { data, error } = await c.rpc("bump_daily_action", { p_day: input.day, p_channel: input.channel, p_delta: input.delta });
     if (error) return jsonError(isMissingTable(error) || error.code === "PGRST202" ? MISSING : error.message, 500);
-    return NextResponse.json({ ok: true, count: Number(data ?? 0) }, { headers: { "cache-control": "no-store" } });
+    const count = Number(data ?? 0);
+    if (count === 0) await dropIfEmpty(c, input.day, input.channel);
+    return NextResponse.json({ ok: true, count }, { headers: { "cache-control": "no-store" } });
   }
 
   const patch: Record<string, unknown> = { day: input.day, channel: input.channel, updated_at: new Date().toISOString() };
@@ -67,6 +82,7 @@ export async function POST(req: Request) {
     .select("count, notes, ad_spend_cents")
     .single<{ count: number; notes: string | null; ad_spend_cents: number }>();
   if (error || !data) return jsonError(isMissingTable(error) ? MISSING : (error?.message ?? "Save failed"), 500);
+  if (data.count === 0 && !data.notes && !data.ad_spend_cents) await dropIfEmpty(c, input.day, input.channel);
   return NextResponse.json(
     { ok: true, count: data.count, notes: data.notes ?? "", adSpendCents: data.ad_spend_cents },
     { headers: { "cache-control": "no-store" } },
