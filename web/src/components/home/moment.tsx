@@ -9,7 +9,8 @@ import { campaign } from "@/lib/campaign";
 export function Moment() {
   const photo = [campaign("dogAndPortrait"), campaign("galleryWall")].find((p) => p.live);
   if (!photo) return null;
-  const line = photo.key === "dogAndPortrait" ? "Some love needs a wall." : "Made to hang.";
+  const dog = photo.key === "dogAndPortrait";
+  const line = dog ? "Some love needs a wall." : "Made to hang.";
 
   return (
     <figure className="m-0">
@@ -23,7 +24,7 @@ export function Moment() {
       {/* The line belongs to the picture: a caption set directly beneath it, not a headline. */}
       <figcaption className="mx-auto flex max-w-[1440px] items-baseline justify-between gap-6 px-5 pt-4 sm:px-10 sm:pt-5">
         <p className="font-display text-[22px] leading-[1.15] sm:text-[28px]">{line}</p>
-        <p className="label hidden text-ink-3 sm:block">An example portrait</p>
+        <p className="label hidden text-ink-3 sm:block">{dog ? "An example portrait" : "Example portraits"}</p>
       </figcaption>
     </figure>
   );
