@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -18,8 +20,24 @@ const securityHeaders = [
   { key: "Strict-Transport-Security", value: "max-age=63072000" },
 ];
 
+/**
+ * Campaign images in web/public/campaign at build time (see src/lib/campaign.ts). Baked into the
+ * server bundle so a regenerating page, which can't read web/public on Vercel, still knows them.
+ */
+function campaignFiles(): string {
+  try {
+    return fs
+      .readdirSync(path.join(process.cwd(), "public", "campaign"))
+      .filter((name) => /\.(webp|avif|jpe?g|png)$/i.test(name))
+      .join(",");
+  } catch {
+    return "";
+  }
+}
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  env: { PP_CAMPAIGN_FILES: campaignFiles() },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
