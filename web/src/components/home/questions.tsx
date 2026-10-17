@@ -44,7 +44,7 @@ export function homeFaq(now: number = Date.now()): FaqItem[] {
 /** Objection handling, five questions, before the last call to action. */
 export function Questions({ items }: { items: FaqItem[] }) {
   return (
-    <Block id="questions" eyebrow="Before you begin" title="Questions, answered">
+    <Block id="questions" eyebrow="Before you begin" title="Questions, answered" className="pt-24 sm:pt-36">
       <FaqList items={items} />
     </Block>
   );

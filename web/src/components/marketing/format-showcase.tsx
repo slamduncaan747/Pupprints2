@@ -3,11 +3,17 @@ import { PRODUCTS, type FrameColor, type Product, type ProductType } from "@/lib
 import { FORMAT_SHOWCASE } from "@/lib/offer";
 import { FrameMockup } from "@/components/product/frame-mockup";
 import { fromPrice, shipWindow } from "@/components/marketing/commerce";
+import { Photo } from "@/components/marketing/photo";
+import { FORMAT_SCENE, campaign, formatScenesLive } from "@/lib/campaign";
 import { cn, formatPrice } from "@/lib/utils";
 
 /**
  * Every format shown with the SAME portrait (FORMAT_SHOWCASE), so a visitor compares the formats,
  * never the pictures. Facts (sizes, prices, timing) come from the catalog.
+ *
+ * When all four campaign scenes exist (web/public/campaign/format-*.webp, the same Royal portrait
+ * as each piece in a room), the showcase portrait is shown in its scene; until then, and wherever a
+ * different portrait is passed in, the drawn mockups. A row never mixes the two.
  */
 
 /** 4:5, the shape of every sample portrait, so the art is never cropped differently between formats. */
@@ -52,6 +58,8 @@ export function FormatTile({
   priority,
   zoom = true,
   backdrop = true,
+  scene = true,
+  sizes = "(min-width: 1024px) 25vw, 50vw",
   className,
 }: {
   type: ProductType;
@@ -63,8 +71,19 @@ export function FormatTile({
   zoom?: boolean;
   /** The ivory backdrop. Turn off when the section itself is ivory (the pieces hang on its wall). */
   backdrop?: boolean;
+  /** Show the campaign scene when every scene exists and this is the showcase portrait. */
+  scene?: boolean;
+  /** For the campaign scene. */
+  sizes?: string;
   className?: string;
 }) {
+  if (scene && src === FORMAT_SHOWCASE.src && formatScenesLive()) {
+    return (
+      <div className={cn("overflow-hidden", className)}>
+        <Photo photo={campaign(FORMAT_SCENE[type])} ratio="4 / 5" sizes={sizes} eager={priority} zoom={zoom} />
+      </div>
+    );
+  }
   const product = PRODUCTS.find((p) => p.type === type);
   return (
     <div className={cn("overflow-hidden", backdrop && "bg-paper-2", className)}>
@@ -107,22 +126,23 @@ export function FormatShowcase({
   className?: string;
 }) {
   if (variant === "compact") {
+    // Edge to edge, like an e-shop grid: four across from laptop up, two by two on phones.
     return (
-      <ul className={cn("grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8", className)}>
-        {PRODUCTS.map((p, i) => (
-          <li key={p.type}>
+      <ul className={cn("grid grid-cols-2 gap-x-[2px] gap-y-12 sm:gap-y-16 lg:grid-cols-4", className)}>
+        {PRODUCTS.map((p) => (
+          <li key={p.type} className="min-w-0">
             <Link href={`/shop/${p.type}`} className="group block">
               <FormatTile
-              type={p.type}
-              alt={`The same portrait as a ${p.name.toLowerCase()}`}
-              priority={i < 2}
-              backdrop={backdrop}
-            />
-              <div className="mt-4 flex items-baseline justify-between gap-3">
+                type={p.type}
+                alt={`The same portrait as a ${p.name.toLowerCase()}`}
+                backdrop={backdrop}
+                sizes="(min-width: 1024px) 25vw, 50vw"
+              />
+              <div className="mt-4 flex items-baseline justify-between gap-3 px-3 sm:mt-5 sm:px-6">
                 <h3 className="label text-ink">{p.shortName}</h3>
                 <p className="label tabular-nums text-ink">{priceFrom(p)}</p>
               </div>
-              <p className="mt-1.5 text-[13px] leading-snug text-ink-3">{FORMAT_NOTE[p.type]}</p>
+              <p className="mt-1.5 px-3 text-[13px] leading-snug text-ink-3 sm:px-6">{FORMAT_NOTE[p.type]}</p>
             </Link>
           </li>
         ))}
@@ -144,14 +164,14 @@ export function FormatShowcase({
         className,
       )}
     >
-      {PRODUCTS.map((p, i) => (
+      {PRODUCTS.map((p) => (
         <li key={p.type} className="lg:row-span-5 lg:grid lg:grid-rows-subgrid">
           <Link href={`/shop/${p.type}`} className="group block pb-5">
             <FormatTile
               type={p.type}
               alt={`The same portrait as a ${p.name.toLowerCase()}`}
-              priority={i < 2}
               backdrop={backdrop}
+              sizes="(min-width: 1440px) 320px, (min-width: 1024px) 23vw, 45vw"
             />
             <h3 className="label mt-4 text-ink">{p.name}</h3>
           </Link>
