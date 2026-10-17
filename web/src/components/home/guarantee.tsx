@@ -6,7 +6,7 @@ import { keepHyphenated } from "@/components/marketing/offer";
 /** Risk reversal, said once and large: you see it before you pay, and you're covered after. */
 export function Guarantee() {
   return (
-    <section aria-labelledby="guarantee-title" className="bg-paper-2 py-24 sm:py-40">
+    <section aria-labelledby="guarantee-title" className="bg-paper-2 py-24 sm:py-36">
       <Container className="flex flex-col items-center text-center">
         <p className="label text-ink-3">Without risk</p>
         <h2

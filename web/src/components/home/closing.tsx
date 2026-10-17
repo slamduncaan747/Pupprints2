@@ -5,7 +5,7 @@ import { GUARANTEE } from "@/lib/offer";
 /** The last word before the footer: one line, one button, the effort line and the guarantee. */
 export function Closing() {
   return (
-    <section aria-labelledby="closing-title" className="py-28 sm:py-44">
+    <section aria-labelledby="closing-title" className="py-28 sm:py-40">
       <Container className="flex flex-col items-center text-center">
         <h2 id="closing-title" className="font-display text-[40px] leading-[1.02] tracking-[-0.02em] sm:text-[72px]">
           Begin with a photograph.

@@ -27,10 +27,10 @@ export function Heirloom() {
             photo={scene}
             ratio={null}
             sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw"
-            className="-mx-5 aspect-[4/5] sm:mx-0 md:col-span-6 lg:col-span-5"
+            className="-mx-5 aspect-[4/5] sm:mx-0 md:col-span-6 lg:col-span-4 lg:col-start-2"
           />
         ) : (
-          <div className="flex aspect-[5/4] items-center justify-center bg-paper-2 md:col-span-6 md:aspect-[4/5] lg:col-span-5">
+          <div className="flex aspect-[5/4] items-center justify-center bg-paper-2 md:col-span-6 md:aspect-[4/5] lg:col-span-4 lg:col-start-2">
             <FrameMockup
               src={FORMAT_SHOWCASE.src}
               alt="The portrait in a natural oak frame"

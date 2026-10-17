@@ -12,16 +12,18 @@ export function Moment() {
   const line = photo.key === "dogAndPortrait" ? "Some love needs a wall." : "Made to hang.";
 
   return (
-    <figure aria-label={line} className="m-0">
+    <figure className="m-0">
       <Photo
         photo={photo}
         ratio={null}
         sizes="100vw"
-        // Phones: a touch squarer than the 3:2 scene. Desktop: the first screen at most.
-        className="aspect-[4/3] md:aspect-auto md:h-[min(92svh,66.67vw)] md:min-h-[480px]"
+        // Phones: a touch squarer than the 3:2 scene. Desktop: most of the first screen.
+        className="aspect-[4/3] md:aspect-auto md:h-[min(80svh,60vw)] md:min-h-[460px]"
       />
-      <figcaption className="px-5 pt-16 text-center sm:pt-24">
-        <p className="font-display text-[34px] leading-[1.06] tracking-[-0.015em] sm:text-[52px]">{line}</p>
+      {/* The line belongs to the picture: a caption set directly beneath it, not a headline. */}
+      <figcaption className="mx-auto flex max-w-[1440px] items-baseline justify-between gap-6 px-5 pt-4 sm:px-10 sm:pt-5">
+        <p className="font-display text-[22px] leading-[1.15] sm:text-[28px]">{line}</p>
+        <p className="label hidden text-ink-3 sm:block">An example portrait</p>
       </figcaption>
     </figure>
   );
