@@ -46,32 +46,44 @@ export default function StylesPage() {
 
   return (
     <>
+      {/* Editorial header: the title, a short intro, then the collection's index, numbered like looks. */}
       <PageHero
-        align="center"
         eyebrow="The Portrait Collection"
         title="The Collection"
         lede={`${styles.length} styles, each made for one subject: your dog. Preview any of them free with your own photo.`}
-      />
+      >
+        <nav aria-label="Styles in the collection" className="border-t border-line pt-6 sm:pt-8">
+          <ol className="grid grid-cols-2 gap-x-6 gap-y-3.5 sm:grid-cols-3 lg:grid-cols-6">
+            {styles.map((style, i) => (
+              <li key={style.slug}>
+                <a href={`#look-${style.slug}`} className="label flex gap-3 text-ink transition-opacity hover:opacity-60">
+                  <span className="tabular-nums text-ink-3">{String(i + 1).padStart(2, "0")}</span>
+                  {style.name}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </PageHero>
 
       <section aria-labelledby="all-styles" className="pb-24 sm:pb-36">
         <h2 id="all-styles" className="sr-only">
           All styles
         </h2>
-        <div className="mx-auto max-w-[1440px] sm:px-10">
-          <ul className="grid grid-cols-2 gap-x-0.5 gap-y-12 sm:gap-x-4 sm:gap-y-16 lg:grid-cols-3 lg:gap-y-24">
+        <Container>
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-14 sm:gap-x-6 sm:gap-y-20 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-32">
             {styles.map((style, i) => (
-              <li key={style.slug}>
+              <li key={style.slug} id={`look-${style.slug}`} className="scroll-mt-28">
                 <StyleCard
                   style={style}
                   index={i + 1}
-                  bleed
-                  priority={i < 4}
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 460px"
+                  priority={i < 2}
+                  sizes="(max-width: 1024px) 45vw, (max-width: 1440px) 30vw, 430px"
                 />
               </li>
             ))}
           </ul>
-        </div>
+        </Container>
       </section>
 
       <section aria-labelledby="edits-title" className="bg-paper-2 py-24 sm:py-36">

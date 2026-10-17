@@ -24,6 +24,8 @@ import {
   formatDay,
 } from "@/components/marketing/commerce";
 import { GUARANTEE_IN_SENTENCE } from "@/components/marketing/offer";
+import { Photo } from "@/components/marketing/photo";
+import { campaign } from "@/lib/campaign";
 
 
 /** The occasion's featured style, or its best available match once a dated edition has retired. */
@@ -84,6 +86,8 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
   const featureSlug = featuredSlug(o);
   const feature = STYLE_MAP[featureSlug];
   const styles = [...(feature ? [feature] : []), ...stylesFor(o.goodFor, 4, featureSlug)].slice(0, 4);
+  // The gift scene leads every occasion but the memorial one, which keeps its gentle style sample.
+  const gift = memorial ? null : campaign("gift");
 
   return (
     <>
@@ -94,7 +98,10 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
         title={o.h1}
         lede={<p>{firstSentences(o.lede)}</p>}
         media={
-          feature && (
+          gift?.live ? (
+            <Photo photo={gift} ratio={null} eager sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-[4/5] lg:aspect-auto lg:h-full" />
+          ) : (
+            feature && (
             <CampaignImage
               src={STYLE_SAMPLES[featureSlug]}
               alt={`Example ${feature.name} dog portrait`}
@@ -102,6 +109,7 @@ export default async function OccasionPage({ params }: PageProps<"/gifts/[occasi
               priority
               fill
             />
+            )
           )
         }
       >

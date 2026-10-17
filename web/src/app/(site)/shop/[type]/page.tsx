@@ -20,6 +20,8 @@ import { EFFORT_LINE, FoundingLine, GuaranteeNote, ValueStack } from "@/componen
 import { PRODUCT_CONTENT } from "@/components/marketing/product-content";
 import { firstSentences } from "@/components/marketing/honest";
 import { SizeTable } from "@/components/marketing/size-table";
+import { Photo } from "@/components/marketing/photo";
+import { FORMAT_SCENE, campaign } from "@/lib/campaign";
 import {
   CANADA_SHIPPING_LABEL,
   FRAME_LABELS,
@@ -105,17 +107,25 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
   ];
 
   // Every image on the page shows the same portrait, so the differences you see are the format's.
+  // The campaign scene of this piece leads the gallery once it exists; the drawn mockups follow.
+  const scene = campaign(FORMAT_SCENE[product.type]);
+  const lead = scene.live ? (
+    <figure key="scene">
+      <Photo photo={scene} ratio="4 / 5" eager sizes="(max-width: 640px) 86vw, (max-width: 1024px) 70vw, 58vw" />
+      <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">{product.name}, in the room</figcaption>
+    </figure>
+  ) : null;
   const showcaseVariant = product.variants.find((v) => v.id === product.defaultVariantId) ?? product.variants[0];
-  const gallery = product.frameColors
+  const pieces = product.frameColors
     ? product.frameColors.map((f, i) => (
         <figure key={f}>
-          <FormatTile type={product.type} frameColor={f} priority={i === 0} zoom={false} alt={`The portrait in a ${FRAME_LABELS[f].toLowerCase()} frame`} />
+          <FormatTile type={product.type} frameColor={f} priority={!lead && i === 0} zoom={false} scene={false} alt={`The portrait in a ${FRAME_LABELS[f].toLowerCase()} frame`} />
           <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">{FRAME_LABELS[f]} frame</figcaption>
         </figure>
       ))
     : [
         <figure key="piece">
-          <FormatTile type={product.type} priority zoom={false} alt={`The portrait as a ${product.name.toLowerCase()}`} />
+          <FormatTile type={product.type} priority={!lead} zoom={false} scene={false} alt={`The portrait as a ${product.name.toLowerCase()}`} />
           <figcaption className="label px-3 py-3 text-ink-3 sm:px-0 lg:px-10">{product.name}</figcaption>
         </figure>,
         physical ? (
@@ -142,6 +152,8 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         ),
       ];
 
+  const gallery = lead ? [lead, ...pieces] : pieces;
+
   const details = [
     { title: physical ? "Materials" : "The file", items: product.details },
     ...(physical ? [] : [{ title: "Included", items: digitalIncluded }]),
@@ -156,7 +168,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           "@type": "Product",
           name: `Custom dog portrait — ${product.name}`,
           description: c.metaDescription,
-          image: absoluteUrl(FORMAT_SHOWCASE.src),
+          image: absoluteUrl(scene.live ? scene.src : FORMAT_SHOWCASE.src),
           brand: { "@type": "Brand", name: site.name },
           url: absoluteUrl(`/shop/${product.type}`),
           offers: {

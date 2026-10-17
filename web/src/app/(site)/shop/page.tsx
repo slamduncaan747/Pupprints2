@@ -10,6 +10,9 @@ import { CtaBand } from "@/components/marketing/cta-band";
 import { FormatShowcase } from "@/components/marketing/format-showcase";
 import { FROM_PRICE, FoundingLine, GuaranteeNote, OfferCta, PriceAnchor, ValueStack } from "@/components/marketing/offer";
 import { CANADA_SHIPPING_LABEL, PHYSICAL_PRODUCTS, shipWindow } from "@/components/marketing/commerce";
+import { Photo } from "@/components/marketing/photo";
+import { campaign } from "@/lib/campaign";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Custom Dog Portrait Prints, Framed Prints & Canvas",
@@ -28,6 +31,8 @@ const SIZES = [...new Set(PHYSICAL_PRODUCTS.flatMap((p) => p.variants.map((v) =>
 
 export default function ShopPage() {
   const digital = PRODUCT_MAP.digital;
+  // The campaign: three example portraits hung along a hallway, under the title, edge to edge.
+  const wall = campaign("galleryWall");
   return (
     <>
       <PageHero
@@ -36,9 +41,24 @@ export default function ShopPage() {
         lede="Every piece begins with a free preview of your own dog. See the art first, then choose how to hang it."
       />
 
-      <section aria-labelledby="formats-title" className="pb-24 sm:pb-32">
+      {wall.live && (
+        <Photo
+          photo={wall}
+          ratio={null}
+          sizes="100vw"
+          eager
+          className="aspect-[4/3] md:aspect-auto md:h-[min(84svh,60vw)] md:min-h-[440px]"
+        />
+      )}
+
+      <section aria-labelledby="formats-title" className={cn("pb-24 sm:pb-36", wall.live && "pt-24 sm:pt-36")}>
         <Container>
-          <div className="mb-10 flex flex-wrap items-baseline justify-between gap-x-10 gap-y-3 border-t border-line pt-8 sm:mb-14 sm:pt-10">
+          <div
+            className={cn(
+              "mb-10 flex flex-wrap items-baseline justify-between gap-x-10 gap-y-3 sm:mb-14",
+              !wall.live && "border-t border-line pt-8 sm:pt-10",
+            )}
+          >
             <h2 id="formats-title" className="font-display text-[30px] leading-[1.06] sm:text-[40px]">
               Same portrait, four ways
             </h2>

@@ -13,6 +13,8 @@ import { CtaBand } from "@/components/marketing/cta-band";
 import { ZoomImage } from "@/components/marketing/campaign";
 import { EVERYTHING_CARD, OCCASIONS } from "@/components/marketing/gift-occasions";
 import { PRICE_BANDS, itemLabel, itemsInBand, type PricedItem } from "@/components/marketing/commerce";
+import { Photo } from "@/components/marketing/photo";
+import { campaign } from "@/lib/campaign";
 
 export const metadata: Metadata = {
   title: "Gifts for Dog Lovers — Custom Dog Portrait Gift Guide",
@@ -54,6 +56,8 @@ const PLACEMENT = [
 
 export default function GiftsPage() {
   const beforeCutoff = beforeHolidayCutoff();
+  // The gift scene leads once it exists (split hero); until then the centred type-only hero.
+  const gift = campaign("gift");
   return (
     <>
       <PageHero
@@ -61,14 +65,19 @@ export default function GiftsPage() {
         eyebrow="The Gift Guide"
         title="Give it today. Hang it in days."
         lede="Make a portrait of their dog from any photo and see it free. The moment you order, send a Gift Reveal they can open right away; the piece follows, ready to hang."
+        media={
+          gift.live ? (
+            <Photo photo={gift} ratio={null} eager sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-[4/5] lg:aspect-auto lg:h-full" />
+          ) : undefined
+        }
       >
         {beforeCutoff && (
-          <div className="mb-9 flex flex-col items-center gap-2">
+          <div className={cn("mb-9 flex flex-col gap-2", gift.live ? "items-start" : "items-center")}>
             <p className="label text-ink">{HOLIDAY.label}</p>
             <p className="label text-ink-3">{HOLIDAY.reveal}</p>
           </div>
         )}
-        <OfferCta align="center" />
+        <OfferCta align={gift.live ? "start" : "center"} />
       </PageHero>
 
       <Block
