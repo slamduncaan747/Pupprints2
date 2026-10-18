@@ -38,6 +38,14 @@ function HeroTitle({ className }: { className?: string }) {
 /** The scene's height from tablet up: the first screen, never cropped past the image's own 16:9. */
 const SCENE_H = "md:h-[min(calc(100svh-7rem),56.25vw)] md:min-h-[400px]";
 
+/**
+ * Laptop up, the type must stay on the calm left of the wall (about 36% of the scene's width) at
+ * every screen size. The scene scales with the viewport, so the type does too: the headline is 5vw
+ * (52–76px, "immortalized." is about 5.95em wide), and on very wide screens the left edge stops
+ * following the 1440px container once that would push the headline past 36vw.
+ */
+const HERO_PAD = cn(BLEED_PAD_LEFT, "2xl:pl-[min(max(2.5rem,calc((100vw-1440px)/2+2.5rem)),calc(36vw-452px))]");
+
 function CampaignHero() {
   const wide = campaign("heroWide");
   const tall = campaign("heroTall");
@@ -83,12 +91,12 @@ function CampaignHero() {
         className={cn(
           "relative col-start-1 px-5 text-center sm:px-10 lg:row-start-2 lg:text-left",
           tall.live ? "row-start-1 self-end pb-8 md:row-start-2 md:pb-0 md:pt-12" : "row-start-2 pt-8 sm:pt-12",
-          BLEED_PAD_LEFT,
+          HERO_PAD,
         )}
       >
-        <div className="lg:max-w-[min(36vw,560px)]">
+        <div className="lg:max-w-[34vw]">
           <p className="label hidden text-ink-2 lg:block">The Portrait Collection</p>
-          <HeroTitle className="lg:mt-6 lg:text-[56px] xl:text-[76px]" />
+          <HeroTitle className="lg:mt-6 lg:text-[length:clamp(52px,5vw,76px)]" />
         </div>
       </div>
 
@@ -97,12 +105,13 @@ function CampaignHero() {
           "relative col-start-1 px-5 text-center sm:px-10 lg:row-start-3 lg:text-left",
           tall.live ? "row-start-2 pt-6 md:row-start-3" : "row-start-3 pt-5",
           "sm:pt-6 lg:pt-7",
-          BLEED_PAD_LEFT,
+          HERO_PAD,
         )}
       >
         <div className="mx-auto max-w-md lg:mx-0 lg:max-w-[min(30vw,400px)]">
           <p className="text-[15px] leading-relaxed text-ink-2 sm:text-[16px]">{OFFER.promise}</p>
-          <OfferCta className="mt-6 sm:mt-8 lg:items-start lg:text-left" align="center" />
+          {/* The effort line in ink-2, not ink-3: on the limewashed wall ink-3 falls under 4.5:1. */}
+          <OfferCta className="mt-6 sm:mt-8 lg:items-start lg:text-left [&>p]:text-ink-2" align="center" />
         </div>
       </div>
     </section>
