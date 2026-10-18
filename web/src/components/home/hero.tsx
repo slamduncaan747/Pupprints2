@@ -81,7 +81,8 @@ function CampaignHero() {
           fetchPriority="high"
           className={cn(
             "block w-full bg-paper-2 object-cover md:aspect-auto",
-            tall.live ? "aspect-[4/5]" : "aspect-[16/9]",
+            // Without the tall scene, phones crop the wide one square around the portrait on the right.
+            tall.live ? "aspect-[4/5]" : "aspect-square object-[66%_50%] md:object-center",
             SCENE_H,
           )}
         />
