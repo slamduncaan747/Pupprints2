@@ -84,7 +84,7 @@ export const CAMPAIGN = {
   heirloom: {
     src: "/campaign/heirloom.webp",
     ...PORTRAIT,
-    alt: "Example portrait in The Royal style on a matching ornament and mug",
+    alt: "Example portrait in The Royal style on a matching ceramic ornament",
     fallback: ROYAL,
   },
 } as const satisfies Record<string, CampaignAsset>;

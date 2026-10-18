@@ -26,7 +26,7 @@ export const BREEDS: Breed[] = [
     personality: "Bat ears, big opinions and a face built for close-ups.",
     intro: [
       "The French Bulldog is America's most popular breed right now, No. 1 on the AKC's list for the fourth year running, and it isn't hard to see why. Frenchies pack a huge personality into a compact, muscular frame and treat every room as a stage. They descend from toy-sized bulldogs that traveled from England to France in the 1800s, where they became the darlings of Paris.",
-      "For a portrait, everything starts with the face: the upright bat ears, the short muzzle, the soft folds above the nose and those round, dark eyes. Those are the features that make a Frenchie instantly recognizable, so they're the ones we protect. The good news is that a Frenchie face carries a classical oil painting as easily as a loud pop-art print, and a little absurdity (a crown, a velvet robe) suits them perfectly.",
+      "For a portrait, everything starts with the face: the upright bat ears, the short muzzle, the soft folds above the nose and those round, dark eyes. Those are the features that make a Frenchie instantly recognizable, so they're the ones we protect. The good news is that a Frenchie face carries a classical oil painting as easily as a loud pop-art print, and a little absurdity (an ermine collar, a velvet cape) suits them perfectly.",
     ],
     coat: "Brindle, fawn, cream, white and pied coats all paint well. Dark brindle looks rich in the candlelit old-master styles; fawn and cream glow in watercolor.",
     tips: [
@@ -132,7 +132,7 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "royal", why: "Gentle eyes under a jeweled crown: dignified, funny and very giftable." },
+      { slug: "royal", why: "Gentle eyes above an ermine collar: dignified, funny and very giftable." },
       { slug: "oil-classic", why: "Warm Rembrandt light makes a red-gold coat look like it belongs in a museum." },
       { slug: "botanical", why: "Paler Goldens look lovely in a soft wreath of flowers, especially as a memorial." },
       { slug: "watercolor", why: "Light washes suit cream coats and keep the feathering airy." },
@@ -177,7 +177,7 @@ export const BREEDS: Breed[] = [
       { slug: "admiral", why: "A natural officer: serious, watchful and born to wear epaulettes." },
       { slug: "charcoal", why: "Strong contrast and expressive eyes make a Shepherd a perfect monochrome study." },
       { slug: "oil-classic", why: "Rich black-and-tan markings glow in warm old-master light." },
-      { slug: "royal", why: "That noble profile can carry a crown without a hint of irony." },
+      { slug: "royal", why: "That noble profile can carry an ermine cape without a hint of irony." },
     ],
     faq: [
       {
@@ -196,7 +196,7 @@ export const BREEDS: Breed[] = [
     personality: "Brilliant, athletic and far less fussy than the haircut suggests.",
     intro: [
       "Despite being France's national dog, the Poodle was first bred in Germany as a water retriever; the name comes from the German pudel, linked to splashing in water. The breed comes in three sizes (Standard, Miniature and Toy) and all of them are sharp, playful and surprisingly sporty. Poodles rank No. 6 on the AKC's 2025 list.",
-      "Portrait-wise, Poodles are a dream and a challenge. The dream: an elegant head, a long muzzle and sculptural curls give every style something to work with. The challenge: a dense topknot can hide the eyes, and solid black or brown coats swallow light. Pick a photo where the eyes are clearly visible and the current clip is one you love, because the portrait will keep it. Then lean into the drama. A Poodle carries a crown better than most.",
+      "Portrait-wise, Poodles are a dream and a challenge. The dream: an elegant head, a long muzzle and sculptural curls give every style something to work with. The challenge: a dense topknot can hide the eyes, and solid black or brown coats swallow light. Pick a photo where the eyes are clearly visible and the current clip is one you love, because the portrait will keep it. Then lean into the drama. A Poodle carries velvet and ermine better than most.",
     ],
     coat: "Solid colors are the norm: black, white, apricot, red, cream, silver, blue, brown and more. White and apricot look stunning in fine line and watercolor; a black Poodle shines in high-contrast pop art.",
     tips: [
@@ -216,7 +216,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "royal", why: "Elegant posture and a sculpted clip were born for the palace." },
       { slug: "fine-line", why: "Curls and a long, elegant profile look wonderful in minimal ink." },
-      { slug: "pop-art", why: "A black or white Poodle against hot pink is pure gallery wall." },
+      { slug: "pop-art", why: "A black or white Poodle against blush pink is pure gallery wall." },
       { slug: "mid-century", why: "That poised, geometric outline translates perfectly into flat retro shapes." },
     ],
     faq: [
@@ -338,7 +338,7 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "royal", why: "All that dignity deserves a crown, and a black coat makes the gold glow." },
+      { slug: "royal", why: "All that dignity deserves ermine, and a black coat makes the gold glow." },
       { slug: "admiral", why: "Broad-chested and steady: the kind of officer a crew would follow." },
       { slug: "charcoal", why: "Black and tan become a striking monochrome study full of depth." },
       { slug: "oil-classic", why: "Warm, quiet light shows off the mahogany points beautifully." },
@@ -379,7 +379,7 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "royal", why: "Nobody wears ermine with more gravity. It's hilarious and somehow fitting." },
-      { slug: "admiral", why: "A barrel chest was made for a row of medals." },
+      { slug: "admiral", why: "A barrel chest was made for a naval coat and gold epaulettes." },
       { slug: "oil-classic", why: "Rembrandt light turns every wrinkle into texture worth framing." },
       { slug: "pop-art", why: "A Bulldog's broad, graphic face is a natural for bold color blocks." },
     ],
@@ -550,7 +550,7 @@ export const BREEDS: Breed[] = [
     faq: [
       {
         q: `Why is ${n("royal")} such a good fit for Cavaliers?`,
-        a: "Because it's history. Toy spaniels appear in 17th-century royal portraits, and the breed is named for King Charles II. A crown and an ermine robe feel right at home on a Cavalier.",
+        a: "Because it's history. Toy spaniels appear in 17th-century royal portraits, and the breed is named for King Charles II. A velvet cape and an ermine collar feel right at home on a Cavalier.",
       },
     ],
     sampleNames: ["Cavalier King Charles", "Cavalier King Charles Spaniel", "Cavalier"],
@@ -584,7 +584,7 @@ export const BREEDS: Breed[] = [
       { slug: "storybook", why: "A Corgi trotting through a meadow is basically a picture book already." },
       { slug: "pop-art", why: "Those ears make a fantastic graphic silhouette in bold color." },
       { slug: "holiday", why: "A red-and-white Corgi in a knit scarf by the fire is peak cozy." },
-      { slug: "royal", why: "The crown is a cliché. It's also extremely good." },
+      { slug: "royal", why: "Velvet and ermine are a cliché. They're also extremely good." },
     ],
     faq: [
       {
@@ -654,9 +654,9 @@ export const BREEDS: Breed[] = [
       { title: "Use burst mode", body: "Boxers rarely hold still. Take a dozen and pick the sharpest." },
     ],
     styles: [
-      { slug: "royal", why: "A wrinkled, worried brow under a crown is comic perfection." },
+      { slug: "royal", why: "A wrinkled, worried brow above an ermine collar is comic perfection." },
       { slug: "pop-art", why: "Big expressions and a bold mask suit loud, flat color." },
-      { slug: "admiral", why: "Square jaw, broad chest, rows of medals. Very convincing." },
+      { slug: "admiral", why: "Square jaw, broad chest, gold epaulettes. Very convincing." },
       { slug: "astronaut", why: "Boundless energy deserves a launch pad." },
     ],
     faq: [
@@ -736,7 +736,7 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "royal", why: "A Roman profile and a crown: this one practically paints itself." },
+      { slug: "royal", why: "A Roman profile and an ermine cape: this one practically paints itself." },
       { slug: "admiral", why: "Calm authority suits a decorated naval command." },
       { slug: "charcoal", why: "Gray and brindle coats become sculptural in charcoal." },
       { slug: "oil-classic", why: "A big, quiet head in candlelight looks like a museum piece." },
@@ -811,7 +811,7 @@ export const BREEDS: Breed[] = [
       { title: "Brush before the photo", body: "A quick brush fluffs the face into that lovely chrysanthemum shape." },
     ],
     styles: [
-      { slug: "royal", why: "Centuries of palace life make the crown feel overdue." },
+      { slug: "royal", why: "Centuries of palace life make the ermine feel overdue." },
       { slug: "storybook", why: "A sweet, round face and a flowing coat belong in a picture book." },
       { slug: "botanical", why: "The chrysanthemum face among real flowers is a lovely visual rhyme." },
       { slug: "watercolor", why: "Soft washes bring out the silky texture of the coat." },
@@ -855,7 +855,7 @@ export const BREEDS: Breed[] = [
       { slug: "astronaut", why: "Built for extreme environments. Space is the obvious next step." },
       { slug: "charcoal", why: "A dramatic mask and pale eyes make a stunning monochrome study." },
       { slug: "watercolor", why: "Cool grays and icy blues bloom beautifully on white paper." },
-      { slug: "admiral", why: "That piercing gaze was made for surveying a stormy sea." },
+      { slug: "admiral", why: "That piercing gaze was made for surveying a grey sea." },
     ],
     faq: [
       {
@@ -934,7 +934,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "royal", why: "A Pom in ermine looks like a Victorian court favorite. Because it was one." },
       { slug: "storybook", why: "A round, fluffy hero for any picture book." },
-      { slug: "pop-art", why: "An orange cloud on hot pink? Yes, please." },
+      { slug: "pop-art", why: "An orange cloud on blush pink? Yes, please." },
       { slug: "botanical", why: "Cream and orange fluff looks lovely among muted florals." },
     ],
     faq: [

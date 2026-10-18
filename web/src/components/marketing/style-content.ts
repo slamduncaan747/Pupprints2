@@ -35,10 +35,10 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Royal dog portrait",
     title: "Royal Dog Portrait from Your Photo",
     metaDescription:
-      "Turn your dog into royalty: a Renaissance-style royal portrait with velvet, ermine and a crown, made from your photo. Preview it free, then order a print, framed print or canvas.",
+      "Turn your dog into royalty: a court-portrait oil painting with a velvet cape, ermine and a fine gold chain, made from your photo. Preview it free, then order a print, framed print or canvas.",
     h1: "Your dog, painted as royalty",
     points: [
-      { title: "Old-master drama", body: "Candlelit shadows, rich crimson and gold, and a pose fit for a palace wall." },
+      { title: "Old-master drama", body: "Deep shadows, oxblood velvet and gold, and a pose fit for a palace wall." },
       { title: "Funny and beautiful", body: "It makes people laugh, then it makes them stare. The best kind of gift." },
       { title: "Big personalities welcome", body: "Especially good for confident dogs, smooshy faces and anyone who already acts like they own the place." },
     ],
@@ -50,8 +50,8 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Admiral dog portrait",
     title: "Admiral Dog Portrait — Naval Officer Pet Painting",
     metaDescription:
-      "Your dog as a decorated naval admiral, with gold epaulettes, medals and a stormy sea behind. Custom from your photo, previewed free before you buy.",
-    h1: "A decorated officer of the high seas",
+      "Your dog as an 18th-century naval officer, with gold epaulettes, a linen stock and a calm grey sea behind. Custom from your photo, previewed free before you buy.",
+    h1: "An officer of the high seas",
     points: [
       { title: "Classic oil painting", body: "Warm varnished tones and painterly detail, in the tradition of 18th-century officer portraits." },
       { title: "Made for a study", body: "Looks right at home above a desk, a bar cart or a bookshelf." },
@@ -110,11 +110,11 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Pop art dog portrait",
     title: "Pop Art Dog Portrait from Your Photo",
     metaDescription:
-      "A bold, bright 1960s pop-art portrait of your dog with halftone dots and saturated color. Custom from your photo, previewed free.",
-    h1: "Bold, bright and gallery-wall loud",
+      "A bold pop-art screenprint portrait of your dog in three matte inks, with a fine halftone. Custom from your photo, previewed free.",
+    h1: "Graphic, bold and made for a gallery wall",
     points: [
-      { title: "Screen-print energy", body: "Flat saturated color, thick graphic outlines and Ben-Day dots." },
-      { title: "Made to pop", body: "Brings color to a kid's room, an office or a minimal white wall." },
+      { title: "Screen-print energy", body: "Three flat matte inks, a fine halftone and a slight off-register on paper." },
+      { title: "Made to pop", body: "Brings quiet color to an office, a hallway or a minimal white wall." },
       { title: "Fun to gift", body: "Instantly recognizable and impossible to walk past." },
     ],
     photoTip: "A close-up with a strong expression (head tilt, tongue out) makes the boldest pop art.",
@@ -125,10 +125,10 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Storybook illustrated dog portrait",
     title: "Storybook Illustrated Dog Portrait",
     metaDescription:
-      "Your dog as the hero of a cozy children's picture book, in warm gouache and colored pencil. Custom from your photo, previewed free.",
+      "Your dog as the hero of a classic picture-book plate, in soft matte gouache. Custom from your photo, previewed free.",
     h1: "The hero of their own picture book",
     points: [
-      { title: "Warm and whimsical", body: "Gouache and colored pencil on textured paper, with a gentle meadow behind." },
+      { title: "Warm and whimsical", body: "Matte gouache on toothy paper, with soft grass and a pale sky behind." },
       { title: "Sweet for kids' rooms", body: "A lovely way to put the family dog on the nursery wall." },
       { title: "New puppy, new chapter", body: "A favorite for celebrating a new arrival." },
     ],
@@ -143,7 +143,7 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
       "Your dog framed by a wreath of vintage botanical flowers and leaves, like a page from a naturalist's journal. Made from your photo and previewed free.",
     h1: "Framed in vintage flowers",
     points: [
-      { title: "Serene and detailed", body: "Wildflowers, roses, eucalyptus and ferns on soft cream parchment." },
+      { title: "Serene and detailed", body: "Olive, eucalyptus, ferns and garden roses in fine ink and watercolor on ivory paper." },
       { title: "A gentle tribute", body: "Often chosen to remember a dog who has passed." },
       { title: "Timeless decor", body: "At home in a cottage, a bedroom or a reading nook." },
     ],
@@ -155,10 +155,10 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Astronaut dog portrait",
     title: "Astronaut Dog Portrait — Space Pet Art",
     metaDescription:
-      "Send your dog to space: a retro-futurist astronaut portrait with a glass helmet and a field of stars. Custom from your photo, previewed free.",
+      "Send your dog to space: a painterly retro-futurist astronaut portrait with a glass dome helmet and a quiet night sky. Custom from your photo, previewed free.",
     h1: "One small step for dog",
     points: [
-      { title: "Retro-futurist", body: "A vintage space suit, mission patches and a ringed planet in a deep starry sky." },
+      { title: "Retro-futurist", body: "An off-white 1960s space suit, a glass dome helmet and a quiet navy sky, painted in oils." },
       { title: "Kids' room favorite", body: "Pairs well with posters, maps and anything out of this world." },
       { title: "Made for a laugh", body: "A fun gift for the friend whose dog is clearly a genius." },
     ],
@@ -185,10 +185,10 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Mid-century modern dog art",
     title: "Mid-Century Modern Dog Art Print",
     metaDescription:
-      "A graphic mid-century modern poster of your dog in a warm retro palette of mustard, orange and teal. Custom from your photo, previewed free.",
-    h1: "Flat shapes, warm retro palette",
+      "A graphic mid-century modern print of your dog in a warm muted palette of ochre, sage and bone. Custom from your photo, previewed free.",
+    h1: "Calm geometry, warm muted palette",
     points: [
-      { title: "Graphic and clean", body: "Simplified shapes and subtle risograph texture, like a 1960s print." },
+      { title: "Graphic and clean", body: "Simplified shapes, muted ochre and sage, and subtle paper grain, like a 1950s print." },
       { title: "Made for modern homes", body: "Pairs beautifully with walnut, teak, linen and plants." },
       { title: "Bold from across the room", body: "Reads clearly even at small sizes." },
     ],
@@ -200,10 +200,10 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Christmas dog portrait",
     title: "Christmas Dog Portrait — Holiday Pet Painting",
     metaDescription:
-      "A cozy holiday oil painting of your dog by the fire, with a knit scarf and twinkling lights. Made from your photo and previewed free. Perfect for gifts and holiday cards.",
+      "A quiet candlelit holiday oil painting of your dog, with a knit scarf and a sprig of evergreen. Made from your photo and previewed free. Perfect for gifts and holiday cards.",
     h1: "A festive portrait by the fire",
     points: [
-      { title: "Warm and nostalgic", body: "A knit scarf, evergreen garland and the glow of a crackling fireplace." },
+      { title: "Warm and nostalgic", body: "A knit scarf, a sprig of evergreen and the glow of a single candle." },
       { title: "Holiday cards, sorted", body: "Order the digital file and print your own cards, or hang it every December." },
       { title: "Last-minute friendly", body: "Send a Gift Reveal the moment you order. The print follows." },
     ],

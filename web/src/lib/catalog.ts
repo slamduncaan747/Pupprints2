@@ -43,17 +43,24 @@ export type ArtStyle = {
   edition?: string;
 };
 
-const IDENTITY =
-  "Use the dog in the reference photo as the subject. Preserve its exact breed, face shape, eye color, ear shape, fur color, markings and proportions so the owner instantly recognizes their own dog. Keep the dog's head large and centered with comfortable margin around the subject for cropping. No text, no letters, no signature, no watermark, no frame.";
+/**
+ * House-style clauses (docs/art-direction.md). Identity, composition and "no text" rules are sent by
+ * PORTRAIT_SYSTEM_PROMPT in @/lib/ai/prompt.ts, so style briefs only describe the artwork.
+ */
+const DOG_BODY =
+  "A real dog's natural anatomy: its own thick furry neck, deep narrow chest and steeply sloping shoulders; no human shoulders, no human torso, no arms or hands.";
+const OIL =
+  "Rich oil paint on linen canvas: visible confident brushstrokes, soft impasto on the highlights, thin glazes in the shadows, the canvas weave showing through the thin passages, a satin varnish, not glossy.";
+const CALM = "A calm, dignified expression. Quiet, softly graded, empty background.";
 
 export const STYLES: ArtStyle[] = [
   {
     slug: "royal",
     name: "The Royal",
-    blurb: "Velvet, ermine and a crown. Nobility suits them.",
+    blurb: "Velvet, ermine and a fine gold chain. Nobility suits them.",
     description:
-      "A Renaissance court portrait in rich oil paint: a velvet robe trimmed in ermine, gold chains and jewels, and the dramatic candlelit background of an old-master painting. Pure, ridiculous nobility.",
-    prompt: `A regal Renaissance oil painting portrait of the dog as a noble monarch, wearing a deep crimson velvet robe with white ermine fur trim, an ornate gold chain with a jeweled medallion, and a small jeweled crown. Dark umber background with soft candlelight, dramatic chiaroscuro, visible brushwork, craquelure-free museum quality, in the manner of 17th-century Dutch and Flemish court painters. ${IDENTITY}`,
+      "A 17th-century Flemish court portrait in rich oil paint: an oxblood velvet cape trimmed in ermine, a fine gold chain and the quiet umber background of an old-master painting. Dignified, and just a little absurd.",
+    prompt: `A 17th-century Flemish court portrait in oil, in the manner of Anthony van Dyck. A dignified seated bust of the dog in a calm three-quarter view. ${DOG_BODY} A deep oxblood velvet cape with a thick white ermine trim is draped over the dog's own shoulders and chest, and a fine plain gold chain rests across the ermine, no pendant, no crown. Plain warm umber background, softly graduated and empty. A single soft window light from the upper left, deep quiet shadows. ${OIL} A museum masterpiece.`,
     swatch: "#7a2e2a",
     goodFor: ["gift", "funny", "decor"],
     popular: true,
@@ -61,10 +68,10 @@ export const STYLES: ArtStyle[] = [
   {
     slug: "admiral",
     name: "The Admiral",
-    blurb: "A decorated officer of the high seas.",
+    blurb: "An officer of the high seas, in navy and gold.",
     description:
-      "An 18th-century naval officer portrait: navy dress coat, gold epaulettes, a chest of medals and a stormy seascape behind. Distinguished, a little absurd, and perfect above a desk.",
-    prompt: `A classical 18th-century oil painting portrait of the dog as a distinguished naval admiral, wearing a navy blue officer's dress coat with gold epaulettes, gold buttons, braided cords and a row of medals. Background of a moody stormy sea with a tall ship, warm varnished tones, museum quality old-master brushwork. ${IDENTITY}`,
+      "An 18th-century naval portrait: a navy coat with gold epaulettes, a white linen stock and a calm grey sea behind. Distinguished, a little absurd, and perfect above a desk.",
+    prompt: `An 18th-century British naval portrait in oil, in the manner of Thomas Gainsborough. The dog painted from the top of its head down to its chest in a calm three-quarter view. ${DOG_BODY} A deep navy wool naval coat cut for a dog is fitted over its back and shoulders: gold bullion epaulettes rest on the dog's own sloping shoulders, a high navy collar around its furry neck, a soft white linen stock at the throat; the coat is open at the front, showing the dog's chest fur. No medals, no badges. Behind, a quiet overcast sky in slate and pale ochre over a calm dark sea, one small faint sailing ship far away. Soft daylight from the left, muted warm tones. ${OIL}`,
     swatch: "#1f2f4a",
     goodFor: ["gift", "funny", "decor"],
     popular: true,
@@ -75,7 +82,7 @@ export const STYLES: ArtStyle[] = [
     blurb: "Just your dog, painted like a museum piece.",
     description:
       "No costume, no gimmick: your dog as the subject of a timeless oil painting with Rembrandt lighting and a quiet, warm background. Elegant enough for any room.",
-    prompt: `A timeless classical oil painting portrait of the dog, no costume, natural fur rendered with confident visible brush strokes. Rembrandt lighting, warm muted olive and umber background, subtle glazing, fine-art gallery quality. ${IDENTITY}`,
+    prompt: `A quiet classical oil portrait of the dog, no costume, no collar, no accessories, in the manner of a 17th-century Dutch old master. A bust portrait in a calm three-quarter view; the fur is described by the brush, every hair direction followed. A single soft north light from the upper left. Plain background of warm umber and muted olive, softly graduated and empty. Restrained palette of umber, bone, slate and ochre. ${OIL}`,
     swatch: "#4b4232",
     goodFor: ["memorial", "decor", "gift"],
     popular: true,
@@ -86,7 +93,7 @@ export const STYLES: ArtStyle[] = [
     blurb: "Soft washes and loose, luminous color.",
     description:
       "Soft watercolor washes that bloom into textured cold-press paper. Light, airy and full of feeling, and well suited to memorial pieces.",
-    prompt: `A delicate loose watercolor painting of the dog on textured white cold-press watercolor paper. Soft translucent washes, gentle color blooms and bleeds, fine ink-free detail around the eyes and nose, lots of white negative space around the subject, airy and luminous. ${IDENTITY}`,
+    prompt: `A fine-art watercolor portrait of the dog on heavy white cold-press cotton watercolor paper. Head and chest only. Transparent layered washes with visible pigment granulation and soft blooms, crisp precise detail in the eyes and nose; the painting dissolves into loose dry-brush strokes and bare paper toward the edges, with generous untouched white paper around the dog. The cold-press paper tooth is visible everywhere. Restrained natural palette of umber, sepia, warm ochre and slate grey with a touch of sage in the shadows. Calm and luminous, like a contemporary watercolor hung in a museum.`,
     swatch: "#7fa6b5",
     goodFor: ["memorial", "gift", "decor"],
     popular: true,
@@ -97,27 +104,27 @@ export const STYLES: ArtStyle[] = [
     blurb: "Minimal ink lines on warm paper.",
     description:
       "A modern minimalist portrait drawn in confident black ink lines on warm off-white paper. Quietly chic — made for gallery walls and modern spaces.",
-    prompt: `A minimalist fine-line ink illustration of the dog, elegant continuous black ink linework with minimal hatching, on plain warm off-white paper, lots of empty space, modern Scandinavian art print aesthetic, no color fill. ${IDENTITY}`,
+    prompt: `A refined fine-line ink drawing of the dog on warm white cotton rag paper. Confident continuous black ink lines with a slight natural ink bleed into the paper fibres, sparse delicate hatching only where shadows fall; no color, no solid fills, no grey wash. A generous field of empty paper around the dog, the soft cotton paper texture visible. ${CALM} A refined contemporary gallery drawing.`,
     swatch: "#d8cfc0",
     goodFor: ["decor", "memorial"],
   },
   {
     slug: "pop-art",
     name: "Pop Art",
-    blurb: "Bold, bright, gallery-wall loud.",
+    blurb: "Graphic, bold, made for a gallery wall.",
     description:
-      "A punchy 1960s pop-art portrait with saturated flat color, halftone dots and graphic shadows. Loud in the best way.",
-    prompt: `A bold 1960s pop art portrait of the dog, flat saturated colors (hot pink, electric yellow, cyan, orange), thick black graphic outlines, Ben-Day halftone dot shading, solid bright contrasting background, screen-print aesthetic. ${IDENTITY}`,
+      "A limited-edition screenprint look: three flat matte inks (blush, ochre and black), a fine halftone in the shadows and a slight off-register on paper. Graphic and bold, never loud.",
+    prompt: `A refined limited-edition screenprint portrait of the dog, printed in only three flat matte inks on warm off-white paper: pale blush pink, ochre and black. Bold simplified shapes; the black ink layer carries the features with a fine halftone in the shadows; a slight off-register between the ink layers; visible paper grain and the soft matte texture of hand-pulled screenprint ink. One single flat pale blush pink background. No neon, no gradients, no extra shapes. Calm, graphic and sophisticated, like a 1960s gallery screenprint.`,
     swatch: "#f2b134",
     goodFor: ["funny", "decor", "gift"],
   },
   {
     slug: "storybook",
     name: "Storybook",
-    blurb: "A cozy children's-book illustration.",
+    blurb: "A quiet picture-book plate in gouache.",
     description:
-      "Warm gouache and colored pencil in the style of a classic picture book, with your dog as the hero. Sweet for nurseries and kids' rooms.",
-    prompt: `A whimsical cozy children's picture book illustration of the dog, painted in gouache and colored pencil, warm soft palette, gentle textured paper grain, simple meadow background with a few wildflowers, charming and heartfelt. ${IDENTITY}`,
+      "Matte gouache in the manner of a classic European picture book: your dog sitting in soft grass under a pale sky, with a few wildflowers. Gentle, never saccharine, and lovely for nurseries.",
+    prompt: `An elegant gouache picture-book plate of the dog. The dog sits quietly in soft tall grass with a few small wildflowers under a pale bone-colored sky, with lots of calm open space. Matte opaque gouache with visible brush marks and dry-brush texture on toothy watercolor paper, a soft muted palette of sage, ochre, bone and dusty rose. Understated, poetic and refined, like a classic mid-century European picture book illustration, not cute, not cartoonish.`,
     swatch: "#c9a66b",
     goodFor: ["gift", "decor"],
     isNew: true,
@@ -127,8 +134,8 @@ export const STYLES: ArtStyle[] = [
     name: "Botanical",
     blurb: "Framed in vintage flowers.",
     description:
-      "Your dog surrounded by a wreath of painterly botanical flowers and leaves, like a page from a vintage naturalist's journal. A gentle favorite for remembering a best friend.",
-    prompt: `A vintage botanical illustration portrait of the dog surrounded by a soft wreath of hand-painted wildflowers, roses, eucalyptus leaves and ferns, muted cream parchment background, fine detailed naturalist illustration style, gentle and serene. ${IDENTITY}`,
+      "Your dog loosely framed by botanical stems (olive, eucalyptus, ferns and a few garden roses), drawn in fine ink and watercolor like a plate from an 18th-century natural-history book. A gentle favorite for remembering a best friend.",
+    prompt: `A refined natural-history plate of the dog in fine ink line and transparent watercolor on warm ivory laid paper. The dog sits in the centre, loosely framed by a sparse arrangement of botanical stems drawn with naturalist precision: olive branches, eucalyptus, ferns and a few muted garden roses, with plenty of empty paper. Muted palette of sage, ochre, dusty rose and umber; the laid paper texture is visible. Like an 18th-century botanical plate colored by hand. No labels, no captions.`,
     swatch: "#8a9a6c",
     goodFor: ["memorial", "gift", "decor"],
   },
@@ -137,8 +144,8 @@ export const STYLES: ArtStyle[] = [
     name: "Space Cadet",
     blurb: "One small step for dog.",
     description:
-      "A retro-futurist astronaut portrait: a gleaming space suit, a glass helmet and a field of stars and planets. Fun for kids' rooms and anyone who thinks their dog is out of this world.",
-    prompt: `A retro-futurist painted portrait of the dog as an astronaut wearing a white and orange vintage space suit with mission patches, clear glass helmet open at the face, deep starry space background with a ringed planet, cinematic rim lighting, highly detailed digital painting. ${IDENTITY}`,
+      "A painterly retro-futurist portrait: an off-white 1960s space suit, a glass dome helmet and a quiet navy sky with one pale planet. Fun for kids' rooms, and still a real painting.",
+    prompt: `A painterly mid-century retro-futurist oil portrait of the dog as an astronaut. A calm, dignified bust: the dog wears a simple off-white 1960s space suit with a soft ochre collar ring and a clear glass dome helmet that encloses the whole head, both ears fully inside the glass with space above them. No patches, no flags, no lettering. Behind, a quiet deep navy night sky with a few faint stars and one small pale planet. Muted palette of navy, slate, bone and ochre, a soft warm key light from the left. Visible oil brushwork and canvas texture, like a 1950s magazine illustration painted in oils.`,
     swatch: "#253055",
     goodFor: ["funny", "gift"],
   },
@@ -148,27 +155,27 @@ export const STYLES: ArtStyle[] = [
     blurb: "An expressive charcoal sketch.",
     description:
       "A soulful charcoal and graphite study with expressive smudges and fine detail in the eyes. Timeless, monochrome, and surprisingly emotional.",
-    prompt: `An expressive charcoal and graphite portrait drawing of the dog on toned cream paper, rich blacks, soft smudged shading, fine detail in the eyes and nose, loose gestural strokes fading out at the edges, fine-art academic drawing. ${IDENTITY}`,
+    prompt: `An expressive charcoal portrait drawing of the dog on warm toned ivory drawing paper. Rich velvety charcoal blacks, soft smudged half-tones, fine sharp detail in the eyes and nose, loose gestural strokes that fade into bare paper at the edges. The paper grain catches the charcoal everywhere, with a few soft finger smudges and lifted highlights. No color. A fine-art academic drawing from a master's studio.`,
     swatch: "#3a3733",
     goodFor: ["memorial", "decor"],
   },
   {
     slug: "mid-century",
     name: "Mid-Century",
-    blurb: "Flat shapes, warm retro palette.",
+    blurb: "Calm geometry, a warm muted palette.",
     description:
-      "A graphic mid-century modern poster: simplified shapes, a warm retro palette and subtle paper texture. Pairs beautifully with modern interiors.",
-    prompt: `A mid-century modern graphic poster illustration of the dog, simplified geometric flat shapes, warm retro palette of mustard, burnt orange, teal and cream, subtle risograph paper texture, clean composition, 1960s print aesthetic. ${IDENTITY}`,
+      "A 1950s gouache-and-silkscreen print: simplified shapes, an ochre circle, sage and bone, and subtle paper grain. Pairs beautifully with modern interiors.",
+    prompt: `A refined 1950s mid-century modern gouache and silkscreen print of the dog. The dog sits calmly with its mouth closed and a serene, dignified expression. Simplified elegant geometric shapes: the dog is set against a large flat ochre circle and a soft sage rectangle on a warm bone background. Muted palette of ochre, sage, oxblood, bone and soft black; matte gouache with visible dry-brush texture, slight print misregistration and paper grain. Sophisticated, restrained and graphic, like a 1950s gallery print, not a cartoon, not vector art.`,
     swatch: "#d07a3c",
     goodFor: ["decor", "gift"],
   },
   {
     slug: "holiday",
     name: "Holiday Cozy",
-    blurb: "A festive portrait by the fire.",
+    blurb: "A quiet, candlelit winter portrait.",
     description:
-      "A warm holiday oil painting: a knit scarf, twinkling lights and a crackling fireplace. Made for holiday cards, mantels and ornaments.",
-    prompt: `A warm festive holiday oil painting portrait of the dog wearing a cozy red and green knit scarf, sitting by a glowing fireplace with twinkling string lights, evergreen garland and soft bokeh, rich warm tones, nostalgic and joyful. ${IDENTITY}`,
+      "An intimate candlelit oil painting: a soft knit scarf, a sprig of evergreen and one warm glow on a winter evening. Made for mantels, cards and ornaments.",
+    prompt: `A quiet candlelit oil painting of the dog resting on a cream knit wool blanket. A soft oatmeal knit scarf lies loosely around its neck. Beside the dog, a single small sprig of evergreen and one candle whose warm glow is the only light, falling softly from the left. Deep quiet umber and dark green shadows, a calm intimate winter evening. Restrained palette of umber, deep green, oxblood and warm ivory. ${OIL} Like an intimate 19th-century interior painting. No string lights, no ornaments, no bokeh.`,
     swatch: "#7d2b2b",
     goodFor: ["holiday", "gift"],
     isNew: true,
