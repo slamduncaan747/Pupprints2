@@ -35,7 +35,7 @@ Setup time is about 40 minutes on Day 1 (IG + TikTok) and 40 minutes on Day 2 (F
 Your dog, as fine art 🎨
 See their portrait FREE in 30 sec (no card)
 Canvas · framed · gift it today
-👇 Founding 100: 15% off
+👇 See yours free
 ```
 
 **Link:** `https://pup-prints.vercel.app/?utm_source=instagram&utm_medium=social&utm_campaign=bio`
@@ -59,7 +59,7 @@ Canvas · framed · gift it today
 | 5 | **How it's made** | "Our AI artist creates it, our team finishes and checks it" + the QA checklist + the guarantee |
 | 6 | **Shelter dogs** | When the shelter partnership starts |
 
-**Story cadence:** 6–10 frames a day. Behind the scenes, polls ("Royal or Watercolor?"), the "Add Yours" sticker ("Your dog as royalty 👑"), real Founding-100 counts, and reshares (only with permission).
+**Story cadence:** 6–10 frames a day. Behind the scenes, polls ("Royal or Watercolor?"), the "Add Yours" sticker ("Your dog as royalty 👑"), and reshares (only with permission).
 
 ---
 
@@ -128,7 +128,7 @@ Post in this order. Instagram shows newest top-left, so #7–9 end up as the top
 
 | # | Type | Content | Caption hook |
 |---|---|---|---|
-| 1 | Carousel (4) | "We're open." Founder + dog → "How it works: upload → 30 sec → love it or don't pay" → what's included → "Founding 100" | "Hi. We make dogs look like museum pieces." |
+| 1 | Carousel (4) | "We're open." Founder + dog → "How it works: upload → 30 sec → love it or don't pay" → what's included → "Love it, or it's free" | "Hi. We make dogs look like museum pieces." |
 | 2 | Reel | Script #1, "One photo → royalty" | "I uploaded ONE photo…" |
 | 3 | Carousel (5) | One dog in 4 styles + "vote in comments" | "Which one is the real him? 1–4 👇" |
 | 4 | Reel | Script #2, "POV: royalty" | "We've created a monster." |

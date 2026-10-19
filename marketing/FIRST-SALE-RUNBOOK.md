@@ -5,7 +5,7 @@
 Goal: the first paid order from a stranger, then a repeatable loop that produces one sale a day.
 Engine: **the gift-first loop.** A free portrait of someone's *own* dog, delivered as a private reveal link with a one-tap "Put {pet} on your wall" button, converts far better than any ad. Every channel below just feeds dogs into that loop.
 
-Site: https://pup-prints.vercel.app (moving to pupprints.shop) · Admin: /admin · Launch code: `FOUNDING100` (15% off, first 100 orders, ends Oct 31; created in Stripe automatically).
+Site: https://pup-prints.vercel.app (moving to pupprints.shop) · Admin: /admin · No launch discount: honest prices, free US shipping, the Love-It Guarantee. **Launching today? Start with [LAUNCH-TODAY.md](LAUNCH-TODAY.md).**
 Portraits: OpenAI's GPT Image model (primary) with Google Gemini as automatic fallback. Cost ≈ $0.08 per portrait at print quality (≈ $0.03 with `OPENAI_IMAGE_QUALITY=medium`), so 20 gifts a day is about $1.60/day.
 
 ---
@@ -27,7 +27,7 @@ All keys go in **Vercel → pup-prints → Settings → Environment Variables** 
 ## Phase 1 — Prove the pipeline (Day 1, 20 min) — do not skip
 
 1. Upload a photo of any dog on /create → confirm a preview appears in under ~60s and actually looks like the dog. Try 3 styles. Likeness is the product; if it's weak, stop and fix it first.
-2. Buy the cheapest physical item ($35 print) with your own card, using `FOUNDING100`.
+2. Buy the cheapest physical item ($35 print) with your own card.
 3. Confirm: success page shows the order → confirmation email arrives → order appears in /admin/orders as **paid** → click **Approve & send to print** → it appears in Printful (as a draft unless `PRINTFUL_CONFIRM=1`).
 4. Open your Gift Reveal link from the success page on your phone.
 5. Refund yourself in Stripe (order flips to *refunded*) and delete the Printful draft. (Or keep it as your quality sample.)
@@ -55,7 +55,7 @@ If any step fails, stop and fix it before driving traffic. Every visitor before 
 ### Loop B — Public "we paint your dogs" (60 min, 10 per day)
 1. Post a comment-to-enter video (scripts 11–13, section C of [content/30-video-scripts.md](content/30-video-scripts.md)): "Comment your dog's name + breed, I'll paint the first 10 free."
 2. Mirror the same offer in 2–3 Facebook groups that allow it, and on Nextdoor (Business Page).
-3. For each commenter: ask them to DM a photo → /admin/gifts → **New gift** → generate → send them the reveal link (DM copy includes `FOUNDING100`).
+3. For each commenter: ask them to DM a photo → /admin/gifts → **New gift** → generate → send them the reveal link.
 4. With their permission, their dog becomes tomorrow's video ("Round 2"). That's the flywheel: every gift is both a lead and new content.
 
 ### Loop C — Content (45 min, 3 posts per day across TikTok/Reels/Shorts)
@@ -72,7 +72,7 @@ If any step fails, stop and fix it before driving traffic. Every visitor before 
 ### Loop D — Ops (15 min, morning and evening)
 1. /admin dashboard: new **paid** orders → open → check the print file → **Approve & send to print** (same day, always).
 2. /admin/messages and DMs: reply within 2 hours.
-3. /admin/gifts: look at view counts. Anyone who opened their reveal twice but didn't buy gets a friendly nudge ("Want it on your wall? FOUNDING100 is 15% off this month").
+3. /admin/gifts: look at view counts. Anyone who opened their reveal twice but didn't buy gets a friendly nudge ("Did [dog]'s portrait make it home okay? The link works anytime if you want it on the wall.").
 4. Log the day's numbers (below).
 
 ---

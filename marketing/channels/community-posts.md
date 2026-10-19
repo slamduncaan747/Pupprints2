@@ -28,7 +28,7 @@ Swap the **[brackets]**. Every link carries a UTM so we can see what worked (con
 >
 > I'd love it if you tried it on your dog, even just for fun: **https://pup-prints.vercel.app/?utm_source=facebook&utm_medium=personal&utm_campaign=launch_post**
 >
-> For my first 100 customers there's 15% off with **FOUNDING100** (good until Oct 31). And honestly, just trying it and telling me what you think helps more than you know. Shares to any dog person you love are very welcome. ❤️
+> And honestly, just trying it and telling me what you think helps more than you know. Shares to any dog person you love are very welcome. ❤️
 >
 > (And yes, it's made with an AI artist, then finished and checked by me before anything gets printed. If it's not right, I remake it or refund it.)
 
@@ -40,7 +40,7 @@ Swap the **[brackets]**. Every link carries a UTM so we can see what worked (con
 
 > I made a thing. 🐾 Pup Prints turns one photo of your dog into a fine-art portrait. See it FREE in 30 seconds, then hang it in days.
 > [Dog] was test subject #1 and is now insufferable 👑
-> Link in bio → try it on your dog. First 100 orders get 15% off with FOUNDING100 (through Oct 31).
+> Link in bio → try it on your dog.
 > Tell me which style your dog is 👇
 > #smallbusiness #dogportrait #dogsofinstagram #[yourcity]
 
@@ -65,7 +65,7 @@ DM everyone who votes. Each vote is a gift lead.
 >
 > If you have a dog (or a dog person on your holiday list), I'd be grateful if you tried it and told me what you think: https://pup-prints.vercel.app/?utm_source=linkedin&utm_medium=personal&utm_campaign=launch_post
 >
-> Founding customers get 15% off with FOUNDING100 (first 100 orders, through Oct 31).
+> Free US shipping, and if you don't love it, we remake it or refund you.
 >
 > And if you know a groomer, vet, trainer or shelter who might want to partner, I'd love an intro.
 
@@ -79,7 +79,7 @@ DM everyone who votes. Each vote is a gift lead.
 > Hey [Name]! 🐾 I finally launched my little business today, and I made [Dog] a portrait as a thank-you for being one of my favorite dogs. Open it, it's a gift:
 > [reveal link]
 >
-> No pressure at all, it's yours either way! But if you ever want it on your wall, there's 15% off with FOUNDING100 this month: https://pup-prints.vercel.app/?utm_source=friends&utm_medium=sms&utm_campaign=friends_gift
+> No pressure at all, it's yours either way! But if you ever want it on your wall: https://pup-prints.vercel.app/?utm_source=friends&utm_medium=sms&utm_campaign=friends_gift
 
 ### 2b. Ask-for-a-photo text (when you don't have a good photo)
 > Random question: can you send me your favorite photo of [Dog]? 😇 I launched a dog portrait business today and want to make [him/her] something. Takes me 2 minutes, totally free.
@@ -108,7 +108,7 @@ DM everyone who votes. Each vote is a gift lead.
 >
 > This week I'm making **free digital portraits for the first 20 neighborhood dogs**. Comment with your dog's name and I'll message you, or try it yourself in 30 seconds (free preview, no card): https://pup-prints.vercel.app/?utm_source=nextdoor&utm_medium=community&utm_campaign=launch_post
 >
-> If you want it on the wall later: canvas or framed, free US shipping, and I personally check every one before it's printed. Founding neighbors get 15% off with FOUNDING100 (through Oct 31). 🐶
+> If you want it on the wall later: canvas or framed, free US shipping, and I personally check every one before it's printed. 🐶
 
 **Groups version** (only where the group's rules allow promotion; ask the admin if unsure):
 > Hi [group]! Local small-business owner here (I'm the founder of Pup Prints). I'm painting **free portraits of 20 dogs from this group** this week, just because. Drop your dog's photo in the comments and I'll message you their portrait! 🎨🐾
@@ -144,7 +144,7 @@ DM everyone who votes. Each vote is a gift lead.
 
 **When you send the portrait** (Messenger):
 > Here's [Dog]! 🎨 [reveal link]
-> Hope it made you smile. If you'd ever like it printed, founding members get 15% off with FOUNDING100 this month, but it's yours either way 💛
+> Hope it made you smile. If you'd ever like it printed, it's on the link, but it's yours either way 💛
 
 **Memorial groups** ("Rainbow Bridge", pet-loss support): **don't promote there.** Only respond if a member asks directly.
 
@@ -169,6 +169,6 @@ DM everyone who votes. Each vote is a gift lead.
 
 **r/shamelessplug.** A straight plug is allowed, but keep it human.
 > **Title:** My dog portrait studio launched today: free 30-second preview, 15% off for the first 100 customers
-> **Body:** Upload one photo, see your dog as royalty / watercolor / minimalist art in ~30 seconds, free. If you love it, canvas or framed with free US shipping. FOUNDING100 = 15% off (first 100 orders, through Oct 31). https://pup-prints.vercel.app/?utm_source=reddit&utm_medium=community&utm_campaign=shamelessplug
+> **Body:** Upload one photo, see your dog as royalty / watercolor / minimalist art in ~30 seconds, free. If you love it, canvas or framed with free US shipping. https://pup-prints.vercel.app/?utm_source=reddit&utm_medium=community&utm_campaign=shamelessplug
 
 **Optional: r/smallbusiness.** That sub reportedly allows promotion only in its weekly promotion thread. Use that thread only.

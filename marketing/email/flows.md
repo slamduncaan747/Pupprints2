@@ -22,7 +22,7 @@ This doc covers two kinds of copy:
 | Gift Reveal email to recipient | Buyer chose "send now" with a recipient email | ✅ Yes (`giftRevealEmail`) | None |
 | Shipped | Order marked shipped | ✅ Yes (`shippedEmail`) | None |
 | Review request | 7 days after the shipped email | ✅ Yes (`reviewRequestEmail`) | **Set the `REVIEW_URL` env var** to the Google review or Trustpilot link. Today it falls back to a `mailto:`. |
-| Preview nurture, 3 steps | Lead saved a preview (or AI/checkout was down), no order | ✅ Yes (`nurtureEmail`, at ~2h / ~24h / ~72h) | See §2 for the Founding-100 conflict on step 3 |
+| Preview nurture, 3 steps | Lead saved a preview (or AI/checkout was down), no order | ✅ Yes (`nurtureEmail`, at ~2h / ~24h / ~72h) | Step 3 is the print-from-$35 / file-$29 downsell (no codes) |
 | **Welcome (WELCOME10)** | Footer or newsletter signup | ❌ **No.** The form *says* "Your code WELCOME10 is on its way," but no email is sent | **Engineering:** send §1 E1 on signup. Until then, send it by hand daily from the Admin → Leads export, or change the form copy to show the code on screen. |
 | Win-back | 14+ days after the nurture ends / 45+ days after delivery | ❌ No | Manual sends from week 3 (§5). Nobody has lapsed yet. |
 
@@ -36,7 +36,6 @@ This doc covers two kinds of copy:
 
 **About the code:**
 - **WELCOME10** is a real Stripe promotion code: 10% off, first order only, no expiry. **Don't invent one.**
-- While **Founding 100** is live (until 100 redemptions or Oct 31, 11:59pm PT), mention it as well. It's the better deal, and codes don't stack.
 
 ### E1: immediately
 - **Subject:** Your 10% code is inside (plus a free portrait of your dog)
@@ -46,7 +45,6 @@ This doc covers two kinds of copy:
   >
   > Here's your code: **WELCOME10**, 10% off your first order.
   >
-  > *Founding bonus:* while it lasts, **FOUNDING100** takes **15%** off instead (first 100 customers, through Oct 31). Use whichever is better. Only one code per order.
   >
   > The best part is free: upload one photo and see your dog as a fine-art portrait in about 30 seconds. No card, no catch.
   >
@@ -96,9 +94,7 @@ This doc covers two kinds of copy:
 | 2 (~24h) | **"What's included with every Pup Prints portrait"** | The preview + free US shipping · free hi-res file · checked by a person · love-it guarantee → **Choose a size** | The trust email. |
 | 3 (~72h) | **"10% off [Pet]'s portrait, until [weekday]"** | A **personal single-use code** `WELCOME10-XXXXX`, valid **48 hours** (a real Stripe expiry) → **Use my code**. "After it expires, this is our last email about this preview." | If Stripe isn't configured, it sends "Still thinking about [Pet]'s portrait?" as the last reminder, with no code. |
 
-**Founding-100 conflict (fix for Oct 13–31):** step 3 offers a personal **10%** code while the public FOUNDING100 gives **15%**. A customer who has seen both will feel short-changed. Two options:
-- **(a) Engineering, ~5 min, best:** while FOUNDING100 is active, create the personal code on a 15% coupon. Same expiry and single-use rules.
-- **(b) Copy-only:** add one line to step 3: "Or use **FOUNDING100** for 15% off. It's for our first 100 customers, through Oct 31."
+**Founding 100 was retired on Oct 19.** No launch discount; step 3 is the honest downsell.
 
 **Suggested copy upgrades** (optional, for engineering when there's time):
 - **Step 1 subject A/B:** "[Pet] is still in the velvet robe 👑" vs the current subject. Keep the current one for memorial-style previews.

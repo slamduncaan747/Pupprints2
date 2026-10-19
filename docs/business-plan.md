@@ -17,7 +17,7 @@ Written Wed Oct 14, 2026. Built on Alex Hormozi's three books (*$100M Offers*, *
 **The goal.** $1,000/month profit means **about $1,075/month of contribution**, after every variable cost (print, shipping, Stripe, AI, discounts, commissions, ad spend) and about $75/month of fixed costs. At our order mix that is **about 45 orders a month: 11 a week, 1.5 a day.**
 
 **Two milestones.**
-1. **The first 10 paying strangers by Sat Oct 31**, inside the Founding offer window.
+1. **The first paying strangers on launch day, Mon Oct 19** ([marketing/LAUNCH-TODAY.md](../marketing/LAUNCH-TODAY.md): in-person pop-up + online), **and the first 10 by Sat Oct 31.** (The Founding 100 discount was retired on Oct 19: no launch discount, honest prices.)
 2. **The first $1,000-profit month is December 2026** (base case: about 46 orders, about $1.1K profit). January dips with demand. **$1K every month from February 2027**, carried by partners, referrals and memorial demand, which don't depend on the holidays.
 
 **The engine, in one sentence.** We give away the thing every competitor charges for and makes you wait days to see, a finished portrait of *your* dog, and we put it in front of 100 new dog owners a day by hand until the machine runs without us.
@@ -44,7 +44,6 @@ Net = what's left of one order after its product, shipping, fees, AI, discounts,
 | Where the order comes from | Net per order | Basis |
 |---|---|---|
 | **Owned**: our content, Google free listings, SEO, direct | **≈ $50** | 30-day gross profit per buyer ≈ $54 (core piece + bumps), minus AI previews and a 3% remake reserve [I] |
-| **Founding window** (15% off, through Oct 31) | ≈ $38 | 30-day GP ≈ $40 [I] |
 | **Customer referral** or Gift Reveal recipient | ≈ $30 | Friend gets $15 off; referrer gets $15 credit [I] |
 | **Creator or partner code** | ≈ $27 | $99 hero canvas at 15% off ($84.15) minus 15% commission [I] |
 | **Digital only** ($29 file; the Dec 11–24 gift rush) | ≈ $25 | 96% gross margin [I] |
@@ -145,7 +144,7 @@ Value = (Dream outcome × Perceived likelihood) ÷ (Time delay × Effort)
 - **Attraction:** "Create your free portrait." One photo, about a minute, every style, no account, no card.
 - **Stack at the purchase moment** (`web/src/lib/offer.ts`): free preview and unlimited restyles · hi-res digital file included ($29 sold alone) · instant Gift Reveal · checked by a person before printing · free tracked US shipping · the Love-It Guarantee. Only real prices or "Included"; no invented "worth $X" values.
 - **Guarantee:** *The Love-It Guarantee.* Tell us within 30 days of delivery and we remake it in any style or refund in full. Every print is checked by a person first.
-- **Real urgency:** the Founding offer (15% off our first 100 orders, through Oct 31, applied automatically, real Stripe count). Order by Dec 10 for US Christmas delivery (shown from Nov 1). The Gift Reveal can be sent through Christmas Day.
+- **Real urgency:** Order by Dec 10 for US Christmas delivery (shown from Nov 1). The Gift Reveal can be sent through Christmas Day.
 - **Bundles:** The Heirloom Set (matching ornament + mug, save $10). Order bumps are never pre-checked.
 
 ### 3.3 Three named versions of the same offer
@@ -158,7 +157,7 @@ MAGIC-style names go in ads and hooks. Couture names stay on the site. Both desc
 | Ad name | "The Same-Day Gift Reveal for the dog lover on your list" | "A gentle way to remember them" (no "free!" shouting) | "Free 1-Minute Gallery Portrait for dog moms" |
 | Core piece | Framed 12×16 $95, or canvas 16×20 $99 | Canvas 16×20 $99 or framed 16×20 $119; Watercolor, Old Master, Charcoal | Canvas 16×20 $99; 18×24 $115 for above a sofa |
 | What's added | Gift Reveal, gift note, ship to recipient, Recipient's Choice (decision §11) | "Help me choose": the founder replies with the version that best keeps the eyes and markings | Heirloom Set; second dog +$15 and Diptych/Triptych (build §12) |
-| Urgency | Founding to Oct 31. Order by Dec 10. Gift Reveal through Dec 25 | **None, ever.** No countdowns, no discounts, no referral ask for 30 days | Founding to Oct 31. Holiday Cozy 2026 edition retires Dec 31 (decision 10) |
+| Urgency | Order by Dec 10. Gift Reveal through Dec 25 | **None, ever.** No countdowns, no discounts, no referral ask for 30 days | Holiday Cozy 2026 edition retires Dec 31 (decision 10) |
 | Where it runs | Creator gifts, gift-guide content, Google "gift" terms, partners' holiday push | Memorial search ad group, crematory partners (Jan), memorial pins | Breed content, Pinterest, Instagram |
 
 ---
@@ -170,20 +169,20 @@ Hormozi's order: **attraction** (get cash) → **upsell** (more cash) → **down
 | Stage | Offer | Status |
 |---|---|---|
 | Attraction | **Free preview** (the lead magnet: about $0.08 a portrait, about $0.40 per uploader) | Live |
-| Attraction | **Founding offer**, 15% off for the first 100 orders through Oct 31, real cap | Live. Never extended or restarted |
+| Attraction | ~~Founding offer, 15% off the first 100 orders~~ | Retired Oct 19 (founder decision): no launch discount |
 | Attraction | **Free Phone Portrait**: your preview as a 1080×1920 lock screen, emailed | Live |
 | Attraction | **Buy two portraits, get two matching ornaments free**, Nov 1–Dec 10 (replaces "25% off the second") | Live (switches on Nov 1) |
 | Attraction | **Monthly Portrait Draw**: make a free preview to enter, one framed winner a month, $15 five-day voucher for everyone else | January, after official rules are written |
 | Upsell | Anchor ladder (show the largest real piece first, then "Our pick") · prescribe size by wall · second dog +$15 · Diptych $139 · Triptych $199 | Partly live; bundles in §12 |
 | Upsell | Bumps: ornament $19, mug $25, Heirloom Set (save $10), never pre-checked | Live |
 | Upsell | Thank-you page: "Family Copy", the same portrait shipped to someone else at 20% off, one click with the card on file | Later (needs Stripe card-on-file) |
-| Downsell | Nurture emails step down: canvas → framed → fine-art print from $35 → the file alone $29. Same portrait, smaller scope, never a discount on the same item | Live (step 3 after the Founding offer closes) |
+| Downsell | Nurture emails step down: canvas → framed → fine-art print from $35 → the file alone $29. Same portrait, smaller scope, never a discount on the same item | Live (step 3) |
 | Downsell | Test "order in 48 hours and the matching ornament is on us" against a 10% code | Build §12 |
 | Continuity | **The Holiday Portrait**: opt in at checkout; each October we make this year's holiday edition of their dog, and they approve it with one tap (never auto-charged) | Q1 build, first harvest Oct 2027 |
 | Continuity | Dog's birthday captured at checkout → a free new-style preview each year | Q1 build |
 | Continuity | Gift cards (solves "I don't have a photo of their dog") | Q1 build |
 
-**30-day gross profit per buyer: ≈ $54** (≈ $40 during the Founding window), on about $102 of revenue, with conservative take rates [I] (`hormozi-application.md` §B9).
+**30-day gross profit per buyer: ≈ $54**, on about $102 of revenue, with conservative take rates [I] (`hormozi-application.md` §B9).
 
 **Client-financed acquisition (CFA)** means a customer pays back what it cost to acquire them within 30 days.
 
@@ -333,7 +332,7 @@ Fixed costs sit outside the $100: the domain (Vercel listed pupprints.shop at ab
 
 | Phase | Dates | Job | Exit condition |
 |---|---|---|---|
-| **1. First blood** | Oct 15–31 | Keys live, pipeline proven, first strangers buy inside the Founding window | ≥10 orders, ≥3 reviews |
+| **1. First blood** | Oct 15–31 | Keys live, pipeline proven, first strangers buy (launch day Oct 19: in-person pop-up) | ≥10 orders, ≥3 reviews |
 | **2. Load the holiday** | Nov 1–26 | Holiday Cozy push and the Buy-two offer go live, partners activated, Merchant Center live, paid test read | ≥25 orders cumulative, ≥10 active partners |
 | **3. Peak** | Nov 27–Dec 10 | Black Friday bonus (not a discount), "Order by Dec 10" everywhere, scale only what meets CFA | ≥30 orders in these 2 weeks |
 | **4. Instant gift** | Dec 11–25 | The Gift Reveal: "Give it today, reveal it Christmas morning; the print follows" | ≥20 orders, digital included |
@@ -345,7 +344,7 @@ Fixed costs sit outside the $100: the domain (Vercel listed pupprints.shop at ab
 |---|---|---|---|
 | 1 | Oct 15–21 | §13 Day 0 → `FIRST-SALE-RUNBOOK.md` phases 0–2. 150 creator gifts. About 60 partner emails (10 a day while the mailbox warms up). First walk-in afternoon. 2–3 shorts a day. Submit Merchant Center. Whisper the holiday edition | 2 / 2 (**first sale**) |
 | 2 | Oct 22–28 | Full Rule of 100. Google $40 test. Referral program and Free Phone Portrait live. First creator shares. Tease the holiday edition | 3 / 5 |
-| 3 | Oct 29–Nov 4 | Founding last call (real: ends Oct 31 11:59pm PT). The Holiday Cozy 2026 edition push and Buy-two-get-two-ornaments start Nov 1. Shout: twice-daily posts Oct 30–Nov 2 | 5 / 10 |
+| 3 | Oct 29–Nov 4 | The Holiday Cozy 2026 edition push and Buy-two-get-two-ornaments start Nov 1. Shout: twice-daily posts Oct 30–Nov 2 | 5 / 10 |
 | 4 | Nov 5–11 | "A holiday portrait with every groom" through partners. Breeders with December litters. First creator physical seeds (≤3) | 4 / 14 |
 | 5 | Nov 12–18 | **Day-30 gate (Nov 13).** Promote the best post if CAC allows. Gift-guide content begins | 5 / 19 |
 | 6 | Nov 19–25 | "For the dog person who has everything." Gift and memorial Pinterest pins at peak. Partner newsletter: order-by dates | 6 / 25 |
@@ -424,11 +423,11 @@ December lands at about 45 orders, which is the §1.2 base case.
 
 ## 12. Build status
 
-**Live:** free preview with OpenAI/Gemini · value stack, Founding auto-apply with the real Stripe count, Heirloom Set, never-pre-checked bumps, "keep your portrait" modal · Gift Reveal · creator codes, gift tool and attribution · nurture emails and lifecycle cron · admin (orders, approve-to-print, partners, gifts) · breed pages, feeds.
+**Live:** free preview with OpenAI/Gemini · value stack, Heirloom Set, never-pre-checked bumps, "keep your portrait" modal · Gift Reveal · creator codes, gift tool and attribution · nurture emails and lifecycle cron · admin (orders, approve-to-print, partners, gifts) · breed pages, feeds.
 
 **Live since Oct 14:** Give $15 / Get $15 referral program (success page, Gift Reveal, confirmation email, 7-day reminder, rewards issued by the daily cron after the guarantee window) · Free Phone Portrait lead magnet · partner QR code and printable A6 counter card with the fee disclosure · batch gift tool (20 at a time) · Rule-of-100 scorecard (`/admin/scorecard`) · new hero and before/after portraits (more styles in progress).
 
-**Live since Oct 14 (round 2):** "How did you hear about us?" on the success page, with a breakdown on the scorecard · Buy two portraits, get two matching ornaments free (switches on Nov 1, off after Dec 10, server-priced; quantity control in the product step) · "This portrait is in memory of my dog" toggle: no urgency, no promos, no referral asks, gentle nurture · Recipient's Choice in the guarantee, gift copy, Gift Reveal, terms and FAQ · creator/partner attribution 60 days · Holiday Cozy as the 2026 edition, retired automatically after Dec 31 · nurture step 3 becomes the print-from-$35 / file-$29 downsell once the Founding offer closes.
+**Live since Oct 14 (round 2):** "How did you hear about us?" on the success page, with a breakdown on the scorecard · Buy two portraits, get two matching ornaments free (switches on Nov 1, off after Dec 10, server-priced; quantity control in the product step) · "This portrait is in memory of my dog" toggle: no urgency, no promos, no referral asks, gentle nurture · Recipient's Choice in the guarantee, gift copy, Gift Reveal, terms and FAQ · creator/partner attribution 60 days · Holiday Cozy as the 2026 edition, retired automatically after Dec 31 · nurture step 3 becomes the print-from-$35 / file-$29 downsell.
 
 **Next:**
 1. Google Customer Reviews opt-in on the success page (needs the domain and a Merchant Center ID).

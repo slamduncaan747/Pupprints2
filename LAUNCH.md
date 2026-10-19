@@ -35,6 +35,9 @@ Printful → Settings → API → create token → `PRINTFUL_API_KEY`, set `FULF
 
 ## 5. First sale
 
+**Launching today?** Use [marketing/LAUNCH-TODAY.md](marketing/LAUNCH-TODAY.md): hour-by-hour, in-person pop-up plus online, no personal network.
+
+
 Follow **[marketing/FIRST-SALE-RUNBOOK.md](marketing/FIRST-SALE-RUNBOOK.md)** step by step (no personal network needed): turn on keys → prove the pipeline with a real $35 order + refund → open Etsy, Google Merchant Center and social storefronts → run the daily gift loop (10 creator gifts + 10 public "we paint your dogs" gifts per day) → spend the $100 only once pixels are live.
 
 ## Before scaling

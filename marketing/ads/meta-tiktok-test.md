@@ -107,7 +107,7 @@ The site stores the **first touch** in a 30-day cookie and saves it on every lea
 |---|---|
 | `utm_source` | `tiktok` · `instagram` · `facebook` · `youtube` · `pinterest` · `nextdoor` · `reddit` · `etsy` · `google` · `email` · `sms` · `friends` · `shelter_[name]` · `qr` |
 | `utm_medium` | `social` (organic post or bio) · `paid_social` · `dm` · `community` (groups, Nextdoor) · `personal` (founder's own posts and texts) · `email` · `sms` · `referral` · `creator` · `print` (QR) |
-| `utm_campaign` | `organic_wk1` · `bio` · `boost_wk1` · `spark_[code]` · `founding100` · `friends_gift` · `launch_post` · `comment_portrait` · `fb_group_[breed]` · `shelter_[name]` · `dogpark_wk1` |
+| `utm_campaign` | `organic_wk1` · `bio` · `boost_wk1` · `spark_[code]` · `friends_gift` · `launch_post` · `comment_portrait` · `fb_group_[breed]` · `shelter_[name]` · `dogpark_wk1` |
 | `utm_content` | script number + slug, e.g. `s01_royal_reveal`, `s03_rate_dogs`, or the creator handle |
 | `utm_term` | audience note for paid only, e.g. `us_25_54_pets` |
 
@@ -155,7 +155,7 @@ The value is the **lesson**: which hook gets clicks from strangers. That's the s
 7. "Every portrait is checked by a person before it's printed. Love it or we remake or refund it." / **The love-it guarantee**
 8. "Two dogs? One portrait. Upload, pick a style, frame it. Hi-res file included free with every print." / **Your whole pack, framed**
 9. "Christmas shopping for every dog person on your list, done in an evening. Free preview for each one." / **Dog people gifts, sorted**
-10. "Be one of our first 100 customers: 15% off with FOUNDING100 (ends Oct 31 or at 100 orders)." / **Founding 100: 15% off** *(only while it's true)*
+10. "See it free first. No card. Love it, or we remake it or refund you."
 
 If asked how it's made, the comment-reply standard is: "Our AI artist creates it; our team finishes and checks every one."
 

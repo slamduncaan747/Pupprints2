@@ -14,7 +14,7 @@ Do these in order on Day 1, then follow the [runbook](FIRST-SALE-RUNBOOK.md) (ha
 |---|---|---|
 | 0–10 | **Check the site URL env.** Vercel → Settings → Environment Variables: `NEXT_PUBLIC_SITE_URL=https://pup-prints.vercel.app` on **Production *and* Preview**. The code's fallback is `https://pupprints.vercel.app`, which is **someone else's site** ("Pup Print Portraits"). Production looks right today (canonical links point to `pup-prints`), but confirm it, and update it the moment `pupprints.shop` is live. | Gift Reveal links, partner links and emails are all built from this URL |
 | 10–20 | **One real order, end to end.** Make a preview of your own dog → buy the $29 digital file with your card → check the confirmation email, the Gift Reveal page and Admin → Orders. Refund yourself in Stripe afterwards. | Proves money, email and admin work before you send anyone |
-| 20–28 | **Stripe codes** (Products → Coupons): **(1)** a 15% "Once" coupon with promotion code **`FOUNDING100`**: max 100 redemptions, expires **Oct 31 11:59pm PT**, first-time order only. **(2)** A 100% "Once" coupon **`INTERNAL100`** with *no public code*. Add a single-use code per gift or Etsy order (e.g. `GIFT-RUFUS`). | The honest launch offer, plus the $0 internal orders used for gift prints and Etsy fulfillment |
+| 20–28 | **Stripe codes** (Products → Coupons): A 100% "Once" coupon **`INTERNAL100`** with *no public code*. Add a single-use code per gift or Etsy order (e.g. `GIFT-RUFUS`). | The honest launch offer, plus the $0 internal orders used for gift prints and Etsy fulfillment |
 | 28–35 | **Import creators.** Admin → Partners → Import → upload [`creators/prospects.csv`](creators/prospects.csv). | 167 creators land as `prospect`, with notes |
 | 35–45 | **Test the gift flow.** Admin → Gifts → make your own dog's portrait → open the reveal link on your phone → then make 2 for P1 creators from the list. | You'll know the flow cold before the daily 25 |
 | 45–55 | **Claim handles + bios:** `@pupprints.shop` on IG + TikTok ([social-setup.md](content/social-setup.md)). Paste the bios and links. | Everything you send points here |
@@ -72,7 +72,6 @@ Do these in order on Day 1, then follow the [runbook](FIRST-SALE-RUNBOOK.md) (ha
 | 5 | `REVIEW_URL` not set, so the review button opens a `mailto:` | env | No public reviews collected |
 | 6 | No **postal address** in marketing email footers (CAN-SPAM) | `lib/email/layout.ts` | Legal |
 | 7 | `EMAIL_FROM` / support email default to `@pupprints.com` | env | Deliverability: use a verified domain you own |
-| 8 | Nurture step 3 gives a personal **10%** code while FOUNDING100 gives 15% | `api/cron/lifecycle` → `createPersonalWelcomeCode` | Customers feel short-changed (fix in [flows §2](email/flows.md)) |
 | 9 | Typed partner codes (e.g. `RUFUS15`) don't exist as Stripe promotion codes; only `?ref=` links work | `lib/stripe.ts` | Spoken codes in creator videos fail; manual workaround in [playbook §8](creators/outreach-playbook.md#8-ops-tracking-codes-payouts) |
 | 10 | `?ref=` cookie is overwritten by the latest partner link (last click wins), while UTMs are first-touch; strategy wants a 60-day window, the code has 30 | `components/site/tracking.tsx`, `program.ts` | The partner agreement says "30 days, most recent link wins" to match today's code. Update it if this changes. |
 
@@ -81,7 +80,7 @@ Do these in order on Day 1, then follow the [runbook](FIRST-SALE-RUNBOOK.md) (ha
 - **Unit economics:** `docs/research/fulfillment.md`
 - **Creator rates and FTC:** `docs/research/influencers.md`
 - **Funnel benchmarks:** `docs/research/growth.md`
-- **Strategy terms** (15% commission, 20% Founding Partner rate, Founding 100): `docs/strategy.md` §8–9
+- **Strategy terms** (15% commission, 20% Founding Partner rate): `docs/strategy.md` §8–9
 - **Prospect follower counts** are listed per row:
   - TikTok and YouTube counts were read live on 2026-10-13.
   - Instagram counts come from dated third-party snapshots (TheSocialCat, iQfluence, Modash, Scrumball) and are labeled as such.
