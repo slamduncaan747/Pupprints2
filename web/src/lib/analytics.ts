@@ -22,7 +22,9 @@ export type FunnelEvent =
   /** "How did you hear about us?" answered on the success page. */
   | "HeardFrom"
   /** "This portrait is in memory of my dog" switched on or off in the create flow. */
-  | "MemorialToggle";
+  | "MemorialToggle"
+  /** Admin pop-up mode: a portrait made in person (/admin/popup). */
+  | "PopupPortrait";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 
