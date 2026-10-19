@@ -1,7 +1,5 @@
 import { cookies } from "next/headers";
-import { FOUNDING } from "@/lib/launch";
-import { giftTwoActive, staticFoundingStatus, type DiscountOption, type OfferStatus } from "@/lib/offer";
-import { foundingStatus } from "@/lib/stripe";
+import { giftTwoActive, type DiscountOption, type OfferStatus } from "@/lib/offer";
 import { normalizeCode } from "@/components/partners/program";
 
 export const runtime = "nodejs";
@@ -18,20 +16,12 @@ function safeDecode(v: string) {
 /**
  * GET /api/offer[?code=CODE]: the live offer for this visitor, for the purchase moment.
  *
- * - `founding`: FOUNDING100 status. `remaining` is maxRedemptions − times_redeemed straight from
- *   Stripe (cached ~60s per instance), or null when Stripe isn't configured or can't be read:
- *   a count is never guessed. Without Stripe, `open` follows the static deadline only.
  * - `discounts`: every automatic discount /api/checkout would consider for this visitor (a
- *   creator or referral code from ?code= or the pp_ref cookie, and FOUNDING100). The product step
- *   runs the same pickCheckoutDiscount on its subtotal, so the price shown is the price charged.
+ *   creator or referral code from ?code= or the pp_ref cookie; empty without one). The product
+ *   step runs the same pickCheckoutDiscount on its subtotal, so the price shown is the price charged.
  * - `giftTwo`: "two portraits, two ornaments" is live on the server's clock (checkout uses the same).
  */
 export async function GET(req: Request) {
-  const live = await (foundingStatus() ?? Promise.resolve(null));
-  const founding: OfferStatus["founding"] = live
-    ? { ...staticFoundingStatus(), open: live.open, remaining: live.remaining }
-    : staticFoundingStatus();
-
   const rawTyped = new URL(req.url).searchParams.get("code");
   const typed = rawTyped ? normalizeCode(rawTyped.slice(0, 64)) : null;
   const store = await cookies();
@@ -63,14 +53,8 @@ export async function GET(req: Request) {
   } else if (partner && partner.discountPercent > 0) {
     discounts.push({ source: "partner", code: partner.code, percentOff: partner.discountPercent });
   }
-  // With Stripe, only a live, redeemable FOUNDING100 counts (exactly what checkout applies).
-  // Without Stripe there is no checkout to disagree with, so the static deadline decides.
-  if (live ? live.open : founding.open) {
-    discounts.push({ source: "founding", code: FOUNDING.code, percentOff: FOUNDING.percentOff });
-  }
 
   const body: OfferStatus = {
-    founding,
     discounts,
     giftTwo: giftTwoActive(),
     ...(rawTyped ? { code: typedResult ?? { code: rawTyped.trim().toUpperCase().slice(0, 64), valid: false } } : {}),

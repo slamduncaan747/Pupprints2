@@ -9,7 +9,6 @@ import { Pieces } from "@/components/home/pieces";
 import { Moment } from "@/components/home/moment";
 import { Gifting } from "@/components/home/gifting";
 import { OfferStack } from "@/components/home/offer-stack";
-import { Founding } from "@/components/home/founding";
 import { Heirloom } from "@/components/home/heirloom";
 import { Guarantee } from "@/components/home/guarantee";
 import { Questions, homeFaq } from "@/components/home/questions";
@@ -43,9 +42,9 @@ export const metadata: Metadata = {
 /**
  * The home page as a Grand Slam Offer in campaign clothing. Each section moves one lever of the value
  * equation: the dream outcome (hero), likelihood (a real photo beside its portrait), effort and time
- * (one photo, a minute, no card), the pieces, one campaign moment, the stacked offer, real scarcity
- * (Founding 100), the instant Gift Reveal, a premium bundle, risk reversal, objections, and one last
- * call to action. One call to action per screen.
+ * (one photo, a minute, no card), the pieces, one campaign moment, the stacked offer, the instant
+ * Gift Reveal, a premium bundle, risk reversal, objections, and one last call to action. One call
+ * to action per screen.
  */
 export default function HomePage() {
   const faqs = homeFaq();
@@ -58,7 +57,6 @@ export default function HomePage() {
       <Pieces />
       <Moment />
       <OfferStack />
-      <Founding />
       <Gifting />
       <Heirloom />
       <Guarantee />

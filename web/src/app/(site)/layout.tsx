@@ -3,8 +3,8 @@ import { Footer } from "@/components/site/footer";
 import { TopLine } from "@/components/site/top-line";
 
 /**
- * Marketing pages are static, but the offer on them follows the calendar (the founding deadline, the
- * Christmas cutoff), so regenerate them at most hourly.
+ * Marketing pages are static, but the offer on them follows the calendar (two portraits, two
+ * ornaments from Nov 1, the Christmas cutoff), so regenerate them at most hourly.
  */
 export const revalidate = 3600;
 

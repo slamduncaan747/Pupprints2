@@ -1,5 +1,4 @@
 import { PRODUCT_MAP, PROMISES } from "@/lib/catalog";
-import { FOUNDING } from "@/lib/launch";
 import { GUARANTEE, REFERRAL, REFERRAL_TERMS } from "@/lib/offer";
 import { formatPrice } from "@/lib/utils";
 import {
@@ -501,15 +500,9 @@ export type NurtureInput = {
   createUrl: string;
   unsubscribeUrl: string;
   /**
-   * Step 3 only, and only when a real code with a real expiry exists: the public Founding 100
-   * code while it can still be redeemed (never for memorial leads). A personal code is still
-   * supported here, but the lifecycle cron no longer sends one: after the Founding window, step 3
-   * is the feature downsell (no discount codes).
-   */
-  offer?: { code: string; expiresAt: Date; percentOff: number; kind?: "personal" | "founding" } | null;
-  /**
    * "This portrait is in memory of my dog": step 3 is a gentle note (take your time; remakes are
-   * free until it's them), never an offer, a deadline or a downsell.
+   * free until it's them), never an offer, a deadline or a downsell. Everyone else's step 3 is the
+   * feature downsell at catalog prices (no discount codes).
    */
   memorial?: boolean;
 };
@@ -520,18 +513,6 @@ export function downsellPrices() {
     printFrom: Math.min(...PRODUCT_MAP.poster.variants.map((v) => v.price)),
     file: PRODUCT_MAP.digital.variants[0].price,
   };
-}
-
-function expiryText(d: Date) {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    timeZone: "America/New_York",
-    timeZoneName: "short",
-  }).format(d);
 }
 
 export function nurtureEmail(i: NurtureInput): RenderedEmail {
@@ -607,7 +588,6 @@ export function nurtureEmail(i: NurtureInput): RenderedEmail {
       `Choose a size: ${i.createUrl}`,
     ];
   } else {
-    const offer = i.memorial ? null : i.offer;
     const { printFrom, file } = downsellPrices();
     if (i.memorial) {
       subject = "Take your time";
@@ -632,51 +612,6 @@ export function nurtureEmail(i: NurtureInput): RenderedEmail {
         `See it: ${i.createUrl}`,
         "",
         "This is the last email we'll send about this preview.",
-      ];
-    } else if (offer?.kind === "founding") {
-      subject = `${offer.percentOff}% off ${theirPortrait}, through ${FOUNDING.deadlineLabel}`;
-      preheader = `Code ${offer.code} takes ${offer.percentOff}% off for our first ${FOUNDING.maxRedemptions} orders, through ${FOUNDING.deadlineLong}.`;
-      body = [
-        heading(pet ? `A little nudge for ${pet}` : "A little nudge"),
-        para(
-          `If you've been thinking it over: we're a new studio, and our first ${FOUNDING.maxRedemptions} orders get ${offer.percentOff}% off with our Founding ${FOUNDING.maxRedemptions} code.`,
-        ),
-        i.previewUrl ? framedImage(i.previewUrl, pet ? `Preview of ${pet}` : "Your preview", 220) : "",
-        callout(
-          `<div style="text-align:center;"><div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#7a7368;">Founding ${FOUNDING.maxRedemptions} code</div><div style="font-family:Georgia,serif;font-size:28px;color:#1b1814;margin:6px 0;">${esc(offer.code)}</div><div style="font-size:13px;color:#7a7368;">${offer.percentOff}% off, for our first ${FOUNDING.maxRedemptions} orders. Ends ${esc(FOUNDING.deadlineLong)}.</div></div>`,
-          "clay",
-        ),
-        button(i.createUrl, "Use the code"),
-        para("Enter it at checkout. This is the last email we'll send about this preview.", { muted: true, size: 14 }),
-      ];
-      text = [
-        subject,
-        "",
-        `Founding ${FOUNDING.maxRedemptions} code: ${offer.code} (${offer.percentOff}% off, for our first ${FOUNDING.maxRedemptions} orders)`,
-        `Ends: ${FOUNDING.deadlineLong}`,
-        `Use it: ${i.createUrl}`,
-      ];
-    } else if (offer) {
-      const exp = expiryText(offer.expiresAt);
-      subject = `${offer.percentOff}% off ${theirPortrait}, until ${new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "America/New_York" }).format(offer.expiresAt)}`;
-      preheader = `Your personal code ${offer.code} takes ${offer.percentOff}% off your first order. It expires ${exp}.`;
-      body = [
-        heading(pet ? `A little nudge for ${pet}` : "A little nudge"),
-        para(`If you've been thinking it over, here's a personal code for ${offer.percentOff}% off your first order.`),
-        i.previewUrl ? framedImage(i.previewUrl, pet ? `Preview of ${pet}` : "Your preview", 220) : "",
-        callout(
-          `<div style="text-align:center;"><div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#7a7368;">Your code</div><div style="font-family:Georgia,serif;font-size:28px;color:#1b1814;margin:6px 0;">${esc(offer.code)}</div><div style="font-size:13px;color:#7a7368;">Single use. Expires ${esc(exp)}.</div></div>`,
-          "clay",
-        ),
-        button(i.createUrl, "Use my code"),
-        para("Enter it at checkout. This is the last email we'll send about this preview.", { muted: true, size: 14 }),
-      ];
-      text = [
-        subject,
-        "",
-        `Your personal code: ${offer.code} (${offer.percentOff}% off your first order, single use)`,
-        `Expires: ${exp}`,
-        `Use it: ${i.createUrl}`,
       ];
     } else {
       // The feature downsell: the same portrait, smaller scope. Real catalog prices, no code.
@@ -728,8 +663,6 @@ export type WelcomeInput = {
   source: string;
   /** Public first-order code (WELCOME10), or null when it can't be guaranteed to work. */
   welcome: { code: string; percentOff: number } | null;
-  /** Founding 100 code while it can still be redeemed. */
-  founding: { code: string; percentOff: number } | null;
   createUrl: string;
   unsubscribeUrl: string;
 };
@@ -769,12 +702,6 @@ export function welcomeEmail(i: WelcomeInput): RenderedEmail {
     i.welcome
       ? codeBox(i.welcome.code, "Your welcome code", `${i.welcome.percentOff}% off your first order. Enter it at checkout.`)
       : "",
-    i.founding
-      ? para(
-          `Ordering soon? Through ${esc(FOUNDING.deadlineLong)}, our first ${FOUNDING.maxRedemptions} orders can use <strong style="color:#1b1814;">${esc(i.founding.code)}</strong> for ${i.founding.percentOff}% off instead (one code per order).`,
-          { size: 14 },
-        )
-      : "",
     button(i.createUrl, "Make my free preview"),
   ].join("\n");
 
@@ -790,9 +717,6 @@ export function welcomeEmail(i: WelcomeInput): RenderedEmail {
     "3. Order it as a print, canvas or framed piece (hi-res file included)",
     "",
     i.welcome ? `Your welcome code: ${i.welcome.code} (${i.welcome.percentOff}% off your first order)` : null,
-    i.founding
-      ? `Through ${FOUNDING.deadlineLong}, our first ${FOUNDING.maxRedemptions} orders can use ${i.founding.code} for ${i.founding.percentOff}% off instead (one code per order).`
-      : null,
     `Make your free preview: ${i.createUrl}`,
     "",
     textFooter({ ...i.ctx, unsubscribeUrl: i.unsubscribeUrl, footerNote }),

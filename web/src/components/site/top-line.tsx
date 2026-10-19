@@ -1,49 +1,33 @@
-import { FOUNDING_OFFER, GIFT_TWO, GUARANTEE, HOLIDAY, OFFER, giftTwoActive, holidayNotice } from "@/lib/offer";
-import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
+import { SHIPPING_RATES } from "@/lib/catalog";
+import { GIFT_TWO, HOLIDAY, giftTwoActive, holidayNotice, OFFER } from "@/lib/offer";
 import { TopLineBar, type TopLineMessage } from "@/components/site/top-line-bar";
 import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-keys";
 
 /**
- * The single most compelling real offer right now, in date order. Every line is true when shown:
- * the founding offer until its deadline (the browser swaps it for the next line if the cap is
- * reached first), "two portraits, two ornaments" with the Christmas cutoff (both end Dec 10) from
- * Nov 1, Gift Reveal up to Christmas Day, then the standing promise.
+ * The single most compelling real message right now, in date order. Every line is true when shown:
+ * "two portraits, two ornaments" with the Christmas cutoff (both end Dec 10) from Nov 1, Gift
+ * Reveal up to Christmas Day, otherwise the standing promise (free US shipping, free preview).
  */
-function messages(now: number = Date.now()): TopLineMessage[] {
-  const list: TopLineMessage[] = [];
-  if (foundingOfferOpen(now)) {
-    list.push({
-      key: "founding-2026",
-      kind: "founding",
-      short: `${FOUNDING_OFFER.headline}, through ${FOUNDING.deadlineLabel}`,
-      long: `${FOUNDING_OFFER.headline} for our first ${FOUNDING.maxRedemptions} orders, through ${FOUNDING.deadlineLabel}`,
-      href: "/create",
-    });
-  }
+function message(now: number = Date.now()): TopLineMessage {
   // Nov 1–Dec 10: two portraits, two ornaments on us (it ends with the US Christmas cutoff).
   if (giftTwoActive(now)) {
-    list.push({
-      key: "gift-two-2026",
-      kind: "other",
-      short: GIFT_TWO.short,
-      long: `${GIFT_TWO.short}. ${HOLIDAY.label}.`,
-      href: "/create",
-    });
+    return { key: "gift-two-2026", short: GIFT_TWO.short, long: `${GIFT_TWO.short}. ${HOLIDAY.label}.`, href: "/create" };
   }
   // From Nov 1 to the Dec 10 cutoff: the US Christmas cutoff; then Gift Reveal until Christmas Day.
   const holiday = holidayNotice(now, { physical: true, shipCountry: "US" });
   if (holiday) {
-    const key = holiday === HOLIDAY.label ? "holiday-2026" : "reveal-2026";
-    list.push({ key, kind: "other", short: holiday, long: holiday, href: "/create" });
+    return { key: holiday === HOLIDAY.label ? "holiday-2026" : "reveal-2026", short: holiday, long: holiday, href: "/create" };
   }
-  list.push({
-    key: "promise",
-    kind: "other",
-    short: `Free preview in about a minute. ${GUARANTEE.short}.`,
-    long: OFFER.promise,
+  // The standing promise. "Free US shipping" only while the catalog really charges $0 for it.
+  // Phones: no-break spaces keep each phrase whole, so a wrap falls at the dot.
+  const freeShipping = SHIPPING_RATES.US === 0;
+  const keep = (t: string) => t.replace(/ /g, "\u00a0");
+  return {
+    key: "shipping-preview",
+    short: `${freeShipping ? `${keep("Free US shipping")} · ` : ""}${keep("See it free before you pay")}`,
+    long: `${freeShipping ? "Free US shipping · " : ""}See your portrait free before you pay`,
     href: "/create",
-  });
-  return list;
+  };
 }
 
 /**
@@ -52,13 +36,12 @@ function messages(now: number = Date.now()): TopLineMessage[] {
  * who already dismissed this exact message, so there is no flash and no layout shift.
  */
 export function TopLine() {
-  const [primary, ...rest] = messages();
-  const fallback = rest.find((m) => m.kind !== "founding") ?? null;
+  const current = message();
   const hideIfDismissed = `try{var k=localStorage.getItem(${JSON.stringify(TOP_LINE_STORAGE_KEY)});if(k){var s=document.createElement("style");s.textContent="#${TOP_LINE_ID}[data-key='"+k.replace(/[^a-z0-9-]/gi,"")+"']{display:none}";document.head.appendChild(s)}}catch(e){}`;
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: hideIfDismissed }} />
-      <TopLineBar primary={primary} fallback={fallback} cta={OFFER.ctaShort} />
+      <TopLineBar message={current} cta={OFFER.ctaShort} />
     </>
   );
 }

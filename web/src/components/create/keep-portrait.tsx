@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { FOUNDING_OFFER } from "@/lib/offer";
-import { fetchOffer, peekOffer } from "./api";
 import { EmailCapture } from "./email-capture";
 
 /**
@@ -70,9 +68,8 @@ export function KeepPortrait({
     if (read("local", DONE_KEY) || read("session", SHOWN_KEY)) return;
     shownRef.current = true;
     write("session", SHOWN_KEY, "1");
-    if (!memorial) void fetchOffer().catch(() => {});
     setOpen(true);
-  }, [suppressed, memorial]);
+  }, [suppressed]);
 
   // Desktop exit intent: the cursor leaves the window through the top edge.
   useEffect(() => {
@@ -122,8 +119,6 @@ export function KeepPortrait({
   }
 
   if (!open) return null;
-  const offer = peekOffer();
-  const foundingApplies = !memorial && Boolean(offer?.discounts?.some((d) => d.source === "founding"));
 
   return (
     <dialog
@@ -168,12 +163,6 @@ export function KeepPortrait({
               markPortraitSaved();
             }}
           />
-          {foundingApplies && (
-            <p className="label mt-6 leading-relaxed text-ink-3">
-              The founding offer still applies when you return: {FOUNDING_OFFER.percentOff}% off for our first{" "}
-              {FOUNDING_OFFER.maxRedemptions} orders, through {FOUNDING_OFFER.deadlineLabel}.
-            </p>
-          )}
         </div>
       </div>
     </dialog>

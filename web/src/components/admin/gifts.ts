@@ -75,7 +75,7 @@ export async function loadGifts(c: SupabaseClient, opts: { partnerId?: string; l
         (g.generation_id ? signed.get(`web/${g.generation_id}.jpg`) : undefined) ??
         (first(generations)?.preview_path ? previewUrl(first(generations)!.preview_path!) : null),
       revealUrl,
-      dm: giftDm({ name: g.recipient_name, pet: g.pet_name, link: revealUrl, partnered: Boolean(g.partner_id) }),
+      dm: giftDm({ name: g.recipient_name, pet: g.pet_name, link: revealUrl }),
       style: first(generations)?.style ?? null,
       partner: first(partners),
     };

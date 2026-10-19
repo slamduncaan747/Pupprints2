@@ -17,7 +17,6 @@ import {
   applyBundles,
   discountLabel,
   discountSaving,
-  FOUNDING_OFFER,
   GIFT_TWO,
   giftTwoActive,
   GUARANTEE,
@@ -89,8 +88,9 @@ const fmtDate = (d: Date) => d.toLocaleDateString("en-US", { weekday: "short", m
 /* ------------------------------ live offer ------------------------------ */
 
 /**
- * The offer checkout will really apply for this visitor (FOUNDING100 or their creator code), from
- * /api/offer. null until it answers (or if it can't): then only regular prices are shown.
+ * The discount checkout will really apply for this visitor (their creator code or a friend's
+ * referral code, usually none), from /api/offer. null until it answers (or if it can't): then only
+ * regular prices are shown.
  */
 function useOffer(code: string): OfferStatus | null {
   const [state, setState] = useState<{ code: string; offer: OfferStatus | null }>(() => ({
@@ -154,8 +154,8 @@ export function ProductStep({
 
   // Same pricing as /api/checkout (applyBundles): catalog prices, "two portraits, two ornaments"
   // (Nov 1–Dec 10, on the server's clock via /api/offer), the Heirloom Set on paid ornaments, then
-  // the one automatic discount that saves the most (FOUNDING100, a creator code or a friend's
-  // referral code) on the paid merchandise, never on shipping.
+  // the one automatic discount, if any (a creator code or a friend's referral code), on the paid
+  // merchandise, never on shipping.
   const offer = useOffer(flow.creatorCode);
   const now = useNow();
   const giftTwoOn = physical && (offer ? offer.giftTwo : now !== null && giftTwoActive(now));
@@ -189,17 +189,14 @@ export function ProductStep({
         : percentOffCents(variantCents, opt.percentOff);
     return { cents: variantCents - off, option: off > 0 && !memorial ? opt : null };
   };
-  const tagFor = (opt: DiscountOption | null) =>
-    opt?.source === "founding" ? "Founding price" : opt?.source === "referral" ? "With a friend's code" : "With your code";
+  const tagFor = (opt: DiscountOption | null) => (opt?.source === "referral" ? "With a friend's code" : "With your code");
   const priceTag = tagFor(discount);
   const headline = priceFor(variant.price);
-  /** A friend's referral code that isn't the discount applied (below $59, or founding saves more). */
+  /** A friend's referral code that doesn't apply to this order yet (below its $59 minimum). */
   const referral = options.find((o): o is Extract<DiscountOption, { source: "referral" }> => o.source === "referral") ?? null;
   const referralNote =
-    referral && discount?.source !== "referral" && !memorial
-      ? merchandise < referral.minimumCents
-        ? `Referral code ${referral.code}: $${referral.amountOffCents / 100} off first orders of $${referral.minimumCents / 100} or more`
-        : `The founding offer saves you more on this order. Code ${referral.code} still thanks your friend.`
+    referral && discount?.source !== "referral" && !memorial && merchandise < referral.minimumCents
+      ? `Referral code ${referral.code}: $${referral.amountOffCents / 100} off first orders of $${referral.minimumCents / 100} or more`
       : null;
   const style = getStyle(active.style);
   const name = (giftToken ? (active.petName ?? "") : flow.petName).trim();
@@ -440,14 +437,7 @@ export function ProductStep({
               </span>
             </p>
             <p className="label mt-3 leading-relaxed text-ink-2">
-              {discount.source === "founding" ? (
-                <>
-                  {FOUNDING_OFFER.label}
-                  {typeof offer?.founding.remaining === "number" && (
-                    <span className="text-ink-3 tabular-nums"> · {offer.founding.remaining} remaining</span>
-                  )}
-                </>
-              ) : discount.source === "partner" ? (
+              {discount.source === "partner" ? (
                 <>
                   Creator code {discount.code} — {discount.percentOff}% off, applied at checkout
                 </>
@@ -796,13 +786,13 @@ export function ProductStep({
             )}
           </dl>
           <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-4">
-            <p className="label text-ink">Today</p>
+            <p className="label text-ink">Total</p>
             <p className="flex items-baseline gap-3">
               {discountCents > 0 && !memorial && (
                 <>
                   <span className="sr-only">Regular total </span>
                   <s className="text-[14px] text-ink-3 tabular-nums decoration-1">{formatPrice(merchandise + shipping)}</s>
-                  <span className="sr-only">, today </span>
+                  <span className="sr-only">, with your code </span>
                 </>
               )}
               <span className="font-display text-[30px] leading-none tabular-nums">{formatPrice(total)}</span>
@@ -974,10 +964,9 @@ function StackRow({ item, value, quiet }: { item: string; value: ReactNode; quie
 }
 
 /**
- * "Have a creator or friend's code?": while FOUNDING100 is applied automatically Stripe's promo-code
- * box is off, so a creator's code or a friend's referral code is entered here. It's checked against
- * /api/offer before it's kept, and sent with the checkout so its owner is credited (and the best
- * discount applies).
+ * "Have a creator or friend's code?": a creator's code or a friend's referral code is entered here.
+ * It's checked against /api/offer before it's kept, and sent with the checkout so its owner is
+ * credited and their discount applies (the price shown here is the price charged).
  */
 function CreatorCode({
   code,

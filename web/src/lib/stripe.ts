@@ -1,7 +1,6 @@
 import "server-only";
 import Stripe from "stripe";
 import { env, features } from "@/lib/env";
-import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
 import { REFERRAL } from "@/lib/offer";
 
 /**
@@ -105,119 +104,6 @@ export function ensureWelcomePromo(): Promise<boolean> {
     });
   }
   return welcomePromise;
-}
-
-let foundingPromise: Promise<boolean> | null = null;
-
-/**
- * Ensure the Founding 100 launch offer exists: coupon PP_FOUNDING_15 (15% off, once) and the
- * public promotion code FOUNDING100 (max 100 redemptions, hard expiry). Idempotent and race-safe:
- * an existing FOUNDING100 code (active or not) is never recreated, so the cap and deadline are
- * never reset. No-op after the deadline. Cached per server instance; failures retry next call.
- */
-export function ensureFoundingPromo(): Promise<boolean> {
-  const stripe = getStripe();
-  if (!stripe || !foundingOfferOpen()) return Promise.resolve(false);
-  if (!foundingPromise) {
-    foundingPromise = (async () => {
-      await ensureCoupon(stripe, {
-        id: FOUNDING.couponId,
-        percent_off: FOUNDING.percentOff,
-        duration: "once",
-        name: `Founding ${FOUNDING.maxRedemptions}: ${FOUNDING.percentOff}% off`,
-      });
-      const existing = await stripe.promotionCodes.list({ code: FOUNDING.code, coupon: FOUNDING.couponId, limit: 1 });
-      if (existing.data.length === 0) {
-        await stripe.promotionCodes.create({
-          promotion: { type: "coupon", coupon: FOUNDING.couponId },
-          code: FOUNDING.code,
-          max_redemptions: FOUNDING.maxRedemptions,
-          expires_at: Math.floor(FOUNDING.expiresAt.getTime() / 1000),
-          metadata: { source: "founding-100" },
-        });
-      }
-      return true;
-    })().catch((err) => {
-      console.error("[stripe] ensureFoundingPromo failed", err instanceof Error ? err.message : err);
-      foundingPromise = null;
-      return false;
-    });
-  }
-  return foundingPromise;
-}
-
-export type FoundingStatus = {
-  /** True while FOUNDING100 can really be redeemed: before the deadline, active, under the cap. */
-  open: boolean;
-  /** maxRedemptions − times_redeemed, straight from Stripe. null when Stripe could not be read. */
-  remaining: number | null;
-  /** The FOUNDING100 promotion code id (promo_…), for auto-applying it at checkout. */
-  promotionCodeId: string | null;
-};
-
-const FOUNDING_TTL_MS = 60_000;
-/** A failed lookup is retried sooner than a good answer is refreshed. */
-const FOUNDING_ERROR_TTL_MS = 10_000;
-type FoundingCacheEntry = { at: number; ttl: number; value: Promise<FoundingStatus> };
-let foundingCache: FoundingCacheEntry | null = null;
-
-/**
- * Live status of the Founding 100 offer, read from Stripe and cached per server instance for
- * about a minute (so a product page view never waits on Stripe twice). null when Stripe is not
- * configured; callers then fall back to the static deadline and never show a count.
- */
-export function foundingStatus(opts: { fresh?: boolean } = {}): Promise<FoundingStatus> | null {
-  const stripe = getStripe();
-  if (!stripe) return null;
-  if (!foundingOfferOpen()) return Promise.resolve({ open: false, remaining: null, promotionCodeId: null });
-  const now = Date.now();
-  if (!opts.fresh && foundingCache && now - foundingCache.at < foundingCache.ttl) return foundingCache.value;
-  const entry = { at: now, ttl: FOUNDING_TTL_MS } as FoundingCacheEntry;
-  entry.value = loadFoundingStatus(stripe, entry);
-  foundingCache = entry;
-  return entry.value;
-}
-
-async function loadFoundingStatus(stripe: Stripe, entry: FoundingCacheEntry): Promise<FoundingStatus> {
-  const closed: FoundingStatus = { open: false, remaining: null, promotionCodeId: null };
-  const failed = () => {
-    entry.ttl = FOUNDING_ERROR_TTL_MS;
-    return closed;
-  };
-  if (!(await ensureFoundingPromo())) return failed();
-  try {
-    // Not filtered by `active`: an exhausted or deactivated code must read as closed, not missing.
-    const { data } = await stripe.promotionCodes.list({ code: FOUNDING.code, coupon: FOUNDING.couponId, limit: 10 });
-    const promo = data.find((p) => p.active) ?? data[0];
-    if (!promo) return failed();
-    const max = promo.max_redemptions ?? FOUNDING.maxRedemptions;
-    const remaining = Math.max(0, max - promo.times_redeemed);
-    const expired = promo.expires_at != null && promo.expires_at * 1000 <= Date.now();
-    return { open: promo.active && !expired && remaining > 0, remaining, promotionCodeId: promo.id };
-  } catch (err) {
-    console.error("[stripe] founding status failed", err instanceof Error ? err.message : err);
-    return failed();
-  }
-}
-
-/** Drop the cached status (e.g. Stripe just refused FOUNDING100 because it hit its cap). */
-export function forgetFoundingStatus(): void {
-  foundingCache = null;
-}
-
-/**
- * True while FOUNDING100 can really be redeemed: before the deadline, the code exists and is
- * active in Stripe, and fewer than 100 orders have used it. False when Stripe is not configured.
- */
-export async function foundingOfferAvailable(): Promise<boolean> {
-  const status = await foundingStatus();
-  return Boolean(status?.open);
-}
-
-/** Stripe rejected a session because of its discount (e.g. FOUNDING100 just hit its cap). */
-export function isDiscountError(err: unknown): boolean {
-  if (!(err instanceof Stripe.errors.StripeInvalidRequestError)) return false;
-  return Boolean(err.param?.startsWith("discounts")) || /promotion code|coupon|discount/i.test(err.message);
 }
 
 const partnerCoupons = new Map<number, Promise<string>>();

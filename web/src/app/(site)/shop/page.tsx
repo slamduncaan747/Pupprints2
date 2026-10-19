@@ -8,7 +8,7 @@ import { PageHero } from "@/components/marketing/page-hero";
 import { Block, DataTable, Facts, Note, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FormatShowcase } from "@/components/marketing/format-showcase";
-import { FROM_PRICE, FoundingLine, GuaranteeNote, OfferCta, PriceAnchor, ValueStack } from "@/components/marketing/offer";
+import { FROM_PRICE, GuaranteeNote, OfferCta, PriceAnchor, ValueStack } from "@/components/marketing/offer";
 import { CANADA_SHIPPING_LABEL, PHYSICAL_PRODUCTS, shipWindow } from "@/components/marketing/commerce";
 import { Photo } from "@/components/marketing/photo";
 import { campaign } from "@/lib/campaign";
@@ -69,7 +69,13 @@ export default function ShopPage() {
           <FormatShowcase variant="compare" />
 
           <div className="mt-16 grid gap-10 border-t border-line pt-8 sm:mt-20 md:grid-cols-2 md:gap-16">
-            <FoundingLine />
+            <div>
+              <p className="label text-ink">See it before you pay</p>
+              <p className="mt-2 text-[14px] leading-relaxed text-ink-2">
+                Your portrait is free to preview, in any style, before you decide. Free US shipping, and the hi-res
+                file is included with every piece.
+              </p>
+            </div>
             <div>
               <p className="label text-ink">Every style, every piece</p>
               <p className="mt-2 text-[14px] leading-relaxed text-ink-2">

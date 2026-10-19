@@ -1,15 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { FOUNDING_OFFER, GUARANTEE, HOLIDAY, OFFER, VALUE_STACK } from "@/lib/offer";
-import { foundingOfferOpen } from "@/lib/launch";
+import { GUARANTEE, HOLIDAY, OFFER, VALUE_STACK } from "@/lib/offer";
 import { STARTING_PHYSICAL_PRICE, STARTING_PRICE } from "@/lib/catalog";
 import { ButtonLink } from "@/components/ui/button";
-import { FoundingGate, FoundingRemaining } from "@/components/marketing/offer-status";
 import { cn, formatPrice } from "@/lib/utils";
 
 /**
- * The Grand Slam Offer, set in the maison's type: hairline value stack, the guarantee, the founding
- * line and the effort line under every primary CTA. All offer copy comes from @/lib/offer.
+ * The Grand Slam Offer, set in the maison's type: hairline value stack, the guarantee and the
+ * effort line under every primary CTA. All offer copy comes from @/lib/offer.
  */
 
 /** True until the US Christmas shipping cutoff (HOLIDAY.cutoffIso) has passed. */
@@ -127,34 +125,5 @@ export function GuaranteeNote({ className, link = true }: { className?: string; 
         </Link>
       )}
     </div>
-  );
-}
-
-/**
- * The Founding 100 line with the live count when the API has a real one. Renders nothing once the
- * offer has closed (deadline on the server, cap or deadline in the browser).
- */
-export function FoundingLine({
-  className,
-  tone = "light",
-  showHeadline = true,
-}: {
-  className?: string;
-  tone?: "light" | "dark";
-  showHeadline?: boolean;
-}) {
-  if (!foundingOfferOpen()) return null;
-  return (
-    <FoundingGate>
-      <div className={cn("text-[14px] leading-relaxed", tone === "dark" ? "text-paper/80" : "text-ink-2", className)}>
-        {showHeadline && (
-          <p className={cn("label mb-2", tone === "dark" ? "text-paper" : "text-ink")}>{FOUNDING_OFFER.headline}</p>
-        )}
-        <p>
-          {FOUNDING_OFFER.line}{" "}
-          <FoundingRemaining className={cn("label whitespace-nowrap", tone === "dark" ? "text-paper" : "text-ink")} />
-        </p>
-      </div>
-    </FoundingGate>
   );
 }

@@ -16,7 +16,7 @@ import { Block, Bullets, Facts, Note, textLink } from "@/components/marketing/bl
 import { ProductCard } from "@/components/marketing/product-card";
 import { FormatTile } from "@/components/marketing/format-showcase";
 import { FrameMockup } from "@/components/product/frame-mockup";
-import { EFFORT_LINE, FoundingLine, GuaranteeNote, ValueStack } from "@/components/marketing/offer";
+import { EFFORT_LINE, GuaranteeNote, ValueStack } from "@/components/marketing/offer";
 import { PRODUCT_CONTENT } from "@/components/marketing/product-content";
 import { firstSentences } from "@/components/marketing/honest";
 import { SizeTable } from "@/components/marketing/size-table";
@@ -198,7 +198,6 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         <p className="label mt-2 text-center text-ink-3">
           {physical ? `Free US shipping · Arrives in ${shipWindow(product)}` : "Delivered instantly · Free with any print"}
         </p>
-        {physical && <FoundingLine className="mt-9 border-t border-line pt-6" />}
 
         <div className="mt-10">
           <p className="label mb-4 text-ink-3">{multi ? "Sizes" : "Format"}</p>

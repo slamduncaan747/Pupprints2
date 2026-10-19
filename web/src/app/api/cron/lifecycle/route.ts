@@ -11,7 +11,6 @@ import {
   unsubscribeUrl,
   type EmailCtx,
 } from "@/lib/email";
-import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
 import { syncPartnerPromo } from "@/lib/partners";
 import { issueDueReferralRewards, sendReferralReminders } from "@/lib/referrals";
 import {
@@ -23,7 +22,6 @@ import {
   sendShippedEmail,
   type OrderRow,
 } from "@/lib/orders";
-import { foundingOfferAvailable } from "@/lib/stripe";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { escapeLike, REDEEMABLE_STATUSES } from "@/components/partners/program";
 
@@ -68,20 +66,12 @@ async function unsubscribedEmails(emails: string[]): Promise<Set<string>> {
 
 /**
  * Preview nurture: step 1 at ~2h, step 2 at ~24h, step 3 at ~72h (one step per lead per run).
- * Step 3: memorial leads get a gentle note (never an offer). Everyone else gets FOUNDING100 while
- * it can really be redeemed (before its deadline and under its cap, per Stripe); once the Founding
- * offer is closed, the feature downsell instead (the same portrait as a print or the file, at
- * catalog prices, with the guarantee). No discount codes are created here.
+ * Step 3: memorial leads get a gentle note (never an offer). Everyone else gets the feature
+ * downsell (the same portrait as a print or the file, at catalog prices, with the guarantee).
+ * No discount codes are created or mentioned here.
  */
 async function runNurture(ctx: EmailCtx) {
   const c = db()!;
-  let founding: Promise<boolean> | null = null;
-  const step3Offer = async () => {
-    if (!foundingOfferOpen()) return null;
-    founding ??= foundingOfferAvailable();
-    if (!(await founding)) return null;
-    return { code: FOUNDING.code, expiresAt: FOUNDING.expiresAt, percentOff: FOUNDING.percentOff, kind: "founding" as const };
-  };
   const now = Date.now();
   const stats = { considered: 0, sent: 0, skipped: 0, converted: 0, failed: 0 };
   const { data, error } = await c
@@ -147,7 +137,6 @@ async function runNurture(ctx: EmailCtx) {
       memorial ||= gen?.memorial === true;
     }
     const createUrl = `${ctx.siteUrl}/create${lead.referral_code ? `?ref=${encodeURIComponent(lead.referral_code)}` : ""}`;
-    const offer = next === 3 && !memorial ? await step3Offer() : null;
 
     const email = nurtureEmail({
       ctx,
@@ -157,7 +146,6 @@ async function runNurture(ctx: EmailCtx) {
       previewUrl: preview,
       createUrl,
       unsubscribeUrl: unsubscribeUrl(lead.email),
-      offer,
       memorial,
     });
     const res = await sendEmail({

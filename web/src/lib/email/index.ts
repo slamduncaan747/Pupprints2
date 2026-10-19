@@ -3,8 +3,7 @@ import { Resend } from "resend";
 import { env, features } from "@/lib/env";
 import { site } from "@/lib/config";
 
-import { FOUNDING } from "@/lib/launch";
-import { ensureWelcomePromo, foundingOfferAvailable, WELCOME } from "@/lib/stripe";
+import { ensureWelcomePromo, WELCOME } from "@/lib/stripe";
 import { welcomeEmail, type EmailCtx } from "./templates";
 import { unsubscribeHeaders, unsubscribeUrl } from "./unsubscribe";
 
@@ -39,7 +38,7 @@ export function isNewsletterSource(source: string): boolean {
 
 /**
  * Welcome email for a new newsletter sign-up, with the WELCOME10 first-order code (only when it
- * really exists in Stripe) and, while it's open, a note about FOUNDING100. Silently skipped
+ * really exists in Stripe). Silently skipped
  * without RESEND_API_KEY; skipped with a warning without BUSINESS_POSTAL_ADDRESS. Never throws.
  */
 export async function sendWelcomeEmail(email: string, source: string): Promise<SendResult> {
@@ -47,12 +46,11 @@ export async function sendWelcomeEmail(email: string, source: string): Promise<S
   const ctx = marketingCtx("welcome");
   if (!ctx) return { ok: false, skipped: true };
   try {
-    const [welcomeReady, foundingOpen] = await Promise.all([ensureWelcomePromo(), foundingOfferAvailable()]);
+    const welcomeReady = await ensureWelcomePromo();
     const rendered = welcomeEmail({
       ctx,
       source,
       welcome: welcomeReady ? { code: WELCOME.code, percentOff: WELCOME.percentOff } : null,
-      founding: foundingOpen ? { code: FOUNDING.code, percentOff: FOUNDING.percentOff } : null,
       createUrl: `${ctx.siteUrl}/create?utm_source=email&utm_medium=lifecycle&utm_campaign=welcome`,
       unsubscribeUrl: unsubscribeUrl(email),
     });

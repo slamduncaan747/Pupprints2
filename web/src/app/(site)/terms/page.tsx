@@ -220,8 +220,7 @@ const SECTIONS: LegalSection[] = [
           order. Up to {usd(REFERRAL.rewardCents * REFERRAL.maxRewardsPerYear)} in rewards per year.
         </li>
         <li>
-          One discount applies per order. If another offer (such as our founding offer) saves your friend more, they get that
-          one instead and you still receive your {usd(REFERRAL.rewardCents)}.
+          One discount code applies per order, so a referral code can&apos;t be combined with another discount code.
         </li>
         <li>
           Codes can&apos;t be used on your own orders, by people at your address, or on a second order. Rewards aren&apos;t

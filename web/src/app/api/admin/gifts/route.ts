@@ -429,7 +429,7 @@ export async function POST(req: Request) {
       model: result.model,
       imageUrl: await signedUrl("portraits", giftImagePath(gift.id), 60 * 60),
       revealUrl,
-      dm: giftDm({ name: gift.recipient_name, pet: gift.pet_name, link: revealUrl, partnered: Boolean(gift.partner_id) }),
+      dm: giftDm({ name: gift.recipient_name, pet: gift.pet_name, link: revealUrl }),
       durationMs: Date.now() - started,
     });
   } catch (err) {

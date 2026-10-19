@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { aiAvailable } from "@/lib/ai";
-import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
 import { db } from "@/lib/supabase/server";
 import { GiftStudio } from "@/components/admin/gift-studio";
 import { Card, DbMissing, ErrorNote, PageHeader } from "@/components/admin/ui";
@@ -33,10 +32,7 @@ export default function NewGiftPage() {
         </div>
       </Card>
       <p className="text-xs text-ink-3">
-        {foundingOfferOpen()
-          ? `The prefilled DM for gifts without a partner mentions ${FOUNDING.code} (${FOUNDING.percentOff}% off through ${FOUNDING.deadlineLabel}, first ${FOUNDING.maxRedemptions} orders).`
-          : "The prefilled DM is a plain no-strings gift note."}{" "}
-        If the recipient posts about it, it needs #ad or the Paid partnership label.
+        The prefilled DM is a plain no-strings gift note. If the recipient posts about it, it needs #ad or the Paid partnership label.
       </p>
     </>
   );

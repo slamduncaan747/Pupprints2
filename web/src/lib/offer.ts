@@ -12,7 +12,6 @@
  * "worth $X" figures — items we don't sell separately say "Included", not a made-up price.
  * Client-safe (no env/server imports).
  */
-import { FOUNDING, foundingOfferOpen } from "@/lib/launch";
 import { PRODUCT_MAP, findAddon, type ProductType } from "@/lib/catalog";
 
 export const OFFER = {
@@ -188,9 +187,9 @@ function bundleUnits<T extends BundleLine>(lines: T[], variantId: string, units:
  * 2. The Heirloom Set on what is left: each paid ornament + mug pair takes HEIRLOOM_SET.discountCents
  *    off. Free ornaments never count toward a set, so the same ornament is never discounted twice.
  *
- * The one automatic discount (FOUNDING100, a creator's percent off or a friend's $15) is applied by
- * Stripe afterwards to the paid merchandise only: $0 ornaments are not charged, so a percent off
- * never touches them and they never count toward a minimum order.
+ * The one automatic discount (a creator's percent off or a friend's $15) is applied by Stripe
+ * afterwards to the paid merchandise only: $0 ornaments are not charged, so a percent off never
+ * touches them and they never count toward a minimum order.
  */
 export function applyBundles<T extends BundleLine>(
   lines: T[],
@@ -221,16 +220,6 @@ export function applyBundles<T extends BundleLine>(
   }
   return { lines: out, physicalPieces: pieces, freeOrnaments: free, heirloomSets: sets };
 }
-
-/** Founding 100 launch offer: real cap (100 orders) and real deadline, auto-applied while open. */
-export const FOUNDING_OFFER = {
-  ...FOUNDING,
-  autoApply: true,
-  headline: `Founding offer: ${FOUNDING.percentOff}% off`,
-  line: `${FOUNDING.percentOff}% off for our first ${FOUNDING.maxRedemptions} orders, through ${FOUNDING.deadlineLabel}. Applied automatically.`,
-  /** The one-line label at the purchase moment. */
-  label: `Founding offer — ${FOUNDING.percentOff}% off for our first ${FOUNDING.maxRedemptions} orders, through ${FOUNDING.deadlineLabel}`,
-} as const;
 
 /** Cents off for a percent-off discount (Stripe rounds percent-off to the nearest cent). */
 export function percentOffCents(cents: number, percentOff: number): number {
@@ -267,11 +256,11 @@ export const REFERRAL = {
 export const REFERRAL_TERMS = `$15 off a first order of $${REFERRAL.minimumCents / 100} or more. Your $15 arrives as a single-use code once their order is past its ${REFERRAL.holdDays}-day guarantee window. Up to $${(REFERRAL.rewardCents * REFERRAL.maxRewardsPerYear) / 100} a year; not for your own orders.`;
 
 /**
- * An automatic discount this visitor qualifies for. Stripe applies one per order, so checkout
- * picks the one that saves the customer the most (pickCheckoutDiscount).
+ * An automatic discount this visitor qualifies for: a creator's code or a friend's referral code.
+ * Stripe applies one per order, so checkout picks the one that saves the customer the most
+ * (pickCheckoutDiscount). There is no site-wide sale: with neither code, nothing is applied.
  */
 export type DiscountOption =
-  | { source: "founding"; code: string; percentOff: number }
   | { source: "partner"; code: string; percentOff: number }
   | { source: "referral"; code: string; amountOffCents: number; minimumCents: number };
 
@@ -282,8 +271,8 @@ export function discountSaving(option: DiscountOption, merchandiseCents: number)
   return percentOffCents(merch, option.percentOff);
 }
 
-/** Ties go to a code (it credits a creator or a friend), then to the founding offer. */
-const TIE_ORDER: Record<DiscountOption["source"], number> = { partner: 0, referral: 1, founding: 2 };
+/** Ties go to the creator's code, then to the friend's. */
+const TIE_ORDER: Record<DiscountOption["source"], number> = { partner: 0, referral: 1 };
 
 /**
  * Which automatic discount checkout applies to an order: whichever saves the customer more on this
@@ -304,28 +293,17 @@ export function pickCheckoutDiscount(options: DiscountOption[], merchandiseCents
   return best;
 }
 
-/** Customer-facing name of an applied discount, e.g. "Founding offer, 15% off". */
+/** Customer-facing name of an applied discount, e.g. "Creator code RUFUS15, 15% off". */
 export function discountLabel(option: DiscountOption): string {
-  if (option.source === "founding") return `Founding offer, ${option.percentOff}% off`;
   if (option.source === "partner") return `Creator code ${option.code}, ${option.percentOff}% off`;
   return `Referral code ${option.code}, $${option.amountOffCents / 100} off`;
 }
 
-/** GET /api/offer response. Every number is real: `remaining` is null unless it comes from Stripe. */
+/** GET /api/offer response. */
 export type OfferStatus = {
-  founding: {
-    open: boolean;
-    /** Redemptions left out of maxRedemptions, from Stripe. null when unknown (never guessed). */
-    remaining: number | null;
-    percentOff: number;
-    maxRedemptions: number;
-    /** ISO timestamp of the hard deadline. */
-    deadline: string;
-    deadlineLabel: string;
-  };
   /**
-   * Every automatic discount this visitor qualifies for (FOUNDING100, their creator code, a
-   * friend's referral code). Checkout applies pickCheckoutDiscount(discounts, merchandise).
+   * Every automatic discount this visitor qualifies for (their creator code or a friend's referral
+   * code; usually none). Checkout applies pickCheckoutDiscount(discounts, merchandise).
    */
   discounts: DiscountOption[];
   /** GIFT_TWO is live on the server's clock right now (checkout decides with the same clock). */
@@ -333,18 +311,6 @@ export type OfferStatus = {
   /** Present when a code was checked (?code=): whether it is a live creator or referral code. */
   code?: { code: string; valid: boolean; kind?: "creator" | "customer"; reason?: "own_code" };
 };
-
-/** Static fallback (no Stripe, or before /api/offer answers): deadline only, never a count. */
-export function staticFoundingStatus(now: number = Date.now()): OfferStatus["founding"] {
-  return {
-    open: foundingOfferOpen(now),
-    remaining: null,
-    percentOff: FOUNDING.percentOff,
-    maxRedemptions: FOUNDING.maxRedemptions,
-    deadline: FOUNDING.expiresAt.toISOString(),
-    deadlineLabel: FOUNDING.deadlineLabel,
-  };
-}
 
 /** Real holiday deadlines (US standard delivery guidance, not a guarantee). */
 export const HOLIDAY = {

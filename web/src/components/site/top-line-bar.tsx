@@ -3,13 +3,11 @@
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 import { X } from "lucide-react";
-import { useFoundingLive } from "@/components/marketing/offer-status";
 import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-keys";
 
 export type TopLineMessage = {
   /** Changes whenever the message does, so a dismissed message never hides a new one. */
   key: string;
-  kind: "founding" | "other";
   /** Phones. */
   short: string;
   /** Wider screens. */
@@ -36,22 +34,12 @@ function readDismissed() {
   }
 }
 
-/** The bar itself. Swaps the founding line for the next real message if the offer closes early. */
-export function TopLineBar({
-  primary,
-  fallback,
-  cta,
-}: {
-  primary: TopLineMessage;
-  fallback: TopLineMessage | null;
-  cta: string;
-}) {
-  const live = useFoundingLive();
+/** The bar itself. Dismissing it hides this exact message (a new message shows again). */
+export function TopLineBar({ message, cta }: { message: TopLineMessage; cta: string }) {
   const dismissed = useSyncExternalStore(subscribe, readDismissed, () => null);
   const [closedHere, setClosedHere] = useState(false);
 
-  const message = primary.kind === "founding" && live && !live.open ? fallback : primary;
-  if (!message || closedHere || dismissed === message.key) return null;
+  if (closedHere || dismissed === message.key) return null;
   const { key } = message;
 
   function dismiss() {
@@ -70,7 +58,7 @@ export function TopLineBar({
         href={message.href}
         className="mx-auto flex min-h-9 max-w-[1440px] items-center justify-center gap-x-3 px-12 py-2 text-center text-[10px] font-medium uppercase leading-[1.5] tracking-[0.16em] sm:text-[11px] sm:tracking-[0.18em]"
       >
-        <span className="sm:hidden">{message.short}</span>
+        <span className="text-balance sm:hidden">{message.short}</span>
         <span className="hidden sm:inline">{message.long}</span>
         <span aria-hidden="true" className="hidden text-paper/40 sm:inline">
           ·

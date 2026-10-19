@@ -4,7 +4,6 @@ import { after } from "next/server";
 import { z } from "zod";
 import { ADDONS, findAddon, findVariant, PRODUCT_MAP, SHIPPING_RATES, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site } from "@/lib/config";
-import { FOUNDING } from "@/lib/launch";
 import { applyBundles, GIFT_TWO, HEIRLOOM_SET, pickCheckoutDiscount, type DiscountOption } from "@/lib/offer";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { getSessionId } from "@/lib/session";
@@ -14,10 +13,7 @@ import {
   ensureReferralCoupon,
   ensureReferralPromotionCode,
   ensureWelcomePromo,
-  forgetFoundingStatus,
-  foundingStatus,
   getStripe,
-  isDiscountError,
 } from "@/lib/stripe";
 import { itemLabel, PAID_STATUSES, styleNameOf, type OrderItem } from "@/lib/orders";
 import type { RedeemablePartner } from "@/lib/partners";
@@ -82,9 +78,9 @@ const Body = z.object({
     .transform((v) => (v ? v : undefined))
     .pipe(z.email().optional()),
   /**
-   * A creator code typed on the product step (e.g. RUFUS15). While FOUNDING100 is auto-applied
-   * Stripe's promo-code box is off, so this is where a creator's code is entered; it credits the
-   * creator and applies their discount. Unknown codes are ignored.
+   * A creator or friend's referral code typed on the product step (e.g. RUFUS15). It credits the
+   * code's owner and applies their discount (Stripe's promo-code box is off once a discount is
+   * applied, so this is where such a code is entered). Unknown codes are ignored.
    */
   code: z
     .string()
@@ -332,13 +328,12 @@ export async function POST(req: Request) {
 
   try {
     // --- Discounts ---------------------------------------------------------------------
-    // Stripe takes one discount per session, so every automatic discount the visitor qualifies
-    // for competes and the one that saves them the most on this order wins:
+    // Stripe takes one discount per session. The only automatic discounts are a code's:
     //   - a creator code (?ref= link, gift from a creator, or typed on the product step), % off;
-    //   - a friend's referral code ($15 off a first order of $59+);
-    //   - FOUNDING100, while it can really be redeemed.
-    // The code's owner is credited either way (orders.referral_code). With none of them, Stripe's
-    // promo-code box opens (WELCOME10, personal codes, typed creator / referral codes).
+    //   - a friend's referral code ($15 off a first order of $59+).
+    // There is no site-wide sale, so a plain order gets no discount. The code's owner is credited
+    // either way (orders.referral_code). With no automatic discount, Stripe's promo-code box opens
+    // (WELCOME10, personal codes, typed creator / referral codes).
     let discounts: Stripe.Checkout.SessionCreateParams.Discount[] | undefined;
     let applied: DiscountOption["source"] | null = null;
     let partner = typedPartner;
@@ -361,9 +356,6 @@ export async function POST(req: Request) {
       const { code, discountPercent } = partner;
       after(() => ensurePartnerPromotionCode(code, discountPercent));
     }
-    const founding = await (foundingStatus() ?? Promise.resolve(null));
-    const foundingOpen = Boolean(founding?.open && founding.promotionCodeId);
-    if (foundingOpen) options.push({ source: "founding", code: FOUNDING.code, percentOff: FOUNDING.percentOff });
     const choice = pickCheckoutDiscount(options, merchandise);
     if (choice?.source === "partner") {
       const coupon = await (ensurePartnerCoupon(choice.percentOff) ?? Promise.resolve(null)).catch(() => null);
@@ -378,13 +370,9 @@ export async function POST(req: Request) {
         applied = "referral";
       }
     }
-    if (!discounts && foundingOpen && founding?.promotionCodeId) {
-      discounts = [{ promotion_code: founding.promotionCodeId }];
-      applied = "founding";
-    }
     // Promo-code box: make sure WELCOME10 exists (idempotent, cached per instance).
     if (!discounts) await ensureWelcomePromo();
-    // The founding offer won (or nothing applies) although a referral code was used: say so.
+    // A referral code was used but its $15 doesn't apply (e.g. below $59): say so.
     const referralUsed = partner?.kind === "customer" && applied !== "referral";
 
     // --- Line items ------------------------------------------------------------------
@@ -501,21 +489,7 @@ export async function POST(req: Request) {
       params.custom_text = { submit: { message: "Your full-resolution file is delivered instantly after payment." } };
     }
 
-    let session: Stripe.Checkout.Session;
-    try {
-      session = await stripe.checkout.sessions.create(params, { idempotencyKey: `checkout-${order.id}` });
-    } catch (err) {
-      // FOUNDING100 can hit its cap between our cached check and this call: never lose the sale
-      // over it. Retry once without it (promo box back on) under a new idempotency key.
-      if (applied !== "founding" || !isDiscountError(err)) throw err;
-      console.warn("[checkout] founding offer refused by Stripe, retrying without it", err instanceof Error ? err.message : err);
-      forgetFoundingStatus();
-      await ensureWelcomePromo();
-      const retry: Stripe.Checkout.SessionCreateParams = { ...params, metadata: { ...metadata }, allow_promotion_codes: true };
-      delete retry.discounts;
-      delete retry.metadata!.offer;
-      session = await stripe.checkout.sessions.create(retry, { idempotencyKey: `checkout-${order.id}-nodiscount` });
-    }
+    const session = await stripe.checkout.sessions.create(params, { idempotencyKey: `checkout-${order.id}` });
     await supabase
       .from("orders")
       .update({ stripe_session_id: session.id, updated_at: new Date().toISOString() })
