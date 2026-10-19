@@ -40,7 +40,7 @@ Every variable goes in **Vercel → pup-prints → Settings → Environment Vari
    - Print the Royal sample at 8×10 at a photo counter and put it in a simple frame from Target or Michaels.
    - Call it "a size reference print", not our product. Our real pieces come from our print lab.
 3. **Phone charged, plus a battery pack.** Each portrait takes about a minute of screen-on time.
-4. **Pop-up mode open on your phone:** `/admin/popup`. Take a photo, pick a style, make the portrait, show the QR. *This is being deployed today; if it isn't live when you leave, use `/admin/gifts/new`, which does the same thing without the big QR. Copy the link and text it to them.*
+4. **Pop-up mode open on your phone:** `/admin/popup`. Take a photo, pick a style, make the portrait, show the QR. It also has **Text it** / **Email it** buttons if someone would rather get the link by message. `/admin/gifts/new` is the fallback.
 5. **Instagram and TikTok accounts set up** (bio in `content/social-setup.md`), so "Where can I see more?" has an answer.
 
 ---
