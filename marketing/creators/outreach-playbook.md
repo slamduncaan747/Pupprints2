@@ -44,13 +44,13 @@ Inputs: [prospects.csv](prospects.csv) (167 creators; TikTok/YouTube verified li
 
 | Dog / account vibe | First style | Backup |
 |---|---|---|
-| Big personality, comedy accounts, bully breeds, "rescue to royalty" | **The Royal** | The Admiral |
-| Working dogs (GSD, labs, service dogs), handsome serious faces | **The Admiral** | Old Master |
-| Seniors, gentle accounts, anything memorial-adjacent | **Old Master** or **Watercolor** | Botanical |
-| Fluffy small breeds (Maltese, Bichon, Pom, Shih-poo) | **Watercolor** | Storybook |
-| Design-forward or "aesthetic" accounts | **Fine Line** or **Mid-Century** | Charcoal |
-| Loud, colorful, Gen-Z humor | **Pop Art** | Space Cadet |
-| From Nov 1 | Holiday Cozy works as a second gift | – |
+| Big or serious dogs, bully breeds, working dogs (GSD, labs, service dogs) | **Old Master** | Modern Oil |
+| Seniors, gentle accounts, anything memorial-adjacent | **Watercolor** or **Charcoal Study** | Soft Pastel |
+| Fluffy small breeds (Maltese, Bichon, Pom, Shih-poo) | **Soft Pastel** | Watercolor |
+| Design-forward or "aesthetic" accounts, modern homes | **Linocut**, **Ink Wash** or **Fine Line** | Mid-Century |
+| Colorful, home-decor or lifestyle accounts | **Modern Oil** | Botanical |
+
+Every style shows the dog alone: no costumes, props or scenes. Pitch it as a piece of art for their home, not a joke.
 
 **Two dogs?** Generate each one separately and send both links in one DM. It doubles the wow and tells them we do multi-dog portraits.
 
@@ -167,7 +167,7 @@ The one-liner, word for word:
 | "What's the catch?" | "Honestly none. We're new and would rather spend on making dogs look amazing than on ads. If you love it and share it, amazing. If not, still yours." |
 | "Can you do my other dog?" | "Yes!! Send me your favorite photo of [Dog 2]." Make it within the hour. |
 | "It doesn't really look like her" | "Thank you for telling us. Can you send 1–2 photos you think really capture her?" Regenerate within the hour and QA harder. Never argue. |
-| "Can you change the background / style?" | "Of course. Which vibe: royal, watercolor, minimalist or old-master?" Regenerate. |
+| "Can you change the background / style?" | "Of course. Which feels more like your home: old-master oil, watercolor, charcoal or something minimal?" Regenerate. |
 | "My rate for a post is $X" | If ≤ $40 and their views justify it: accept (template D terms). If above: "Totally fair, that's above our launch budget this month. Happy to do the affiliate deal now and revisit paid in November?" Log the rate in their notes. |
 | "Talk to my manager" | "Of course! What's the best email?" Forward a short version of templates A + C. Mark them `LATER` (Q4 pipeline). |
 | "Not interested" / "No thanks" | "No worries at all. Thanks for taking a look, and give [Dog] a scratch from us 💛" Set status to **declined**. Never contact again. |

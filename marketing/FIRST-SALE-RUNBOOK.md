@@ -16,7 +16,7 @@ All keys go in **Vercel → pup-prints → Settings → Environment Variables** 
 
 1. **Portrait engine — OpenAI (ChatGPT's image model), primary**: platform.openai.com → Settings → Organization → **verify your organization** (likely required for GPT Image models; government ID, access can take ~15 min) → Billing: add ~$10 → API keys → create → `OPENAI_API_KEY`.
    **Fallback — Google Gemini**: aistudio.google.com → Get API key → enable billing on the linked Google Cloud project → `GEMINI_API_KEY`. If OpenAI refuses or times out, the site retries with Gemini automatically.
-   Verify the keys in one command (put them in `web/.env.local` too, then from `web/`): `npx tsx scripts/ai-smoke.ts <dog-photo.jpg> royal` → writes the finished portrait next to the photo; add `--provider=gemini` to test the fallback. If it looks off, tell us before driving traffic.
+   Verify the keys in one command (put them in `web/.env.local` too, then from `web/`): `npx tsx scripts/ai-smoke.ts <dog-photo.jpg> oil-classic` → writes the finished portrait next to the photo; add `--provider=gemini` to test the fallback. If it looks off, tell us before driving traffic.
 2. **Stripe**: activate the account (business details, bank). Secret key → `STRIPE_SECRET_KEY`. Webhook `https://pup-prints.vercel.app/api/webhooks/stripe` (events `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `charge.refunded`) → `STRIPE_WEBHOOK_SECRET`. In Settings → Payment methods turn on Apple Pay, Google Pay, Link. Statement descriptor: `PUPPRINTS`.
 3. **Printful**: create account, add a billing card, Settings → API → token → `PRINTFUL_API_KEY`; set `FULFILLMENT_PROVIDER=printful`.
 4. **Resend** (order + gift emails): API key → `RESEND_API_KEY`; set `BUSINESS_POSTAL_ADDRESS` (PO box is fine) or marketing emails stay off.
@@ -47,7 +47,7 @@ If any step fails, stop and fix it before driving traffic. Every visitor before 
 ### Loop A — Creator gifts (2 hours, 25 per day)
 1. /admin/partners → filter status *prospect*, sort P1 first.
 2. Open their profile, save a clear photo of their dog (face visible, eye level).
-3. /admin/partners/[id]/gift → paste the image URL → pick the style that fits the dog (big/serious → Royal or Admiral; small/silly → Pop Art or Storybook; senior/memorial → Watercolor or Old Master) → generate.
+3. /admin/partners/[id]/gift → paste the image URL → pick the style that fits the dog (big/serious → Old Master; senior/memorial → Watercolor or Charcoal Study; fluffy/small → Soft Pastel; modern home → Linocut, Ink Wash or Fine Line) → generate.
 4. Check the likeness. If it's off, regenerate (same link). Only send portraits you'd hang yourself.
 5. **Copy DM** → send by Instagram/TikTok DM (or email if listed). Status becomes *gifted*.
 6. 48h later, if no reply: follow-up #2 from [creators/outreach-playbook.md](creators/outreach-playbook.md). If they react: offer the affiliate code (15% for their followers, 15% commission) and ask if you can repost the reveal.
@@ -80,7 +80,7 @@ If any step fails, stop and fix it before driving traffic. Every visitor before 
 ## Paid spend ($100 max)
 
 Only after Phase 1 passes and tracking records a test purchase. The split ([business plan §6](../docs/business-plan.md#6-money-the-100-and-the-reinvestment-rule)):
-- **$40 → Google Search test** (week 2) with the near-uncontested "See your dog's portrait free, no card" message: ad groups for "dog portrait from photo", royal/renaissance, five breeds, memorial (gentle copy). Max CPC $1.75. Keep ≤ $4 per preview; kill > $8 per preview after $15.
+- **$40 → Google Search test** (week 2) with the near-uncontested "See your dog's portrait free, no card" message: ad groups for "dog portrait from photo", oil painting / watercolor of my dog, five breeds, memorial (gentle copy). Max CPC $1.75. Keep ≤ $4 per preview; kill > $8 per preview after $15.
 - **$30 → boost the single best organic reveal** (5× your median watch time) or a creator's post as a Partnership ad with permission and #ad. Rules in [ads/meta-tiktok-test.md](ads/meta-tiktok-test.md).
 - **$30 → partner starter kit:** QR counter cards + a shop-dog print for the first groomer who says yes.
 

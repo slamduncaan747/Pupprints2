@@ -8,6 +8,7 @@ Pup Prints (pupprints) is a DTC brand selling fine-art portraits of people's dog
 - Instant **Gift Reveal**: buyers get a shareable digital reveal immediately; the print follows.
 - Honest pricing: no fake "compare at" prices, no permanent fake sales, no pre-checked add-ons, no countdown timers, no surprise fees. The hi-res digital file is included free with every physical order.
 - **Love-it guarantee**: free remake or full refund.
+- **Dog-centered and crafted**: "Your dog, as a piece of art for your home." A small collection of real artists' mediums (oil, watercolor, charcoal, linocut, pastel, ink) that sit quietly in a living room. The dog is the whole subject: **no costumes, no props, no scenes, no novelty or humour styles** (the royal/admiral/astronaut/pop-art/storybook/holiday styles are retired; don't bring them back in copy, prompts or imagery). Words that are fine: crafted, studio, archival, gallery, made from your photo.
 - Dog-only, curated styles (quality over Crown & Paw's 1,963 SKUs).
 - Every print is checked by a person before it is printed.
 - How the art is made: say it honestly when asked ("our AI artist, finished and checked by our team"). Don't lead with "AI" in headlines; lead with the outcome. Never claim art is hand-painted.
@@ -39,7 +40,7 @@ Pup Prints (pupprints) is a DTC brand selling fine-art portraits of people's dog
   - Product grids like a fashion e-shop: image, then `.label` name and price beneath; no cards, borders or hover chrome beyond a slow image fade/zoom.
   - Voice: terse, assured, couture ("The Portrait Collection", "Commission a portrait", "Client services", "The Process", "Maison"). Short lines. Still honest: never "hand-painted", no invented heritage/years/ateliers-in-Paris, no fake scarcity.
 - UI primitives: `@/components/ui/button` (`Button`, `ButtonLink`, `buttonClasses` — use `primary` (black) or `secondary` (outline) only), `@/components/ui/container` (`Container`, `Section`, `Eyebrow`, `SectionHeading`), `@/components/ui/paw` (`Logo` = uppercase Bodoni wordmark). Avoid `Badge`. Icons: `lucide-react` only where functional (close, arrow, upload). Animation: subtle fades only.
-- Catalog (styles, products, prices, promises): `@/lib/catalog` — **single source of truth**; never hardcode prices or style names elsewhere.
+- Catalog (styles, products, prices, promises): `@/lib/catalog` — **single source of truth**; never hardcode prices or style names elsewhere. `DEFAULT_STYLE` is `oil-classic`. Stored rows can carry retired slugs (`RETIRED_STYLE_SLUGS`): show a style name with `styleLabel(slug)`, never `STYLE_MAP[slug].name` on data from the database.
 - Brand/contact config: `@/lib/config` (`site`). Helpers: `@/lib/utils` (`cn`, `formatPrice`, `absoluteUrl`).
 - Server env + feature flags: `@/lib/env` (`env`, `features`) — server-only. Every integration must degrade gracefully when its key is missing (the site must always build and render).
 - Database: `@/lib/supabase/server` (`db()`, `requireDb()`, `BUCKETS`, `previewUrl`, `signedUrl`). The browser never talks to Supabase directly; all DB access goes through server code/route handlers. Tables: uploads, generations, orders, leads, partners, referral_events, contact_messages (see migration). `updated_at` must be set by the app on updates.

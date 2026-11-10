@@ -25,7 +25,7 @@ Every variable goes in **Vercel → pup-prints → Settings → Environment Vari
 | 5 | **Vercel Pro** ($20/month) on the project. | The free Hobby plan is non-commercial. | 3 min |
 | 6 | **Redeploy**, then log in at `https://pup-prints.vercel.app/admin` on your phone. | Picks up every key. | 3 min |
 | 7 | **Prove it with your own card:** make a preview of any dog → buy the $29 digital file → the success page shows the order → it appears in `/admin/orders` as paid → refund yourself in Stripe. | If any step fails, fix it before talking to anyone. | 10 min |
-| 8 | **Check quality on the real engine:** make 3 portraits (The Royal, Watercolor, Old Master) of one dog photo. Only go out if you'd hang them yourself. If the likeness is off, try the other provider by setting `AI_PROVIDER_ORDER=gemini,openai` (or the reverse) and redeploying. | The style instructions were rewritten this week and haven't run on the live engine yet. | 10 min |
+| 8 | **Check quality on the real engine:** make 3 portraits (Old Master, Watercolor, Charcoal Study) of one dog photo. Only go out if you'd hang them yourself. If the likeness is off, try the other provider by setting `AI_PROVIDER_ORDER=gemini,openai` (or the reverse) and redeploying. | The style instructions were rewritten this week and haven't run on the live engine yet. | 10 min |
 
 **Can wait until tonight:** buying `pupprints.shop`, Resend email, Printful and pixels. Buyers can pay today; we approve and send prints to production tomorrow (`/admin/orders` → Approve & send to print).
 
@@ -37,7 +37,7 @@ Every variable goes in **Vercel → pup-prints → Settings → Environment Vari
    - In `/admin/popup`, use **Print cards**: a code-free card that says "See your dog as a work of art, free", with a QR code that tracks as pop-up traffic. Print the A4 sheet (four cards per page).
    - Print at FedEx Office, Staples or a UPS Store, or at home on card stock. About $10–20.
 2. **One physical reference piece** (optional, about $20):
-   - Print the Royal sample at 8×10 at a photo counter and put it in a simple frame from Target or Michaels.
+   - Print the Old Master sample at 8×10 at a photo counter and put it in a simple frame from Target or Michaels.
    - Call it "a size reference print", not our product. Our real pieces come from our print lab.
 3. **Phone charged, plus a battery pack.** Each portrait takes about a minute of screen-on time.
 4. **Pop-up mode open on your phone:** `/admin/popup`. Take a photo, pick a style, make the portrait, show the QR. It also has **Text it** / **Email it** buttons if someone would rather get the link by message. `/admin/gifts/new` is the fallback.
@@ -68,12 +68,12 @@ Then make the shop dog's portrait on the spot and give it to them. That is also 
 
 **The loop, for every dog:**
 1. **Open:**
-   > "Hi! Can I show you something fun? I make portraits of dogs like a museum painting, and I can make one of [dog's name] right now, free. It takes about a minute."
+   > "Hi! Can I show you something? I make portraits of dogs, like a painting you'd hang in your living room, and I can make one of [dog's name] right now, free. It takes about a minute."
 2. **Photo:** ask first ("Can I take a quick photo of them?"). Eye level, face in good light, ears visible, no flash. Photograph the dog only, never the person.
 3. **Style:**
-   - big or serious dog: The Royal
-   - senior, sweet or memorial: Watercolor or Old Master
-   - modern owner: Fine Line or Charcoal
+   - big or serious dog: Old Master
+   - senior, sweet or memorial: Watercolor or Charcoal Study
+   - modern home: Linocut, Ink Wash or Fine Line
 
    While it renders, ask the dog's name and age. Small talk sells.
 4. **Reveal:** turn the phone around and say nothing for two seconds. Let the reaction happen.
@@ -110,7 +110,7 @@ These rarely close today, but they fill tomorrow. All of them reach strangers on
 | **Nextdoor** (Business Page) | The same offer, worded for neighbors. | "Free dog portraits for neighbors today: comment a photo and I'll paint the first 15." |
 | **Creator gift DMs** (`/admin/partners`, P1 first; batch tool `/admin/gifts/batch`) | 25 dog accounts with 2K–50K followers, each sent a finished portrait of *their* dog. | "Made this of [dog], thought you'd love it. It's yours, no strings: [link]. If you ever share it, your followers get 15% off with your code and you earn 15% on every order." |
 | **TikTok / Reels** | Post 2 videos tonight from the pop-up, with the owners' permission: the dog, the phone turning around, the owner's reaction (face only if they agree). | Caption: "Phone photo in. Portrait out. Free to see." |
-| **Google Search** (optional, $40 of the $100) | One campaign, exact and phrase match: "custom dog portrait", "dog portrait from photo", "royal dog portrait". Max CPC $1.75. Headlines: "See Your Dog's Portrait Free", "Free Preview. No Card Needed." | Expect 20–30 clicks today and probably 0–1 order. It's a read on demand, not the engine. |
+| **Google Search** (optional, $40 of the $100) | One campaign, exact and phrase match: "custom dog portrait", "dog portrait from photo", "oil painting of my dog". Max CPC $1.75. Headlines: "See Your Dog's Portrait Free", "Free Preview. No Card Needed." | Expect 20–30 clicks today and probably 0–1 order. It's a read on demand, not the engine. |
 
 ---
 
