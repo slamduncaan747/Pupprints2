@@ -72,7 +72,7 @@ export const CAMPAIGN = {
     src: "/campaign/dog-and-portrait.webp",
     width: 1800,
     height: 1200,
-    alt: "Illustrative scene: a golden retriever lying on the floor beneath a framed example portrait",
+    alt: "Illustrative scene: a framed example portrait of a golden retriever above a sofa, with a dog bed beside it",
     fallback: HERO_PORTRAIT,
   },
   galleryWall: {
