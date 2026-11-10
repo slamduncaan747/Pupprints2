@@ -9,6 +9,7 @@ import { z } from "zod";
 import { getStyle, styleAvailable, type StyleSlug } from "@/lib/catalog";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { ImageError, makeWatermarkedPreview, normalizeUpload, toPrintMaster } from "@/lib/image";
+import { addNameLettering } from "@/lib/image/lettering";
 import { BUCKETS, db, signedUrl } from "@/lib/supabase/server";
 import { syncPartnerPromo, uniquePartnerCode } from "@/lib/partners";
 import { adminApiGuard, jsonError } from "@/components/admin/guard";
@@ -328,11 +329,12 @@ export async function POST(req: Request) {
       deadline: started + AI_BUDGET_MS,
     });
 
+    const art = getStyle(style)?.lettering ? await addNameLettering(result.bytes, petName) : result.bytes;
     const giftId = existing?.id ?? randomUUID();
     const [master, preview, web] = await Promise.all([
-      toPrintMaster(result.bytes),
-      makeWatermarkedPreview(result.bytes),
-      sharp(result.bytes, { failOn: "none" })
+      toPrintMaster(art),
+      makeWatermarkedPreview(art),
+      sharp(art, { failOn: "none" })
         .autoOrient()
         .resize({ width: GIFT_WEB_EDGE, height: GIFT_WEB_EDGE, fit: "inside", withoutEnlargement: true })
         .flatten({ background: "#ffffff" })

@@ -35,6 +35,8 @@ export type ArtStyle = {
   /** Featured in merchandising. Label it "Featured"/"Staff pick" — never "Popular"/"Best-selling" (no sales data yet). */
   popular?: boolean;
   isNew?: boolean;
+  /** The dog's name is lettered on the portrait (small capitals at the top) when the customer gives one. */
+  lettering?: boolean;
   /**
    * A dated edition: the last moment (ISO, with offset) the style can be chosen. After it, the
    * style leaves every picker, its page shows it as retired and /api/generate refuses it. Checked
@@ -60,7 +62,7 @@ const CALM = "A calm, dignified expression. Quiet, softly graded, empty backgrou
 
 /** The Modern portrait: one brief, one flat ground color per style. */
 function modernPrompt(ground: string): string {
-  return `A modern illustrated portrait of the dog: a clean contemporary digital illustration, like a Scandinavian art print. ${SUBJECT} Head and chest bust, centred, facing the viewer, the chest ending in a soft straight edge near the bottom. The dog is drawn with smooth, simplified but faithful fur shading in its true coat colors: soft tonal shapes, no outline, no black line work, no brush texture; bright natural eyes with a small catch-light. The background is one flat, matte, even ${ground} from edge to edge: no texture, no shadow, no gradient, no vignette, no objects, no text. Soft even front light, no dramatic shadows. No collar, no accessories. Calm, light and graphic, like a contemporary print for a modern home, not a cartoon.`;
+  return `A modern illustrated portrait of the dog: a clean contemporary digital illustration, like a Scandinavian art print. ${SUBJECT} Head and chest bust, centred, facing the viewer, the chest ending in a soft straight edge near the bottom. Leave the top fifth of the image as empty background above the ears. The dog is drawn with smooth, simplified but faithful fur shading in its true coat colors: soft tonal shapes, no outline, no black line work, no brush texture; bright natural eyes with a small catch-light. The background is one flat, matte, even ${ground} from edge to edge: no texture, no shadow, no gradient, no vignette, no objects, no text. Soft even front light, no dramatic shadows. No collar, no accessories. Calm, light and graphic, like a contemporary print for a modern home, not a cartoon.`;
 }
 
 export const STYLES: ArtStyle[] = [
@@ -72,6 +74,7 @@ export const STYLES: ArtStyle[] = [
       "A contemporary illustration of your dog: head and chest, drawn in smooth, true-to-coat tones on one flat field of soft white. No line work, no drama. Light, graphic and easy to place in any room.",
     prompt: modernPrompt("warm off-white (#F4F1EA)"),
     swatch: "#F4F1EA",
+    lettering: true,
     goodFor: ["decor", "gift", "memorial"],
     popular: true,
     isNew: true,
@@ -95,6 +98,7 @@ export const STYLES: ArtStyle[] = [
       "The same clean illustration, set on one flat field of muted sage. A little color for a pale wall, and a ground that flatters golden, cream and black coats alike.",
     prompt: modernPrompt("muted sage green (#B9C2AE)"),
     swatch: "#B9C2AE",
+    lettering: true,
     goodFor: ["decor", "gift", "memorial"],
     isNew: true,
   },

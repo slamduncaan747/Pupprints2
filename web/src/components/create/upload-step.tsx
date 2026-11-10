@@ -200,7 +200,7 @@ export function UploadStep({
           }}
           className="mt-1 h-12 w-full rounded-none border-0 border-b border-line bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none"
         />
-        <p className="mt-2.5 text-[12px] text-ink-3">It never appears on the art.</p>
+        <p className="mt-2.5 text-[12px] text-ink-3">Lettered in small capitals on Modern portraits. Leave blank for none.</p>
       </div>
 
       {/* The gentle track: unchecked by default, never mentioned anywhere else. */}

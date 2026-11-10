@@ -3,6 +3,7 @@ import { getStyle, isRetiredStyle, styleAvailable } from "@/lib/catalog";
 import { env } from "@/lib/env";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { makeWatermarkedPreview, toPrintMaster } from "@/lib/image";
+import { addNameLettering } from "@/lib/image/lettering";
 import { BUCKETS, db, previewUrl, signedUrl } from "@/lib/supabase/server";
 import { storeObject } from "@/lib/image/storage";
 import { ensureSessionId, getIpHash, sessionStorageFolder } from "@/lib/session";
@@ -187,7 +188,9 @@ export async function POST(req: Request) {
       deadline: started + AI_BUDGET_MS,
     });
 
-    const [master, preview] = await Promise.all([toPrintMaster(result.bytes), makeWatermarkedPreview(result.bytes)]);
+    // Modern styles carry the dog's name in small capitals; it is type we set, never the model's.
+    const art = style.lettering ? await addNameLettering(result.bytes, body.petName) : result.bytes;
+    const [master, preview] = await Promise.all([toPrintMaster(art), makeWatermarkedPreview(art)]);
     // Never put the raw session id in object paths: preview URLs are public.
     const folder = sessionStorageFolder(sessionId);
     const fullPath = `${folder}/${generationId}.png`;
