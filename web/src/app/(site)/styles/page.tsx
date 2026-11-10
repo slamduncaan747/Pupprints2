@@ -60,7 +60,6 @@ export default function StylesPage() {
 
       <CtaBand
         rule={false}
-        eyebrow="Your commission"
         title="Which one looks most like them?"
         body="Upload one photo and see your dog in every style."
       />

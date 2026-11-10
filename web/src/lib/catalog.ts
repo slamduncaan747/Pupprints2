@@ -328,11 +328,3 @@ export const SHIPPING_COUNTRIES = Object.keys(SHIPPING_RATES) as ("US" | "CA")[]
 export const FREE_SHIPPING_THRESHOLD = 0;
 export const FLAT_SHIPPING = 0;
 
-/** Guarantee + promise copy, reused across the site. */
-export const PROMISES = {
-  preview: "See your portrait free before you pay",
-  rerolls: "Try every style free — redo as often as you like",
-  guarantee: "Love it or we'll remake or refund it",
-  shipping: "Free US shipping on every order",
-  digital: "Free hi-res digital file with every print",
-};

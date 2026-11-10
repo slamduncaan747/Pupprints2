@@ -468,13 +468,13 @@ export async function POST(req: Request) {
       ];
       params.custom_text = {
         submit: {
-          message: `Every portrait is checked by a person before printing. Your hi-res digital file is included.${
+          message: `Your hi-res digital file is included.${
             freeOrnaments > 0
               ? ` ${freeOrnaments === 1 ? "A matching ornament ships" : "Two matching ornaments ship"} free with your portraits (${GIFT_TWO.name.toLowerCase()}, through ${GIFT_TWO.endsLabel}).`
               : ""
           }${
             body.giftRecipientEmail && body.giftSendNow !== false
-              ? " We'll email the Gift Reveal to your recipient as soon as payment clears."
+              ? " We'll email the portrait to your recipient as soon as payment clears."
               : ""
           }`,
         },

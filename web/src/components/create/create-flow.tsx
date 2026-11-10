@@ -450,7 +450,7 @@ function GiftOrder({
         <h1 className="font-display text-[40px] leading-[1.04] sm:text-[56px]">We couldn&apos;t open that gift portrait.</h1>
         <p className="mt-5 text-[14px] leading-relaxed text-ink-2">{gift.message}</p>
         <button type="button" onClick={onLeave} className={buttonClasses("primary", "lg", "mt-10")}>
-          Commission your own
+          Upload a photo
         </button>
       </div>
     );

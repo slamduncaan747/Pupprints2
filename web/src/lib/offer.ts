@@ -32,7 +32,6 @@ const digitalPrice = PRODUCT_MAP.digital.variants[0].price;
 /** What every physical order includes besides the piece itself. */
 export const VALUE_STACK: { item: string; value: string }[] = [
   { item: `Hi-res digital file (sold alone for $${digitalPrice / 100})`, value: "Included" },
-  { item: "Checked by a person before it's printed", value: "Included" },
   { item: "US shipping, tracked", value: "Included" },
 ];
 
@@ -50,8 +49,7 @@ export function valueStackFor({
   if (productType === "digital") return [];
   const rows = [
     { item: `Hi-res digital file (sold alone for $${digitalPrice / 100})`, value: "Included" },
-    { item: "Checked by a person before it's printed", value: "Included" },
-  ];
+    ];
   if (shipCountry === "US") rows.push({ item: "US shipping, tracked", value: "Included" });
   return rows;
 }

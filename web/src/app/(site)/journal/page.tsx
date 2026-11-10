@@ -62,7 +62,7 @@ export default function JournalIndexPage() {
         align="center"
         breadcrumbs={<ContentBreadcrumbs items={[{ name: "Journal", path: "/journal" }]} />}
         title="The Journal"
-        lede="Notes on dogs, art and giving: the photo, the style, the gift and the wall. No filler."
+        lede="Photo tips, style guides and gift ideas."
       >
         <nav aria-label="Journal sections">
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-3">
@@ -136,7 +136,7 @@ export default function JournalIndexPage() {
         </section>
       ))}
 
-      <Block eyebrow="The breeds" title="Portraits by breed" intro="Photo tips and style picks for your breed.">
+      <Block title="Portraits by breed" intro="Photo tips and style picks for your breed.">
         <ul className="flex flex-wrap gap-x-7 gap-y-4">
           {popularBreeds.map((b) => (
             <li key={b.slug}>

@@ -82,12 +82,6 @@ export const CAMPAIGN = {
     alt: "Three example portraits in different styles, framed and hung along a pale hallway",
     fallback: HERO_PORTRAIT,
   },
-  heirloom: {
-    src: "/campaign/heirloom.webp",
-    ...PORTRAIT,
-    alt: `${HERO_ALT} on a matching ceramic ornament`,
-    fallback: HERO_PORTRAIT,
-  },
 } as const satisfies Record<string, CampaignAsset>;
 
 export type CampaignKey = keyof typeof CAMPAIGN;

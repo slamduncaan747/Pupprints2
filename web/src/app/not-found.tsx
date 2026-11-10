@@ -31,7 +31,7 @@ export default function NotFound() {
       <main id="main" className="flex-1">
         <PageHero
           eyebrow="Error 404"
-          title="This page has wandered off."
+          title="Page not found"
           lede="It may have moved, or the link might be a little off."
           media={
             <CampaignImage

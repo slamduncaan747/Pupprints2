@@ -54,13 +54,3 @@ export function OfferCta({
     </div>
   );
 }
-
-/**
- * @deprecated Removed from the site (the line under buttons and the guarantee note). Kept as empty
- * stand-ins only until app/(site)/styles/[slug]/page.tsx stops importing them; delete them then.
- */
-export const EFFORT_LINE: ReactNode = null;
-/** @deprecated See EFFORT_LINE. Renders nothing. */
-export function GuaranteeNote(_props: { className?: string; link?: boolean }) {
-  return null;
-}

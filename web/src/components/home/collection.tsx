@@ -41,9 +41,8 @@ export function Collection() {
       <Container>
         <div className="lg:grid lg:grid-cols-3 lg:items-end lg:gap-x-10">
           <div className="lg:col-span-2">
-            <p className="label text-ink-3">The Portrait Collection</p>
-            <h2 id="collection-title" className="mt-6 font-display text-[40px] leading-[1.02] tracking-[-0.02em] sm:text-[64px]">
-              The Collection
+            <h2 id="collection-title" className="font-display text-[34px] leading-[1.08] tracking-[-0.015em] sm:text-[52px]">
+              Styles
             </h2>
           </div>
           <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-ink-2 lg:mt-0 lg:pb-2">

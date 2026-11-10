@@ -30,7 +30,7 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
 function Invalid() {
   return (
     <Container className="py-24 sm:py-36">
-      <p className="label text-ink-3">The Creator Programme</p>
+      <p className="label text-ink-3">Creator program</p>
       <h1 className="mt-8 max-w-3xl font-display text-[44px] leading-[1.08] tracking-[-0.02em] sm:text-[72px]">This stats link isn&apos;t valid</h1>
       <p className="mt-8 max-w-md text-[15px] leading-relaxed text-ink-2">
         Your private stats link is in the welcome email we sent you. If it isn&apos;t working, email{" "}
@@ -67,7 +67,7 @@ export default async function PartnerStatsPage({ searchParams }: PageProps<"/par
 
   return (
     <Container className="py-14 sm:py-24">
-      <Eyebrow>The Creator Programme · Private</Eyebrow>
+      <Eyebrow>Creator program · Private</Eyebrow>
       <h1 className="mt-8 max-w-4xl font-display text-[44px] leading-[1.08] tracking-[-0.02em] sm:text-[72px]">
         {greeting ? `Hi ${greeting}, here's how it's going` : "Your partner stats"}
       </h1>
