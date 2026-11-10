@@ -53,13 +53,13 @@ This doc covers two kinds of copy:
   > Every price includes free US shipping and the hi-res file, and if you don't love it, we remake it or refund you.
 
 ### E2: day 2 (skip if they've made a preview)
-- **Subject:** Royal, watercolor, or "museum serious"?
+- **Subject:** Oil, watercolor, or a few quiet lines?
 - **Preheader:** Try every style on your dog. It's free and takes 30 seconds.
 - **Body:**
   > Can't decide what your dog is? You don't have to. Previews are free, so try them all.
   >
-  > 👑 **The Royal**, for dogs with a nickname that includes a title
-  > 🎖️ **The Admiral**, for the distinguished gentleman
+  > 🖼️ **Old Master**, oil, lit like a museum portrait
+  > ✏️ **Charcoal Study**, all eyes and soft shadow
   > 🎨 **Watercolor**, soft, luminous, and a favorite for memorial pieces
   > ✍️ **Fine Line**, minimalist ink for modern walls
   >
@@ -97,7 +97,7 @@ This doc covers two kinds of copy:
 **Founding 100 was retired on Oct 19.** No launch discount; step 3 is the honest downsell.
 
 **Suggested copy upgrades** (optional, for engineering when there's time):
-- **Step 1 subject A/B:** "[Pet] is still in the velvet robe 👑" vs the current subject. Keep the current one for memorial-style previews.
+- **Step 1 subject A/B:** "[Pet]'s portrait is still on the easel 🖼️" vs the current subject. Keep the current one for memorial-style previews.
 - **Step 2:** add a room mockup of their preview above the list ("Here's how [Pet] looks above a sofa").
 - **Memorial track** (style = watercolor/old-master + memorial occasion): drop step 3's discount, change the step 1 subject to "We saved [Pet]'s portrait for you," and never use urgency.
 
@@ -155,11 +155,11 @@ Within a few hours of each of the first ~30 orders, reply to the customer from y
 
 ### W1: previewed, never bought, nurture finished (day 14+)
 - **Subject:** We painted [Pet] in a new style
-- **Preheader:** It's free to look. The holiday style just arrived.
+- **Preheader:** It's free to look. Soft Pastel just arrived.
 - **Body:**
-  > [Pet]'s first portrait is still saved, and there's a new **Holiday Cozy** style (knit scarf, fireplace, twinkle lights). Want to see [Pet] in it? It's free and takes 30 seconds.
+  > [Pet]'s first portrait is still saved, and there's a new **Soft Pastel** style (velvety pastel on toned paper, soft and warm). Want to see [Pet] in it? It's free and takes 30 seconds.
   >
-  > **[See [Pet] in Holiday Cozy →]**
+  > **[See [Pet] in Soft Pastel →]**
   >
   > Planning gifts? We recommend ordering physical pieces by **Dec 10** for standard US delivery before Christmas (Dec 5 for Canada), and a Gift Reveal can go out any day, including Christmas morning.
 - **Notes:** these are the dates the site publishes (`CHRISTMAS_2026` in `web/src/components/marketing/commerce.ts`, shown on /shipping). It's guidance, not a guarantee, so don't word it as a promise; if ops moves the date, change it there and here together. **No discount in W1.** The new style is the reason to come back.
@@ -168,7 +168,7 @@ Within a few hours of each of the first ~30 orders, reply to the customer from y
 - **Subject:** Know a dog who deserves this too?
 - **Preheader:** Paint a friend's dog, no new photo of yours needed.
 - **Body:**
-  > [Pet] has been on the wall for a while now (we hope they're still smug about it 👑). If there's a dog person on your gift list, you can make their dog's portrait free in 30 seconds, then send a Gift Reveal the moment you order.
+  > [Pet] has been on the wall for a while now (we hope they're still smug about it 🖼️). If there's a dog person on your gift list, you can make their dog's portrait free in 30 seconds, then send a Gift Reveal the moment you order.
   >
   > **[Paint a friend's dog →]**
   >

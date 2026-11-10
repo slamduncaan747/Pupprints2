@@ -22,9 +22,9 @@ Swap the **[brackets]**. Every link carries a UTM so we can see what worked (con
 
 > Okay, I've been quietly building something and today it's live. 🐾
 >
-> It's called **Pup Prints**. You upload one photo of your dog and in about 30 seconds you see them as a fine-art portrait: royal, watercolor, old-master oil, minimalist, pop art. **Seeing it is completely free**, no card needed. If you love it, we print it on canvas or framed and ship it free in the US. And if it's a gift, you can send the recipient a little "Gift Reveal" right away while the print is on its way.
+> It's called **Pup Prints**. You upload one photo of your dog and in about 30 seconds you see them as a fine-art portrait: old-master oil, watercolor, charcoal, linocut, minimalist line. **Seeing it is completely free**, no card needed. If you love it, we print it on canvas or framed and ship it free in the US. And if it's a gift, you can send the recipient a little "Gift Reveal" right away while the print is on its way.
 >
-> This is [Dog], my very first test subject (he has been unbearable since 👑).
+> This is [Dog], my very first test subject (he has been unbearable since 🖼️).
 >
 > I'd love it if you tried it on your dog, even just for fun: **https://pup-prints.vercel.app/?utm_source=facebook&utm_medium=personal&utm_campaign=launch_post**
 >
@@ -39,7 +39,7 @@ Swap the **[brackets]**. Every link carries a UTM so we can see what worked (con
 **Feed post:** a carousel. Before/after of your dog → the 4-style grid → a "how it works" graphic → a "we're open" slide.
 
 > I made a thing. 🐾 Pup Prints turns one photo of your dog into a fine-art portrait. See it FREE in 30 seconds, then hang it in days.
-> [Dog] was test subject #1 and is now insufferable 👑
+> [Dog] was test subject #1 and is now insufferable 🖼️
 > Link in bio → try it on your dog.
 > Tell me which style your dog is 👇
 > #smallbusiness #dogportrait #dogsofinstagram #[yourcity]
@@ -104,7 +104,7 @@ DM everyone who votes. Each vote is a gift lead.
 
 **Business Page post:**
 > **Free portraits for neighborhood dogs this week 🐾**
-> Hi neighbors! I'm [First name] from [neighborhood], and I just started Pup Prints, a small studio that turns a photo of your dog into a fine-art portrait (royal, watercolor, minimalist and more).
+> Hi neighbors! I'm [First name] from [neighborhood], and I just started Pup Prints, a small studio that turns a photo of your dog into a fine-art portrait (oil, watercolor, minimalist and more).
 >
 > This week I'm making **free digital portraits for the first 20 neighborhood dogs**. Comment with your dog's name and I'll message you, or try it yourself in 30 seconds (free preview, no card): https://pup-prints.vercel.app/?utm_source=nextdoor&utm_medium=community&utm_campaign=launch_post
 >
@@ -131,15 +131,15 @@ DM everyone who votes. Each vote is a gift lead.
 
 | # | Search term | Post (swap the breed details) |
 |---|---|---|
-| 1 | "French Bulldog owners" | "Frenchie people! 🇫🇷🐶 I'm the founder of a tiny dog-portrait studio, and Frenchie faces are *made* for royal portraits. I'll paint the **first 20 Frenchies in the comments for free** (digital, no purchase, no catch). Drop your bat-eared baby's photo below 👇" |
+| 1 | "French Bulldog owners" | "Frenchie people! 🇫🇷🐶 I'm the founder of a tiny dog-portrait studio, and Frenchie faces are *made* for oil portraits. I'll paint the **first 20 Frenchies in the comments for free** (digital, no purchase, no catch). Drop your bat-eared baby's photo below 👇" |
 | 2 | "Golden Retriever lovers" | "Golden owners: that smile deserves a museum. 🏛️ I run a small portrait studio and I'm painting **20 goldens from this group for free** this week. Post your golden's best photo in the comments!" |
 | 3 | "Goldendoodle owners" / "Doodle families" | "Doodle fluff in oil paint is my favorite thing ever. 🧸 Founder of Pup Prints here, painting **20 doodles free** from the comments. Show me your floof 👇" |
-| 4 | "Dachshund lovers" | "Calling all long dogs 🌭 I'll paint **20 dachshunds free** in royal or admiral style (they look *extremely* distinguished). Comment a photo. I'm the founder of a small studio, no purchase needed." |
-| 5 | "German Shepherd owners" | "GSD owners: we're painting **20 shepherds as admirals** this week, free. 🎖️ That noble face was made for it. Drop a photo below (I'm the founder of Pup Prints)." |
-| 6 | "Pit bull lovers" / "Bully breed advocates" | "Pibble people 💙 Bully breeds look *stunning* as royal portraits, and we want to show the world that face. Painting **20 for free**. Rescues especially welcome. Comment your pittie!" |
-| 7 | "Corgi owners" | "Corgi council, assemble 👑 Painting **20 corgis as tiny royals**, free. The Queen would approve. Post your loaf's photo in the comments." |
+| 4 | "Dachshund lovers" | "Calling all long dogs 🌭 I'll paint **20 dachshunds free** in old-master oil or charcoal (they look *extremely* distinguished). Comment a photo. I'm the founder of a small studio, no purchase needed." |
+| 5 | "German Shepherd owners" | "GSD owners: we're painting **20 shepherds in charcoal** this week, free. ✏️ That noble face was made for it. Drop a photo below (I'm the founder of Pup Prints)." |
+| 6 | "Pit bull lovers" / "Bully breed advocates" | "Pibble people 💙 Bully breeds look *stunning* in oil, and we want to show the world that face. Painting **20 for free**. Rescues especially welcome. Comment your pittie!" |
+| 7 | "Corgi owners" | "Corgi council, assemble 🖼️ Painting **20 corgis in linocut**, free. Those ears were made for print. Post your loaf's photo in the comments." |
 | 8 | "Labrador Retriever owners" | "Lab owners! I'm painting **20 labs free** this week, old-master oil style. Drop your lab's photo below. (Founder of a small portrait studio, no purchase needed.)" |
-| 9 | "Chihuahua lovers" | "Small dogs, BIG portraits 👑 Painting **20 chihuahuas free** as royalty (they already think they are). Comment a photo!" |
+| 9 | "Chihuahua lovers" | "Small dogs, BIG portraits 🖼️ Painting **20 chihuahuas free** in old-master oil (they already think they belong in a museum). Comment a photo!" |
 | 10 | "Senior dog lovers" / "Grey muzzle club" | "Grey muzzles are the best muzzles 🤍 I'm painting **20 senior dogs free** in soft watercolor or old-master style. Tell us their name and age with a photo. (I run a small portrait studio. No purchase, ever.)" |
 
 **When you send the portrait** (Messenger):
@@ -169,6 +169,6 @@ DM everyone who votes. Each vote is a gift lead.
 
 **r/shamelessplug.** A straight plug is allowed, but keep it human.
 > **Title:** My dog portrait studio launched today: free 30-second preview, 15% off for the first 100 customers
-> **Body:** Upload one photo, see your dog as royalty / watercolor / minimalist art in ~30 seconds, free. If you love it, canvas or framed with free US shipping. https://pup-prints.vercel.app/?utm_source=reddit&utm_medium=community&utm_campaign=shamelessplug
+> **Body:** Upload one photo, see your dog as an oil painting / watercolor / minimalist art in ~30 seconds, free. If you love it, canvas or framed with free US shipping. https://pup-prints.vercel.app/?utm_source=reddit&utm_medium=community&utm_campaign=shamelessplug
 
 **Optional: r/smallbusiness.** That sub reportedly allows promotion only in its weekly promotion thread. Use that thread only.

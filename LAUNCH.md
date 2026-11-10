@@ -10,7 +10,7 @@ Everything below is done in **Vercel → pup-prints → Settings → Environment
 |---|---|---|
 | AI previews (primary) | OpenAI: platform.openai.com → sign up → Settings → Billing: add ~$10 credit (≈125 previews at ~$0.08) → API keys → Create new secret key. GPT Image models may also require **Organization Verification** (Settings → Organization → General → Verify Organization; government ID, access can take ~15 min to appear) | `OPENAI_API_KEY` |
 | AI previews (fallback) | Google Gemini: aistudio.google.com → Get API key → Create API key → Set up billing on that project (prepay min $5; image models have no free tier) | `GEMINI_API_KEY` |
-| Check the AI keys | From `web/`, with the keys in `web/.env.local`: `npx tsx scripts/ai-smoke.ts <dog-photo.jpg> royal` (add `--provider=gemini` to test the fallback). Writes the portrait next to the photo | — |
+| Check the AI keys | From `web/`, with the keys in `web/.env.local`: `npx tsx scripts/ai-smoke.ts <dog-photo.jpg> oil-classic` (add `--provider=gemini` to test the fallback). Writes the portrait next to the photo | — |
 | Print upscaling (optional) | fal.ai → Billing: add credit → Keys → create key. Without it, print files use the built-in upscaler | `FAL_KEY` |
 | Payments | Stripe → Developers → API keys → Secret key (live) | `STRIPE_SECRET_KEY` |
 | Payment confirmations | Stripe → Developers → Webhooks → Add endpoint `https://pup-prints.vercel.app/api/webhooks/stripe`, events `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `charge.refunded` → copy signing secret | `STRIPE_WEBHOOK_SECRET` |

@@ -108,7 +108,7 @@ The site stores the **first touch** in a 30-day cookie and saves it on every lea
 | `utm_source` | `tiktok` · `instagram` · `facebook` · `youtube` · `pinterest` · `nextdoor` · `reddit` · `etsy` · `google` · `email` · `sms` · `friends` · `shelter_[name]` · `qr` |
 | `utm_medium` | `social` (organic post or bio) · `paid_social` · `dm` · `community` (groups, Nextdoor) · `personal` (founder's own posts and texts) · `email` · `sms` · `referral` · `creator` · `print` (QR) |
 | `utm_campaign` | `organic_wk1` · `bio` · `boost_wk1` · `spark_[code]` · `friends_gift` · `launch_post` · `comment_portrait` · `fb_group_[breed]` · `shelter_[name]` · `dogpark_wk1` |
-| `utm_content` | script number + slug, e.g. `s01_royal_reveal`, `s03_rate_dogs`, or the creator handle |
+| `utm_content` | script number + slug, e.g. `s01_oil_reveal`, `s03_rate_dogs`, or the creator handle |
 | `utm_term` | audience note for paid only, e.g. `us_25_54_pets` |
 
 **Examples:**
@@ -147,11 +147,11 @@ The value is the **lesson**: which hook gets clicks from strangers. That's the s
 *Primary text first, then the headline. Outcome-first, honest, no fake urgency, no "AI" in the first line.*
 
 1. "Your dog, but make it museum. Upload one photo and see their portrait free in 30 seconds. Love it before you pay." / **See your dog's portrait free**
-2. "He has no idea he's about to be framed. Royal, watercolor, minimalist: try every style on your dog, free." / **Try every style free**
+2. "He has no idea he's about to be framed. Oil, watercolor, minimalist: try every style on your dog, free." / **Try every style free**
 3. "The gift for the dog mom who has everything (except this). Send the Gift Reveal today; the canvas arrives in days." / **Give it today, hang it in days**
 4. "No proofs to wait for. No surprise fees. See it first, then choose a print, canvas or frame. Free US shipping." / **See it before you pay**
 5. "Grey muzzle, golden heart. A gentle portrait to remember them by. Even an old photo can work, and if it's not right, we remake it free." / **Memorial portraits, made gently**
-6. "We checked: your dog looks great in a velvet robe. Find out in 30 seconds (no card needed)." / **Make your dog royalty**
+6. "We checked: your dog looks great in oils. Find out in 30 seconds (no card needed)." / **See your dog as a painting**
 7. "Every portrait is checked by a person before it's printed. Love it or we remake or refund it." / **The love-it guarantee**
 8. "Two dogs? One portrait. Upload, pick a style, frame it. Hi-res file included free with every print." / **Your whole pack, framed**
 9. "Christmas shopping for every dog person on your list, done in an evening. Free preview for each one." / **Dog people gifts, sorted**
@@ -165,9 +165,9 @@ If asked how it's made, the comment-reply standard is: "Our AI artist creates it
 
 | # | Concept | Layout | Copy on the image |
 |---|---|---|---|
-| 1 | **Phone-photo → portrait split** | Left: a candid phone photo with a slight blur and timestamp. Right: the Royal portrait in a black frame. A thin arrow between them. | "This photo → this portrait. 30 seconds. Free preview." |
+| 1 | **Phone-photo → portrait split** | Left: a candid phone photo with a slight blur and timestamp. Right: the Old Master portrait in a black frame. A thin arrow between them. | "This photo → this portrait. 30 seconds. Free preview." |
 | 2 | **Room mockup** | The 16×20 canvas above a sofa in a warm living room; the dog asleep on the sofa below it. | "The best seat in the house has a portrait now." · "Free US shipping." |
-| 3 | **Style grid** | One dog in 4 styles (Royal, Watercolor, Fine Line, Pop Art) on a cream background, each labeled. | "Which one is your dog? Try all 4 free." |
+| 3 | **Style grid** | One dog in 4 styles (Old Master, Watercolor, Fine Line, Linocut) on a cream background, each labeled. | "Which one is your dog? Try all 4 free." |
 | 4 | **Gift Reveal phone** | A hand holding a phone showing the Gift Reveal page, with a gift tag reading "For Mom." | "Give it today. The print follows." |
 | 5 | **Honest checkout card** | A clean receipt-style card: "$99 canvas · free US shipping · hi-res file included · love-it guarantee · $0 surprise fees". | "One price. No surprises." |
 

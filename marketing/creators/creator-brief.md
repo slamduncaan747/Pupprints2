@@ -24,13 +24,13 @@ We turn one photo of a dog into a fine-art portrait. Your followers can **see th
 
 1. **The reveal reaction.** Film yourself (or your partner, kids, mom) opening [Dog]'s portrait for the first time. The first 2 seconds are the face, then the portrait. Nothing else converts like it.
 2. **Before → after.** Your original photo, a quick transition (snap, swipe, beat drop), the portrait. Hold the portrait for 2+ seconds.
-3. **"I made my dog a royal portrait."** Screen-record the free preview on your phone: upload, 30 seconds, *gasp*. Then try 2–3 styles and ask your followers to vote in the comments. You can only do this with us, because typical portrait shops make you pay and then wait days.
+3. **"I turned my dog into a real painting."** Screen-record the free preview on your phone: upload, 30 seconds, *gasp*. Then try 2–3 styles and ask your followers to vote in the comments. You can only do this with us, because typical portrait shops make you pay and then wait days.
 4. **Dog meets portrait.** Hold the print (or your phone) up to [Dog]. The sniff, head tilt or side-eye is the whole video.
 5. **Memorial tribute (only if it's genuinely yours to share).** A portrait of a dog you've lost: quiet, slow, your words. Never staged for content, and no pressure to do this one.
 
 **Hooks that stop the scroll** (first 1.5 seconds):
-- "I paid $0 to find out what my dog looks like as royalty."
-- "POV: [Dog] finds out he's nobility."
+- "I paid $0 to find out what my dog looks like as an oil painting."
+- "POV: [Dog] finds out there's a painting of him in the living room."
 - "Rating my dog's portrait in 4 styles."
 - "Watch my mom realize this is OUR dog."
 - "He has no idea he's about to be framed."

@@ -79,20 +79,20 @@ Best photos: dog's face clearly visible, eye-level, natural light, sharp focus. 
 
 **PERSONALIZATION FIELD** (Etsy "Add personalization", required, 256 characters)
 ```
-Your dog's name + style (Royal, Admiral, Old Master, Watercolor, Fine Line, Pop Art, Botanical, Storybook, Charcoal, Mid-Century, Space Cadet, Holiday Cozy). Then send 1–3 photos in Etsy Messages right after checkout.
+Your dog's name + style (Old Master, Watercolor, Modern Oil, Charcoal Study, Linocut, Soft Pastel, Ink Wash, Fine Line, Botanical, Mid-Century). Then send 1–3 photos in Etsy Messages right after checkout.
 ```
 
 ---
 
 ## 3. The five listings
 
-### Listing 1: Royal canvas (hero)
+### Listing 1: Old Master canvas (hero)
 
-**Title** (131 chars)
-`Custom Dog Portrait from Photo, Royal Renaissance Dog Canvas, Personalized Pet Portrait Wall Art, Dog Mom Gift, Gift for Dog Lovers`
+**Title** (134 chars)
+`Custom Dog Portrait from Photo, Old Master Oil Style Dog Canvas, Personalized Pet Portrait Wall Art, Dog Mom Gift, Gift for Dog Lovers`
 
 **Tags (13)**
-custom dog portrait · royal dog portrait · dog portrait canvas · renaissance dog · pet portrait custom · dog mom gift · dog lover gift · personalized dog · king dog portrait · dog wall art · gift for dog dad · custom pet canvas · dog in costume art
+custom dog portrait · oil style dog art · dog portrait canvas · classic dog portrait · pet portrait custom · dog mom gift · dog lover gift · personalized dog · dog painting print · dog wall art · gift for dog dad · custom pet canvas · fine art dog print
 
 **Category:** Art & Collectibles › Prints. Pick the canvas-print option if Etsy offers one. **Don't** choose "Painting": these aren't paintings.
 
@@ -110,13 +110,13 @@ custom dog portrait · royal dog portrait · dog portrait canvas · renaissance 
 | Variation | Options |
 |---|---|
 | Size (price varies) | 8×10 **$59** · 12×16 **$79** · **16×20 $99** · 18×24 **$115** · 24×36 **$149** |
-| Style | The Royal · The Admiral · Old Master |
+| Style | Old Master · Modern Oil · Soft Pastel |
 
 **Description:**
 ```
-Your dog, as nobility. 👑
+Your dog, as a piece of art for your home. 🖼️
 
-A Renaissance court portrait of YOUR dog: velvet robe, ermine trim, a little crown and candlelit old-master drama. Printed on gallery-wrapped canvas over a solid wood frame, ready to hang. Hardware included.
+An old-master style portrait of YOUR dog: a deep, quiet background, soft museum light and rich oil-style brushwork. Just your dog, no costumes or props. Printed on gallery-wrapped canvas over a solid wood frame, ready to hang. Hardware included.
 
 The hero size is 16×20 ($99): big enough to be the first thing guests see.
 
@@ -136,8 +136,8 @@ Perfect for: dog mom & dog dad gifts, birthdays, housewarmings, Christmas, "the 
 3. Close-up of the canvas texture
 4. Side view of the gallery wrap
 5. Size chart with a sofa for scale
-6. Admiral variant
-7. Old Master variant
+6. Modern Oil variant
+7. Soft Pastel variant
 8. "How it works" graphic
 9. "What's included" graphic
 10. The guarantee card
@@ -165,7 +165,7 @@ Style goes in personalization.
 ```
 The gift that gets the gasp. 🖼️
 
-Your dog in the style of your choice (royal, watercolor, minimalist line, old master and more), printed on archival matte paper with fade-resistant pigment inks and framed in solid wood (black, white or natural oak) with shatter-resistant acrylic. Arrives ready to hang.
+Your dog in the style of your choice (old-master oil, watercolor, minimalist line, charcoal and more), printed on archival matte paper with fade-resistant pigment inks and framed in solid wood (black, white or natural oak) with shatter-resistant acrylic. Arrives ready to hang.
 
 Most-gifted size: 12×16 ($95).
 
@@ -226,13 +226,13 @@ dog portrait print · custom pet print · dog art print · minimalist dog art ·
 | Variation | Options |
 |---|---|
 | Size (price varies) | 8×10 **$35** · **12×16 $45** · 18×24 **$59** · 24×36 **$79** |
-| Style | Royal · Admiral · Old Master · Watercolor · Fine Line · Pop Art · Storybook · Botanical · Space Cadet · Charcoal · Mid-Century · Holiday Cozy |
+| Style | Old Master · Watercolor · Modern Oil · Charcoal Study · Linocut · Soft Pastel · Ink Wash · Fine Line · Botanical · Mid-Century |
 
 **Description:**
 ```
 Museum-grade art of your dog, for your own frame.
 
-Archival, acid-free enhanced matte paper (189gsm) with fade-resistant pigment inks. Pick from 12 styles, from a minimalist fine-line drawing to a loud pop-art piece. Ships flat or rolled in a protective tube.
+Archival, acid-free enhanced matte paper (189gsm) with fade-resistant pigment inks. Pick from 10 styles, from a minimalist fine-line drawing to a bold linocut. Ships flat or rolled in a protective tube.
 
 The easiest gift under $50 for any dog person.
 
@@ -244,11 +244,11 @@ The easiest gift under $50 for any dog person.
 
 ### Listing 5: Digital file
 
-**Title** (127 chars)
-`Custom Dog Portrait Digital File from Photo, Personalized Pet Portrait Download, Royal Dog Art, Last Minute Gift for Dog Lovers`
+**Title** (132 chars)
+`Custom Dog Portrait Digital File from Photo, Personalized Pet Portrait Download, Old Master Dog Art, Last Minute Gift for Dog Lovers`
 
 **Tags (13)**
-digital dog portrait · dog portrait digital · custom pet digital · last minute gift · royal pet portrait · dog phone wallpaper · printable dog art · pet portrait file · dog gift digital · dog profile picture · ecard dog gift · custom dog portrait · pet portrait custom
+digital dog portrait · dog portrait digital · custom pet digital · last minute gift · watercolor dog art · dog phone wallpaper · printable dog art · pet portrait file · dog gift digital · dog profile picture · ecard dog gift · custom dog portrait · pet portrait custom
 
 **Price:** **$29**. Any style.
 

@@ -19,7 +19,7 @@
 | We give | Details |
 |---|---|
 | **Free digital portraits** | For every adoptable dog they send, or start with their **10 longest-stay dogs**. Turnaround within 48 hours. Hi-res files, cropped for listings (4:5) and stories (9:16). |
-| **Style** | Royal or Admiral for personality; Watercolor or Old Master for gentle souls. |
+| **Style** | Old Master or Modern Oil for big personalities; Watercolor or Soft Pastel for gentle souls. |
 | **A "portrait + real photo" pair image** | Portrait on the left, real photo on the right, so listings stay honest. |
 | **Adoption-day print** *(from week 2, as budget allows)* | An 8×10 print of the dog's portrait for the adopting family, mailed to the shelter. About $15–20 each, so we cap it monthly. |
 | **Content** | We feature their dogs (with permission) in our "Shelter Saturday" video series and tag them. |
@@ -122,7 +122,7 @@ Fill in every bracket with true facts. No invented adoption numbers.
 
 *Pup Prints is creating fine-art portraits of adoptable dogs at [Shelter Name] at no cost, starting with the dogs who have waited longest*
 
-**[CITY, State] — [Date], 2026.** Pup Prints, a new [City]-based dog portrait studio, has partnered with [Shelter Name] to create free fine-art portraits of the shelter's adoptable dogs. The portraits, in styles ranging from Renaissance royalty to soft watercolor, will appear alongside each dog's regular photos on the shelter's adoption listings and social media.
+**[CITY, State] — [Date], 2026.** Pup Prints, a new [City]-based dog portrait studio, has partnered with [Shelter Name] to create free fine-art portraits of the shelter's adoptable dogs. The portraits, in styles ranging from old-master oil to soft watercolor, will appear alongside each dog's regular photos on the shelter's adoption listings and social media.
 
 The first [number] portraits feature dogs including [Dog A], a [age]-year-old [breed/mix] who has been at the shelter for [length of stay per the shelter], and [Dog B], [one-line description provided by the shelter].
 
@@ -156,7 +156,7 @@ Pup Prints launched in October 2026. It lets dog owners see a portrait of their 
 >
 > I saw your story on [their recent shelter/pet piece] and thought this might fit. I just launched Pup Prints, a small [City] dog-portrait studio, and we're making **free fine-art portraits of adoptable dogs at [Shelter]**, starting with the ones who've waited longest (like [Dog A], [X] months).
 >
-> It's a very visual story: the "before" shelter photo next to [Dog A] as royalty or a watercolor painting. [Shelter contact] is happy to talk too. I can bring portraits to the shelter for a reveal any day this week.
+> It's a very visual story: the "before" shelter photo next to [Dog A] as an old-master oil or a watercolor painting. [Shelter contact] is happy to talk too. I can bring portraits to the shelter for a reveal any day this week.
 >
 > Release and images attached. Thanks for considering it!
 > [Name] · [phone]

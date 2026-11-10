@@ -89,7 +89,7 @@ Never write "hand-painted" or "by our artists". Don't lead with "AI" in subject 
 
 - `A portrait of [Dog name], for [Business]`
 - `I made a portrait of [Dog name] for you`
-- `[Dog name] as an Admiral. For your front desk?`
+- `[Dog name] in oil. For your front desk?`
 - `A free portrait for every [Kennel] puppy family`
 - `For [Rescue]: a portrait for every adopter`
 
@@ -187,7 +187,7 @@ Use it whenever the partner gets a commission or credit. Without a fee, the line
 >
 > - **The counter card.** A small stand with a QR code: "Your dog, as a work of art. See it free." Clients get **15% off**; you earn **15%** of every order, paid monthly.
 > - **Groomed Portrait Day** (optional). Forward us after-photos you already take, 10–30 a month. We turn each into a portrait and send you a private link to text the client: "A portrait of [Dog] after today's groom, from [Salon]." No cost to you.
-> - **For the holidays:** "Holiday Portrait with every groom", Nov 1 to Dec 10, in our fireside Holiday style. Order by Dec 10 for delivery before Christmas; digital Gift Reveals work right up to Dec 24.
+> - **For the holidays:** "Holiday Portrait with every groom", Nov 1 to Dec 10, in soft watercolor or old-master oil. Order by Dec 10 for delivery before Christmas; digital Gift Reveals work right up to Dec 24.
 > - **For your wall:** a framed portrait of your shop dog once you've shared your first 10 links.
 > - **Nothing to stock, no money to handle.** We ship, support and refund. Love it or we remake or refund it.
 >

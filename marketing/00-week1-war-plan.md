@@ -138,7 +138,7 @@ Shift every block if you start later. **The order matters more than the clock.**
 | 15:30–16:30 | Film and post videos #1–2 | Scripts **#1 (transformation reveal)** and **#3 ("rate your dogs" comment-to-enter)** from [30-video-scripts](content/30-video-scripts.md). Post on TikTok, then Reels, then Shorts. | 2 videos × 3 platforms |
 | 16:30–17:30 | Warm network, batch 2 | 15 more gift reveals. Reply to everyone from batch 1. | 30 total sent |
 | 17:30–18:30 | Local | Nextdoor post. 2 local FB groups (rules checked). Email 3 local shelters ([shelter-partnership.md](channels/shelter-partnership.md)). | 3 posts, 3 shelter emails |
-| 18:30–19:00 | Video #3 | Script #2 ("POV: your dog finds out he's royalty"). Post at 19:00–21:00, prime time. | 3rd video |
+| 18:30–19:00 | Video #3 | Script #2 ("POV: the portrait on the wall"). Post at 19:00–21:00, prime time. | 3rd video |
 | 19:00–21:00 | Reply + creator batch 2 | Answer every DM and comment within 30 minutes. Send gift DMs to **10 more** creators. | 25 creator gifts total |
 | 21:00–21:20 | Log KPIs | Fill in the tracking table (§7). Write tomorrow's top 3. | Day 1 row done |
 

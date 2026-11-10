@@ -23,28 +23,28 @@ For our own brand accounts. Each script is shootable on a phone in 10–20 minut
 | Type | Tags |
 |---|---|
 | Broad | #dogsoftiktok #dogsofinstagram #doglover |
-| Niche | #dogportrait #petportrait #customdogportrait #dogmom #dogdad #giftsfordogmoms #dogmemorial #royaldog |
+| Niche | #dogportrait #petportrait #customdogportrait #dogmom #dogdad #giftsfordogmoms #dogmemorial #dogart |
 | Breed | #frenchie #goldenretriever #doodle #pitbull #dachshund #germanshepherd #corgi #chihuahua etc. |
 
 ---
 
 ## A. Transformation reveals
 
-### 1. "One photo → royalty" (the core reveal)
+### 1. "One photo → a real painting" (the core reveal)
 - **Hook (0–1.5s):** a real phone photo of the dog, slightly goofy. Text: **"I uploaded ONE photo of my dog…"**
 - **Shots:**
   1. Phone photo, full screen (1s).
   2. Screen recording: tap upload → the "painting" screen (2s, sped up).
-  3. Hard cut on a beat to the Royal portrait, slow push-in (3s).
+  3. Hard cut on a beat to the Old Master portrait, slow push-in (3s).
   4. Split screen: real dog's face | portrait (2s).
   5. Real dog looking at the camera (1s).
-- **On-screen text:** "I uploaded ONE photo of my dog…" → "30 seconds later" → "HIS GRACE, DUKE BISCUIT" → "free preview, link in bio"
-- **Caption:** He's been insufferable since. See your dog's portrait free, no card needed 👑 #dogportrait #royaldog #[breed] #dogsoftiktok
-- **Sound style:** a dramatic orchestral swell or royal fanfare that hits on the reveal cut.
+- **On-screen text:** "I uploaded ONE photo of my dog…" → "30 seconds later" → "BISCUIT, IN OIL" → "free preview, link in bio"
+- **Caption:** It looks like it has always hung in our living room. See your dog's portrait free, no card needed 🖼️ #dogportrait #dogart #[breed] #dogsoftiktok
+- **Sound style:** a dramatic orchestral swell that hits on the reveal cut.
 
 ### 4. "Same dog, 4 styles"
 - **Hook:** the dog's photo with 4 blank frames around it. Text: **"Which one is the REAL him?"**
-- **Shots:** the photo (1s) → Royal (1.5s) → Admiral (1.5s) → Watercolor (1.5s) → Pop Art (1.5s) → a 2×2 grid of all four (3s).
+- **Shots:** the photo (1s) → Old Master (1.5s) → Charcoal Study (1.5s) → Watercolor (1.5s) → Linocut (1.5s) → a 2×2 grid of all four (3s).
 - **On-screen text:** numbers 1–4 on each style → "Comment the number 👇"
 - **Caption:** I can't pick. Vote 1–4 and I'll frame the winner. #dogportrait #petportrait #[breed] #dogmom
 - **Sound style:** an upbeat 4-beat pop instrumental; one cut per beat.
@@ -73,12 +73,12 @@ For our own brand accounts. Each script is shootable on a phone in 10–20 minut
 
 ## B. POV / character comedy
 
-### 2. "POV: your dog finds out he's royalty"
-- **Hook:** the dog lying on a couch. Text: **"POV: you told him he's descended from a duke"**
-- **Shots:** the dog's slow head turn to camera (1.5s) → the Royal portrait zooms in with a sparkle (2s) → the dog "refusing" to get off the couch (2s) → the portrait again with a crown emoji (1s).
-- **On-screen text:** "POV: you told him he's descended from a duke" → "He now requires a throne" → "Make yours free (link in bio)"
-- **Caption:** We've created a monster. #dogsoftiktok #royaldog #[breed] #funnydog
-- **Sound style:** a pompous harpsichord or "regal" meme sound.
+### 2. "POV: the portrait on the wall"
+- **Hook:** the dog lying on a couch. Text: **"POV: there's a painting of him over the sofa now"**
+- **Shots:** the dog's slow head turn to camera (1.5s) → the Old Master portrait, slow zoom (2s) → the dog "refusing" to get off the couch (2s) → the portrait again, framed on the wall above him (1s).
+- **On-screen text:** "POV: there's a painting of him over the sofa now" → "He thinks the living room is his gallery" → "Make yours free (link in bio)"
+- **Caption:** We've created a monster. #dogsoftiktok #dogart #[breed] #funnydog
+- **Sound style:** a stately harpsichord or "art gallery" meme sound.
 
 ### 7. "My dog reviewing his portrait"
 - **Hook:** the dog staring at a phone or print. Text: **"Getting his honest review"**
@@ -88,11 +88,11 @@ For our own brand accounts. Each script is shootable on a phone in 10–20 minut
 - **Sound style:** a deadpan "critic" music bed.
 
 ### 11. "Things my dog would say if he saw his portrait"
-- **Hook:** the Admiral portrait. Text: **"Admiral Biscuit has notes"**
+- **Hook:** the Charcoal Study portrait. Text: **"Biscuit has notes on his portrait"**
 - **Shots:** the portrait (2s) → the real dog → 3 text-bubble jokes over close-ups (6s) → the portrait (2s).
-- **On-screen text:** "Admiral Biscuit has notes" → "1. Why only one medal" → "2. Where is my ship" → "3. Please address me correctly"
-- **Caption:** Promoted to Admiral, ego to match. #dogsoftiktok #funnydog #dogportrait
-- **Sound style:** a sea-shanty instrumental.
+- **On-screen text:** "Biscuit has notes on his portrait" → "1. Why is it not bigger" → "2. Hang it lower, at my eye level" → "3. One more for the hallway"
+- **Caption:** A real drawing of him, and he still has notes. #dogsoftiktok #funnydog #dogportrait
+- **Sound style:** a deadpan jazz instrumental.
 
 ### 14. "Dog dad didn't think it'd look like her"
 *Only with someone who actually doubted it.*
@@ -207,28 +207,28 @@ For our own brand accounts. Each script is shootable on a phone in 10–20 minut
 ### 10. "Your dog's portrait style by zodiac"
 - **Hook:** a zodiac wheel. Text: **"Your dog's portrait style based on their zodiac"**
 - **Shots:** 12 quick cards, each sign → style → portrait example (12s).
-- **On-screen text:** "Aries → Royal" … "Pisces → Watercolor" → "Comment your dog's sign 👇"
+- **On-screen text:** "Aries → Modern Oil" … "Pisces → Watercolor" → "Comment your dog's sign 👇"
 - **Caption:** Leo dogs, you already knew. #dogzodiac #dogsoftiktok #dogportrait
 - **Sound style:** a mystical chime bed.
 
 ### 15. "Pick a door"
 - **Hook:** 3 doors. Text: **"Pick a door, get your dog's portrait style"**
-- **Shots:** 3 doors → each opens on a style (Admiral, Botanical, Space Cadet) with an example.
-- **On-screen text:** "Pick a door…" → "1: The Admiral" → "2: Botanical" → "3: Space Cadet" → "Try all 3 free"
-- **Caption:** I'd pick 3. Space dog forever. #dogsoftiktok #quiz #dogportrait
+- **Shots:** 3 doors → each opens on a style (Linocut, Botanical, Mid-Century) with an example.
+- **On-screen text:** "Pick a door…" → "1: Linocut" → "2: Botanical" → "3: Mid-Century" → "Try all 3 free"
+- **Caption:** I'd pick 3. Mid-Century forever. #dogsoftiktok #quiz #dogportrait
 - **Sound style:** a game-show suspense bed.
 
 ### 21. "This or that: dog edition"
-- **Hook:** a split screen. Text: **"Royal or Watercolor? You have 3 seconds"**
+- **Hook:** a split screen. Text: **"Old Master or Watercolor? You have 3 seconds"**
 - **Shots:** 5 rapid A/B pairs with the same dog in two styles each.
-- **On-screen text:** "Royal or Watercolor?" → "Admiral or Pop Art?" … → "Comment your score"
-- **Caption:** I went Royal 5 for 5. #thisorthat #dogsoftiktok #dogportrait
+- **On-screen text:** "Old Master or Watercolor?" → "Charcoal Study or Linocut?" … → "Comment your score"
+- **Caption:** I went Old Master 5 for 5. #thisorthat #dogsoftiktok #dogportrait
 - **Sound style:** a fast ticking beat.
 
 ### 26. "What your dog's portrait style says about you"
 - **Hook:** you to camera. Text: **"Your dog's portrait style says a LOT about you"**
-- **Shots:** you to camera, intercut with 4 portraits (Royal, Fine Line, Pop Art, Watercolor), each with a roast line.
-- **On-screen text:** "Royal: your dog has a nickname with a title" → "Fine Line: you own a linen sofa" → "Pop Art: your dog has an outfit for every holiday" → "Watercolor: you cry at every dog movie"
+- **Shots:** you to camera, intercut with 4 portraits (Old Master, Fine Line, Linocut, Watercolor), each with a roast line.
+- **On-screen text:** "Old Master: you light candles on a weeknight" → "Fine Line: you own a linen sofa" → "Linocut: you have opinions about typefaces" → "Watercolor: you cry at every dog movie"
 - **Caption:** Be honest. Which one are you? #dogmom #dogsoftiktok #dogportrait
 - **Sound style:** your own voice.
 
@@ -272,9 +272,9 @@ For our own brand accounts. Each script is shootable on a phone in 10–20 minut
 | Step | What happens | Tool | Time |
 |---|---|---|---|
 | 1. Ask | Videos #3, #9, #13, #20 and #27 end with "**Comment your dog's name + breed 👇**" (low effort means more comments, which means more reach). | – | – |
-| 2. Reply to all | Reply to **every** comment within an hour: "Biscuit sounds like royalty. Send his best photo to our DMs and he might be in round 2 👀". | TikTok/IG app (optional: ManyChat's free plan auto-DMs IG commenters who use a keyword like "PAINT") | 20 min per post |
+| 2. Reply to all | Reply to **every** comment within an hour: "Biscuit sounds like a work of art. Send his best photo to our DMs and he might be in round 2 👀". | TikTok/IG app (optional: ManyChat's free plan auto-DMs IG commenters who use a keyword like "PAINT") | 20 min per post |
 | 3. Collect | They DM a photo, which means consent is built in. Save it to a phone album "Comment dogs". | Phone | – |
-| 4. Paint 10/day | Admin → Gifts → generate → QA → DM the reveal link: "Here's Biscuit 👑 Can we feature him in tomorrow's video? Reply YES if okay." | Gift Studio | ~3 min each |
+| 4. Paint 10/day | Admin → Gifts → generate → QA → DM the reveal link: "Here's Biscuit 🖼️ Can we feature him in tomorrow's video? Reply YES if okay." | Gift Studio | ~3 min each |
 | 5. Everyone else | DM: "Biscuit deserves one! Make his free in 30 sec (no card): `https://pup-prints.vercel.app/?utm_source=tiktok&utm_medium=dm&utm_campaign=comment_portrait` 🎨". Use `utm_source=instagram` on IG. | Saved reply | 10 s each |
 | 6. Feature (with a YES only) | Next day's round video tags them, so they share it with friends, who comment, and the loop repeats. | – | – |
 | 7. Capture + close | Their free preview asks for an email to save it, and the [nurture flow](../email/flows.md) follows up at 2h, 24h and 72h. | Site (automatic) | 0 |
@@ -295,4 +295,4 @@ For our own brand accounts. Each script is shootable on a phone in 10–20 minut
 | Previews | – |
 | Orders | 1+/day by Friday |
 
-**Instagram Stories add-on:** post an **"Add Yours"** sticker: "Your dog as royalty 👑 (add a photo)". It's public, opt-in and has a chain effect. Paint 3 from the chain each evening and reply with them.
+**Instagram Stories add-on:** post an **"Add Yours"** sticker: "Your dog as a painting 🖼️ (add a photo)". It's public, opt-in and has a chain effect. Paint 3 from the chain each evening and reply with them.

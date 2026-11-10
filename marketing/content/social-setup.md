@@ -59,7 +59,7 @@ Canvas · framed · gift it today
 | 5 | **How it's made** | "Our AI artist creates it, our team finishes and checks it" + the QA checklist + the guarantee |
 | 6 | **Shelter dogs** | When the shelter partnership starts |
 
-**Story cadence:** 6–10 frames a day. Behind the scenes, polls ("Royal or Watercolor?"), the "Add Yours" sticker ("Your dog as royalty 👑"), and reshares (only with permission).
+**Story cadence:** 6–10 frames a day. Behind the scenes, polls ("Old Master or Watercolor?"), the "Add Yours" sticker ("Your dog as a painting 🖼️"), and reshares (only with permission).
 
 ---
 
@@ -78,7 +78,7 @@ Your dog as fine art 🎨 Free preview in 30 sec 👇
 **Link:** `https://pup-prints.vercel.app/?utm_source=tiktok&utm_medium=social&utm_campaign=bio`
 
 **Pinned videos (3):**
-1. #1 "One photo → royalty"
+1. #1 "One photo → a real painting"
 2. #3 "Rating your dogs" (the comment loop)
 3. #25 "The 10-second gift"
 
@@ -104,20 +104,20 @@ Re-pin whichever performs best.
 ## 5. Pinterest (slow burn, Q4 payoff)
 
 - **Create a business account:** username `pupprintsshop`, display name `Pup Prints | Custom Dog Portraits`.
-- **Bio:** `Fine-art portraits of your dog: royal, watercolor, minimalist & more. Free preview in 30 seconds. Dog mom gifts, memorial portraits, holiday gifts.`
+- **Bio:** `Fine-art portraits of your dog: oil, watercolor, charcoal & more. Free preview in 30 seconds. Dog mom gifts, memorial portraits, holiday gifts.`
 - **Claim the website:**
   - Pinterest gives a meta tag or a DNS TXT record. Use the DNS record on `pupprints.shop` once the domain is connected; until then, ask engineering to add the meta tag.
   - Once claimed, add a **catalog** using the existing feed `https://pup-prints.vercel.app/feeds/google.xml`. Pinterest accepts RSS/XML feeds.
 - **Boards** (keyword names = search traffic):
   1. Custom Dog Portraits
-  2. Royal Dog Portraits
+  2. Dog Oil Portraits
   3. Gifts for Dog Moms
   4. Dog Memorial Gift Ideas
   5. Dog Portraits by Breed
   6. Christmas Gifts for Dog Lovers
 - **Pins:**
   - 5 a day, using Pinterest's free native scheduler.
-  - Each pin is one portrait in a frame mockup, plus a title like "Royal French Bulldog Portrait from Your Photo | Free Preview" and a description of 2–3 sentences with keywords.
+  - Each pin is one portrait in a frame mockup, plus a title like "French Bulldog Oil Portrait from Your Photo | Free Preview" and a description of 2–3 sentences with keywords.
   - Each pin links to `/styles/[slug]` with `utm_source=pinterest`.
 
 ---
@@ -129,9 +129,9 @@ Post in this order. Instagram shows newest top-left, so #7–9 end up as the top
 | # | Type | Content | Caption hook |
 |---|---|---|---|
 | 1 | Carousel (4) | "We're open." Founder + dog → "How it works: upload → 30 sec → love it or don't pay" → what's included → "Love it, or it's free" | "Hi. We make dogs look like museum pieces." |
-| 2 | Reel | Script #1, "One photo → royalty" | "I uploaded ONE photo…" |
+| 2 | Reel | Script #1, "One photo → a real painting" | "I uploaded ONE photo…" |
 | 3 | Carousel (5) | One dog in 4 styles + "vote in comments" | "Which one is the real him? 1–4 👇" |
-| 4 | Reel | Script #2, "POV: royalty" | "We've created a monster." |
+| 4 | Reel | Script #2, "POV: the portrait on the wall" | "We've created a monster." |
 | 5 | Carousel (5) | **What's included:** free preview · free US shipping · hi-res file included · checked by a person · love-it guarantee | "No surprise fees. Ever." |
 | 6 | Reel | Script #3, "Painting YOUR dogs, round 1" | "Comment your dog's name 👇" |
 | 7 | Reel | Script #25, Gift Reveal screen recording | "Gift sorted in 30 seconds." |
