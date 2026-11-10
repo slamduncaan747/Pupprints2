@@ -21,11 +21,9 @@ export const STYLE_SAMPLES: Record<StyleSlug, string> = {
 
 /**
  * DOG LABELS LIVE HERE AND ONLY HERE. `dog` is the breed shown in alt text and captions for each
- * before/after pair and gallery portrait. NEUTRAL ("dog") is the placeholder for portraits the
- * image lead is still rendering: replace it with the breed once it is confirmed, and every alt
+ * before/after pair and gallery portrait. Change a breed here and every alt
  * and caption on the site follows.
  */
-const NEUTRAL = "dog";
 
 /** Before/after pairs: the original dog photo and the finished portrait of the same dog. */
 export const BEFORE_AFTER: { before: string; after: string; style: StyleSlug; dog: string }[] = [
