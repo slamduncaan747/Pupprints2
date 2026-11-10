@@ -7,8 +7,10 @@ text or jewellery, no watermarks).
 
 ## How they were made (current set, Nov 10: dog-centred collection)
 
-The collection is ten craft media and nothing else: the dog is the subject, with no costumes, props, scenes or
-novelty. Six pieces are kept from the Oct 18 house-style set (Old Master, Watercolor, Charcoal, Fine Line,
+The collection is ten styles and nothing else: the dog is the subject, with no costumes, props, scenes or
+novelty. Later on Nov 10 the Modern style (flat off-white or sage ground, softly shaded illustrated dog, the dog's
+name set in type) was added as the lead style and the hero; Ink Wash and Mid-Century were retired and their samples
+deleted. Six pieces are kept from the Oct 18 house-style set (Old Master, Watercolor, Charcoal, Fine Line,
 Botanical, Mid-Century). Four are new (Modern Oil, Linocut, Pastel, Ink Wash). The Royal, Admiral, Space Cadet,
 Pop Art, Storybook and Holiday Cozy samples were deleted.
 
@@ -23,9 +25,12 @@ Pop Art, Storybook and Holiday Cozy samples were deleted.
 - **Prompts:** one shared house style (the dog as the only subject, true medium surfaces, natural canine
   anatomy, one soft light, one restrained palette, no text). The exact prompt used for each style is in
   `docs/art-direction.md`.
+- **Modern pieces (modern.webp, modern-sage.webp, pair-1-after.webp, gallery-5.webp):** after rendering, the flat
+  ground connected to the image edges is replaced with the exact brand colour (#F4F1EA or #B9C2AE), and where the
+  head sat too high the dog is scaled down slightly on that ground to leave headroom. The name is then set by our
+  own code (`web/scripts/add-name.ts`, the same lettering code the site uses), never by the image model. The names
+  (Biscuit, Olive, Moose, Honey) are invented sample names, not customers' dogs. No surface texture pass.
 - **Retouching:**
-  - mid-century.webp: the open mouth was re-rendered closed with the same model's inpainting pipeline
-    (`Flux2KleinInpaintPipeline`, masked to the muzzle only).
   - charcoal.webp: the reference photo was first scaled down and seated on its own extended backdrop, to leave
     headroom.
 - **Finishing:** up to 1.2% edge trim (removes faint painted canvas edges), centre crop to 4:5, Lanczos resize to
@@ -42,8 +47,11 @@ anyway. None are Unsplash+ photos. Local copies (4:5 crops) live in `web/scripts
 
 | Sample file(s) | Style | Dog | Source photo | Photographer | Unsplash page |
 |---|---|---|---|---|---|
+| modern.webp | Modern | Cavalier King Charles Spaniel ("Olive") | cavalier.jpg | Izabelly Marques | https://unsplash.com/photos/-d-q58LA1ds |
+| pair-1-before.webp (photo), pair-1-after.webp | Modern | Golden Retriever ("Biscuit") | golden-retriever.jpg | Faber Leonardo | https://unsplash.com/photos/ktujYJX35-E |
+| modern-sage.webp | Modern Sage | Labrador Retriever ("Moose") | labrador-2.jpg | Not identified yet (free Unsplash CDN image) | https://images.unsplash.com/photo-1761797732084-eed42f058516 |
+| gallery-5.webp | Modern Sage | Siberian Husky ("Honey") | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI |
 | oil-classic.webp | Old Master | Border Collie | border-collie.jpg | Pauline Loroy | https://unsplash.com/photos/XH8A0bvQ7iE |
-| pair-1-before.webp (photo), pair-1-after.webp | Old Master | Golden Retriever | golden-retriever.jpg | Faber Leonardo | https://unsplash.com/photos/ktujYJX35-E |
 | modern-oil.webp | Modern Oil | Dachshund | dachshund.jpg | Alexandre Daoust | https://unsplash.com/photos/DoMqElrLS5M |
 | gallery-1.webp | Modern Oil | Cavalier King Charles Spaniel | cavalier-3.jpg | Courtney Mihaka | https://unsplash.com/photos/8rdX9FraXug |
 | watercolor.webp | Watercolor | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 |
@@ -54,21 +62,18 @@ anyway. None are Unsplash+ photos. Local copies (4:5 crops) live in `web/scripts
 | charcoal.webp | Charcoal Study | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho |
 | gallery-6.webp | Charcoal Study | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 |
 | pair-3-before.webp (photo), pair-3-after.webp | Charcoal Study | Beagle | beagle.jpg | Nathanaël Desmeules | https://unsplash.com/photos/527_3nFNAPo |
-| ink-wash.webp | Ink Wash | Border Collie | border-collie-2.jpg | Chung Nguyen | https://unsplash.com/photos/kJlk-jW2nLI |
-| gallery-5.webp | Ink Wash | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho |
 | fine-line.webp | Fine Line | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 |
 | linocut.webp | Linocut | Siberian Husky | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI |
 | gallery-2.webp | Linocut | French Bulldog | french-bulldog-sitting.jpg | Eric Tan | https://unsplash.com/photos/WqveMpe3QTA |
 | botanical.webp | Botanical | Cavapoo | cavapoo.jpg | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM |
-| mid-century.webp | Mid-Century | Pembroke Welsh Corgi | corgi.jpg | Ivana La | https://unsplash.com/photos/tycZhR54Ddk |
 
-Changes from the Oct 18 set: pair-1-after.webp is now the Old Master golden retriever (the file that used to be
-gallery-1.webp); it is also the hero portrait in every campaign scene. pair-3-after.webp is a charcoal study
-made from the same photo as pair-3-before.webp. gallery-1, 2, 4 and 5 are new pieces in the four new media.
+Changes in the Modern round (Nov 10): pair-1-after.webp is now the Modern golden retriever and the hero portrait
+in every campaign scene.
+gallery-5.webp is a Modern Sage husky. ink-wash.webp and mid-century.webp were deleted.
 
 ## Site-wide images made from these samples
 
 - `web/public/campaign/`: product mockups that composite these exact files into generated interiors (see
   `web/public/campaign/CREDITS.md`).
-- `web/public/og-default.jpg` (1200×630): the Old Master golden retriever (pair-1-after.webp) on a white page with the "PUP PRINTS" wordmark and the line "Your dog, immortalized." set in Bodoni Moda, with a Hanken Grotesk label (both SIL Open Font License 1.1), composed with Pillow (regenerated Nov 10).
+- `web/public/og-default.jpg` (1200×630): the Modern golden retriever (pair-1-after.webp) on a white page with the "PUP PRINTS" wordmark and the line "Your dog, immortalized." set in Bodoni Moda, with a Hanken Grotesk label (both SIL Open Font License 1.1), composed with Pillow (regenerated Nov 10).
 - `web/public/logo.png`: brand mark only, no photo.

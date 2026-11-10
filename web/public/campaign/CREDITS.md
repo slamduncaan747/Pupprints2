@@ -8,9 +8,14 @@ place, and no customer or real home is shown. No people, logos, brands or text a
 ## How they were made (scenes Oct 18; artwork recomposited Nov 10)
 
 - **Nov 10 change:** the rooms are unchanged. Only the artwork was swapped, by rerunning the same compositing
-  code: the one hero portrait is now the Old Master golden retriever (`samples/pair-1-after.webp`), used
+  code: the one hero portrait became the Old Master golden retriever (replaced again in the Modern round below), used
   consistently in every single-portrait scene, and the gallery wall shows three pieces from the dog-centred
   collection. No costume portraits remain.
+- **Modern round (later Nov 10):** the hero portrait is now the Modern golden retriever "Biscuit"
+  (`samples/pair-1-after.webp`, off-white ground, name set by our lettering code before compositing). For this pale
+  artwork the placeholder's shading is compressed, paper white is set just above the wall's brightness and the art
+  takes the wall's light colour. hero-tall uses a true 2:3 version of the portrait (more flat ground above the dog).
+  The gallery wall now shows three light pieces.
 - **Scene model:** FLUX.2 [klein] 4B (`black-forest-labs/FLUX.2-klein-4B`), run locally on CPU with Hugging Face
   `diffusers` (`Flux2KleinPipeline`, bf16), text-to-image, 4 steps, guidance 1.0. The model and its outputs are
   licensed **Apache-2.0** (https://huggingface.co/black-forest-labs/FLUX.2-klein-4B), and commercial use is
@@ -37,16 +42,16 @@ place, and no customer or real home is shown. No people, logos, brands or text a
 
 | File | Size | Scene | Artwork shown (exact file) | Artwork's source photo |
 |---|---|---|---|---|
-| hero-wide.webp | 2400×1350 | Limewashed wall, oak console, ceramic vase with a branch, raking morning light; oak frame, acrylic, no mat | samples/pair-1-after.webp (Old Master) | golden-retriever.jpg (Faber Leonardo, Unsplash) |
-| hero-tall.webp | 1200×1500 | Same idea composed for phones: large oak frame (about 50% of the width, a 24×36 opening; the portrait's plain ground is extended above the dog instead of cropping it) in the upper middle, calm plaster below | samples/pair-1-after.webp (Old Master) | golden-retriever.jpg |
-| format-canvas.webp | 1200×1500 | 16×20 gallery-wrap canvas (rendered) above a linen sofa | samples/pair-1-after.webp (Old Master) | golden-retriever.jpg |
-| format-framed.webp | 1200×1500 | Natural oak frame, no mat, leaning on a travertine mantel with an olive sprig | samples/pair-1-after.webp (Old Master) | golden-retriever.jpg |
-| format-print.webp | 1200×1500 | Unframed matte fine-art print, overhead on linen and oak with tissue and a pencil | samples/pair-1-after.webp (Old Master) | golden-retriever.jpg |
-| format-digital.webp | 1200×1500 | Phone on travertine, screen showing the portrait | samples/pair-1-after.webp (Old Master) | golden-retriever.jpg |
-| gift.webp | 1200×1500 | Black-framed portrait half-unwrapped from tissue in a plain ivory box with a cotton ribbon | samples/pair-1-after.webp (Old Master) | golden-retriever.jpg |
-| dog-and-portrait.webp | 1800×1200 | A golden retriever on a cream linen sofa beneath its own portrait (oak frame). The scene dog was generated as a reference edit of the same photo the portrait was made from | samples/pair-1-after.webp (Old Master; composited Oct 18, unchanged) | golden-retriever.jpg (Faber Leonardo, Unsplash): both the portrait and the scene dog |
-| gallery-wall.webp | 1800×1200 | Pale hallway, three oak frames (no mat) in a row | samples/oil-classic.webp, samples/watercolor.webp, samples/charcoal.webp | border-collie.jpg (Pauline Loroy), beagle-2.jpg (Jabez Rodarte), labrador.jpg (Aniket Salve) |
-| heirloom.webp | 1200×1500 | Matching ceramic ornament on crumpled linen with an evergreen sprig | samples/pair-1-after.webp (circular crop) | golden-retriever.jpg |
+| hero-wide.webp | 2400×1350 | Limewashed wall, oak console, ceramic vase with a branch, raking morning light; oak frame, acrylic, no mat | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg (Faber Leonardo, Unsplash) |
+| hero-tall.webp | 1200×1500 | Same idea composed for phones: large oak frame (about 50% of the width, a 24×36 opening; the portrait's plain ground is extended above the dog instead of cropping it) in the upper middle, calm plaster below | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
+| format-canvas.webp | 1200×1500 | 16×20 gallery-wrap canvas (rendered) above a linen sofa | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
+| format-framed.webp | 1200×1500 | Natural oak frame, no mat, leaning on a travertine mantel with an olive sprig | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
+| format-print.webp | 1200×1500 | Unframed matte fine-art print, overhead on linen and oak with tissue and a pencil | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
+| format-digital.webp | 1200×1500 | Phone on travertine, screen showing the portrait | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
+| gift.webp | 1200×1500 | Black-framed portrait half-unwrapped from tissue in a plain ivory box with a cotton ribbon | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
+| dog-and-portrait.webp | 1800×1200 | A golden retriever on a cream linen sofa beneath its own portrait (oak frame). The scene dog was generated as a reference edit of the same photo the portrait was made from | samples/pair-1-after.webp (Modern, "Biscuit"; recomposited Nov 10 into the same scene) | golden-retriever.jpg (Faber Leonardo, Unsplash): both the portrait and the scene dog |
+| gallery-wall.webp | 1800×1200 | Pale hallway, three oak frames (no mat) in a row | Modern cavalier "Olive" (2:3 version of samples/modern.webp), samples/watercolor.webp, samples/fine-line.webp | cavalier.jpg (Izabelly Marques), beagle-2.jpg (Jabez Rodarte), french-bulldog.jpg (Eric Tan) |
+| heirloom.webp | 1200×1500 | Matching ceramic ornament on crumpled linen with an evergreen sprig | samples/pair-1-after.webp (Modern, circular crop) | golden-retriever.jpg |
 
 All source photos are from Unsplash and used under the [Unsplash License](https://unsplash.com/license) (free
 commercial use and modification, no attribution required; we credit anyway). See
