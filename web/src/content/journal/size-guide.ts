@@ -31,7 +31,7 @@ export const sizeGuide: ArticleInput = {
     'The simple rules designers use to size art above a sofa, bed, console or desk, with real measurements, plus how portrait sizes from 8×10" to 24×36" work in actual rooms.',
   date: "2026-10-03",
   category: "home-and-framing",
-  heroStyle: "mid-century",
+  heroStyle: "modern",
   keywords: [
     "what size art for wall",
     "art size above sofa",
@@ -136,7 +136,7 @@ export const sizeGuide: ArticleInput = {
       body: "Create your portrait free, then choose the size and finish that fits your room.",
       href: "/create",
       label: "Create your free preview",
-      style: "mid-century",
+      style: "modern",
     },
   ],
 };

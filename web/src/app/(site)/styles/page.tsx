@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 /** Evaluated per render (hourly at most), so a retired dated edition leaves the count with it. */
 export function generateMetadata(): Metadata {
   return {
-    title: "Dog Portrait Styles — Oil, Watercolor, Charcoal, Linocut & More",
-    description: `Browse all ${availableStyles().length} custom dog portrait styles, from classical oil to watercolor, charcoal, linocut and ink. Try every style free with your own photo.`,
+    title: "Dog Portrait Styles — Modern, Watercolor, Charcoal, Oil & More",
+    description: `Browse all ${availableStyles().length} custom dog portrait styles, from clean modern illustration to watercolor, charcoal, oil and linocut. Try every style free with your own photo.`,
     alternates: { canonical: "/styles" },
   };
 }
@@ -21,19 +21,19 @@ export function generateMetadata(): Metadata {
 /** Curated edits. The first slug leads with its portrait. */
 const EDITS: { title: string; body: string; slugs: StyleSlug[] }[] = [
   {
-    title: "The Memorial Edit",
-    body: "Soft, timeless styles that feel gentle on the wall.",
-    slugs: ["watercolor", "oil-classic", "charcoal", "pastel", "ink-wash"],
+    title: "The Modern Edit",
+    body: "Clean, graphic styles for modern rooms.",
+    slugs: ["modern", "modern-sage", "fine-line", "linocut"],
   },
   {
     title: "The Painted Edit",
     body: "Oil, pastel and watercolor, for a room that wants warmth.",
-    slugs: ["modern-oil", "oil-classic", "pastel", "watercolor"],
+    slugs: ["watercolor", "pastel", "modern-oil", "oil-classic"],
   },
   {
-    title: "The Modern Edit",
-    body: "Clean, graphic styles for modern rooms.",
-    slugs: ["linocut", "ink-wash", "fine-line", "mid-century"],
+    title: "The Memorial Edit",
+    body: "Soft, timeless styles that feel gentle on the wall.",
+    slugs: ["watercolor", "charcoal", "pastel", "modern", "oil-classic"],
   },
 ];
 

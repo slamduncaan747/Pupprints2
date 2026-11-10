@@ -7,16 +7,16 @@ import type { StyleSlug } from "@/lib/catalog";
  * images are the real photo crops. Components must tolerate a missing file (use <SampleImage>).
  */
 export const STYLE_SAMPLES: Record<StyleSlug, string> = {
-  "oil-classic": "/samples/oil-classic.webp",
+  modern: "/samples/modern.webp",
   watercolor: "/samples/watercolor.webp",
+  "modern-sage": "/samples/modern-sage.webp",
+  "fine-line": "/samples/fine-line.webp",
+  pastel: "/samples/pastel.webp",
   "modern-oil": "/samples/modern-oil.webp",
   charcoal: "/samples/charcoal.webp",
-  linocut: "/samples/linocut.webp",
-  pastel: "/samples/pastel.webp",
-  "ink-wash": "/samples/ink-wash.webp",
-  "fine-line": "/samples/fine-line.webp",
+  "oil-classic": "/samples/oil-classic.webp",
   botanical: "/samples/botanical.webp",
-  "mid-century": "/samples/mid-century.webp",
+  linocut: "/samples/linocut.webp",
 };
 
 /**
@@ -27,7 +27,7 @@ export const STYLE_SAMPLES: Record<StyleSlug, string> = {
 
 /** Before/after pairs: the original dog photo and the finished portrait of the same dog. */
 export const BEFORE_AFTER: { before: string; after: string; style: StyleSlug; dog: string }[] = [
-  { before: "/samples/pair-1-before.webp", after: "/samples/pair-1-after.webp", style: "oil-classic", dog: "Golden Retriever" },
+  { before: "/samples/pair-1-before.webp", after: "/samples/pair-1-after.webp", style: "modern", dog: "Golden Retriever" },
   { before: "/samples/pair-2-before.webp", after: "/samples/pair-2-after.webp", style: "watercolor", dog: "French Bulldog" },
   { before: "/samples/pair-3-before.webp", after: "/samples/pair-3-after.webp", style: "charcoal", dog: "Beagle" },
 ];
@@ -38,6 +38,6 @@ export const GALLERY: { src: string; style: StyleSlug; dog: string }[] = [
   { src: "/samples/gallery-2.webp", style: "linocut", dog: "French Bulldog" },
   { src: "/samples/gallery-3.webp", style: "watercolor", dog: "Cavapoo" },
   { src: "/samples/gallery-4.webp", style: "pastel", dog: "Poodle puppy" },
-  { src: "/samples/gallery-5.webp", style: "ink-wash", dog: "Labrador" },
+  { src: "/samples/gallery-5.webp", style: "modern-sage", dog: "Golden Retriever" },
   { src: "/samples/gallery-6.webp", style: "charcoal", dog: "Beagle" },
 ];

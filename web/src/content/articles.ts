@@ -132,7 +132,7 @@ export function articleStyles(article: Article, count = 3): StyleSlug[] {
     for (const t of blockText(b))
       for (const m of t.matchAll(/\]\(\/(?:styles\/|create\?style=)([a-z-]+)\)/g)) add(m[1]);
   }
-  for (const fallback of ["watercolor", "oil-classic", "charcoal", "fine-line"]) add(fallback);
+  for (const fallback of ["modern", "watercolor", "charcoal", "fine-line"]) add(fallback);
   return found.slice(0, count);
 }
 

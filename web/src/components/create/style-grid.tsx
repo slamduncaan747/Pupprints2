@@ -6,9 +6,9 @@ import { StyleThumb } from "./style-thumb";
 import type { Generation, UploadInfo } from "./store";
 
 /** Suggested first on the gentle track ("This portrait is in memory of my dog"), in this order. */
-export const MEMORIAL_FIRST: StyleSlug[] = ["oil-classic", "watercolor", "charcoal", "ink-wash", "pastel"];
+export const MEMORIAL_FIRST: StyleSlug[] = ["watercolor", "charcoal", "pastel", "modern", "oil-classic"];
 
-/** Styles that can be chosen now; on the gentle track the four quietest styles lead. */
+/** Styles that can be chosen now; on the gentle track the quietest styles lead. */
 export function pickerStyles(memorial: boolean): ArtStyle[] {
   const styles = availableStyles();
   if (!memorial) return styles;
@@ -34,7 +34,7 @@ export function StyleGrid({
   onPick: (style: StyleSlug) => void;
   onChangePhoto: () => void;
   onBackToResult?: () => void;
-  /** The gentle track: Watercolor, Old Master, Charcoal Study and Botanical first. */
+  /** The gentle track: the quietest styles (MEMORIAL_FIRST) first. */
   memorial?: boolean;
 }) {
   const latestByStyle = new Map<StyleSlug, Generation>();

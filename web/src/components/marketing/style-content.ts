@@ -29,6 +29,36 @@ export type StyleContent = {
 };
 
 const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
+  modern: {
+    keyword: "Modern dog portrait from photo",
+    title: "Modern Dog Portrait from Your Photo",
+    metaDescription:
+      "A clean modern illustration of your dog on soft white, made from your photo. See it free in about a minute, then order a print, framed print or canvas.",
+    h1: "Your dog, clean and modern",
+    points: [
+      { title: "Only the dog", body: "Head and chest on one flat field of soft white. Nothing else in the picture." },
+      { title: "True to the coat", body: "Smooth, simplified shading in their real colors, with the eyes kept bright." },
+      { title: "Easy to place", body: "Light and graphic. It sits beside prints, photographs and pale walls without asking for attention." },
+    ],
+    photoTip: "A front-facing photo in soft, even light, with both ears in the frame, gives the cleanest result.",
+    bestOn: ["framed", "poster", "canvas"],
+    frame: "oak",
+  },
+  "modern-sage": {
+    keyword: "Modern dog portrait on a color background",
+    title: "Modern Dog Portrait on Sage, from Your Photo",
+    metaDescription:
+      "A clean modern illustration of your dog on a flat, muted sage ground, made from your photo. Preview it free, then order a print, framed print or canvas.",
+    h1: "The Modern portrait, on quiet sage",
+    points: [
+      { title: "One calm color", body: "A flat, matte sage from edge to edge, with your dog as the only subject." },
+      { title: "Kind to pale coats", body: "White and cream coats stand clear of the ground; golden and black coats look rich against it." },
+      { title: "A little color for the wall", body: "Enough to warm a white room, quiet enough to live with for years." },
+    ],
+    photoTip: "A front-facing photo in soft, even light, with both ears in the frame, gives the cleanest result.",
+    bestOn: ["framed", "poster", "canvas"],
+    frame: "oak",
+  },
   "oil-classic": {
     keyword: "Oil painting of your dog",
     title: "Classic Oil Painting of Your Dog from a Photo",
@@ -119,21 +149,6 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     bestOn: ["framed", "poster", "canvas"],
     frame: "oak",
   },
-  "ink-wash": {
-    keyword: "Ink wash dog portrait",
-    title: "Ink Wash Dog Portrait from Your Photo",
-    metaDescription:
-      "A brush-and-ink wash portrait of your dog on warm paper: a few confident strokes and plenty of empty space. Made from your photo and previewed free.",
-    h1: "A few sure strokes, a lot of quiet paper",
-    points: [
-      { title: "Spare by design", body: "A handful of brushstrokes and soft grey washes say what matters and stop." },
-      { title: "Room to breathe", body: "Generous empty paper makes it calm on the wall, even at a large size." },
-      { title: "Modern homes suit it", body: "Sits well with pale walls, wood and linen, in a white or oak frame." },
-    ],
-    photoTip: "A simple pose with a clear outline of the head and ears gives the brush the least to say and the most to show.",
-    bestOn: ["framed", "poster", "canvas"],
-    frame: "white",
-  },
   "fine-line": {
     keyword: "Minimalist line art dog portrait",
     title: "Minimalist Line Art Dog Portrait",
@@ -161,21 +176,6 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
       { title: "Lasting decor", body: "At home in a cottage, a bedroom or a reading nook." },
     ],
     photoTip: "A calm, front-facing photo lets the stems frame your dog's face well.",
-    bestOn: ["framed", "poster", "canvas"],
-    frame: "oak",
-  },
-  "mid-century": {
-    keyword: "Mid-century modern dog art",
-    title: "Mid-Century Modern Dog Art Print",
-    metaDescription:
-      "A graphic mid-century modern print of your dog in a warm muted palette of ochre, sage and bone. Custom from your photo, previewed free.",
-    h1: "Calm geometry, a warm muted palette",
-    points: [
-      { title: "Graphic and clean", body: "Simplified shapes, muted ochre and sage, and subtle paper grain, like a 1950s print." },
-      { title: "Made for modern homes", body: "Pairs well with walnut, teak, linen and plants." },
-      { title: "Clear from across the room", body: "Reads well even at small sizes." },
-    ],
-    photoTip: "A side profile or a clear three-quarter view gives the strongest graphic shapes.",
     bestOn: ["framed", "poster", "canvas"],
     frame: "oak",
   },

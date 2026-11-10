@@ -50,7 +50,7 @@ export const dogMomGifts: ArticleInput = {
     { type: "heading", level: 3, text: "A portrait of her dog" },
     {
       type: "paragraph",
-      text: `A framed portrait is a gift she'll see every day. Match the style to her home: ${styleLink("watercolor")} or ${styleLink("botanical")} for a soft, light-filled space, ${styleLink("fine-line")} or ${styleLink("ink-wash")} for a modern apartment, or ${styleLink("oil-classic")} for a room with some warmth and weight. Framed prints arrive ready to hang, and you can send her a Gift Reveal on Mother's Day morning while the print is on its way.`,
+      text: `A framed portrait is a gift she'll see every day. Match the style to her home: ${styleLink("watercolor")} or ${styleLink("botanical")} for a soft, light-filled space, ${styleLink("modern")} or ${styleLink("fine-line")} for a modern apartment, or ${styleLink("oil-classic")} for a room with some warmth and weight. Framed prints arrive ready to hang, and you can send her a Gift Reveal on Mother's Day morning while the print is on its way.`,
     },
     { type: "heading", level: 3, text: "Jewelry with meaning" },
     {

@@ -85,7 +85,7 @@ export const canvasVsFramed: ArticleInput = {
       items: [
         `**Black** sharpens everything. Great with graphic styles like ${styleLink("linocut")} and ${styleLink("charcoal")}, and with high-contrast dogs.`,
         "**White** feels light and airy. Perfect for watercolor and for bright, modern rooms.",
-        `**Natural oak** is warm and relaxed. It loves the warm tones of the oil styles and ${styleLink("mid-century")}.`,
+        `**Natural oak** is warm and relaxed. It loves the warm tones of the oil styles and ${styleLink("modern-sage")}.`,
       ],
     },
     {

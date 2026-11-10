@@ -47,7 +47,7 @@ Inputs: [prospects.csv](prospects.csv) (167 creators; TikTok/YouTube verified li
 | Big or serious dogs, bully breeds, working dogs (GSD, labs, service dogs) | **Old Master** | Modern Oil |
 | Seniors, gentle accounts, anything memorial-adjacent | **Watercolor** or **Charcoal Study** | Soft Pastel |
 | Fluffy small breeds (Maltese, Bichon, Pom, Shih-poo) | **Soft Pastel** | Watercolor |
-| Design-forward or "aesthetic" accounts, modern homes | **Linocut**, **Ink Wash** or **Fine Line** | Mid-Century |
+| Design-forward or "aesthetic" accounts, modern homes | **Modern**, **Modern Sage** or **Fine Line** | Linocut |
 | Colorful, home-decor or lifestyle accounts | **Modern Oil** | Botanical |
 
 Every style shows the dog alone: no costumes, props or scenes. Pitch it as a piece of art for their home, not a joke.

@@ -213,9 +213,9 @@ For our own brand accounts. Each script is shootable on a phone in 10–20 minut
 
 ### 15. "Pick a door"
 - **Hook:** 3 doors. Text: **"Pick a door, get your dog's portrait style"**
-- **Shots:** 3 doors → each opens on a style (Linocut, Botanical, Mid-Century) with an example.
-- **On-screen text:** "Pick a door…" → "1: Linocut" → "2: Botanical" → "3: Mid-Century" → "Try all 3 free"
-- **Caption:** I'd pick 3. Mid-Century forever. #dogsoftiktok #quiz #dogportrait
+- **Shots:** 3 doors → each opens on a style (Linocut, Botanical, Modern) with an example.
+- **On-screen text:** "Pick a door…" → "1: Linocut" → "2: Botanical" → "3: Modern" → "Try all 3 free"
+- **Caption:** I'd pick 3. Modern forever. #dogsoftiktok #quiz #dogportrait
 - **Sound style:** a game-show suspense bed.
 
 ### 21. "This or that: dog edition"

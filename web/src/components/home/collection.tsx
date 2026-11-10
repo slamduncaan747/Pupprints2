@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
  * The six styles that open the collection on the home page: the most at home in a
  * living room. In layout order, two per column, so dark and pale pieces alternate.
  */
-const CURATED: StyleSlug[] = ["oil-classic", "watercolor", "modern-oil", "charcoal", "linocut", "ink-wash"];
+const CURATED: StyleSlug[] = ["modern", "watercolor", "modern-sage", "charcoal", "fine-line", "oil-classic"];
 
 /**
  * Three staggered columns of two looks each (desktop): within a column one look runs the full width

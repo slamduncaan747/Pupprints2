@@ -6,7 +6,7 @@ export const styleGuide: ArticleInput = {
   title: "Watercolor vs. Oil vs. Line Art: How to Choose a Portrait Style for Your Dog",
   metaTitle: "Watercolor vs. Oil vs. Line Art: Choosing a Dog Portrait Style",
   description:
-    "A practical guide to dog portrait styles: what makes oil, watercolor and line art look the way they do, which suits your dog and your home, and which work best for gifts and memorials.",
+    "A practical guide to dog portrait styles: what makes modern illustration, oil, watercolor and line art look the way they do, which suits your dog and your home, and which work best for gifts and memorials.",
   date: "2026-10-02",
   category: "art-and-style",
   heroStyle: "fine-line",
@@ -22,13 +22,30 @@ export const styleGuide: ArticleInput = {
   body: [
     {
       type: "paragraph",
-      text: "Choosing a portrait style is a bit like choosing a haircut: it's about the dog, and it's about you. The same Labrador can look like a 17th-century oil painting, a loose watercolor or a Scandinavian gallery print. Here's how the main families of style differ, and how to pick the one that fits.",
+      text: "Choosing a portrait style is a bit like choosing a haircut: it's about the dog, and it's about you. The same Labrador can look like a 17th-century oil painting, a loose watercolor or a clean modern illustration. Here's how the main families of style differ, and how to pick the one that fits.",
     },
     {
       type: "tip",
       tone: "note",
       title: "How our portraits are made",
       text: "Our portraits are created digitally by our AI artist in the look of each medium, then checked by a person on our team before printing. They're designed to look like paintings and drawings, but they aren't painted by hand. Knowing how the real mediums behave still helps you choose. More in [how it works](/how-it-works).",
+    },
+    { type: "heading", text: "Modern: clean, light and graphic" },
+    {
+      type: "paragraph",
+      text: "A modern illustrated portrait leaves the paint and paper out. The dog is drawn head and chest, in smooth tones true to the coat, on one flat field of color. There is no line work and no dramatic light, so the likeness does all the talking. It reads like a contemporary art print.",
+    },
+    {
+      type: "paragraph",
+      text: `${styleLink("modern")} sets your dog on soft white. ${styleLink("modern-sage")} is the same portrait on a quiet sage ground, for a little color on a pale wall.`,
+    },
+    {
+      type: "list",
+      items: [
+        "**Choose modern if** your home is light, simple or newly furnished.",
+        "You'd like the portrait to sit easily beside prints and photographs.",
+        "You're not sure of the recipient's taste. It's the easiest of our styles to place.",
+      ],
     },
     { type: "heading", text: "Oil: rich, warm and timeless" },
     {
@@ -73,7 +90,7 @@ export const styleGuide: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: `${styleLink("fine-line")} is our minimalist style. ${styleLink("charcoal")} is its moodier, more expressive cousin, with soft smudges, rich blacks and a lot of feeling in the eyes. ${styleLink("ink-wash")} trades the pen for a brush: a few confident strokes, soft grey washes and a great deal of empty paper.`,
+      text: `${styleLink("fine-line")} is our minimalist style. ${styleLink("charcoal")} is its moodier, more expressive cousin, with soft smudges, rich blacks and a lot of feeling in the eyes.`,
     },
     {
       type: "list",
@@ -84,16 +101,16 @@ export const styleGuide: ArticleInput = {
         "You're building a gallery wall with other black-and-white pieces.",
       ],
     },
-    { type: "heading", text: "Bold and graphic: linocut and mid-century" },
+    { type: "heading", text: "Bold and graphic: linocut" },
     {
       type: "paragraph",
-      text: `If oil is a museum and watercolor is a sunny studio, these are the printmaker's bench. A linocut is a relief print: the artist carves away everything that should stay white, inks the block and presses it to paper. ${styleLink("linocut")} has that look, with bold carved shapes, one or two matte inks and the small gouge marks left behind. ${styleLink("mid-century")} is flatter and more geometric, with simplified shapes, a warm retro palette and a subtle print texture.`,
+      text: `If oil is a museum and watercolor is a sunny studio, this is the printmaker's bench. A linocut is a relief print: the artist carves away everything that should stay white, inks the block and presses it to paper. ${styleLink("linocut")} has that look, with bold carved shapes, one or two matte inks and the small gouge marks left behind.`,
     },
     {
       type: "list",
       items: [
-        "**Choose graphic styles if** you want something bold that still sits quietly on the wall.",
-        "Your interior is modern, eclectic or retro.",
+        "**Choose linocut if** you want something bold that still sits quietly on the wall.",
+        "Your interior is modern or eclectic, or the wall already holds other prints.",
         "Your dog has a strong silhouette. [French Bulldogs](/breeds/french-bulldog), [Dachshunds](/breeds/dachshund) and [Boston Terriers](/breeds/boston-terrier) are made for it.",
       ],
     },
@@ -114,15 +131,15 @@ export const styleGuide: ArticleInput = {
     { type: "heading", text: "Styles for gifts and memorials" },
     {
       type: "paragraph",
-      text: `For a gift, think about the wall it will hang on. If you're unsure of their taste, a classic like ${styleName("oil-classic")} or ${styleName("watercolor")} suits almost any home, and ${styleName("linocut")} or ${styleName("ink-wash")} suits a modern one. For a memorial, most people lean toward the gentler styles (${styleName("watercolor")}, ${styleName("charcoal")}, ${styleName("pastel")}), but the only real rule is that it should feel like the dog.`,
+      text: `For a gift, think about the wall it will hang on. If you're unsure of their taste, ${styleName("modern")} or ${styleName("watercolor")} suits almost any home, ${styleName("oil-classic")} suits a traditional one, and ${styleName("linocut")} or ${styleName("fine-line")} a modern one. For a memorial, most people lean toward the gentler styles (${styleName("watercolor")}, ${styleName("charcoal")}, ${styleName("pastel")}), but the only real rule is that it should feel like the dog.`,
     },
     { type: "heading", text: "Three questions to help you decide" },
     {
       type: "list",
       ordered: true,
       items: [
-        "**Where will it hang?** Start with the room. Warm, traditional rooms love oil; bright, modern rooms love watercolor and line; rooms with color and pattern love a linocut or a mid-century print.",
-        `**What's the mood?** Tender (${styleName("watercolor")}, ${styleName("pastel")}, ${styleName("botanical")}), timeless (${styleName("oil-classic")}, ${styleName("charcoal")}) or modern (${styleName("linocut")}, ${styleName("ink-wash")}, ${styleName("fine-line")})?`,
+        "**Where will it hang?** Start with the room. Warm, traditional rooms love oil; bright, modern rooms love a modern illustration, watercolor and line; rooms with color and pattern love a linocut.",
+        `**What's the mood?** Tender (${styleName("watercolor")}, ${styleName("pastel")}, ${styleName("botanical")}), timeless (${styleName("oil-classic")}, ${styleName("charcoal")}) or modern (${styleName("modern")}, ${styleName("fine-line")}, ${styleName("linocut")})?`,
         "**Who is it for?** For a gift, think about the recipient's home and taste, not your own.",
       ],
     },
@@ -131,7 +148,7 @@ export const styleGuide: ArticleInput = {
       type: "paragraph",
       text: "Here's the nice thing about choosing a style with us: you don't have to guess. Upload a photo and you can preview every style free, as many times as you like. The style that looks most like your dog isn't always the one you'd expect. Not sure which suits your breed? Each of our [breed pages](/breeds) suggests a few.",
     },
-    { type: "styles", slugs: ["oil-classic", "watercolor", "fine-line", "linocut"], caption: "Four families, one dog" },
+    { type: "styles", slugs: ["modern", "watercolor", "oil-classic", "fine-line"], caption: "Four families, one dog" },
     {
       type: "cta",
       title: "See your dog in every style",

@@ -47,7 +47,7 @@ If any step fails, stop and fix it before driving traffic. Every visitor before 
 ### Loop A — Creator gifts (2 hours, 25 per day)
 1. /admin/partners → filter status *prospect*, sort P1 first.
 2. Open their profile, save a clear photo of their dog (face visible, eye level).
-3. /admin/partners/[id]/gift → paste the image URL → pick the style that fits the dog (big/serious → Old Master; senior/memorial → Watercolor or Charcoal Study; fluffy/small → Soft Pastel; modern home → Linocut, Ink Wash or Fine Line) → generate.
+3. /admin/partners/[id]/gift → paste the image URL → pick the style that fits the dog (default → Modern; senior/memorial → Watercolor or Charcoal Study; fluffy/small → Soft Pastel; classic home → Old Master) → generate.
 4. Check the likeness. If it's off, regenerate (same link). Only send portraits you'd hang yourself.
 5. **Copy DM** → send by Instagram/TikTok DM (or email if listed). Status becomes *gifted*.
 6. 48h later, if no reply: follow-up #2 from [creators/outreach-playbook.md](creators/outreach-playbook.md). If they react: offer the affiliate code (15% for their followers, 15% commission) and ask if you can repost the reveal.

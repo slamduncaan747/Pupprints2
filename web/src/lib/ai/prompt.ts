@@ -25,7 +25,7 @@ CHANGE ONLY what the style brief below asks for: the artistic medium, the backgr
 
 COMPOSITION: a vertical 3:4 portrait. The dog's head and upper chest are the subject, centred left to right, eyes about one third from the top, head turned as in the photo. Leave clear space of about one tenth of the canvas above the ears and at each side so the picture can be cropped to 4:5 or 2:3 without cutting off the ears. The artwork fills the whole canvas edge to edge.
 
-FINISH: a finished, gallery-quality original artwork in the medium the style brief names, showing that medium's real texture (brushwork, paper grain, ink line or pencil). It must not look like a photo with a filter or a 3D render. Crisp, lifelike eyes with a small catch-light.
+FINISH: a finished, gallery-quality original artwork in the medium the style brief names, showing that medium's real texture (brushwork, paper grain, ink line or pencil; for a modern illustration, its clean matte finish). It must not look like a photo with a filter or a 3D render. Crisp, lifelike eyes with a small catch-light.
 
 NEVER INCLUDE: text, letters, numbers, names, signatures, monograms, captions, watermarks or logos; borders, frames, mats, or the artwork shown hanging on a wall.`;
 

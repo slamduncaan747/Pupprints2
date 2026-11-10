@@ -39,7 +39,7 @@ export const site = {
   legalName: "Pup Prints",
   tagline: "Your dog, as a piece of art for your home.",
   description:
-    "Your dog, as a piece of art for your home. Made from your favorite photo in oil, watercolor, charcoal, linocut and more. See your portrait free in about a minute, then order it as a print, canvas or framed piece.",
+    "Your dog, as a piece of art for your home. Made from your favorite photo as a modern illustration, watercolor, charcoal, oil and more. See your portrait free in about a minute, then order it as a print, canvas or framed piece.",
   url: envValue(process.env.NEXT_PUBLIC_SITE_URL) ?? DEFAULT_SITE_URL,
   supportEmail: envValue(process.env.NEXT_PUBLIC_SUPPORT_EMAIL) ?? DEFAULT_SUPPORT_EMAIL,
   partnersEmail:

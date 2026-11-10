@@ -128,7 +128,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
         q: "How many styles are there, and can I try more than one?",
         // A getter, so the count is read at render time (a dated edition leaves on its last day).
         get a() {
-          return `There are ${availableStyles().length} styles right now, from classical oil and watercolor to charcoal, linocut and ink wash. You can try as many as you like with your photo, free.`;
+          return `There are ${availableStyles().length} styles right now, from clean modern illustration and watercolor to charcoal, oil and linocut. You can try as many as you like with your photo, free.`;
         },
         link: { href: "/styles", label: "Browse all styles" },
       },

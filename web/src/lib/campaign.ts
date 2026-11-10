@@ -5,7 +5,7 @@ import { FORMAT_SHOWCASE } from "@/lib/offer";
 import type { ProductType } from "@/lib/catalog";
 
 /**
- * The campaign: art-directed scenes of our example Old Master portrait (a golden retriever) (web/public/campaign/), made as
+ * The campaign: art-directed scenes of our example Modern portrait (a golden retriever) (web/public/campaign/), made as
  * product mockups of a real sample. They are never customer photos, so every alt says "example".
  *
  * The files arrive from a separate pipeline and some may never exist, so every entry names a
@@ -20,7 +20,7 @@ export type CampaignAsset = Photo & { fallback: Photo };
 
 /** Every sample portrait is 4:5, 1200×1500. */
 const PORTRAIT = { width: 1200, height: 1500 } as const;
-const HERO_ALT = "Example Old Master portrait of a golden retriever";
+const HERO_ALT = "Example Modern portrait of a golden retriever";
 const HERO_PORTRAIT: Photo = { src: FORMAT_SHOWCASE.src, ...PORTRAIT, alt: HERO_ALT };
 
 export const CAMPAIGN = {

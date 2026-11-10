@@ -132,9 +132,9 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
+      { slug: "modern", why: "A golden coat and a dark nose read warm and clear on soft white." },
       { slug: "pastel", why: "Layered pastel suits a feathered coat, and it is kind to a frosted muzzle." },
       { slug: "oil-classic", why: "Warm Rembrandt light makes a red-gold coat look like it belongs in a museum." },
-      { slug: "botanical", why: "Paler Goldens look lovely in a soft wreath of flowers, especially as a memorial." },
       { slug: "watercolor", why: "Light washes suit cream coats and keep the feathering airy." },
     ],
     faq: [
@@ -177,7 +177,7 @@ export const BREEDS: Breed[] = [
       { slug: "modern-oil", why: "A strong head and saddle markings hold up to bold, simple planes of paint." },
       { slug: "charcoal", why: "Strong contrast and expressive eyes make a Shepherd a perfect monochrome study." },
       { slug: "oil-classic", why: "Rich black-and-tan markings glow in warm old-master light." },
-      { slug: "ink-wash", why: "Upright ears and a long muzzle need only a few sure strokes." },
+      { slug: "modern", why: "Upright ears and a black-and-tan mask read cleanly on soft white." },
     ],
     faq: [
       {
@@ -214,10 +214,10 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "ink-wash", why: "Curls become soft pooled washes while the long profile stays crisp." },
+      { slug: "modern", why: "Curls settle into soft tonal shapes while the long profile stays crisp." },
       { slug: "fine-line", why: "Curls and a long, elegant profile look wonderful in minimal ink." },
       { slug: "linocut", why: "A sculpted clip makes a clean, graphic shape for a carved print." },
-      { slug: "mid-century", why: "That poised, geometric outline translates perfectly into flat retro shapes." },
+      { slug: "modern-sage", why: "A poised outline, set on a quiet sage ground." },
     ],
     faq: [
       {
@@ -257,7 +257,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "linocut", why: "A long nose and low-set ears make a profile worth carving." },
       { slug: "oil-classic", why: "Red and black-and-tan coats glow in warm, quiet oil." },
-      { slug: "mid-century", why: "That unmistakable profile is a gift for flat, retro shapes." },
+      { slug: "modern-sage", why: "Red and black-and-tan coats sit well on quiet sage." },
       { slug: "fine-line", why: "A tapered muzzle and floppy ears, in a few confident lines." },
     ],
     faq: [
@@ -420,7 +420,7 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "oil-classic", why: "Sporting dogs have been painted in oil for centuries; a GSP fits right in." },
-      { slug: "ink-wash", why: "A lean head and liver ticking, in a few washes of ink." },
+      { slug: "modern", why: "A lean head and liver ticking, drawn clean on soft white." },
       { slug: "botanical", why: "Leaves and wildflowers nod to the fields where they're happiest." },
       { slug: "watercolor", why: "Loose washes make liver-and-white ticking look effortlessly elegant." },
     ],
@@ -582,14 +582,14 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "linocut", why: "Big upright ears and a fox-like face make a bold, cheerful print." },
-      { slug: "mid-century", why: "Those ears make a strong graphic silhouette in flat, warm shapes." },
+      { slug: "modern-sage", why: "Red and white, with those ears, on a quiet sage ground." },
       { slug: "watercolor", why: "Red and sable coats glow in loose, warm washes." },
       { slug: "oil-classic", why: "A red-and-white coat looks rich in quiet classical oil." },
     ],
     faq: [
       {
         q: "Which style shows off a Corgi's ears best?",
-        a: `The graphic ones. ${n("linocut")} and ${n("mid-century")} both make the most of that silhouette, and ${n("watercolor")} is the softer choice. Try them all free and see which one looks most like yours.`,
+        a: `The graphic ones. ${n("linocut")} and ${n("modern-sage")} both make the most of that silhouette, and ${n("watercolor")} is the softer choice. Try them all free and see which one looks most like yours.`,
       },
     ],
     sampleNames: ["Corgi", "Pembroke Welsh Corgi"],
@@ -622,7 +622,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "linocut", why: "Sleek lines and rust points carve cleanly into one or two inks." },
       { slug: "oil-classic", why: "A glossy coat and rust points glow like polished wood in old-master light." },
-      { slug: "mid-century", why: "Sleek lines and a sharp silhouette are made for flat retro shapes." },
+      { slug: "modern", why: "Sleek lines and rust points, clean on soft white." },
       { slug: "charcoal", why: "Strong contrast and a noble profile make a striking monochrome study." },
     ],
     faq: [
@@ -697,8 +697,8 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "fine-line", why: "Eyebrows and beard are practically drawn in ink already." },
       { slug: "charcoal", why: "Salt-and-pepper texture looks rich and expressive in charcoal." },
-      { slug: "ink-wash", why: "A beard and brows are brushstrokes waiting to happen." },
-      { slug: "mid-century", why: "A boxy head and bold brows make a fantastic retro graphic." },
+      { slug: "modern", why: "Beard and brows, simplified and kept true, on soft white." },
+      { slug: "modern-sage", why: "Salt-and-pepper grey looks handsome on muted sage." },
     ],
     faq: [
       {
@@ -737,7 +737,7 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "modern-oil", why: "A huge square head, built from broad planes of paint." },
-      { slug: "ink-wash", why: "Calm authority, in very few strokes." },
+      { slug: "modern", why: "Calm authority, with nothing else in the picture." },
       { slug: "charcoal", why: "Gray and brindle coats become sculptural in charcoal." },
       { slug: "oil-classic", why: "A big, quiet head in warm old-master light looks like a museum piece." },
     ],
@@ -852,7 +852,7 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "ink-wash", why: "A grey-and-white mask is nearly an ink painting to begin with." },
+      { slug: "modern-sage", why: "A grey-and-white mask stands clear against muted sage." },
       { slug: "charcoal", why: "A dramatic mask and pale eyes make a stunning monochrome study." },
       { slug: "watercolor", why: "Cool grays and icy blues bloom beautifully on white paper." },
       { slug: "pastel", why: "A thick double coat and pale eyes, soft and exact at once." },
@@ -957,7 +957,7 @@ export const BREEDS: Breed[] = [
       "The Boston Terrier really is from Boston, developed there in the late 1800s from bulldog and terrier crosses. Its neat black-and-white markings earned it the nickname 'the American Gentleman', and its friendly, clownish temperament made it a classic city dog. Bostons are No. 23 on the AKC's 2025 list.",
       "Boston portraits work because the face is so graphic: big, round, wide-set eyes, a short square muzzle, upright ears and that crisp white blaze down the middle. The tuxedo pattern (black, brindle or seal with white) needs balanced light so the white doesn't blow out and the dark doesn't go flat. Those bold markings were practically designed for a relief print.",
     ],
-    coat: "Black, brindle or seal, with white markings. The high contrast looks crisp in linocut, fine line and mid-century.",
+    coat: "Black, brindle or seal, with white markings. The high contrast looks crisp in linocut and fine line, and against a sage ground.",
     tips: [
       {
         title: "Tame the contrast",
@@ -974,8 +974,8 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "linocut", why: "Crisp black-and-white markings are a relief print waiting to be carved." },
-      { slug: "ink-wash", why: "A tuxedo coat in black ink on warm paper. Nothing more is needed." },
-      { slug: "mid-century", why: "A dapper, graphic face suits a clean retro poster." },
+      { slug: "modern-sage", why: "A tuxedo coat on muted sage, where the white stays white." },
+      { slug: "modern", why: "A dapper, graphic face suits a clean illustration." },
       { slug: "fine-line", why: "Simple ink lines capture that neat tuxedo pattern beautifully." },
     ],
     faq: [
@@ -1117,7 +1117,7 @@ export const BREEDS: Breed[] = [
       { slug: "fine-line", why: "Minimal ink matches their focus: nothing wasted, every line deliberate." },
       { slug: "charcoal", why: "Black-and-white coats and that intense stare make a powerful drawing." },
       { slug: "watercolor", why: "Merle and red coats bloom beautifully in soft washes." },
-      { slug: "ink-wash", why: "A black-and-white coat and a fixed stare need little more than ink." },
+      { slug: "modern-sage", why: "A black-and-white coat stands clear on a quiet sage ground." },
     ],
     faq: [
       {
@@ -1156,7 +1156,7 @@ export const BREEDS: Breed[] = [
       { slug: "oil-classic", why: "A small dog, painted with the seriousness of a museum portrait." },
       { slug: "linocut", why: "Big ears make a bold, simple shape to carve." },
       { slug: "pastel", why: "Fawn and cream coats look soft and warm on toned paper." },
-      { slug: "mid-century", why: "Those ears make a wonderfully graphic retro silhouette." },
+      { slug: "modern", why: "Big ears and bright eyes, drawn clean on soft white." },
     ],
     faq: [
       {

@@ -88,7 +88,7 @@ function describe(product: Product, variant: Variant, style?: ArtStyle) {
   const parts = [
     style
       ? `A custom ${shortStyle(style)}-style portrait of your dog, made from your photo. ${honest(style.description)}`
-      : "A custom fine-art portrait of your dog, made from your photo, in the style you choose: old-master oil, watercolor, modern oil, charcoal, linocut, ink wash and more.",
+      : "A custom fine-art portrait of your dog, made from your photo, in the style you choose: modern illustration, watercolor, fine line, charcoal, oil, linocut and more.",
     `${PROMISES.preview}: upload a photo, see it in about a minute, and only order if you love it.`,
     product.type === "digital"
       ? "The full-resolution file is emailed to you right after checkout."

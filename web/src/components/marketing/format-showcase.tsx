@@ -11,7 +11,7 @@ import { cn, formatPrice } from "@/lib/utils";
  * Every format shown with the SAME portrait (FORMAT_SHOWCASE), so a visitor compares the formats,
  * never the pictures. Facts (sizes, prices, timing) come from the catalog.
  *
- * When all four campaign scenes exist (web/public/campaign/format-*.webp, the same Old Master portrait
+ * When all four campaign scenes exist (web/public/campaign/format-*.webp, the same Modern portrait
  * as each piece in a room), the showcase portrait is shown in its scene; until then, and wherever a
  * different portrait is passed in, the drawn mockups. A row never mixes the two.
  */

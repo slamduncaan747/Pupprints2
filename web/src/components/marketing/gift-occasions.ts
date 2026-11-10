@@ -103,7 +103,7 @@ export const OCCASIONS: Occasion[] = [
       },
       {
         q: "Which style is best for a memorial portrait?",
-        a: `Many people choose quieter styles like ${n("watercolor")}, ${n("charcoal")}, ${n("pastel")}, ${n("ink-wash")} or ${n("oil-classic")}. There's no wrong answer; try a few and see which one feels like them.`,
+        a: `Many people choose quieter styles like ${n("watercolor")}, ${n("charcoal")}, ${n("pastel")}, ${n("modern")} or ${n("oil-classic")}. There's no wrong answer; try a few and see which one feels like them.`,
       },
       {
         q: "Can you help me choose a photo?",
@@ -172,7 +172,7 @@ export const OCCASIONS: Occasion[] = [
     feature: "modern-oil",
     ideas: [
       { title: "For their living room", body: `${n("modern-oil")} or ${n("oil-classic")}: a real piece of art of the dog they talk about all day.` },
-      { title: "For their new apartment", body: `${n("linocut")}, ${n("ink-wash")} or ${n("fine-line")} in a natural oak frame looks right at home on a modern wall.` },
+      { title: "For their new apartment", body: `${n("modern")}, ${n("modern-sage")} or ${n("fine-line")} in a natural oak frame looks right at home on a modern wall.` },
       { title: "For the dog's birthday", body: "Gotcha day, first birthday, sweet sixteen. A portrait marks the moment." },
     ],
     timing: {
@@ -220,7 +220,7 @@ export const OCCASIONS: Occasion[] = [
       },
       {
         q: "Which style suits a puppy?",
-        a: `${n("pastel")} and ${n("watercolor")} suit soft puppy fur, and ${n("ink-wash")} catches oversized ears in a few strokes. Try them all free.`,
+        a: `${n("pastel")} and ${n("watercolor")} suit soft puppy fur, and ${n("modern")} keeps oversized ears clean and clear. Try them all free.`,
       },
     ],
     cta: {
@@ -244,7 +244,7 @@ export const OCCASIONS: Occasion[] = [
     ideas: [
       { title: "For the office", body: `${n("oil-classic")} or ${n("charcoal")} in a natural oak frame, above the desk where the dog naps all day.` },
       { title: "For the den", body: `${n("modern-oil")} on canvas. He'll say it's too much. He'll hang it anyway.` },
-      { title: "For a modern space", body: `${n("linocut")} or ${n("mid-century")} for a garage, study or workshop wall.` },
+      { title: "For a modern space", body: `${n("modern")} or ${n("linocut")} for a garage, study or workshop wall.` },
     ],
     timing: {
       title: "Plan ahead (a little)",

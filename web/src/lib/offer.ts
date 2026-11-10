@@ -338,8 +338,8 @@ export function holidayNotice(now: number, opts: { physical: boolean; shipCountr
 }
 
 /**
- * One portrait used to show every format, so customers compare formats, not pictures: the Old
- * Master golden retriever (the "after" of before/after pair 1, and the campaign hero portrait).
+ * One portrait used to show every format, so customers compare formats, not pictures: the
+ * Modern golden retriever (the "after" of before/after pair 1, and the campaign hero portrait).
  */
 export const FORMAT_SHOWCASE = {
   src: "/samples/pair-1-after.webp",

@@ -79,7 +79,7 @@ Best photos: dog's face clearly visible, eye-level, natural light, sharp focus. 
 
 **PERSONALIZATION FIELD** (Etsy "Add personalization", required, 256 characters)
 ```
-Your dog's name + style (Old Master, Watercolor, Modern Oil, Charcoal Study, Linocut, Soft Pastel, Ink Wash, Fine Line, Botanical, Mid-Century). Then send 1–3 photos in Etsy Messages right after checkout.
+Your dog's name + style (Modern, Watercolor, Modern Sage, Fine Line, Soft Pastel, Modern Oil, Charcoal Study, Old Master, Botanical, Linocut). Then send 1–3 photos in Etsy Messages right after checkout.
 ```
 
 ---
@@ -219,14 +219,14 @@ If you're ordering for a friend who has lost their dog, add a note in personaliz
 `Custom Dog Portrait Print from Photo, Personalized Pet Art Print, Unframed Dog Wall Art, Minimalist Line Art or Watercolor Dog Gift`
 
 **Tags (13)**
-dog portrait print · custom pet print · dog art print · minimalist dog art · line art dog · watercolor pet · dog poster custom · pet portrait print · unframed dog art · dog gift under 50 · dog nursery art · personalized dog art · mid century dog
+dog portrait print · custom pet print · dog art print · minimalist dog art · line art dog · watercolor pet · dog poster custom · pet portrait print · unframed dog art · dog gift under 50 · dog nursery art · personalized dog art · modern dog art
 
 **Variations:**
 
 | Variation | Options |
 |---|---|
 | Size (price varies) | 8×10 **$35** · **12×16 $45** · 18×24 **$59** · 24×36 **$79** |
-| Style | Old Master · Watercolor · Modern Oil · Charcoal Study · Linocut · Soft Pastel · Ink Wash · Fine Line · Botanical · Mid-Century |
+| Style | Modern · Watercolor · Modern Sage · Fine Line · Soft Pastel · Modern Oil · Charcoal Study · Old Master · Botanical · Linocut |
 
 **Description:**
 ```
