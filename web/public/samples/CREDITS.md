@@ -7,12 +7,12 @@ text or jewellery, no watermarks).
 
 ## How they were made (current set, Nov 10: dog-centred collection)
 
-The collection is ten styles and nothing else: the dog is the subject, with no costumes, props, scenes or
-novelty. Later on Nov 10 the Modern style (flat off-white or sage ground, softly shaded illustrated dog, the dog's
-name set in type) was added as the lead style and the hero; Ink Wash and Mid-Century were retired and their samples
-deleted. Six pieces are kept from the Oct 18 house-style set (Old Master, Watercolor, Charcoal, Fine Line,
-Botanical, Mid-Century). Four are new (Modern Oil, Linocut, Pastel, Ink Wash). The Royal, Admiral, Space Cadet,
-Pop Art, Storybook and Holiday Cozy samples were deleted.
+The collection is seven styles with plain names: Modern, Modern Sage, Watercolor, Line Drawing (`fine-line`),
+Pastel, Oil (`modern-oil`) and Charcoal. The dog is the subject, with no costumes, props, scenes or novelty. A
+name can be set on any style as the customer's choice (always type set by our code, never by the image model);
+among the samples only the Modern pieces show one. Retired over Oct–Nov, with their sample files deleted: Royal,
+Admiral, Space Cadet, Pop Art, Storybook, Holiday Cozy, Ink Wash, Mid-Century, Old Master (`oil-classic`),
+Botanical and Linocut (including the linocut gallery-2.webp).
 
 - **Model:** FLUX.2 [klein] 4B (`black-forest-labs/FLUX.2-klein-4B`), run locally on CPU with Hugging Face
   `diffusers` (`Flux2KleinPipeline`). Reference-image editing: the real photo is passed as the
@@ -30,9 +30,8 @@ Pop Art, Storybook and Holiday Cozy samples were deleted.
   head sat too high the dog is scaled down slightly on that ground to leave headroom. The name is then set by our
   own code (`web/scripts/add-name.ts`, the same lettering code the site uses), never by the image model. The names
   (Biscuit, Olive, Moose, Honey) are invented sample names, not customers' dogs. No surface texture pass.
-- **Retouching:**
-  - charcoal.webp: the reference photo was first scaled down and seated on its own extended backdrop, to leave
-    headroom.
+- **Retouching:** charcoal.webp: the reference photo was first scaled down and seated on its own extended
+  backdrop, to leave headroom.
 - **Finishing:** up to 1.2% edge trim (removes faint painted canvas edges), centre crop to 4:5, Lanczos resize to
   1200×1500, light unsharp mask. Then a very light surface pass: linen weave for oils, paper tooth for paper media.
   Tiny isolated specks are removed. WebP quality 80–86 (Pillow), each file under 400 KB.
@@ -51,25 +50,20 @@ anyway. None are Unsplash+ photos. Local copies (4:5 crops) live in `web/scripts
 | pair-1-before.webp (photo), pair-1-after.webp | Modern | Golden Retriever ("Biscuit") | golden-retriever.jpg | Faber Leonardo | https://unsplash.com/photos/ktujYJX35-E |
 | modern-sage.webp | Modern Sage | Labrador Retriever ("Moose") | labrador-2.jpg | Not identified yet (free Unsplash CDN image) | https://images.unsplash.com/photo-1761797732084-eed42f058516 |
 | gallery-5.webp | Modern Sage | Siberian Husky ("Honey") | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI |
-| oil-classic.webp | Old Master | Border Collie | border-collie.jpg | Pauline Loroy | https://unsplash.com/photos/XH8A0bvQ7iE |
-| modern-oil.webp | Modern Oil | Dachshund | dachshund.jpg | Alexandre Daoust | https://unsplash.com/photos/DoMqElrLS5M |
-| gallery-1.webp | Modern Oil | Cavalier King Charles Spaniel | cavalier-3.jpg | Courtney Mihaka | https://unsplash.com/photos/8rdX9FraXug |
+| modern-oil.webp | Oil | Dachshund | dachshund.jpg | Alexandre Daoust | https://unsplash.com/photos/DoMqElrLS5M |
+| gallery-1.webp | Oil | Cavalier King Charles Spaniel | cavalier-3.jpg | Courtney Mihaka | https://unsplash.com/photos/8rdX9FraXug |
 | watercolor.webp | Watercolor | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 |
 | pair-2-before.webp (photo), pair-2-after.webp | Watercolor | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 |
 | gallery-3.webp | Watercolor | Cavapoo | cavapoo.jpg | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM |
 | pastel.webp | Pastel | Cavalier King Charles Spaniel | cavalier-2.jpg | Tracy Anderson | https://unsplash.com/photos/OktYfwY5ZQI |
 | gallery-4.webp | Pastel | Poodle / Doodle puppy | doodle-puppy.jpg | Erick Lee Hodge | https://unsplash.com/photos/U8pgck1dgtQ |
-| charcoal.webp | Charcoal Study | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho |
-| gallery-6.webp | Charcoal Study | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 |
-| pair-3-before.webp (photo), pair-3-after.webp | Charcoal Study | Beagle | beagle.jpg | Nathanaël Desmeules | https://unsplash.com/photos/527_3nFNAPo |
-| fine-line.webp | Fine Line | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 |
-| linocut.webp | Linocut | Siberian Husky | husky.jpg | Elin Birgisdottir | https://unsplash.com/photos/cwwwHfTytSI |
-| gallery-2.webp | Linocut | French Bulldog | french-bulldog-sitting.jpg | Eric Tan | https://unsplash.com/photos/WqveMpe3QTA |
-| botanical.webp | Botanical | Cavapoo | cavapoo.jpg | Leiada Krözjhen | https://unsplash.com/photos/7lahRWgD2qM |
+| charcoal.webp | Charcoal | Labrador Retriever | labrador.jpg | Aniket Salve | https://unsplash.com/photos/IQ3FjY2Gdho |
+| gallery-6.webp | Charcoal | Beagle (tricolour hound) | beagle-2.jpg | Jabez Rodarte | https://unsplash.com/photos/rxFw2zAaUi0 |
+| pair-3-before.webp (photo), pair-3-after.webp | Charcoal | Beagle | beagle.jpg | Nathanaël Desmeules | https://unsplash.com/photos/527_3nFNAPo |
+| fine-line.webp | Line Drawing | French Bulldog | french-bulldog.jpg | Eric Tan | https://unsplash.com/photos/p6qtH9kqjt8 |
 
-Changes in the Modern round (Nov 10): pair-1-after.webp is now the Modern golden retriever and the hero portrait
-in every campaign scene.
-gallery-5.webp is a Modern Sage husky. ink-wash.webp and mid-century.webp were deleted.
+Changes on Nov 10: pair-1-after.webp is the Modern golden retriever and the hero portrait in every campaign
+scene. gallery-5.webp is a Modern Sage husky. The gallery is five pieces (gallery-1, 3, 4, 5, 6).
 
 ## Site-wide images made from these samples
 

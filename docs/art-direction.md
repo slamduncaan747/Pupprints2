@@ -184,3 +184,7 @@ paper. Then tiny isolated speck removal and WebP at quality 83–86 (< 400 KB).
   otherwise shows the grey card's falloff as a dirty gradient), paper white is set a little above the wall's
   brightness and the art takes the wall's light colour (`lite.py` wrapper). The frame keeps the off-white ground
   readable against the pale wall.
+- Living-room scene (`dog-and-portrait.webp`): no generated live dog. Six attempts at a golden retriever on or
+  beside the sofa failed review (wrong scale, doubled dogs, stretched bodies), so the room is shown lived-in
+  instead (dog bed, toy, lead) with the frame rendered and hung by code on a bare wall (`c_hang.py`). Do not ship
+  a generated animal in a scene unless anatomy and scale pass at 100%.

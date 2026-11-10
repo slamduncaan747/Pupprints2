@@ -1,7 +1,7 @@
 # Campaign images: credits and provenance
 
-The images in this folder are **composited product mockups**. The rooms, furniture, frames, box, phone and
-ornament blank are AI-generated scenes. The artwork shown in each one is our actual sample portrait file (from
+The images in this folder are **composited product mockups**. The rooms, furniture, frames, box and phone
+are AI-generated scenes. The artwork shown in each one is our actual sample portrait file (from
 `web/public/samples/`), placed into the scene by code. The product shown is real and exact; the room is not a real
 place, and no customer or real home is shown. No people, logos, brands or text appear in any scene.
 
@@ -31,9 +31,10 @@ place, and no customer or real home is shown. No people, logos, brands or text a
   shadow on the wall, and the wall's light field.
 - **Phone screen** (format-digital.webp): the screen is a generated switched-off phone. The display content is the
   exact portrait, with the original dark-glass reflection kept on top.
-- **Ornament** (heirloom.webp): the generated blank glossy ceramic disc receives a circular crop of the portrait
-  through an ellipse mapping. The hanging hole, cord and glaze highlights are kept from the photo. The mug was
-  skipped (a cylindrical warp did not meet the "looks real" bar in the time available).
+- **Living-room scene (dog-and-portrait.webp, redone Nov 10):** a new generated room with a bare wall. The frame
+  is not generated: a 24×30 in solid oak frame is rendered by our code, lit by the wall's own light, with a cast
+  and contact shadow. A second lead cut off by the right edge and an empty peg were painted out with wall texture.
+  heirloom.webp (the ornament scene) was deleted; the site no longer uses it.
 - **Small scene retouches:** a wall outlet was removed from the gallery-wall hallway, and a branch was removed from
   the hero-tall wall (cloned plaster). The dog-and-portrait frame was narrowed to a 4:5 opening by removing a
   vertical strip from its middle, so it matches a real product size.
@@ -49,9 +50,8 @@ place, and no customer or real home is shown. No people, logos, brands or text a
 | format-print.webp | 1200×1500 | Unframed matte fine-art print, overhead on linen and oak with tissue and a pencil | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
 | format-digital.webp | 1200×1500 | Phone on travertine, screen showing the portrait | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
 | gift.webp | 1200×1500 | Black-framed portrait half-unwrapped from tissue in a plain ivory box with a cotton ribbon | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg |
-| dog-and-portrait.webp | 1800×1200 | A golden retriever on a cream linen sofa beneath its own portrait (oak frame). The scene dog was generated as a reference edit of the same photo the portrait was made from | samples/pair-1-after.webp (Modern, "Biscuit"; recomposited Nov 10 into the same scene) | golden-retriever.jpg (Faber Leonardo, Unsplash): both the portrait and the scene dog |
+| dog-and-portrait.webp | 1800×1200 | Bright living room: linen two-seat sofa, a dog bed with a toy and blanket, a lead on a hook. No live dog (generated dogs did not pass review). The oak-framed portrait (about 24×30 in, no mat) is rendered and hung by our code above the sofa | samples/pair-1-after.webp (Modern, "Biscuit") | golden-retriever.jpg (Faber Leonardo, Unsplash) |
 | gallery-wall.webp | 1800×1200 | Pale hallway, three oak frames (no mat) in a row | Modern cavalier "Olive" (2:3 version of samples/modern.webp), samples/watercolor.webp, samples/fine-line.webp | cavalier.jpg (Izabelly Marques), beagle-2.jpg (Jabez Rodarte), french-bulldog.jpg (Eric Tan) |
-| heirloom.webp | 1200×1500 | Matching ceramic ornament on crumpled linen with an evergreen sprig | samples/pair-1-after.webp (Modern, circular crop) | golden-retriever.jpg |
 
 All source photos are from Unsplash and used under the [Unsplash License](https://unsplash.com/license) (free
 commercial use and modification, no attribution required; we credit anyway). See

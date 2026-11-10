@@ -42,14 +42,11 @@ const SOURCE_FOR: Record<string, string> = {
   // Style cards
   "/samples/modern.webp": "cavalier.jpg",
   "/samples/modern-sage.webp": "labrador-2.jpg",
-  "/samples/oil-classic.webp": "border-collie.jpg",
   "/samples/modern-oil.webp": "dachshund.jpg",
   "/samples/watercolor.webp": "beagle-2.jpg",
   "/samples/pastel.webp": "cavalier-2.jpg",
   "/samples/charcoal.webp": "labrador.jpg",
   "/samples/fine-line.webp": "french-bulldog.jpg",
-  "/samples/linocut.webp": "husky.jpg",
-  "/samples/botanical.webp": "cavapoo.jpg",
   // Before/after pairs (the "before" is the source photo itself)
   "/samples/pair-1-before.webp": "golden-retriever.jpg",
   "/samples/pair-1-after.webp": "golden-retriever.jpg",
@@ -59,7 +56,6 @@ const SOURCE_FOR: Record<string, string> = {
   "/samples/pair-3-after.webp": "beagle.jpg",
   // Gallery wall
   "/samples/gallery-1.webp": "cavalier-3.jpg",
-  "/samples/gallery-2.webp": "french-bulldog-sitting.jpg",
   "/samples/gallery-3.webp": "cavapoo.jpg",
   "/samples/gallery-4.webp": "doodle-puppy.jpg",
   "/samples/gallery-5.webp": "husky.jpg",
