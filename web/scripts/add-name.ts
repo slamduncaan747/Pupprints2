@@ -7,9 +7,9 @@ import sharp from "sharp";
 import { addNameLettering } from "../src/lib/image/lettering";
 
 async function main() {
-  const [src, out, name] = process.argv.slice(2);
+  const [src, out, name, ground] = process.argv.slice(2);
   if (!src || !out || !name) throw new Error('usage: add-name.ts <in> <out> "Name"');
-  const png = await addNameLettering(await readFile(src), name);
+  const png = await addNameLettering(await readFile(src), name, ground);
   await writeFile(out, out.endsWith(".webp") ? await sharp(png).webp({ quality: 88 }).toBuffer() : png);
   console.log("wrote", out);
 }

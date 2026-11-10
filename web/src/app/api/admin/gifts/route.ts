@@ -329,7 +329,7 @@ export async function POST(req: Request) {
       deadline: started + AI_BUDGET_MS,
     });
 
-    const art = getStyle(style)?.lettering ? await addNameLettering(result.bytes, petName) : result.bytes;
+    const art = getStyle(style)?.lettering ? await addNameLettering(result.bytes, petName, getStyle(style)?.ground) : result.bytes;
     const giftId = existing?.id ?? randomUUID();
     const [master, preview, web] = await Promise.all([
       toPrintMaster(art),

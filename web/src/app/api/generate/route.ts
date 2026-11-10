@@ -189,7 +189,7 @@ export async function POST(req: Request) {
     });
 
     // Modern styles carry the dog's name in small capitals; it is type we set, never the model's.
-    const art = style.lettering ? await addNameLettering(result.bytes, body.petName) : result.bytes;
+    const art = style.lettering ? await addNameLettering(result.bytes, body.petName, style.ground) : result.bytes;
     const [master, preview] = await Promise.all([toPrintMaster(art), makeWatermarkedPreview(art)]);
     // Never put the raw session id in object paths: preview URLs are public.
     const folder = sessionStorageFolder(sessionId);

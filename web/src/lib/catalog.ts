@@ -37,6 +37,8 @@ export type ArtStyle = {
   isNew?: boolean;
   /** The dog's name is lettered on the portrait (small capitals at the top) when the customer gives one. */
   lettering?: boolean;
+  /** Flat-ground styles: the exact background color the finished portrait is set to. */
+  ground?: string;
   /**
    * A dated edition: the last moment (ISO, with offset) the style can be chosen. After it, the
    * style leaves every picker, its page shows it as retired and /api/generate refuses it. Checked
@@ -75,6 +77,7 @@ export const STYLES: ArtStyle[] = [
     prompt: modernPrompt("warm off-white (#F4F1EA)"),
     swatch: "#F4F1EA",
     lettering: true,
+    ground: "#F4F1EA",
     goodFor: ["decor", "gift", "memorial"],
     popular: true,
     isNew: true,
@@ -99,6 +102,7 @@ export const STYLES: ArtStyle[] = [
     prompt: modernPrompt("muted sage green (#B9C2AE)"),
     swatch: "#B9C2AE",
     lettering: true,
+    ground: "#B9C2AE",
     goodFor: ["decor", "gift", "memorial"],
     isNew: true,
   },

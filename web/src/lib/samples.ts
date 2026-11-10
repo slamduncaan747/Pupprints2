@@ -38,6 +38,6 @@ export const GALLERY: { src: string; style: StyleSlug; dog: string }[] = [
   { src: "/samples/gallery-2.webp", style: "linocut", dog: "French Bulldog" },
   { src: "/samples/gallery-3.webp", style: "watercolor", dog: "Cavapoo" },
   { src: "/samples/gallery-4.webp", style: "pastel", dog: "Poodle puppy" },
-  { src: "/samples/gallery-5.webp", style: "modern-sage", dog: "Golden Retriever" },
+  { src: "/samples/gallery-5.webp", style: "modern-sage", dog: "Siberian Husky" },
   { src: "/samples/gallery-6.webp", style: "charcoal", dog: "Beagle" },
 ];
