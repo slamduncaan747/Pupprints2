@@ -10,13 +10,11 @@ export type GoodFor = ArtStyle["goodFor"][number];
 export const GOOD_FOR_LABELS: Record<GoodFor, string> = {
   gift: "Gifts",
   memorial: "Memorials",
-  funny: "A good laugh",
   decor: "Home decor",
-  holiday: "Holidays",
 };
 
 export type StyleContent = {
-  /** Primary search phrase, e.g. "Royal dog portrait". */
+  /** Primary search phrase, e.g. "Watercolor dog portrait from photo". */
   keyword: string;
   /** Page <title> (site name is appended by the layout template). */
   title: string;
@@ -31,48 +29,18 @@ export type StyleContent = {
 };
 
 const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
-  royal: {
-    keyword: "Royal dog portrait",
-    title: "Royal Dog Portrait from Your Photo",
-    metaDescription:
-      "Turn your dog into royalty: a court-portrait oil painting with a velvet cape, ermine and a fine gold chain, made from your photo. Preview it free, then order a print, framed print or canvas.",
-    h1: "Your dog, painted as royalty",
-    points: [
-      { title: "Old-master drama", body: "Deep shadows, oxblood velvet and gold, and a pose fit for a palace wall." },
-      { title: "Funny and beautiful", body: "It makes people laugh, then it makes them stare. The best kind of gift." },
-      { title: "Big personalities welcome", body: "Especially good for confident dogs, smooshy faces and anyone who already acts like they own the place." },
-    ],
-    photoTip: "A front-facing photo where your dog looks straight at the camera gives the most regal result.",
-    bestOn: ["framed", "canvas", "poster"],
-    frame: "black",
-  },
-  admiral: {
-    keyword: "Admiral dog portrait",
-    title: "Admiral Dog Portrait — Naval Officer Pet Painting",
-    metaDescription:
-      "Your dog as an 18th-century naval officer, with gold epaulettes, a linen stock and a calm grey sea behind. Custom from your photo, previewed free before you buy.",
-    h1: "An officer of the high seas",
-    points: [
-      { title: "Classic oil painting", body: "Warm varnished tones and painterly detail, in the tradition of 18th-century officer portraits." },
-      { title: "Made for a study", body: "Looks right at home above a desk, a bar cart or a bookshelf." },
-      { title: "A gift for dog dads", body: "Distinguished, a little absurd, and very easy to love." },
-    ],
-    photoTip: "Pick a photo with your dog sitting tall and looking slightly off to one side, like they are surveying the fleet.",
-    bestOn: ["framed", "canvas", "poster"],
-    frame: "oak",
-  },
   "oil-classic": {
     keyword: "Oil painting of your dog",
     title: "Classic Oil Painting of Your Dog from a Photo",
     metaDescription:
-      "A timeless oil-painting portrait of your dog with Rembrandt lighting and a warm, quiet background. No costume, just them. Preview free from your photo.",
-    h1: "Just your dog, painted like a museum piece",
+      "A classical oil portrait of your dog, with one soft light and a warm, quiet background. Just them, made from your photo. Preview it free, then order a print, framed print or canvas.",
+    h1: "Your dog, in the manner of an old master",
     points: [
-      { title: "No costume, no gimmick", body: "The focus stays on their face, their fur and the look in their eyes." },
-      { title: "Fits any room", body: "Muted olive and umber tones sit quietly next to everything from antiques to modern furniture." },
-      { title: "A favorite for remembering", body: "Calm and dignified, it is a natural choice for a memorial portrait." },
+      { title: "Only the dog", body: "The focus stays on their face, their coat and the look in their eyes." },
+      { title: "Sits well in any room", body: "Muted olive and umber tones are quiet next to everything from antiques to modern furniture." },
+      { title: "A natural choice for remembering", body: "Calm and dignified, it is often chosen for a memorial portrait." },
     ],
-    photoTip: "Soft window light from one side gives the classic Rembrandt glow.",
+    photoTip: "Soft window light from one side gives the classic old-master glow.",
     bestOn: ["canvas", "framed", "poster"],
     frame: "oak",
   },
@@ -85,9 +53,84 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     points: [
       { title: "Light and airy", body: "Translucent washes bloom into textured paper with plenty of white space around your dog." },
       { title: "Gentle for memorials", body: "Soft edges and quiet color make it a comforting way to remember a best friend." },
-      { title: "Bright rooms love it", body: "Beautiful in a white frame on a pale wall, in a nursery or a sunny hallway." },
+      { title: "Bright rooms suit it", body: "Lovely in a white frame on a pale wall, in a bedroom or a sunny hallway." },
     ],
     photoTip: "Bright, even daylight helps the watercolor stay fresh and clean.",
+    bestOn: ["framed", "poster", "canvas"],
+    frame: "white",
+  },
+  "modern-oil": {
+    keyword: "Modern oil painting of your dog",
+    title: "Modern Oil Dog Portrait from Your Photo",
+    metaDescription:
+      "A contemporary oil portrait of your dog in thick palette-knife strokes on a flat, muted color field. Made from your photo and previewed free before you buy.",
+    h1: "Thick paint, a quiet field of color",
+    points: [
+      { title: "Painterly up close", body: "Broad knife strokes and simple planes of paint, with the care kept for the eyes and nose." },
+      { title: "One calm color behind", body: "A single muted ground (sage, slate or ochre) lets the dog carry the picture." },
+      { title: "Made for a living room", body: "Reads clearly from across the room, and sits easily with modern furniture." },
+    ],
+    photoTip: "A three-quarter view in soft daylight gives the knife strokes clear planes to follow.",
+    bestOn: ["canvas", "framed", "poster"],
+    frame: "oak",
+  },
+  charcoal: {
+    keyword: "Charcoal dog drawing from photo",
+    title: "Charcoal Dog Drawing from Your Photo",
+    metaDescription:
+      "An expressive charcoal portrait of your dog on warm toned paper, with fine detail in the eyes. Custom from your photo, previewed free.",
+    h1: "A charcoal study of your dog",
+    points: [
+      { title: "Monochrome and quiet", body: "Rich blacks, soft smudges and loose strokes that fade at the edges." },
+      { title: "All about the eyes", body: "Fine detail where it matters most, which is why it so often moves people." },
+      { title: "Kind to older photos", body: "Because it is monochrome, it forgives color casts and faded prints." },
+    ],
+    photoTip: "Any photo where their eyes are sharp will do. Color is not important for charcoal.",
+    bestOn: ["framed", "poster", "canvas"],
+    frame: "black",
+  },
+  linocut: {
+    keyword: "Linocut dog portrait",
+    title: "Linocut Dog Portrait from Your Photo",
+    metaDescription:
+      "Your dog in the manner of a carved relief print: one or two matte inks on cream paper, carving marks and all. Made from your photo and previewed free.",
+    h1: "Your dog as a relief print",
+    points: [
+      { title: "Bold, carved shapes", body: "Confident cuts that follow the fur, with the small gouge marks a block print leaves behind." },
+      { title: "One or two inks", body: "A soft black, sometimes with one muted color beneath it, on warm cream paper." },
+      { title: "Warm and graphic", body: "At home in a kitchen, a hallway or a gallery wall of prints." },
+    ],
+    photoTip: "A clear silhouette with strong light and shadow carves best. Side light helps.",
+    bestOn: ["framed", "poster", "canvas"],
+    frame: "oak",
+  },
+  pastel: {
+    keyword: "Pastel dog portrait from photo",
+    title: "Soft Pastel Dog Portrait from Your Photo",
+    metaDescription:
+      "A soft pastel portrait of your dog on warm toned paper, with velvety fur and visible paper tooth. Made from your photo and previewed free before you buy.",
+    h1: "Velvety pastel on toned paper",
+    points: [
+      { title: "Soft where they are soft", body: "Layered strokes follow the coat, blended in the shadows and left open in the lights." },
+      { title: "Paper you can see", body: "The warm toned sheet shows through and around the drawing, like a studio portrait." },
+      { title: "Gentle company", body: "A tender choice for a bedroom, a reading corner or a memorial piece." },
+    ],
+    photoTip: "A close photo in soft light, with the texture of the coat visible, suits pastel best.",
+    bestOn: ["framed", "poster", "canvas"],
+    frame: "oak",
+  },
+  "ink-wash": {
+    keyword: "Ink wash dog portrait",
+    title: "Ink Wash Dog Portrait from Your Photo",
+    metaDescription:
+      "A brush-and-ink wash portrait of your dog on warm paper: a few confident strokes and plenty of empty space. Made from your photo and previewed free.",
+    h1: "A few sure strokes, a lot of quiet paper",
+    points: [
+      { title: "Spare by design", body: "A handful of brushstrokes and soft grey washes say what matters and stop." },
+      { title: "Room to breathe", body: "Generous empty paper makes it calm on the wall, even at a large size." },
+      { title: "Modern homes suit it", body: "Sits well with pale walls, wood and linen, in a white or oak frame." },
+    ],
+    photoTip: "A simple pose with a clear outline of the head and ears gives the brush the least to say and the most to show.",
     bestOn: ["framed", "poster", "canvas"],
     frame: "white",
   },
@@ -95,120 +138,45 @@ const CONTENT: Partial<Record<StyleSlug, StyleContent>> = {
     keyword: "Minimalist line art dog portrait",
     title: "Minimalist Line Art Dog Portrait",
     metaDescription:
-      "A modern fine-line ink portrait of your dog on warm off-white paper. Minimal, chic and made from your photo. Preview free before you buy.",
+      "A fine-line ink portrait of your dog on warm off-white paper. Minimal, quiet and made from your photo. Preview free before you buy.",
     h1: "Minimal ink lines, all of their character",
     points: [
-      { title: "Quietly chic", body: "Confident black linework and lots of breathing room, made for modern spaces." },
+      { title: "Quiet and modern", body: "Confident black linework and lots of breathing room." },
       { title: "Gallery-wall friendly", body: "Pairs easily with photos, prints and other art without competing." },
-      { title: "Clear, simple likeness", body: "Works best for dogs with a distinctive silhouette, ears or expression." },
+      { title: "A clear, simple likeness", body: "Works best for dogs with a distinctive silhouette, ears or expression." },
     ],
     photoTip: "A clean background and a clear outline of the head and ears give the crispest lines.",
     bestOn: ["framed", "poster", "digital"],
-    frame: "white",
-  },
-  "pop-art": {
-    keyword: "Pop art dog portrait",
-    title: "Pop Art Dog Portrait from Your Photo",
-    metaDescription:
-      "A bold pop-art screenprint portrait of your dog in three matte inks, with a fine halftone. Custom from your photo, previewed free.",
-    h1: "Graphic, bold and made for a gallery wall",
-    points: [
-      { title: "Screen-print energy", body: "Three flat matte inks, a fine halftone and a slight off-register on paper." },
-      { title: "Made to pop", body: "Brings quiet color to an office, a hallway or a minimal white wall." },
-      { title: "Fun to gift", body: "Instantly recognizable and impossible to walk past." },
-    ],
-    photoTip: "A close-up with a strong expression (head tilt, tongue out) makes the boldest pop art.",
-    bestOn: ["canvas", "framed", "poster"],
-    frame: "black",
-  },
-  storybook: {
-    keyword: "Storybook illustrated dog portrait",
-    title: "Storybook Illustrated Dog Portrait",
-    metaDescription:
-      "Your dog as the hero of a classic picture-book plate, in soft matte gouache. Custom from your photo, previewed free.",
-    h1: "The hero of their own picture book",
-    points: [
-      { title: "Warm and whimsical", body: "Matte gouache on toothy paper, with soft grass and a pale sky behind." },
-      { title: "Sweet for kids' rooms", body: "A lovely way to put the family dog on the nursery wall." },
-      { title: "New puppy, new chapter", body: "A favorite for celebrating a new arrival." },
-    ],
-    photoTip: "A happy, relaxed photo outdoors fits the storybook mood perfectly.",
-    bestOn: ["framed", "poster", "canvas"],
     frame: "white",
   },
   botanical: {
     keyword: "Floral dog portrait",
     title: "Botanical Floral Dog Portrait",
     metaDescription:
-      "Your dog framed by a wreath of vintage botanical flowers and leaves, like a page from a naturalist's journal. Made from your photo and previewed free.",
-    h1: "Framed in vintage flowers",
+      "Your dog loosely framed by botanical stems and garden roses, in the manner of a naturalist's plate. Made from your photo and previewed free.",
+    h1: "Framed by garden stems",
     points: [
       { title: "Serene and detailed", body: "Olive, eucalyptus, ferns and garden roses in fine ink and watercolor on ivory paper." },
       { title: "A gentle tribute", body: "Often chosen to remember a dog who has passed." },
-      { title: "Timeless decor", body: "At home in a cottage, a bedroom or a reading nook." },
+      { title: "Lasting decor", body: "At home in a cottage, a bedroom or a reading nook." },
     ],
-    photoTip: "A calm, front-facing photo lets the wreath frame your dog's face beautifully.",
+    photoTip: "A calm, front-facing photo lets the stems frame your dog's face well.",
     bestOn: ["framed", "poster", "canvas"],
     frame: "oak",
-  },
-  astronaut: {
-    keyword: "Astronaut dog portrait",
-    title: "Astronaut Dog Portrait — Space Pet Art",
-    metaDescription:
-      "Send your dog to space: a painterly retro-futurist astronaut portrait with a glass dome helmet and a quiet night sky. Custom from your photo, previewed free.",
-    h1: "One small step for dog",
-    points: [
-      { title: "Retro-futurist", body: "An off-white 1960s space suit, a glass dome helmet and a quiet navy sky, painted in oils." },
-      { title: "Kids' room favorite", body: "Pairs well with posters, maps and anything out of this world." },
-      { title: "Made for a laugh", body: "A fun gift for the friend whose dog is clearly a genius." },
-    ],
-    photoTip: "A photo looking slightly upward makes for a heroic launch-day portrait.",
-    bestOn: ["canvas", "poster", "framed"],
-    frame: "black",
-  },
-  charcoal: {
-    keyword: "Charcoal dog drawing from photo",
-    title: "Charcoal Dog Drawing from Your Photo",
-    metaDescription:
-      "An expressive charcoal and graphite portrait of your dog on toned paper, with fine detail in the eyes. Custom from your photo, previewed free.",
-    h1: "An expressive charcoal study",
-    points: [
-      { title: "Monochrome and soulful", body: "Rich blacks, soft smudges and loose strokes that fade at the edges." },
-      { title: "All about the eyes", body: "Fine detail where it matters most, which is why it often feels so emotional." },
-      { title: "Works with older photos", body: "Because it is monochrome, it is forgiving of color casts and faded prints." },
-    ],
-    photoTip: "Any photo where their eyes are sharp will do. Color is not important for charcoal.",
-    bestOn: ["framed", "poster", "canvas"],
-    frame: "black",
   },
   "mid-century": {
     keyword: "Mid-century modern dog art",
     title: "Mid-Century Modern Dog Art Print",
     metaDescription:
       "A graphic mid-century modern print of your dog in a warm muted palette of ochre, sage and bone. Custom from your photo, previewed free.",
-    h1: "Calm geometry, warm muted palette",
+    h1: "Calm geometry, a warm muted palette",
     points: [
       { title: "Graphic and clean", body: "Simplified shapes, muted ochre and sage, and subtle paper grain, like a 1950s print." },
-      { title: "Made for modern homes", body: "Pairs beautifully with walnut, teak, linen and plants." },
-      { title: "Bold from across the room", body: "Reads clearly even at small sizes." },
+      { title: "Made for modern homes", body: "Pairs well with walnut, teak, linen and plants." },
+      { title: "Clear from across the room", body: "Reads well even at small sizes." },
     ],
     photoTip: "A side profile or a clear three-quarter view gives the strongest graphic shapes.",
     bestOn: ["framed", "poster", "canvas"],
-    frame: "oak",
-  },
-  holiday: {
-    keyword: "Christmas dog portrait",
-    title: "Christmas Dog Portrait — Holiday Pet Painting",
-    metaDescription:
-      "A quiet candlelit holiday oil painting of your dog, with a knit scarf and a sprig of evergreen. Made from your photo and previewed free. Perfect for gifts and holiday cards.",
-    h1: "A festive portrait by the fire",
-    points: [
-      { title: "Warm and nostalgic", body: "A knit scarf, a sprig of evergreen and the glow of a single candle." },
-      { title: "Holiday cards, sorted", body: "Order the digital file and print your own cards, or hang it every December." },
-      { title: "Last-minute friendly", body: "Send a Gift Reveal the moment you order. The print follows." },
-    ],
-    photoTip: "A cozy indoor photo with warm light suits the fireside mood.",
-    bestOn: ["framed", "canvas", "digital"],
     frame: "oak",
   },
 };

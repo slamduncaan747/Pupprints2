@@ -37,9 +37,9 @@ const social: Partial<Record<SocialNetwork, string>> = Object.fromEntries(
 export const site = {
   name: "Pup Prints",
   legalName: "Pup Prints",
-  tagline: "Fine-art portraits of your dog.",
+  tagline: "Your dog, as a piece of art for your home.",
   description:
-    "Turn your favorite photo into a museum-worthy portrait of your dog. See your custom portrait free in about a minute, then order it as a print, canvas, or framed piece.",
+    "Your dog, as a piece of art for your home. Made from your favorite photo in oil, watercolor, charcoal, linocut and more. See your portrait free in about a minute, then order it as a print, canvas or framed piece.",
   url: envValue(process.env.NEXT_PUBLIC_SITE_URL) ?? DEFAULT_SITE_URL,
   supportEmail: envValue(process.env.NEXT_PUBLIC_SUPPORT_EMAIL) ?? DEFAULT_SUPPORT_EMAIL,
   partnersEmail:

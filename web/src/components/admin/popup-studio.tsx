@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useId, useRef, useState, type ChangeEvent } from "react";
 import QRCode from "qrcode";
 import { Camera, Check, Copy, ImageUp, Loader2, Mail, MessageSquare, RotateCcw } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { prepareImage } from "@/components/create/prepare-image";
 import { isoDay, withPopupUtm } from "@/components/admin/popup";
+import { SampleImage } from "@/components/ui/sample-image";
+import { DEFAULT_STYLE } from "@/lib/catalog";
 import { adminButton, ErrorNote, inputClass, labelClass } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +37,7 @@ export function PopupStudio({ styles }: { styles: PopupStyle[] }) {
   const [photo, setPhoto] = useState<Photo | null>(null);
   const [petName, setPetName] = useState("");
   const [ownerName, setOwnerName] = useState("");
-  const [style, setStyle] = useState(styles[0]?.slug ?? "royal");
+  const [style, setStyle] = useState(styles[0]?.slug ?? DEFAULT_STYLE);
   const [error, setError] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState<Result | null>(null);
@@ -325,7 +326,7 @@ export function PopupStudio({ styles }: { styles: PopupStyle[] }) {
                   on ? "outline-[3px] outline-ink outline-solid" : "outline-1 outline-line outline-solid",
                 )}
               >
-                <Image src={s.sample} alt="" width={240} height={300} sizes="(max-width: 480px) 31vw, 140px" className="aspect-[4/5] w-full object-cover" />
+                <SampleImage src={s.sample} alt="" swatch="#d9d6cf" sizes="(max-width: 480px) 31vw, 140px" className="w-full" />
                 <span className={cn("block truncate px-1.5 py-2 text-[13px] leading-tight", on ? "font-semibold text-ink" : "text-ink-2")}>
                   {s.name}
                 </span>

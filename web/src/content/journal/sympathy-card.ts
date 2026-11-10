@@ -56,7 +56,7 @@ export const sympathyCard: ArticleInput = {
       type: "list",
       items: [
         "I keep thinking about the way Cooper used to greet me at the door like I was his favorite person, even though we both know that was you. I'm so sorry. Can I come by this week?",
-        "You gave Daisy the best life a dog could ask for: the walks, the beach trips, the absurd number of toys. She knew exactly how loved she was.",
+        "You gave Daisy the best life a dog could ask for: the walks, the beach trips, the ridiculous number of toys. She knew exactly how loved she was.",
         "I know how much a part of every day Bear was. If the house feels too quiet, call me. Any time, day or night.",
       ],
     },

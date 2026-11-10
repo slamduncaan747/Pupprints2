@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
  * Works in Server and Client Components (no hooks).
  *
  * @example
- * <FrameMockup src={previewUrl} alt="Biscuit as The Royal" productType="framed" frameColor="oak" size="lg" />
+ * <FrameMockup src={previewUrl} alt="Biscuit as Old Master" productType="framed" frameColor="oak" size="lg" />
  * <FrameMockup src={src} alt="" productType="canvas" printSize={{ widthIn: 24, heightIn: 36 }} room />
  */
 export type FrameMockupProps = {

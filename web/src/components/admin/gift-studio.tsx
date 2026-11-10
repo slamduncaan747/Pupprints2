@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Gift, ImageUp, Link2, RefreshCw, Wand2 } from "lucide-react";
-import { availableStyles, STYLES } from "@/lib/catalog";
+import { availableStyles, DEFAULT_STYLE, styleLabel } from "@/lib/catalog";
 import { CopyButton } from "@/components/admin/partner-controls";
 import { adminButton, inputClass, labelClass } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
@@ -32,7 +32,7 @@ export function GiftStudio({
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
-  const [style, setStyle] = useState<string>("royal");
+  const [style, setStyle] = useState<string>(DEFAULT_STYLE);
   const [petName, setPetName] = useState(defaultPetName ?? "");
   const [recipientName, setRecipientName] = useState(defaultRecipient ?? "");
   const [message, setMessage] = useState("");
@@ -120,7 +120,7 @@ export function GiftStudio({
   }
 
   const sourcePreview = source === "file" ? filePreview : /^https?:\/\//i.test(imageUrl) ? imageUrl : null;
-  const styleName = STYLES.find((s) => s.slug === (result?.style ?? style))?.name ?? style;
+  const styleName = styleLabel(result?.style ?? style);
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">

@@ -14,7 +14,7 @@ import {
 } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 
-/** Catalog style name, e.g. "royal" -> "The Royal". */
+/** Catalog style name, e.g. "oil-classic" -> "Old Master". */
 export function styleName(slug: StyleSlug) {
   return STYLE_MAP[slug].name;
 }

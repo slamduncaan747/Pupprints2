@@ -8,7 +8,7 @@ export const hangingGuide: ArticleInput = {
     "A practical, step-by-step guide to hanging canvas and framed art: the right height, the right hardware for your wall type, and how to get it level on the first try.",
   date: "2026-10-04",
   category: "home-and-framing",
-  heroStyle: "pop-art",
+  heroStyle: "linocut",
   keywords: ["how to hang a canvas", "how to hang a framed picture", "how high to hang art", "picture hanging height"],
   related: ["what-size-art-for-your-wall", "canvas-vs-framed-print-vs-poster", "watercolor-vs-oil-vs-line-art"],
   body: [
@@ -138,7 +138,7 @@ export const hangingGuide: ArticleInput = {
       body: "Turn a favorite photo of your dog into a portrait that arrives ready to hang. See it free first.",
       href: "/create",
       label: "Create your free preview",
-      style: "pop-art",
+      style: "linocut",
     },
   ],
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { db, previewUrl } from "@/lib/supabase/server";
-import { getStyle } from "@/lib/catalog";
+import { styleLabel } from "@/lib/catalog";
 import { RANGES, loadDashboard, type FunnelStep, type RangeKey } from "@/components/admin/dashboard-data";
 import { DAILY_TARGET } from "@/components/admin/scorecard";
 import { loadTodayActionTotal } from "@/components/admin/scorecard-data";
@@ -250,13 +250,13 @@ export default async function AdminDashboard({ searchParams }: PageProps<"/admin
                     <li key={g.id} className="relative aspect-[4/5] overflow-hidden rounded-md bg-paper-2">
                       <Image
                         src={previewUrl(g.preview_path)}
-                        alt={`${getStyle(g.style)?.name ?? g.style} preview${g.pet_name ? ` of ${g.pet_name}` : ""}`}
+                        alt={`${styleLabel(g.style)} preview${g.pet_name ? ` of ${g.pet_name}` : ""}`}
                         fill
                         sizes="120px"
                         className="object-cover"
                       />
                       <span className="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-ink/70 to-transparent px-1.5 pb-1 pt-3 text-[10px] text-paper">
-                        {getStyle(g.style)?.name ?? g.style}
+                        {styleLabel(g.style)}
                       </span>
                     </li>
                   ))}

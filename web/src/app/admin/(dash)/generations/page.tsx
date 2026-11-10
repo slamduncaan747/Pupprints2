@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { db, previewUrl } from "@/lib/supabase/server";
-import { STYLES, getStyle } from "@/lib/catalog";
+import { STYLES, getStyle, styleLabel } from "@/lib/catalog";
 import { Card, DbMissing, EmptyState, ErrorNote, FilterTabs, PageHeader, StatusPill, adminButton, fmtDate, inputClass } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
@@ -103,7 +103,7 @@ export default async function GenerationsPage({ searchParams }: PageProps<"/admi
                   <a href={previewUrl(g.preview_path)} target="_blank" rel="noreferrer" title="Open full preview" className="absolute inset-0 block">
                     <Image
                       src={previewUrl(g.preview_path)}
-                      alt={`${getStyle(g.style)?.name ?? g.style} preview${g.pet_name ? ` of ${g.pet_name}` : ""}`}
+                      alt={`${styleLabel(g.style)} preview${g.pet_name ? ` of ${g.pet_name}` : ""}`}
                       fill
                       sizes="(max-width: 640px) 50vw, 220px"
                       className="object-cover"
@@ -118,7 +118,7 @@ export default async function GenerationsPage({ searchParams }: PageProps<"/admi
               </div>
               <div className="space-y-0.5 p-2.5 text-xs">
                 <p className="truncate text-sm font-medium text-ink">
-                  {getStyle(g.style)?.name ?? g.style}
+                  {styleLabel(g.style)}
                   {g.pet_name && <span className="font-normal text-ink-3"> · {g.pet_name}</span>}
                 </p>
                 <p className="truncate text-ink-3" title={[g.provider, g.model].filter(Boolean).join(" / ")}>

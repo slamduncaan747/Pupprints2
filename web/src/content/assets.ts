@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 /**
- * True when a file exists in web/public (e.g. "/samples/royal.webp").
+ * True when a file exists in web/public (e.g. "/samples/oil-classic.webp").
  * Used at build time so pages only advertise an og:image that actually exists; otherwise
  * the site-wide app/opengraph-image is used.
  */

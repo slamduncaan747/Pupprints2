@@ -5,7 +5,7 @@ import { FORMAT_SHOWCASE } from "@/lib/offer";
 import type { ProductType } from "@/lib/catalog";
 
 /**
- * The campaign: art-directed scenes of our example Royal portrait (web/public/campaign/), made as
+ * The campaign: art-directed scenes of our example Old Master portrait (a golden retriever) (web/public/campaign/), made as
  * product mockups of a real sample. They are never customer photos, so every alt says "example".
  *
  * The files arrive from a separate pipeline and some may never exist, so every entry names a
@@ -20,72 +20,73 @@ export type CampaignAsset = Photo & { fallback: Photo };
 
 /** Every sample portrait is 4:5, 1200×1500. */
 const PORTRAIT = { width: 1200, height: 1500 } as const;
-const ROYAL: Photo = { src: FORMAT_SHOWCASE.src, ...PORTRAIT, alt: "Example portrait in The Royal style" };
+const HERO_ALT = "Example Old Master portrait of a golden retriever";
+const HERO_PORTRAIT: Photo = { src: FORMAT_SHOWCASE.src, ...PORTRAIT, alt: HERO_ALT };
 
 export const CAMPAIGN = {
   heroWide: {
     src: "/campaign/hero-wide.webp",
     width: 2400,
     height: 1350,
-    alt: "Example portrait in The Royal style, shown as a framed print on a limewashed wall above an oak console",
-    fallback: ROYAL,
+    alt: `${HERO_ALT}, shown as a framed print on a limewashed wall above an oak console`,
+    fallback: HERO_PORTRAIT,
   },
   heroTall: {
     src: "/campaign/hero-tall.webp",
     width: 1200,
     height: 1500,
-    alt: "Example portrait in The Royal style, shown as a framed print on a limewashed wall",
-    fallback: ROYAL,
+    alt: `${HERO_ALT}, shown as a framed print on a limewashed wall`,
+    fallback: HERO_PORTRAIT,
   },
   formatCanvas: {
     src: "/campaign/format-canvas.webp",
     ...PORTRAIT,
-    alt: "Example portrait in The Royal style, shown as a gallery canvas above a linen sofa",
-    fallback: ROYAL,
+    alt: `${HERO_ALT}, shown as a gallery canvas above a linen sofa`,
+    fallback: HERO_PORTRAIT,
   },
   formatFramed: {
     src: "/campaign/format-framed.webp",
     ...PORTRAIT,
-    alt: "Example portrait in The Royal style, shown as an oak-framed print on a travertine mantel",
-    fallback: ROYAL,
+    alt: `${HERO_ALT}, shown as an oak-framed print on a travertine mantel`,
+    fallback: HERO_PORTRAIT,
   },
   formatPrint: {
     src: "/campaign/format-print.webp",
     ...PORTRAIT,
-    alt: "Example portrait in The Royal style, shown as an unframed fine art print on a table with tissue paper",
-    fallback: ROYAL,
+    alt: `${HERO_ALT}, shown as an unframed fine art print on a table with tissue paper`,
+    fallback: HERO_PORTRAIT,
   },
   formatDigital: {
     src: "/campaign/format-digital.webp",
     ...PORTRAIT,
-    alt: "Example portrait in The Royal style, shown as a digital file on a phone",
-    fallback: ROYAL,
+    alt: `${HERO_ALT}, shown as a digital file on a phone`,
+    fallback: HERO_PORTRAIT,
   },
   gift: {
     src: "/campaign/gift.webp",
     ...PORTRAIT,
-    alt: "Example portrait in The Royal style, shown as a framed print half-unwrapped from tissue in a gift box",
-    fallback: { src: "/samples/gallery-3.webp", ...PORTRAIT, alt: "Example portrait of a cavapoo in the Watercolor style" },
+    alt: `${HERO_ALT}, shown as a framed print half-unwrapped from tissue in a gift box`,
+    fallback: { src: "/samples/watercolor.webp", ...PORTRAIT, alt: "Example portrait in the Watercolor style" },
   },
   dogAndPortrait: {
     src: "/campaign/dog-and-portrait.webp",
     width: 1800,
     height: 1200,
     alt: "Illustrative scene: a golden retriever lying on the floor beneath a framed example portrait",
-    fallback: { src: "/samples/gallery-1.webp", ...PORTRAIT, alt: "Example portrait of a golden retriever in the Old Master style" },
+    fallback: HERO_PORTRAIT,
   },
   galleryWall: {
     src: "/campaign/gallery-wall.webp",
     width: 1800,
     height: 1200,
     alt: "Three example portraits in different styles, framed and hung along a pale hallway",
-    fallback: ROYAL,
+    fallback: HERO_PORTRAIT,
   },
   heirloom: {
     src: "/campaign/heirloom.webp",
     ...PORTRAIT,
-    alt: "Example portrait in The Royal style on a matching ceramic ornament",
-    fallback: ROYAL,
+    alt: `${HERO_ALT} on a matching ceramic ornament`,
+    fallback: HERO_PORTRAIT,
   },
 } as const satisfies Record<string, CampaignAsset>;
 

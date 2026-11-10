@@ -1,6 +1,6 @@
 import "server-only";
 import type Stripe from "stripe";
-import { findAddon, findVariant, getStyle, PRODUCT_MAP, type FrameColor, type ProductType } from "@/lib/catalog";
+import { findAddon, findVariant, PRODUCT_MAP, styleLabel, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site, socialHandle } from "@/lib/config";
 import { features } from "@/lib/env";
 import { db, previewUrl, requireDb } from "@/lib/supabase/server";
@@ -231,8 +231,9 @@ export function itemLabel(variantId: string, frameColor?: FrameColor | null): { 
   return { label: `${product.name} ${size}${frame}`, variantLabel: size, productName: product.name };
 }
 
+/** Catalog name, or "Retired style" for a stored slug we no longer sell. */
 export function styleNameOf(slug: string) {
-  return getStyle(slug)?.name ?? slug;
+  return styleLabel(slug);
 }
 
 /** Order summary rows used in emails and on the success page. */

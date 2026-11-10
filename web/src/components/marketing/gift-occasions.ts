@@ -48,11 +48,11 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "Christmas 2026",
     h1: "The Christmas gift they'll hang forever",
     lede: "A portrait of their dog, in a style that suits them, framed and ready for the wall. See it free before you buy, and send a Gift Reveal the moment you order.",
-    goodFor: ["holiday", "gift"],
-    feature: "holiday",
+    goodFor: ["gift", "decor"],
+    feature: "oil-classic",
     ideas: [
       { title: "For the one who's hard to shop for", body: "Nobody else will give them this. A framed print of their own dog is personal in a way a gift card never is." },
-      { title: "For the whole family", body: `Hang ${n("holiday")}, our 2026 holiday edition, by the fire this December, or choose a classic style that stays up all year.` },
+      { title: "For the whole family", body: `Choose a piece that stays up all year: ${n("oil-classic")} above the mantel, or ${n("watercolor")} in the hallway everyone walks through.` },
       { title: "For the tree, too", body: `Add a matching ornament${ORNAMENT ? ` (${formatPrice(ORNAMENT.price)})` : ""} to any print, frame or canvas, and use the included digital file for your holiday cards.` },
     ],
     timing: {
@@ -103,7 +103,7 @@ export const OCCASIONS: Occasion[] = [
       },
       {
         q: "Which style is best for a memorial portrait?",
-        a: `Many people choose softer styles like ${n("watercolor")}, ${n("botanical")}, ${n("oil-classic")} or ${n("charcoal")}. There's no wrong answer; try a few and see which one feels like them.`,
+        a: `Many people choose quieter styles like ${n("watercolor")}, ${n("charcoal")}, ${n("pastel")}, ${n("ink-wash")} or ${n("oil-classic")}. There's no wrong answer; try a few and see which one feels like them.`,
       },
       {
         q: "Can you help me choose a photo?",
@@ -136,7 +136,7 @@ export const OCCASIONS: Occasion[] = [
     ideas: [
       { title: "For a mom who loves her home", body: `A framed ${n("watercolor")} or ${n("botanical")} portrait feels like it was always meant to hang there.` },
       { title: "From the dog, obviously", body: "Sign the card from the dog. Send the Gift Reveal on the morning. Wait for the happy tears." },
-      { title: "For a new dog mom", body: `First Mother's Day with a puppy? A ${n("storybook")} portrait captures how small they are right now.` },
+      { title: "For a new dog mom", body: `First Mother's Day with a puppy? A ${n("pastel")} portrait keeps how small and soft they are right now.` },
     ],
     timing: {
       title: "Plan ahead (a little)",
@@ -168,11 +168,11 @@ export const OCCASIONS: Occasion[] = [
     eyebrow: "Birthday gifts",
     h1: "A birthday gift with a wagging tail",
     lede: "For the friend who shows you their dog before they say hello. Make a portrait from a photo you already have, send the Gift Reveal on their birthday, and let the print follow.",
-    goodFor: ["gift", "funny"],
-    feature: "royal",
+    goodFor: ["gift", "decor"],
+    feature: "modern-oil",
     ideas: [
-      { title: "For a good laugh", body: `${n("royal")}, ${n("admiral")} or ${n("astronaut")}. Funny, but still a real piece of art.` },
-      { title: "For their new apartment", body: `${n("fine-line")} or ${n("mid-century")} in a natural oak frame looks right at home on a modern wall.` },
+      { title: "For their living room", body: `${n("modern-oil")} or ${n("oil-classic")}: a real piece of art of the dog they talk about all day.` },
+      { title: "For their new apartment", body: `${n("linocut")}, ${n("ink-wash")} or ${n("fine-line")} in a natural oak frame looks right at home on a modern wall.` },
       { title: "For the dog's birthday", body: "Gotcha day, first birthday, sweet sixteen. A portrait marks the moment." },
     ],
     timing: {
@@ -206,9 +206,9 @@ export const OCCASIONS: Occasion[] = [
     h1: "Their very first portrait",
     lede: "Puppies grow up astonishingly fast. Capture the oversized paws and floppy ears now, while they still fit in your lap.",
     goodFor: ["gift", "decor"],
-    feature: "storybook",
+    feature: "pastel",
     ideas: [
-      { title: "A welcome-home gift", body: `For a friend's new arrival, a ${n("storybook")} or ${n("watercolor")} portrait is sweet without being silly.` },
+      { title: "A welcome-home gift", body: `For a friend's new arrival, a ${n("pastel")} or ${n("watercolor")} portrait is sweet without being silly.` },
       { title: "For the nursery or kids' room", body: "Puppy and kids growing up together? Hang their portrait where the kids can see it." },
       { title: "Then and now", body: "Order one now and another in a year, in the same style and size, and hang them side by side." },
     ],
@@ -220,7 +220,7 @@ export const OCCASIONS: Occasion[] = [
       },
       {
         q: "Which style suits a puppy?",
-        a: `${n("storybook")} and ${n("watercolor")} feel especially sweet, and ${n("royal")} is very funny on a tiny puppy. Try them all free.`,
+        a: `${n("pastel")} and ${n("watercolor")} suit soft puppy fur, and ${n("ink-wash")} catches oversized ears in a few strokes. Try them all free.`,
       },
     ],
     cta: {
@@ -235,16 +235,16 @@ export const OCCASIONS: Occasion[] = [
     card: "For the dog dad and his best friend.",
     title: "Father's Day Gifts for Dog Dads — Custom Dog Portraits",
     metaDescription:
-      "The Father's Day gift for dog dads: a custom portrait of his dog as an admiral, a king or a classic oil painting. Preview free, then order a print, frame or canvas.",
+      "The Father's Day gift for dog dads: a custom portrait of his dog in oil, charcoal or a carved-print look. Preview free, then order a print, frame or canvas.",
     eyebrow: "Father's Day",
     h1: "For the dog dad and his best friend",
-    lede: "He'll say he doesn't need anything. Then he'll hang a portrait of his dog as a decorated naval admiral above his desk and show everyone who visits. Father's Day is Sunday, June 20, 2027.",
-    goodFor: ["gift", "funny"],
-    feature: "admiral",
+    lede: "He'll say he doesn't need anything. Then he'll hang a portrait of his dog above his desk and show everyone who visits. Father's Day is Sunday, June 20, 2027.",
+    goodFor: ["gift", "decor"],
+    feature: "charcoal",
     ideas: [
-      { title: "For the office", body: `${n("admiral")} or ${n("oil-classic")} in a natural oak frame, above the desk where the dog naps all day.` },
-      { title: "For a good laugh", body: `${n("royal")} or ${n("astronaut")}. He'll pretend it's silly. He'll hang it anyway.` },
-      { title: "For a modern space", body: `${n("mid-century")} or ${n("fine-line")} for a garage, den or workshop wall.` },
+      { title: "For the office", body: `${n("oil-classic")} or ${n("charcoal")} in a natural oak frame, above the desk where the dog naps all day.` },
+      { title: "For the den", body: `${n("modern-oil")} on canvas. He'll say it's too much. He'll hang it anyway.` },
+      { title: "For a modern space", body: `${n("linocut")} or ${n("mid-century")} for a garage, study or workshop wall.` },
     ],
     timing: {
       title: "Plan ahead (a little)",
@@ -257,7 +257,7 @@ export const OCCASIONS: Occasion[] = [
       },
       {
         q: "Which style do dog dads like?",
-        a: `${n("admiral")} and ${n("royal")} are fun picks, and ${n("oil-classic")} is a classic that suits any room. Try them all free with his dog's photo.`,
+        a: `${n("oil-classic")} is a classic that suits any room, ${n("charcoal")} is quiet and handsome above a desk, and ${n("linocut")} is the graphic one. Try them all free with his dog's photo.`,
       },
     ],
     cta: {

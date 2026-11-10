@@ -3,7 +3,7 @@ import { PageHero } from "@/components/marketing/page-hero";
 import { Block, Bullets, Rows, textLink } from "@/components/marketing/blocks";
 import { FaqList } from "@/components/marketing/faq";
 import { CampaignImage } from "@/components/marketing/campaign";
-import { STYLE_MAP } from "@/lib/catalog";
+import { DEFAULT_STYLE, STYLE_MAP } from "@/lib/catalog";
 import { GALLERY, STYLE_SAMPLES } from "@/lib/samples";
 import { PartnerApplyForm } from "@/components/partners/apply-form";
 import { PROGRAM } from "@/components/partners/program";
@@ -125,12 +125,12 @@ const FAQ = [
   },
 ];
 
-/** A gallery portrait for the hero, falling back to the royal style sample. */
+/** A gallery portrait for the hero, falling back to the default style sample. */
 const HERO = (() => {
-  const g = GALLERY.find((x) => x.style === "pop-art");
+  const g = GALLERY.find((x) => x.style === "linocut");
   return g
-    ? { src: g.src, style: g.style, alt: `${STYLE_MAP[g.style].name} portrait of a ${g.dog}` }
-    : { src: STYLE_SAMPLES.royal, style: "royal" as const, alt: `Example ${STYLE_MAP.royal.name} dog portrait` };
+    ? { src: g.src, style: g.style, alt: `Example ${STYLE_MAP[g.style].name} portrait of a ${g.dog}` }
+    : { src: STYLE_SAMPLES[DEFAULT_STYLE], style: DEFAULT_STYLE, alt: `Example ${STYLE_MAP[DEFAULT_STYLE].name} dog portrait` };
 })();
 
 export default function PartnersPage() {

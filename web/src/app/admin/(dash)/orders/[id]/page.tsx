@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Download, ExternalLink } from "lucide-react";
 import { z } from "zod";
 import { db, previewUrl, signedUrl } from "@/lib/supabase/server";
-import { getStyle } from "@/lib/catalog";
+import { styleLabel } from "@/lib/catalog";
 import { OrderActions } from "@/components/admin/order-actions";
 import { formatAddress, normalizeItems } from "@/components/admin/order-items";
 import { labelize } from "@/components/admin/constants";
@@ -139,7 +139,7 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/orde
                         <p className="font-medium text-ink">{it.label}</p>
                         <p className="mt-0.5 text-ink-2">
                           {[
-                            it.style ?? (g ? (getStyle(g.style)?.name ?? g.style) : null),
+                            it.style ?? (g ? styleLabel(g.style) : null),
                             it.frame ? `${labelize(it.frame)} frame` : null,
                             (it.petName ?? g?.pet_name) ? `“${it.petName ?? g?.pet_name}”` : null,
                           ]

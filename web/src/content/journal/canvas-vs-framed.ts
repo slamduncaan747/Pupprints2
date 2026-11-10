@@ -9,7 +9,7 @@ export const canvasVsFramed: ArticleInput = {
     "Gallery canvas, framed print or unframed fine art print? An honest comparison of looks, durability, price and where each one works best, so you can choose with confidence.",
   date: "2026-10-06",
   category: "home-and-framing",
-  heroStyle: "admiral",
+  heroStyle: "modern-oil",
   keywords: [
     "pet portrait canvas",
     "framed dog portrait",
@@ -55,7 +55,7 @@ export const canvasVsFramed: ArticleInput = {
     { type: "heading", text: "Gallery canvas: the painting look" },
     {
       type: "paragraph",
-      text: `Our canvas is poly-cotton, hand-stretched over a solid wood stretcher bar, with the image wrapping around the edges for a finished gallery look. There's no glazing, so there's no glare, and the woven texture gives the art a painted feel up close. That makes canvas a natural partner for the painterly styles: ${styleLink("oil-classic")}, ${styleLink("royal")} and ${styleLink("admiral")}.`,
+      text: `Our canvas is poly-cotton, hand-stretched over a solid wood stretcher bar, with the image wrapping around the edges for a finished gallery look. There's no glazing, so there's no glare, and the woven texture gives the art a painted feel up close. That makes canvas a natural partner for the painterly styles: ${styleLink("oil-classic")} and ${styleLink("modern-oil")}.`,
     },
     {
       type: "paragraph",
@@ -83,7 +83,7 @@ export const canvasVsFramed: ArticleInput = {
     {
       type: "list",
       items: [
-        `**Black** sharpens everything. Great with bold styles like ${styleLink("pop-art")}, and with high-contrast dogs.`,
+        `**Black** sharpens everything. Great with graphic styles like ${styleLink("linocut")} and ${styleLink("charcoal")}, and with high-contrast dogs.`,
         "**White** feels light and airy. Perfect for watercolor and for bright, modern rooms.",
         `**Natural oak** is warm and relaxed. It loves the warm tones of the oil styles and ${styleLink("mid-century")}.`,
       ],
@@ -116,8 +116,8 @@ export const canvasVsFramed: ArticleInput = {
       type: "list",
       items: [
         "**Above a sofa or bed:** a large canvas or framed piece, or a pair. Our [size guide](/journal/what-size-art-for-your-wall) has the numbers.",
-        `**Home office:** a framed ${styleLink("admiral")} or ${styleLink("oil-classic")} in natural oak.`,
-        `**Nursery or kids' room:** a framed ${styleLink("storybook")} in white.`,
+        `**Home office:** a framed ${styleLink("oil-classic")} or ${styleLink("charcoal")} in natural oak.`,
+        `**Nursery or kids' room:** a framed ${styleLink("pastel")} or ${styleLink("watercolor")} in white.`,
         "**Gallery wall:** framed prints in mixed sizes, all in one frame color.",
         "**A gift:** framed, almost always. It's ready to hang and feels complete when it's unwrapped.",
       ],
@@ -132,7 +132,7 @@ export const canvasVsFramed: ArticleInput = {
       body: "Create your portrait free in about a minute, then choose canvas, framed print or fine art print only if you love it.",
       href: "/create",
       label: "Create your free preview",
-      style: "admiral",
+      style: "modern-oil",
     },
   ],
 };

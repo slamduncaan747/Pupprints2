@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PROMISES, STYLE_MAP } from "@/lib/catalog";
+import { DEFAULT_STYLE, PROMISES, STYLE_MAP } from "@/lib/catalog";
 import { BEFORE_AFTER, STYLE_SAMPLES } from "@/lib/samples";
 import { CampaignImage, Chapter, ProductShot } from "@/components/marketing/campaign";
 import { FramedArt } from "@/components/marketing/framed-art";
@@ -103,7 +103,7 @@ const FAQS = [
 export default function HowItWorksPage() {
   const pair = BEFORE_AFTER[0];
   const style = pair ? STYLE_MAP[pair.style] : undefined;
-  const chapterStyle = style ?? STYLE_MAP.royal;
+  const chapterStyle = style ?? STYLE_MAP[DEFAULT_STYLE];
   return (
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
@@ -143,7 +143,7 @@ export default function HowItWorksPage() {
         title="It begins with a photograph."
         media={
           <CampaignImage
-            src={pair?.before ?? STYLE_SAMPLES.royal}
+            src={pair?.before ?? STYLE_SAMPLES[DEFAULT_STYLE]}
             alt={pair ? `Phone photo of a ${pair.dog}` : "Example dog portrait"}
             swatch="#d8d2c4"
             priority

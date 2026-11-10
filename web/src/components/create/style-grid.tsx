@@ -6,7 +6,7 @@ import { StyleThumb } from "./style-thumb";
 import type { Generation, UploadInfo } from "./store";
 
 /** Suggested first on the gentle track ("This portrait is in memory of my dog"), in this order. */
-export const MEMORIAL_FIRST: StyleSlug[] = ["watercolor", "oil-classic", "charcoal", "botanical"];
+export const MEMORIAL_FIRST: StyleSlug[] = ["oil-classic", "watercolor", "charcoal", "ink-wash", "pastel"];
 
 /** Styles that can be chosen now; on the gentle track the four quietest styles lead. */
 export function pickerStyles(memorial: boolean): ArtStyle[] {

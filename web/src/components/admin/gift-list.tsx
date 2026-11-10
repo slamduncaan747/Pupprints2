@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { getStyle } from "@/lib/catalog";
+import { styleLabel } from "@/lib/catalog";
 import type { GiftView } from "@/components/admin/gifts";
 import { CopyButton } from "@/components/admin/partner-controls";
 import { EmptyState, fmtDate } from "@/components/admin/ui";
@@ -35,7 +35,7 @@ export function GiftList({ gifts, showPartner = true }: { gifts: GiftView[]; sho
               {g.recipient_name && <span className="font-normal text-ink-3"> · for {g.recipient_name}</span>}
             </p>
             <p className="truncate text-xs text-ink-3">
-              {g.style ? (getStyle(g.style)?.name ?? g.style) : "—"} · {fmtDate(g.created_at)}
+              {g.style ? styleLabel(g.style) : "—"} · {fmtDate(g.created_at)}
             </p>
             {showPartner && g.partner && (
               <Link href={`/admin/partners/${g.partner.id}`} className="block truncate text-xs text-ink-2 hover:underline">

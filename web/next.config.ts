@@ -35,9 +35,20 @@ function campaignFiles(): string {
   }
 }
 
+/** Styles we no longer sell (keep in step with RETIRED_STYLE_SLUGS in src/lib/catalog.ts). */
+const RETIRED_STYLES = ["royal", "admiral", "astronaut", "pop-art", "storybook", "holiday"];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   env: { PP_CAMPAIGN_FILES: campaignFiles() },
+  async redirects() {
+    return [
+      // Old style pages go to the collection, permanently, so old links and search results never 404.
+      ...RETIRED_STYLES.map((slug) => ({ source: `/styles/${slug}`, destination: "/styles", permanent: true })),
+      // The court-portrait history article was rewritten as a history of dog portraiture.
+      { source: "/journal/history-of-royal-pet-portraits", destination: "/journal/history-of-dog-portraits", permanent: true },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

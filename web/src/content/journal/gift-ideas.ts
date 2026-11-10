@@ -9,7 +9,7 @@ export const giftIdeas: ArticleInput = {
     "An honest list of 25 gifts dog lovers actually use and love, from practical upgrades to sentimental keepsakes. Yes, a portrait is on it. So are 24 other good ideas.",
   date: "2026-10-12",
   category: "gift-guides",
-  heroStyle: "royal",
+  heroStyle: "oil-classic",
   keywords: [
     "gifts for dog lovers",
     "dog lover gift",
@@ -31,7 +31,7 @@ export const giftIdeas: ArticleInput = {
     { type: "heading", level: 3, text: "1. A custom portrait of their dog" },
     {
       type: "paragraph",
-      text: `Okay, we're biased. But a portrait of their own dog is one of the few gifts that's both deeply personal and genuinely decorative. Choose a style that fits their home and sense of humor: ${styleLink("royal")} for the person who already calls their dog "Your Majesty", a soft ${styleLink("watercolor")} for a calm, light-filled room, or ${styleLink("pop-art")} for a loud gallery wall. With us you see the portrait free before paying, prints start at ${fromPrice("poster")}, and you can send a Gift Reveal the moment you order while the real thing ships.`,
+      text: `Okay, we're biased. But a portrait of their own dog is one of the few gifts that's both deeply personal and genuinely decorative. Choose a style that fits their home: ${styleLink("oil-classic")} for a warm, traditional room, a soft ${styleLink("watercolor")} for a calm, light-filled one, or a ${styleLink("linocut")} for a modern gallery wall. With us you see the portrait free before paying, prints start at ${fromPrice("poster")}, and you can send a Gift Reveal the moment you order while the real thing ships.`,
     },
     { type: "heading", level: 3, text: "2. A paw print keepsake" },
     {
@@ -173,7 +173,7 @@ export const giftIdeas: ArticleInput = {
       body: "Upload a photo of their dog and see the portrait free in about a minute. Only pay if you love it.",
       href: "/create",
       label: "Create a free preview",
-      style: "royal",
+      style: "oil-classic",
     },
   ],
 };

@@ -1,4 +1,4 @@
-import { findVariant, getStyle } from "@/lib/catalog";
+import { findVariant, styleLabel } from "@/lib/catalog";
 
 export type NormalizedItem = {
   generationId: string | null;
@@ -32,7 +32,7 @@ export function normalizeItems(items: unknown): NormalizedItem[] {
     const variantId = str(pick(o, ["variantId", "variant_id", "sku", "variant"]));
     const found = variantId ? findVariant(variantId) : undefined;
     const styleSlug = str(pick(o, ["style", "styleSlug", "style_slug"]));
-    const style = styleSlug ? (getStyle(styleSlug)?.name ?? styleSlug) : null;
+    const style = styleSlug ? (styleLabel(styleSlug)) : null;
     const label =
       str(pick(o, ["label", "name", "productName", "product_name", "description"])) ??
       (found ? `${found.product.name} · ${found.variant.label}` : (variantId ?? "Item"));

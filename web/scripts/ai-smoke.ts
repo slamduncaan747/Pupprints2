@@ -6,13 +6,13 @@
  *   npx tsx scripts/ai-smoke.ts <dog-photo.jpg> <style> [--provider=openai|gemini|fal|replicate] [--quality=low|medium|high]
  *
  * Examples:
- *   npx tsx scripts/ai-smoke.ts ~/Desktop/rex.jpg royal                     # normal chain (OpenAI, then Gemini)
+ *   npx tsx scripts/ai-smoke.ts ~/Desktop/rex.jpg oil-classic                     # normal chain (OpenAI, then Gemini)
  *   npx tsx scripts/ai-smoke.ts ~/Desktop/rex.jpg watercolor --provider=gemini   # test only the Gemini key
- *   npx tsx scripts/ai-smoke.ts ~/Desktop/rex.jpg royal --quality=medium     # compare OpenAI quality tiers
+ *   npx tsx scripts/ai-smoke.ts ~/Desktop/rex.jpg oil-classic --quality=medium     # compare OpenAI quality tiers
  *
  * Writes <photo>.<style>.<provider>.png next to the photo and prints the provider, model, size and
  * latency of each attempt. The photo goes through the same normalisation as a customer upload.
- * Styles are the slugs in src/lib/catalog.ts (royal, admiral, oil-classic, watercolor, ...).
+ * Styles are the slugs in src/lib/catalog.ts (oil-classic, watercolor, modern-oil, charcoal, ...).
  */
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";

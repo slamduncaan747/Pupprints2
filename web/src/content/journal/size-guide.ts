@@ -94,7 +94,7 @@ export const sizeGuide: ArticleInput = {
     { type: "heading", level: 3, text: "Home office" },
     {
       type: "paragraph",
-      text: `Art above a desk is usually seen from close up, so 16×20" or 18×24" works well. On the desk itself, an 8×10" frame is perfect. A ${styleLink("admiral")} portrait above a desk is, we'd argue, a productivity tool.`,
+      text: `Art above a desk is usually seen from close up, so 16×20" or 18×24" works well. On the desk itself, an 8×10" frame is perfect. A ${styleLink("charcoal")} portrait above a desk is, we'd argue, a productivity tool.`,
     },
     { type: "heading", level: 3, text: "Hallways and stairs" },
     {
@@ -123,7 +123,7 @@ export const sizeGuide: ArticleInput = {
         "**Tape it out.** Mark the size on the wall with painter's tape or a sheet of paper and live with it for a day.",
         "**When in doubt, go bigger.** Art that's slightly too large almost always looks better than art that's slightly too small.",
         "**Think about viewing distance.** Pieces seen from across a room need to be bigger than pieces seen up close.",
-        `**Let the style guide you.** Detailed styles like ${styleLink("fine-line")} reward a closer look; bold styles like ${styleLink("pop-art")} read beautifully from across the room.`,
+        `**Let the style guide you.** Detailed styles like ${styleLink("fine-line")} reward a closer look; bold styles like ${styleLink("modern-oil")} and ${styleLink("linocut")} read beautifully from across the room.`,
       ],
     },
     {

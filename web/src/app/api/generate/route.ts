@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getStyle, styleAvailable, STYLES, type StyleSlug } from "@/lib/catalog";
+import { getStyle, isRetiredStyle, styleAvailable } from "@/lib/catalog";
 import { env } from "@/lib/env";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { makeWatermarkedPreview, toPrintMaster } from "@/lib/image";
@@ -16,7 +16,8 @@ const AI_BUDGET_MS = 105_000;
 
 const Body = z.object({
   uploadId: z.string().uuid(),
-  style: z.enum(STYLES.map((s) => s.slug) as [StyleSlug, ...StyleSlug[]]),
+  /** Checked against the catalog below, so a retired slug gets a clear 410 rather than a generic 400. */
+  style: z.string().min(1).max(40),
   petName: z
     .string()
     .trim()
@@ -40,9 +41,13 @@ export async function POST(req: Request) {
   } catch {
     return json({ error: "invalid_request", message: "Please choose a photo and a style." }, 400);
   }
-  // A dated edition (Holiday Cozy 2026) is refused once it has retired, checked on every request.
+  // Styles we no longer sell (RETIRED_STYLE_SLUGS) and dated editions past their last day are
+  // refused with 410, checked on every request; a slug we never had is a plain 400.
   const style = getStyle(body.style);
-  if (!styleAvailable(style)) {
+  if (!style && !isRetiredStyle(body.style)) {
+    return json({ error: "invalid_request", message: "Please choose a style from the collection." }, 400);
+  }
+  if (!style || !styleAvailable(style)) {
     return json(
       { error: "style_retired", message: `${style?.name ?? "That style"} has been retired. Please choose another style.` },
       410,
@@ -75,7 +80,7 @@ export async function POST(req: Request) {
       .from("generations")
       .select("id")
       .eq("upload_id", upload.id)
-      .eq("style", body.style)
+      .eq("style", style.slug)
       .eq("status", "pending")
       .limit(1)
       .maybeSingle();
@@ -89,7 +94,7 @@ export async function POST(req: Request) {
         session_id: sessionId,
         ip_hash: ipHash,
         pet_name: body.petName ?? null,
-        style: body.style,
+        style: style.slug,
         status: "pending",
         error: "ai_unavailable",
         ...memorial,
@@ -108,7 +113,7 @@ export async function POST(req: Request) {
       session_id: sessionId,
       ip_hash: ipHash,
       pet_name: body.petName ?? null,
-      style: body.style,
+      style: style.slug,
       status: "processing",
       ...memorial,
     })
@@ -177,7 +182,7 @@ export async function POST(req: Request) {
       imageUrl,
       imageBytes,
       mime: "image/jpeg",
-      style: body.style,
+      style: style.slug,
       petName: body.petName,
       deadline: started + AI_BUDGET_MS,
     });
@@ -218,7 +223,7 @@ export async function POST(req: Request) {
       generationId,
       status: "succeeded",
       previewUrl: previewUrl(previewPath),
-      style: body.style,
+      style: style.slug,
       width: preview.width,
       height: preview.height,
     });

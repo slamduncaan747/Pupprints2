@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 /** Evaluated per render (hourly at most), so a retired dated edition leaves the count with it. */
 export function generateMetadata(): Metadata {
   return {
-    title: "Dog Portrait Styles — Oil Painting, Watercolor, Royal & More",
-    description: `Browse all ${availableStyles().length} custom dog portrait styles, from royal oil paintings to watercolor, line art and pop art. Try every style free with your own photo.`,
+    title: "Dog Portrait Styles — Oil, Watercolor, Charcoal, Linocut & More",
+    description: `Browse all ${availableStyles().length} custom dog portrait styles, from classical oil to watercolor, charcoal, linocut and ink. Try every style free with your own photo.`,
     alternates: { canonical: "/styles" },
   };
 }
@@ -23,17 +23,17 @@ const EDITS: { title: string; body: string; slugs: StyleSlug[] }[] = [
   {
     title: "The Memorial Edit",
     body: "Soft, timeless styles that feel gentle on the wall.",
-    slugs: ["watercolor", "oil-classic", "botanical", "charcoal"],
+    slugs: ["watercolor", "oil-classic", "charcoal", "pastel", "ink-wash"],
   },
   {
-    title: "The Playful Edit",
-    body: "Costumes and color for big personalities.",
-    slugs: ["astronaut", "royal", "admiral", "pop-art"],
+    title: "The Painted Edit",
+    body: "Oil, pastel and watercolor, for a room that wants warmth.",
+    slugs: ["modern-oil", "oil-classic", "pastel", "watercolor"],
   },
   {
     title: "The Modern Edit",
     body: "Clean, graphic styles for modern rooms.",
-    slugs: ["mid-century", "fine-line", "charcoal", "pop-art"],
+    slugs: ["linocut", "ink-wash", "fine-line", "mid-century"],
   },
 ];
 

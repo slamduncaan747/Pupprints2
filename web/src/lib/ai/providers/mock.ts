@@ -31,7 +31,7 @@ export const mock: PortraitProvider = {
   async generate(input, signal) {
     const W = 1200;
     const H = 1600;
-    const swatch = STYLE_MAP[input.style]?.swatch ?? "#7a2e2a";
+    const swatch = STYLE_MAP[input.style]?.swatch ?? "#4b4232";
 
     const base = await sharp(input.imageBytes)
       .autoOrient()

@@ -97,20 +97,19 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
     fetchGiftPortrait(giftToken)
       .then((res) => {
         if (cancelled) return;
-        const style = getStyle(res.style);
-        if (!style) throw new ApiError("gift_not_found", "We couldn't find that gift portrait.", 404);
+        // A gift made in a style we have since retired still opens and can be ordered.
         setGift({
           status: "ready",
           gen: {
             generationId: res.generationId,
-            style: style.slug,
+            style: res.style as StyleSlug,
             previewUrl: res.previewUrl,
             createdAt: res.createdAt,
             uploadId: null,
             petName: res.petName,
           },
         });
-        track("ViewContent", { content: "gift_portrait", style: style.slug });
+        track("ViewContent", { content: "gift_portrait", style: res.style });
       })
       .catch((err) => {
         if (cancelled) return;

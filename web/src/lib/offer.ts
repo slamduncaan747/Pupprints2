@@ -3,7 +3,7 @@
  * the offer everywhere — value stack, risk reversal, real urgency, bundles and CTAs.
  *
  * Value equation we optimize: (Dream outcome × Perceived likelihood) / (Time delay × Effort).
- *  - Dream outcome: their dog as a museum-worthy portrait on the wall (or a gift that makes someone cry).
+ *  - Dream outcome: their dog as a crafted piece of art on the living-room wall (or a gift that makes someone cry).
  *  - Likelihood: you SEE the exact portrait before paying + the Love-It Guarantee.
  *  - Time delay: preview in about a minute, Gift Reveal instantly, delivered in days.
  *  - Effort: one photo, no account, no card to preview, arrives ready to hang, free shipping.
@@ -21,7 +21,7 @@ export const OFFER = {
   /** Effort-reduction line shown under primary CTAs. */
   effort: "No account. No card. About a minute.",
   /** One-line promise that states the whole offer. */
-  promise: "See your dog as a work of art in about a minute — free. Love it, or it's free.",
+  promise: "Your dog, as a piece of art for your home. See it free in about a minute. Love it, or it's free.",
   /** Real market anchor (from docs/research/competitors.md). */
   anchor: "Hand-painted pet commissions typically cost $150–$500 and take weeks.",
 } as const;
@@ -337,8 +337,11 @@ export function holidayNotice(now: number, opts: { physical: boolean; shipCountr
   return HOLIDAY.reveal;
 }
 
-/** One portrait used to show every format, so customers compare formats, not pictures. */
+/**
+ * One portrait used to show every format, so customers compare formats, not pictures: the Old
+ * Master golden retriever (the "after" of before/after pair 1, and the campaign hero portrait).
+ */
 export const FORMAT_SHOWCASE = {
-  src: "/samples/royal.webp",
+  src: "/samples/pair-1-after.webp",
   alt: "The same portrait shown as a canvas, framed print, fine art print and digital file",
 } as const;

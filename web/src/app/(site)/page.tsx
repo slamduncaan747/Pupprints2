@@ -16,7 +16,7 @@ import { Closing } from "@/components/home/closing";
 
 const TITLE = "Custom Dog Portraits from Your Photo — See Yours Free";
 const DESCRIPTION =
-  "Turn your photo into a custom dog portrait. See it free in about a minute, then we print, frame and ship it to your door. Love it, or it's free.";
+  "Your dog, as a piece of art for your home. See your portrait free in about a minute, then we print, frame and ship it to your door. Love it, or it's free.";
 
 export const metadata: Metadata = {
   title: { absolute: `${TITLE} | ${site.name}` },

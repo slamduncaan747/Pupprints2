@@ -21,13 +21,13 @@ KEEP IDENTICAL TO THE PHOTO (the dog's identity):
 - Every marking, in the same place and on the same side of the face and body: blaze, mask, eyebrow spots, ticking, freckles, brindle, merle or piebald patches, white chest, socks or tail tip.
 Do not turn the dog into a generic example of its breed. Do not add, remove, mirror or move markings. Do not change its weight or proportions.
 
-CHANGE ONLY what the style brief below asks for: the artistic medium, any costume, the background and the lighting. Leave out people, hands, other animals, leashes, harnesses and room clutter from the photo.
+CHANGE ONLY what the style brief below asks for: the artistic medium, the background and the lighting. No costumes, clothing, props or scenes: the dog itself is the whole subject. Leave out people, hands, other animals, collars, leashes, harnesses and room clutter from the photo.
 
 COMPOSITION: a vertical 3:4 portrait. The dog's head and upper chest are the subject, centred left to right, eyes about one third from the top, head turned as in the photo. Leave clear space of about one tenth of the canvas above the ears and at each side so the picture can be cropped to 4:5 or 2:3 without cutting off the ears. The artwork fills the whole canvas edge to edge.
 
 FINISH: a finished, gallery-quality original artwork in the medium the style brief names, showing that medium's real texture (brushwork, paper grain, ink line or pencil). It must not look like a photo with a filter or a 3D render. Crisp, lifelike eyes with a small catch-light.
 
-NEVER INCLUDE: text, letters, numbers, names, signatures, monograms, captions, watermarks or logos; borders, frames, mats, or the artwork shown hanging on a wall. Medals, badges and patches are plain shapes with no lettering.`;
+NEVER INCLUDE: text, letters, numbers, names, signatures, monograms, captions, watermarks or logos; borders, frames, mats, or the artwork shown hanging on a wall.`;
 
 /**
  * The style brief for a portrait. The catalog prompt (single source of truth) describes the artwork.

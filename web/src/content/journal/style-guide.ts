@@ -15,13 +15,14 @@ export const styleGuide: ArticleInput = {
     "watercolor dog portrait",
     "oil painting of dog",
     "line art dog portrait",
-    "pop art dog portrait",
+    "linocut dog portrait",
+    "charcoal dog portrait",
   ],
-  related: ["history-of-royal-pet-portraits", "canvas-vs-framed-print-vs-poster", "what-size-art-for-your-wall"],
+  related: ["history-of-dog-portraits", "canvas-vs-framed-print-vs-poster", "what-size-art-for-your-wall"],
   body: [
     {
       type: "paragraph",
-      text: "Choosing a portrait style is a bit like choosing a haircut: it's about the dog, and it's about you. The same Labrador can look like a 17th-century aristocrat, a page from a picture book or a Scandinavian gallery print. Here's how the main families of style differ, and how to pick the one that fits.",
+      text: "Choosing a portrait style is a bit like choosing a haircut: it's about the dog, and it's about you. The same Labrador can look like a 17th-century oil painting, a loose watercolor or a Scandinavian gallery print. Here's how the main families of style differ, and how to pick the one that fits.",
     },
     {
       type: "tip",
@@ -36,7 +37,7 @@ export const styleGuide: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: `Our oil-inspired styles include ${styleLink("oil-classic")} (just your dog, in Rembrandt-style light), ${styleLink("royal")} and ${styleLink("admiral")} (costume portraits in the tradition of court painting) and ${styleLink("holiday")}.`,
+      text: `We have two oil-inspired styles. ${styleLink("oil-classic")} is the classical one: just your dog, in soft old-master light against a warm, dark ground. ${styleLink("modern-oil")} is its contemporary cousin, built from thick palette-knife strokes against one flat, muted color.`,
     },
     {
       type: "list",
@@ -54,7 +55,7 @@ export const styleGuide: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: `${styleLink("watercolor")} is our softest style, and ${styleLink("botanical")}, with its wreath of painted flowers, shares the same gentle mood.`,
+      text: `${styleLink("watercolor")} is our lightest style, and ${styleLink("botanical")}, with its painted garden stems, shares the same gentle mood. ${styleLink("pastel")} sits between watercolor and oil: velvety layered strokes on warm toned paper, soft in the coat and exact in the eyes.`,
     },
     {
       type: "list",
@@ -72,7 +73,7 @@ export const styleGuide: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: `${styleLink("fine-line")} is our minimalist style. ${styleLink("charcoal")} is its moodier, more expressive cousin, with soft smudges, rich blacks and a lot of feeling in the eyes.`,
+      text: `${styleLink("fine-line")} is our minimalist style. ${styleLink("charcoal")} is its moodier, more expressive cousin, with soft smudges, rich blacks and a lot of feeling in the eyes. ${styleLink("ink-wash")} trades the pen for a brush: a few confident strokes, soft grey washes and a great deal of empty paper.`,
     },
     {
       type: "list",
@@ -83,23 +84,18 @@ export const styleGuide: ArticleInput = {
         "You're building a gallery wall with other black-and-white pieces.",
       ],
     },
-    { type: "heading", text: "Bold and graphic: pop art and mid-century" },
+    { type: "heading", text: "Bold and graphic: linocut and mid-century" },
     {
       type: "paragraph",
-      text: `If oil is a museum and watercolor is a sunny studio, ${styleLink("pop-art")} is a gallery opening with loud music: flat, saturated color, thick outlines and halftone dots inspired by 1960s screen prints. ${styleLink("mid-century")} is calmer, with simplified shapes, a warm retro palette and a subtle print texture.`,
+      text: `If oil is a museum and watercolor is a sunny studio, these are the printmaker's bench. A linocut is a relief print: the artist carves away everything that should stay white, inks the block and presses it to paper. ${styleLink("linocut")} has that look, with bold carved shapes, one or two matte inks and the small gouge marks left behind. ${styleLink("mid-century")} is flatter and more geometric, with simplified shapes, a warm retro palette and a subtle print texture.`,
     },
     {
       type: "list",
       items: [
-        "**Choose graphic styles if** you want a conversation piece.",
-        "Your interior is colorful, eclectic or retro.",
+        "**Choose graphic styles if** you want something bold that still sits quietly on the wall.",
+        "Your interior is modern, eclectic or retro.",
         "Your dog has a strong silhouette. [French Bulldogs](/breeds/french-bulldog), [Dachshunds](/breeds/dachshund) and [Boston Terriers](/breeds/boston-terrier) are made for it.",
       ],
-    },
-    { type: "heading", text: "Playful and illustrated: storybook and space" },
-    {
-      type: "paragraph",
-      text: `${styleLink("storybook")} looks like gouache and colored pencil from a classic picture book, sweet for nurseries, kids' rooms and puppies. ${styleLink("astronaut")} puts your dog in a retro space suit among the stars. Both are pure joy, and both make excellent gifts for people with a sense of humor.`,
     },
     { type: "heading", text: "Matching the style to the coat" },
     {
@@ -109,7 +105,7 @@ export const styleGuide: ArticleInput = {
     {
       type: "list",
       items: [
-        `**Black and very dark coats** shine in the oil styles and ${styleLink("charcoal")}, which are built on deep shadows and warm highlights. ${styleName("pop-art")} works too, turning a dark coat into a bold graphic shape.`,
+        `**Black and very dark coats** shine in the oil styles and ${styleLink("charcoal")}, which are built on deep shadows and warm highlights. ${styleName("linocut")} works too, turning a dark coat into a bold graphic shape.`,
         "**White, cream and pale coats** look luminous in watercolor and fine line, where the paper does half the work. In oil, a pale dog glows dramatically against a dark background.",
         "**Merle, brindle and patchwork coats** keep their texture in painterly styles. Graphic styles simplify patterns, so choose those when you want boldness over detail.",
         "**Wiry, curly and fluffy coats** look wonderful in line and charcoal, which emphasize texture. Watercolor softens it into something dreamier.",
@@ -118,16 +114,16 @@ export const styleGuide: ArticleInput = {
     { type: "heading", text: "Styles for gifts and memorials" },
     {
       type: "paragraph",
-      text: `For a gift, humor is a safe bet if you know the recipient well: ${styleName("royal")} and ${styleName("admiral")} make people laugh and then hang them proudly. If you're unsure of their taste, a classic like ${styleName("oil-classic")} or ${styleName("watercolor")} suits almost any home. For a memorial, most people lean toward the gentler styles, but the only real rule is that it should feel like the dog. A dog who was a lovable clown can be remembered as one.`,
+      text: `For a gift, think about the wall it will hang on. If you're unsure of their taste, a classic like ${styleName("oil-classic")} or ${styleName("watercolor")} suits almost any home, and ${styleName("linocut")} or ${styleName("ink-wash")} suits a modern one. For a memorial, most people lean toward the gentler styles (${styleName("watercolor")}, ${styleName("charcoal")}, ${styleName("pastel")}), but the only real rule is that it should feel like the dog.`,
     },
     { type: "heading", text: "Three questions to help you decide" },
     {
       type: "list",
       ordered: true,
       items: [
-        "**Where will it hang?** Start with the room. Warm, traditional rooms love oil; bright, modern rooms love watercolor and line; colorful rooms love pop art.",
-        `**What's the mood?** Funny (${styleName("royal")}, ${styleName("admiral")}, ${styleName("astronaut")}), tender (${styleName("watercolor")}, ${styleName("botanical")}) or timeless (${styleName("oil-classic")}, ${styleName("charcoal")})?`,
-        "**Who is it for?** For a gift, think about the recipient's home and sense of humor, not your own.",
+        "**Where will it hang?** Start with the room. Warm, traditional rooms love oil; bright, modern rooms love watercolor and line; rooms with color and pattern love a linocut or a mid-century print.",
+        `**What's the mood?** Tender (${styleName("watercolor")}, ${styleName("pastel")}, ${styleName("botanical")}), timeless (${styleName("oil-classic")}, ${styleName("charcoal")}) or modern (${styleName("linocut")}, ${styleName("ink-wash")}, ${styleName("fine-line")})?`,
+        "**Who is it for?** For a gift, think about the recipient's home and taste, not your own.",
       ],
     },
     { type: "heading", text: "Or just try them all" },
@@ -135,7 +131,7 @@ export const styleGuide: ArticleInput = {
       type: "paragraph",
       text: "Here's the nice thing about choosing a style with us: you don't have to guess. Upload a photo and you can preview every style free, as many times as you like. The style that looks most like your dog isn't always the one you'd expect. Not sure which suits your breed? Each of our [breed pages](/breeds) suggests a few.",
     },
-    { type: "styles", slugs: ["oil-classic", "watercolor", "fine-line", "pop-art"], caption: "Four families, one dog" },
+    { type: "styles", slugs: ["oil-classic", "watercolor", "fine-line", "linocut"], caption: "Four families, one dog" },
     {
       type: "cta",
       title: "See your dog in every style",

@@ -8,7 +8,7 @@ export const newPuppyGifts: ArticleInput = {
     "Practical, thoughtful gifts for a friend with a new puppy or a newly adopted dog: what they'll need in week one, what they won't think of, and a keepsake for later.",
   date: "2026-10-10",
   category: "gift-guides",
-  heroStyle: "storybook",
+  heroStyle: "pastel",
   keywords: ["new puppy gifts", "gifts for new puppy owners", "new dog owner gift", "puppy gift ideas"],
   related: ["gift-ideas-for-dog-lovers", "how-to-photograph-your-dog-for-a-portrait", "gifts-for-dog-moms"],
   body: [
@@ -101,7 +101,7 @@ export const newPuppyGifts: ArticleInput = {
     { type: "heading", level: 3, text: "A portrait of the puppy" },
     {
       type: "paragraph",
-      text: `A ${styleLink("storybook")} or ${styleLink("watercolor")} portrait captures how small they are right now, and ${styleLink("royal")} is very funny on a tiny puppy. With us, you can preview it free from any phone photo, then order a framed print or canvas. A lovely tradition: order another portrait in the same style and size a year later, and hang them side by side.`,
+      text: `A ${styleLink("pastel")} or ${styleLink("watercolor")} portrait captures how small and soft they are right now. With us, you can preview it free from any phone photo, then order a framed print or canvas. A lovely tradition: order another portrait in the same style and size a year later, and hang them side by side.`,
     },
     { type: "heading", level: 3, text: "A first-year photo book" },
     {
@@ -140,9 +140,9 @@ export const newPuppyGifts: ArticleInput = {
       type: "cta",
       title: "Capture them while they're tiny",
       body: "Upload a puppy photo and see the portrait free in about a minute.",
-      href: "/create?style=storybook",
+      href: "/create?style=pastel",
       label: "Create a free preview",
-      style: "storybook",
+      style: "pastel",
     },
   ],
 };

@@ -36,7 +36,7 @@ const Fields = z.object({
   giftId: z.uuid().optional(),
   partnerId: z.uuid().optional(),
   imageUrl: optText(2000),
-  // Available styles only: a retired dated edition (Holiday Cozy 2026 after Dec 31) is refused.
+  // Available styles only: retired styles and dated editions past their last day are refused.
   style: z.string().refine((s) => styleAvailable(getStyle(s)), "Pick a style"),
   petName: optText(40),
   recipientName: optText(80),

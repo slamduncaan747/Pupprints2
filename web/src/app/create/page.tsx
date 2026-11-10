@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default async function CreatePage({ searchParams }: PageProps<"/create">) {
   const params = await searchParams;
   const raw = Array.isArray(params.style) ? params.style[0] : params.style;
-  // A retired dated edition (e.g. an old ?style=holiday link) is not preselected.
+  // A retired style (an old ?style= link) is not preselected.
   const style = raw ? getStyle(raw) : undefined;
   const initialStyle = style && styleAvailable(style) ? style.slug : undefined;
   // ?gift=<reveal token>: order the gift portrait from a reveal link.

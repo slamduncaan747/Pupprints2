@@ -161,8 +161,9 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
       .maybeSingle<{ style: string; status: string; full_path: string | null }>();
     if (gen?.style) {
       const { getStyle } = await import("@/lib/catalog");
+      // A style we have since retired has no name to show, but the portrait is still buyable.
       styleName = getStyle(gen.style)?.name ?? null;
-      buyable = Boolean(styleName && gen.status === "succeeded" && gen.full_path);
+      buyable = Boolean(gen.status === "succeeded" && gen.full_path);
     }
   }
 

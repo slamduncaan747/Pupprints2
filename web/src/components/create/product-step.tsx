@@ -732,7 +732,7 @@ export function ProductStep({
                   maxLength={GIFT_MESSAGE_MAX}
                   value={gift.message}
                   onChange={(e) => setGift({ message: e.target.value })}
-                  placeholder="Happy birthday. I thought Biscuit deserved a royal portrait."
+                  placeholder="Happy birthday. I thought Biscuit deserved a proper portrait."
                   className="mt-2.5 w-full resize-none rounded-none border border-line bg-transparent px-3.5 py-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus-visible:outline-none"
                 />
                 <p className="label mt-1.5 text-right text-ink-3 tabular-nums">

@@ -14,7 +14,7 @@ export const christmasGifts: ArticleInput = {
   description: `Thoughtful Christmas gifts for dog owners and dog lovers, our 2026 order-by dates (${CHRISTMAS_US_CUTOFF} for US delivery), and what to do if you've left it to the last minute.`,
   date: "2026-10-13",
   category: "gift-guides",
-  heroStyle: "holiday",
+  heroStyle: "oil-classic",
   keywords: [
     "christmas gifts for dog owners",
     "christmas gifts for dog lovers",
@@ -69,7 +69,7 @@ export const christmasGifts: ArticleInput = {
     { type: "heading", level: 3, text: "A portrait of their dog" },
     {
       type: "paragraph",
-      text: `The gift we know best. A ${styleLink("holiday")} portrait, with a knit scarf and a crackling fire, is made for December, while a classic like ${styleLink("oil-classic")} or ${styleLink("royal")} stays up all year. Framed prints start at ${fromPrice("framed")} and canvases at ${fromPrice("canvas")}, with free US shipping and the digital file included.`,
+      text: `The gift we know best. A portrait is a gift that stays up long after the tree comes down: ${styleLink("oil-classic")} above the mantel, a soft ${styleLink("watercolor")} in the hallway, or a ${styleLink("linocut")} for a modern home. Framed prints start at ${fromPrice("framed")} and canvases at ${fromPrice("canvas")}, with free US shipping and the digital file included.`,
     },
     { type: "heading", level: 3, text: "A matching ornament" },
     {
@@ -146,9 +146,9 @@ export const christmasGifts: ArticleInput = {
       type: "cta",
       title: "Start their Christmas portrait",
       body: `Upload a photo of their dog and see it free in about a minute. Order by ${CHRISTMAS_US_CUTOFF} for US delivery before Christmas, or send a Gift Reveal any time.`,
-      href: "/create?style=holiday",
+      href: "/create?style=oil-classic",
       label: "Create a free preview",
-      style: "holiday",
+      style: "oil-classic",
     },
   ],
 };

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Download, ExternalLink, ImageUp, Link2, Loader2, RotateCcw, Square, Trash2, Wand2, X } from "lucide-react";
-import { availableStyles, STYLES } from "@/lib/catalog";
+import { availableStyles, DEFAULT_STYLE as CATALOG_DEFAULT_STYLE, styleLabel } from "@/lib/catalog";
 import { prepareImage } from "@/components/create/prepare-image";
 import { csvCell } from "@/components/admin/csv";
 import { labelize } from "@/components/admin/constants";
@@ -23,7 +23,7 @@ export type BatchPartner = {
 const MAX_ROWS = 20;
 /** /api/admin/gifts has maxDuration 120 s (105 s AI budget); allow for the upload on top. */
 const REQUEST_TIMEOUT_MS = 150_000;
-const DEFAULT_STYLE = STYLES.some((s) => s.slug === "royal") ? "royal" : STYLES[0].slug;
+const DEFAULT_STYLE: string = CATALOG_DEFAULT_STYLE;
 
 type Source = { kind: "file"; file: File; preview: string } | { kind: "url"; url: string };
 type Status = "ready" | "queued" | "running" | "done" | "failed";
@@ -49,7 +49,7 @@ function partnerLabel(p: BatchPartner): string {
 }
 
 function styleName(slug: string): string {
-  return STYLES.find((s) => s.slug === slug)?.name ?? slug;
+  return styleLabel(slug);
 }
 
 /**

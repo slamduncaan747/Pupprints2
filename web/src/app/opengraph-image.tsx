@@ -40,7 +40,7 @@ export default function OpengraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 76, lineHeight: 1.02, color: INK, letterSpacing: -2 }}>Your dog,</div>
-          <div style={{ fontSize: 76, lineHeight: 1.02, color: INK, letterSpacing: -2 }}>as a work of art.</div>
+          <div style={{ fontSize: 76, lineHeight: 1.02, color: INK, letterSpacing: -2 }}>as art for your home.</div>
           <div style={{ marginTop: 28, fontSize: 30, lineHeight: 1.35, color: INK_2 }}>
             Custom portraits from your photo. See yours free in about a minute.
           </div>
@@ -70,7 +70,7 @@ export default function OpengraphImage() {
               display: "flex",
               alignItems: "flex-end",
               padding: 24,
-              background: "radial-gradient(circle at 50% 35%, #e9b8a6 0%, #c8553d 55%, #7a2e2a 100%)",
+              background: "radial-gradient(circle at 50% 35%, #8a7a5c 0%, #4b4232 60%, #2a251c 100%)",
               color: "rgba(255,255,255,0.9)",
               fontSize: 26,
             }}

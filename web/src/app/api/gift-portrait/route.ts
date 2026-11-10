@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { getStyle } from "@/lib/catalog";
 import { makeWatermarkedPreview } from "@/lib/image";
 import { storeObject } from "@/lib/image/storage";
 import { BUCKETS, db, previewUrl } from "@/lib/supabase/server";
@@ -59,7 +58,7 @@ export async function GET(req: Request) {
     .select("id, created_at, status, style, pet_name, preview_path, full_path")
     .eq("id", gift.generation_id)
     .maybeSingle<GenerationRow>();
-  if (!gen || gen.status !== "succeeded" || !gen.full_path || !getStyle(gen.style)) return notFound();
+  if (!gen || gen.status !== "succeeded" || !gen.full_path) return notFound();
 
   // Watermarked preview (gift generations normally have one; build it from the master if not).
   let previewPath = gen.preview_path;

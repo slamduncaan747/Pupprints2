@@ -10,7 +10,7 @@ import { ARTICLES } from "@/content/articles";
  * Static marketing pages omit lastModified rather than reporting a fake "today" on every build.
  */
 
-/** Re-generated hourly, so a retired dated edition (Holiday Cozy 2026) leaves without a redeploy. */
+/** Re-generated hourly, so a retired dated edition leaves without a redeploy. */
 export const revalidate = 3600;
 
 type Entry = MetadataRoute.Sitemap[number];

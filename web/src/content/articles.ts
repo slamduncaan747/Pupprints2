@@ -10,7 +10,7 @@ import type { Article, ArticleCategory, ArticleInput, Block } from "@/content/ty
 import { photoGuide } from "@/content/journal/photo-guide";
 import { giftIdeas } from "@/content/journal/gift-ideas";
 import { memorialIdeas } from "@/content/journal/memorial-ideas";
-import { royalHistory } from "@/content/journal/royal-history";
+import { dogPortraitHistory } from "@/content/journal/dog-portrait-history";
 import { canvasVsFramed } from "@/content/journal/canvas-vs-framed";
 import { christmasGifts } from "@/content/journal/christmas-gifts";
 import { dogMomGifts } from "@/content/journal/dog-mom-gifts";
@@ -40,7 +40,7 @@ const INPUTS: ArticleInput[] = [
   photoGuide,
   giftIdeas,
   memorialIdeas,
-  royalHistory,
+  dogPortraitHistory,
   canvasVsFramed,
   christmasGifts,
   dogMomGifts,
@@ -132,7 +132,7 @@ export function articleStyles(article: Article, count = 3): StyleSlug[] {
     for (const t of blockText(b))
       for (const m of t.matchAll(/\]\(\/(?:styles\/|create\?style=)([a-z-]+)\)/g)) add(m[1]);
   }
-  for (const fallback of ["watercolor", "royal", "oil-classic", "fine-line"]) add(fallback);
+  for (const fallback of ["watercolor", "oil-classic", "charcoal", "fine-line"]) add(fallback);
   return found.slice(0, count);
 }
 

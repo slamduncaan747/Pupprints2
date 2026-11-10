@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { Photo, PORTRAIT_SIZE } from "@/components/marketing/photo";
+import { ZoomImage } from "@/components/marketing/campaign";
 import { availableStyles, STYLE_MAP, styleAvailable, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
 /**
- * The six styles that open the collection on the home page: the quietest, most painterly of the
- * twelve. In layout order, two per column, so the two dark oils fall on a diagonal.
+ * The six styles that open the collection on the home page: the most at home in a
+ * living room. In layout order, two per column, so dark and pale pieces alternate.
  */
-const CURATED: StyleSlug[] = ["royal", "watercolor", "fine-line", "oil-classic", "charcoal", "botanical"];
+const CURATED: StyleSlug[] = ["oil-classic", "watercolor", "modern-oil", "charcoal", "linocut", "ink-wash"];
 
 /**
  * Three staggered columns of two looks each (desktop): within a column one look runs the full width
@@ -28,7 +28,7 @@ const LOOK: Record<"large" | "small-left" | "small-right", string> = {
 };
 
 /**
- * Six looks from the collection, not a wall of twelve. Each opens the creator in that style, so
+ * Six looks from the collection, not the whole wall. Each opens the creator in that style, so
  * choosing a style is the first step, not a detour; the full collection is one link away.
  */
 export function Collection() {
@@ -69,10 +69,12 @@ export function Collection() {
                       aria-label={`${style.name}: create your free portrait in this style`}
                       className="group block"
                     >
-                      <Photo
-                        photo={{ src: STYLE_SAMPLES[style.slug], ...PORTRAIT_SIZE, alt: `Example ${style.name} portrait` }}
+                      {/* ZoomImage (SampleImage) shows the style's swatch if its sample file isn't in place yet. */}
+                      <ZoomImage
+                        src={STYLE_SAMPLES[style.slug]}
+                        alt={`Example ${style.name} portrait`}
+                        swatch={style.swatch}
                         sizes={look === "large" ? "(min-width: 1440px) 430px, (min-width: 1024px) 30vw, 45vw" : "(min-width: 1440px) 300px, (min-width: 1024px) 21vw, 45vw"}
-                        zoom
                       />
                       <p className="label mt-4 text-ink sm:mt-5">{style.name}</p>
                       <p className="mt-1.5 max-w-xs text-[13px] leading-snug text-ink-3">{style.blurb}</p>
