@@ -1,27 +1,19 @@
 /**
- * The Grand Slam Offer (Hormozi, "$100M Offers"): single source of truth for how we frame
- * the offer everywhere — value stack, risk reversal, real urgency, bundles and CTAs.
+ * How the offer is worded and priced, in one place: the call to action, the guarantee policy, what
+ * an order includes, the one dated bundle, discounts and holiday deadlines.
  *
- * Value equation we optimize: (Dream outcome × Perceived likelihood) / (Time delay × Effort).
- *  - Dream outcome: their dog as a crafted piece of art on the living-room wall (or a gift that makes someone cry).
- *  - Likelihood: you SEE the exact portrait before paying + the Love-It Guarantee.
- *  - Time delay: preview in about a minute, Gift Reveal instantly, delivered in days.
- *  - Effort: one photo, no account, no card to preview, arrives ready to hang, free shipping.
- *
- * Honesty rules still apply: every value, cap and deadline here is real. No invented
- * "worth $X" figures — items we don't sell separately say "Included", not a made-up price.
+ * Tone: plain. Point people at uploading a photo of their dog and let the preview speak for itself.
+ * No "free" hype, no reassurance lines, no stacked claims. Every value, cap and deadline is real.
  * Client-safe (no env/server imports).
  */
-import { PRODUCT_MAP, findAddon, type ProductType } from "@/lib/catalog";
+import { PRODUCT_MAP, type ProductType } from "@/lib/catalog";
 
 export const OFFER = {
-  /** Primary call to action, used site-wide. Clarity beats cleverness. */
-  cta: "Create your free portrait",
-  ctaShort: "Start free",
-  /** Effort-reduction line shown under primary CTAs. */
-  effort: "No account. No card. About a minute.",
-  /** One-line promise that states the whole offer. */
-  promise: "Your dog, as a piece of art for your home. See it free in about a minute. Love it, or it's free.",
+  /** Primary call to action, used site-wide. */
+  cta: "Upload a photo",
+  ctaShort: "Start",
+  /** One line that says what we make. */
+  promise: "Your dog, as a piece of art for your home.",
   /** Real market anchor (from docs/research/competitors.md). */
   anchor: "Hand-painted pet commissions typically cost $150–$500 and take weeks.",
 } as const;
@@ -37,21 +29,16 @@ export const GUARANTEE = {
 
 const digitalPrice = PRODUCT_MAP.digital.variants[0].price;
 
-/** What every physical order includes. `value` is a real price or the word "Included"/"Free". */
+/** What every physical order includes besides the piece itself. */
 export const VALUE_STACK: { item: string; value: string }[] = [
-  { item: "Your portrait, previewed before you pay", value: "Free" },
-  { item: "Try every style, redo as often as you like", value: "Free" },
   { item: `Hi-res digital file (sold alone for $${digitalPrice / 100})`, value: "Included" },
-  { item: "Instant Gift Reveal to send the same day", value: "Included" },
   { item: "Checked by a person before it's printed", value: "Included" },
-  { item: "Free US shipping, tracked", value: "Included" },
-  { item: GUARANTEE.name, value: "Included" },
+  { item: "US shipping, tracked", value: "Included" },
 ];
 
 /**
- * The value stack for one specific order, so every row is literally true for what's in the bag:
- * prints ship flat (not "ready to hang"), Canada shipping is a paid line (not "free"), and a
- * digital-only order has no print to check or ship.
+ * The same list for one specific order, so every row is literally true for what's in the bag:
+ * Canada shipping is a paid line, and a digital-only order has no print to check or ship.
  */
 export function valueStackFor({
   productType,
@@ -60,48 +47,17 @@ export function valueStackFor({
   productType: ProductType;
   shipCountry: "US" | "CA";
 }): { item: string; value: string }[] {
-  const physical = productType !== "digital";
-  const rows: { item: string; value: string }[] = [
-    { item: "Your portrait, previewed before you pay", value: "Free" },
-    { item: "Try every style, redo as often as you like", value: "Free" },
+  if (productType === "digital") return [];
+  const rows = [
+    { item: `Hi-res digital file (sold alone for $${digitalPrice / 100})`, value: "Included" },
+    { item: "Checked by a person before it's printed", value: "Included" },
   ];
-  if (physical) rows.push({ item: `Hi-res digital file (sold alone for $${digitalPrice / 100})`, value: "Included" });
-  rows.push({ item: "Instant Gift Reveal to send the same day", value: "Included" });
-  if (physical) {
-    rows.push({ item: "Checked by a person before it's printed", value: "Included" });
-    if (shipCountry === "US") {
-      rows.push({
-        item: productType === "poster" ? "Free US shipping, tracked" : "Free US shipping, arrives ready to hang",
-        value: "Included",
-      });
-    }
-  }
-  rows.push({ item: GUARANTEE.name, value: "Included" });
+  if (shipCountry === "US") rows.push({ item: "US shipping, tracked", value: "Included" });
   return rows;
 }
 
 /** Product types that count as a physical piece (a portrait on the wall, not an add-on or the file). */
 export const PHYSICAL_TYPES: readonly ProductType[] = ["canvas", "framed", "poster"];
-
-/**
- * The Heirloom Set: a physical piece + both matching add-ons, with a real bundle saving
- * applied server-side in checkout (the add-ons are cheaper together).
- */
-const ornament = findAddon("addon-ornament");
-const mug = findAddon("addon-mug");
-export const HEIRLOOM_SET = {
-  name: "The Heirloom Set",
-  addonIds: ["addon-ornament", "addon-mug"] as const,
-  /** Saving when BOTH add-ons are added to an order with a physical piece. */
-  discountCents: 1000,
-  /**
-   * How the saving is split across the two add-ons (cents off each unit in a set), so the
-   * server can charge real, round per-item prices ($19 → $14, $25 → $20). Sums to discountCents.
-   */
-  unitDiscount: { "addon-ornament": 500, "addon-mug": 500 } as Record<string, number>,
-  line: "Add the matching ornament and mug together and save $10.",
-  addonsTotal: (ornament?.price ?? 0) + (mug?.price ?? 0),
-} as const;
 
 /**
  * "Buy two portraits, get two matching ornaments free": a dated holiday offer. An order with two or
@@ -138,6 +94,7 @@ export function giftTwoFreeOrnaments(physicalPieces: number, ornaments: number, 
   return Math.max(0, Math.min(GIFT_TWO.freeOrnaments, ornaments));
 }
 
+/** "heirloom" is a retired bundle (ornament + mug together, $10 off): never applied now, but stored order lines can carry it. */
 export type BundleTag = "heirloom" | "gift-two";
 
 /** The fields bundle pricing reads and writes on an order line (OrderItem satisfies it). */
@@ -179,13 +136,12 @@ function bundleUnits<T extends BundleLine>(lines: T[], variantId: string, units:
 }
 
 /**
- * Prices an order's lines with every bundle, exactly as /api/checkout charges them (the product
- * step runs the same function, so the price shown is the price charged). Catalog unit prices in,
- * bundle prices out; a line only partly in a bundle is split so every stored unit price is exact.
+ * Prices an order's lines exactly as /api/checkout charges them (the product step runs the same
+ * function, so the price shown is the price charged). Catalog unit prices in, bundle prices out; a
+ * line only partly in the bundle is split so every stored unit price is exact.
  *
- * 1. GIFT_TWO first: up to two ornaments at $0 with two or more physical pieces (in the window).
- * 2. The Heirloom Set on what is left: each paid ornament + mug pair takes HEIRLOOM_SET.discountCents
- *    off. Free ornaments never count toward a set, so the same ornament is never discounted twice.
+ * The one bundle is GIFT_TWO: up to two ornaments at $0 with two or more physical pieces (in the
+ * window). Everything else is charged at its catalog price.
  *
  * The one automatic discount (a creator's percent off or a friend's $15) is applied by Stripe
  * afterwards to the paid merchandise only: $0 ornaments are not charged, so a percent off never
@@ -199,26 +155,15 @@ export function applyBundles<T extends BundleLine>(
     /** Whether GIFT_TWO is live, when the caller already knows (the product step uses the server's answer). */
     giftTwo?: boolean;
   } = {},
-): { lines: T[]; physicalPieces: number; freeOrnaments: number; heirloomSets: number } {
+): { lines: T[]; physicalPieces: number; freeOrnaments: number } {
   const pieces = physicalPieceCount(lines);
-  const qty = (all: T[], id: string) =>
-    all.filter((l) => l.kind === "addon" && !l.bundle && l.variantId === id).reduce((n, l) => n + l.quantity, 0);
-
   const live = opts.giftTwo ?? giftTwoActive(opts.now ?? Date.now());
-  const ornaments = qty(lines, GIFT_TWO.ornamentId);
+  const ornaments = lines
+    .filter((l) => l.kind === "addon" && !l.bundle && l.variantId === GIFT_TWO.ornamentId)
+    .reduce((n, l) => n + l.quantity, 0);
   const free = live && pieces >= GIFT_TWO.minPieces ? Math.min(GIFT_TWO.freeOrnaments, ornaments) : 0;
-  let out = bundleUnits(lines, GIFT_TWO.ornamentId, free, (l) => ({ unitAmount: 0, regularUnitAmount: l.unitAmount, bundle: "gift-two" }));
-
-  const sets = pieces > 0 ? Math.min(...HEIRLOOM_SET.addonIds.map((id) => qty(out, id))) : 0;
-  for (const id of HEIRLOOM_SET.addonIds) {
-    const off = HEIRLOOM_SET.unitDiscount[id] ?? 0;
-    out = bundleUnits(out, id, sets, (l) => ({
-      unitAmount: Math.max(0, l.unitAmount - off),
-      regularUnitAmount: l.unitAmount,
-      bundle: "heirloom",
-    }));
-  }
-  return { lines: out, physicalPieces: pieces, freeOrnaments: free, heirloomSets: sets };
+  const out = bundleUnits(lines, GIFT_TWO.ornamentId, free, (l) => ({ unitAmount: 0, regularUnitAmount: l.unitAmount, bundle: "gift-two" }));
+  return { lines: out, physicalPieces: pieces, freeOrnaments: free };
 }
 
 /** Cents off for a percent-off discount (Stripe rounds percent-off to the nearest cent). */
@@ -320,21 +265,17 @@ export const HOLIDAY = {
   /** Christmas Day, end of day PT: after this the reveal line is no longer relevant. */
   revealUntilIso: "2026-12-25T23:59:59-08:00",
   label: "Order by Dec 10 for Christmas delivery in the US",
+  /** No longer shown in the create flow; kept only until the marketing pages that print it are rewritten. */
   reveal: "Gift Reveal can be sent instantly, right up to Christmas Day",
 } as const;
 
 /**
- * The real holiday line for right now, or null. From Nov 1 to the cutoff: the US delivery cutoff
- * (physical pieces shipping to the US only). After the cutoff until Christmas: the instant Gift
- * Reveal, which is true for every order. Otherwise nothing.
+ * The real holiday line for right now, or null: from Nov 1 to the cutoff, the US delivery cutoff
+ * (physical pieces shipping to the US only). Otherwise nothing.
  */
 export function holidayNotice(now: number, opts: { physical: boolean; shipCountry: "US" | "CA" }): string | null {
-  const from = Date.parse(HOLIDAY.showFromIso);
-  const cutoff = Date.parse(HOLIDAY.cutoffIso);
-  const until = Date.parse(HOLIDAY.revealUntilIso);
-  if (now < from || now > until) return null;
-  if (now <= cutoff) return opts.physical && opts.shipCountry === "US" ? HOLIDAY.label : null;
-  return HOLIDAY.reveal;
+  if (now < Date.parse(HOLIDAY.showFromIso) || now > Date.parse(HOLIDAY.cutoffIso)) return null;
+  return opts.physical && opts.shipCountry === "US" ? HOLIDAY.label : null;
 }
 
 /**

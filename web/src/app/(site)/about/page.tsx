@@ -1,50 +1,24 @@
 import type { Metadata } from "next";
 import { STYLE_MAP } from "@/lib/catalog";
 import { GALLERY } from "@/lib/samples";
-import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, Bullets, Prose, Rows } from "@/components/marketing/blocks";
+import { Block, Prose, Rows } from "@/components/marketing/blocks";
 import { CampaignImage } from "@/components/marketing/campaign";
 import { CtaBand } from "@/components/marketing/cta-band";
 
 export const metadata: Metadata = {
-  title: "Our Story — Honest, Beautiful Portraits of the Dogs We Love",
-  description:
-    "Why we started Pup Prints: dog portraits should be easy, honest and beautiful, and you should see yours before you pay. Our values and how we work.",
+  title: "About",
+  description: "Pup Prints makes portraits of dogs from a photo. Who we are and how we work.",
   alternates: { canonical: "/about" },
 };
 
-const VALUES = [
-  {
-    title: "Honesty",
-    body: "Real prices, no fake sales, no surprise fees, no made-up reviews. We tell you how the art is made, and you see it before you pay.",
-  },
-  {
-    title: "Craft",
-    body: "A small, carefully designed set of styles, archival materials, and a person checking every print before it's printed.",
-  },
-  {
-    title: "Dogs first",
-    body: "We only do dogs, so every style is tuned for the things that make a dog recognizable: the ears, the markings, the look in their eyes.",
-  },
-];
-
 const HOW = [
-  { title: "You see it first", body: "Your portrait is free to preview, as many times as you like. You only pay for the one you love." },
-  { title: "A person checks every print", body: "Before anything goes to print, someone on our team looks at it closely." },
-  { title: "We stand behind it", body: "If you don't love what arrives, we remake it or refund you. No fine print." },
-  { title: "Real replies", body: "Write to us and a real person replies within one business day." },
+  { title: "Dogs only", body: "Every style is designed around what makes a dog recognizable: the ears, the markings, the eyes." },
+  { title: "You see it first", body: "The portrait is made before you order, so you know what you are buying." },
+  { title: "Plain prices", body: "The price shown is the price charged. No sales that never end, nothing added for you." },
+  { title: "How it is made", body: "By our AI artist, from your photo, and finished by our team. It is not painted by hand." },
+  { title: "Replies", body: "Write to us and a person answers within one business day." },
 ];
-
-const NEVER = [
-  "Fake reviews, star ratings or customer counts",
-  "Fake “compare at” prices or permanent sales",
-  "Countdown timers or pressure tactics",
-  "Pre-checked add-ons or surprise fees",
-  "Pretending the art was painted by hand",
-];
-
-const NUMERALS = ["I", "II", "III", "IV"];
 
 export default function AboutPage() {
   const triptych = GALLERY.slice(0, 3);
@@ -52,9 +26,8 @@ export default function AboutPage() {
     <>
       <PageHero
         align="center"
-        eyebrow="The Maison"
-        title="Portraits should be easy, honest and beautiful."
-        lede="Pup Prints makes fine-art portraits of the dogs we love. You see it first, you pay a fair price, and if something isn't right, we fix it."
+        title="About"
+        lede="Pup Prints is a new, small company. We make portraits of dogs from a photo."
       />
 
       {triptych.length > 0 && (
@@ -78,70 +51,19 @@ export default function AboutPage() {
         </section>
       )}
 
-      <section aria-labelledby="why-title" className="py-24 sm:py-36">
-        <Container>
-          <div className="lg:grid lg:grid-cols-12 lg:gap-x-10">
-            <p className="label text-ink-3 lg:col-span-3">Why we began</p>
-            <div className="mt-8 lg:col-span-8 lg:col-start-5 lg:mt-0">
-              <h2 id="why-title" className="font-display text-[36px] leading-[1.06] tracking-[-0.02em] sm:text-[56px] lg:text-[64px]">
-                You should be able to see it before you pay for it.
-              </h2>
-              <Prose className="mt-12 max-w-[560px] text-[16px]">
-                <p>
-                  Getting a portrait of your dog usually meant paying first, waiting days for a proof, and hoping it looked
-                  like them. Then came the extras: rush fees, add-ons you didn&apos;t ask for, and policies that said custom
-                  items couldn&apos;t be returned.
-                </p>
-                <p>
-                  We thought it should work the other way round. Upload a photo, see the portrait in about a minute, try every
-                  style for free, and only pay once you love it. If it&apos;s a gift, give it instantly with a Gift Reveal, and
-                  let the print follow.
-                </p>
-                <p>
-                  We&apos;re a new company, so we can&apos;t point to years of history or a wall of reviews yet. What we can
-                  offer is a clear promise: honest prices, real people checking every print, and a guarantee that puts the risk
-                  on us.
-                </p>
-              </Prose>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <Block eyebrow="Our values" title="What we believe" layout="stack">
-        <ul className="grid gap-12 md:grid-cols-3 md:gap-10">
-          {VALUES.map((v, i) => (
-            <li key={v.title} className="border-t border-line pt-6">
-              <p className="label text-ink-3">{NUMERALS[i] ?? i + 1}</p>
-              <h3 className="mt-5 font-display text-[30px] leading-[1.06] sm:text-[36px]">{v.title}</h3>
-              <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-ink-2">{v.body}</p>
-            </li>
-          ))}
-        </ul>
-      </Block>
-
-      <Block
-        eyebrow="Our method"
-        title="How we work"
-        intro="Your portrait is created from your photo by our AI artist, in styles we've designed for dogs. Then people take over."
-      >
+      <Block title="How we work" className="pt-20 sm:pt-28">
         <Rows items={HOW} />
       </Block>
 
-      <Block eyebrow="Our word" title="What you'll never see from us">
-        <Bullets items={NEVER} />
-      </Block>
-
-      <Block eyebrow="Giving back" title="When it's real">
+      <Block title="Rescues">
         <Prose>
           <p>
-            Once we&apos;re up and running, we plan to support dog rescues and shelters. When we do, we&apos;ll share exactly how
-            here, with real details rather than vague promises.
+            We plan to support dog rescues and shelters once we are up and running. When we do, the details will be here.
           </p>
         </Prose>
       </Block>
 
-      <CtaBand eyebrow="Commission" title="Meet your dog's portrait" image="oil-classic" />
+      <CtaBand />
     </>
   );
 }

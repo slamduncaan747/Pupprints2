@@ -29,23 +29,27 @@ FINISH: a finished, gallery-quality original artwork in the medium the style bri
 
 NEVER INCLUDE: text, letters, numbers, names, signatures, monograms, captions, watermarks or logos; borders, frames, mats, or the artwork shown hanging on a wall.`;
 
+/** Added to the brief when we will letter the dog's name at the top afterwards (see @/lib/image/lettering). */
+export const NAME_HEADROOM = "Leave the top fifth of the image as calm, empty background above the ears.";
+
 /**
  * The style brief for a portrait. The catalog prompt (single source of truth) describes the artwork.
  *
  * The pet's name is deliberately NOT included: image models tend to paint names as text
- * (nameplates, banners), which the rules above forbid.
+ * (nameplates, banners), which the rules above forbid. `withName` only asks for room above the
+ * head, so the name can be set there in our own type afterwards.
  */
-export function buildStylePrompt(style: StyleSlug): string {
+export function buildStylePrompt(style: StyleSlug, opts: { withName?: boolean } = {}): string {
   const s = getStyle(style);
   if (!s) throw new Error(`Unknown style: ${style}`);
   return [
     "Turn the attached photo of this dog into the finished artwork described in the style brief.",
-    `STYLE BRIEF (${s.name}):\n${s.prompt}`,
+    `STYLE BRIEF (${s.name}):\n${opts.withName ? `${s.prompt} ${NAME_HEADROOM}` : s.prompt}`,
     "Final check before you finish: the same dog as in the photo, with identical markings, eye colour and ear shape; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere.",
   ].join("\n\n");
 }
 
 /** Identity rules + style brief in one string (what the OpenAI and Gemini adapters send). */
-export function buildPortraitPrompt(style: StyleSlug): string {
-  return `${PORTRAIT_SYSTEM_PROMPT}\n\n${buildStylePrompt(style)}`;
+export function buildPortraitPrompt(style: StyleSlug, opts: { withName?: boolean } = {}): string {
+  return `${PORTRAIT_SYSTEM_PROMPT}\n\n${buildStylePrompt(style, opts)}`;
 }

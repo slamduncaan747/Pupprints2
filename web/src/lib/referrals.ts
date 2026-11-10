@@ -25,7 +25,7 @@ import { escapeLike, normalizeCode, REDEEMABLE_STATUSES } from "@/components/par
  * "Give $15, get $15" (customer referrals). Every paying customer gets a personal code stored as a
  * partners row (kind 'customer'); a friend's first order of $59+ takes $15 off; the referrer's $15
  * is recorded on the friend's referral_events row and issued by the daily cron as a single-use code
- * once the friend's order is past its 30-day guarantee window.
+ * once the friend's order is past its 30-day returns window.
  * Every function degrades gracefully (returns null / no-ops) without Supabase, Stripe or email.
  */
 
@@ -66,7 +66,7 @@ export function referralLink(code: string): string {
 /** Prefilled share text. It always says the sharer gets something too (FTC material connection). */
 export function referralShareText(petName: string | null | undefined, code: string): string {
   const pet = petName?.trim();
-  return `I had a portrait made of ${pet || "my dog"} at Pup Prints. See yours free, then take $${REFERRAL.friendCents / 100} off your first order with my code ${code} ${REFERRAL.disclosure}:`;
+  return `I had a portrait made of ${pet || "my dog"} at Pup Prints. Take $${REFERRAL.friendCents / 100} off your first order with my code ${code} ${REFERRAL.disclosure}:`;
 }
 
 /** The DiscountOption a live customer code gives a friend (checkout and /api/offer). */

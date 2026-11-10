@@ -14,7 +14,7 @@ export const christmasGifts: ArticleInput = {
   description: `Thoughtful Christmas gifts for dog owners and dog lovers, our 2026 order-by dates (${CHRISTMAS_US_CUTOFF} for US delivery), and what to do if you've left it to the last minute.`,
   date: "2026-10-13",
   category: "gift-guides",
-  heroStyle: "oil-classic",
+  heroStyle: "modern-oil",
   keywords: [
     "christmas gifts for dog owners",
     "christmas gifts for dog lovers",
@@ -43,7 +43,7 @@ export const christmasGifts: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: "That's our honest guidance, not a guarantee. Carriers get extremely busy in December and delays do happen, so ordering earlier is always kinder to your nerves. If you're shopping around Black Friday (November 27) or Cyber Monday (November 30), you're comfortably ahead of the cutoffs.",
+      text: "That's guidance, not a promise. Carriers get extremely busy in December and delays do happen, so ordering earlier is always kinder to your nerves. If you're shopping around Black Friday (November 27) or Cyber Monday (November 30), you're comfortably ahead of the cutoffs.",
     },
     {
       type: "table",
@@ -57,19 +57,18 @@ export const christmasGifts: ArticleInput = {
         ],
         ["Prints, framed prints and canvases (Canada)", CHRISTMAS_CA_CUTOFF, "Cross-border delivery adds a few days"],
         ["Digital portrait", "Christmas morning", "Delivered by email right after checkout"],
-        ["Gift Reveal", "Christmas Day", "Sent instantly with your order; the print follows"],
       ],
     },
-    { type: "heading", text: "Missed the cutoff? Send a Gift Reveal" },
+    { type: "heading", text: "Missed the cutoff?" },
     {
       type: "paragraph",
-      text: "Here's the part we're proudest of. When you order a portrait as a gift, you get a Gift Reveal: a beautiful digital reveal of the artwork that you can text, email or show in person the moment you order. On Christmas morning they see their dog as a work of art, and the print follows in the mail. It works right up to Christmas Day, which makes it the least stressful last-minute gift we know of. More on our [Christmas gifts page](/gifts/christmas).",
+      text: "You can still order. The digital portrait arrives by email right after checkout, so there is something to show on Christmas morning, and the print follows in the mail. More on our [Christmas gifts page](/gifts/christmas).",
     },
     { type: "heading", text: "Christmas gift ideas for dog owners" },
     { type: "heading", level: 3, text: "A portrait of their dog" },
     {
       type: "paragraph",
-      text: `The gift we know best. A portrait is a gift that stays up long after the tree comes down: ${styleLink("oil-classic")} above the mantel, a soft ${styleLink("watercolor")} in the hallway, or a ${styleLink("linocut")} for a modern home. Framed prints start at ${fromPrice("framed")} and canvases at ${fromPrice("canvas")}, with free US shipping and the digital file included.`,
+      text: `The gift we know best. A portrait is a gift that stays up long after the tree comes down: ${styleLink("modern-oil")} above the mantel, a soft ${styleLink("watercolor")} in the hallway, or a ${styleLink("fine-line")} for a modern home. Framed prints start at ${fromPrice("framed")} and canvases at ${fromPrice("canvas")}, with free US shipping and the digital file included.`,
     },
     { type: "heading", level: 3, text: "A matching ornament" },
     {
@@ -140,15 +139,15 @@ export const christmasGifts: ArticleInput = {
     { type: "heading", text: "Getting the photo without spoiling the surprise" },
     {
       type: "paragraph",
-      text: "Giving a portrait of someone else's dog? Their Instagram, a family group chat or a co-conspirator in the household is usually all you need. Pick a clear, close photo where the dog looks toward the camera, then check the free preview before you buy. Our [photo guide](/journal/how-to-photograph-your-dog-for-a-portrait) explains what to look for.",
+      text: "Giving a portrait of someone else's dog? Their Instagram, a family group chat or a co-conspirator in the household is usually all you need. Pick a clear, close photo where the dog looks toward the camera, then check the portrait before you buy. Our [photo guide](/journal/how-to-photograph-your-dog-for-a-portrait) explains what to look for.",
     },
     {
       type: "cta",
       title: "Start their Christmas portrait",
-      body: `Upload a photo of their dog and see it free in about a minute. Order by ${CHRISTMAS_US_CUTOFF} for US delivery before Christmas, or send a Gift Reveal any time.`,
-      href: "/create?style=oil-classic",
-      label: "Create a free preview",
-      style: "oil-classic",
+      body: `Order by ${CHRISTMAS_US_CUTOFF} for US delivery before Christmas.`,
+      href: "/create?style=modern-oil",
+      label: "Upload a photo",
+      style: "modern-oil",
     },
   ],
 };

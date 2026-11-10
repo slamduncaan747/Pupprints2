@@ -63,7 +63,7 @@ export function ContactForm({
     return (
       <div className="border-y border-line py-12" role="status">
         <p className="label text-ink-3">Message received</p>
-        <h2 className="mt-5 font-display text-[36px] leading-[1.05] sm:text-[44px]">Thank you.</h2>
+        <h2 className="mt-5 font-display text-[36px] leading-[1.08] sm:text-[44px]">Thank you.</h2>
         <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-2">
           A real person will reply by email within one business day. If it&apos;s urgent, you can also write to{" "}
           <a href={`mailto:${supportEmail}`} className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">

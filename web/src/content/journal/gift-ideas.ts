@@ -9,7 +9,7 @@ export const giftIdeas: ArticleInput = {
     "An honest list of 25 gifts dog lovers actually use and love, from practical upgrades to sentimental keepsakes. Yes, a portrait is on it. So are 24 other good ideas.",
   date: "2026-10-12",
   category: "gift-guides",
-  heroStyle: "oil-classic",
+  heroStyle: "modern-oil",
   keywords: [
     "gifts for dog lovers",
     "dog lover gift",
@@ -31,7 +31,7 @@ export const giftIdeas: ArticleInput = {
     { type: "heading", level: 3, text: "1. A custom portrait of their dog" },
     {
       type: "paragraph",
-      text: `Okay, we're biased. But a portrait of their own dog is one of the few gifts that's both deeply personal and genuinely decorative. Choose a style that fits their home: ${styleLink("oil-classic")} for a warm, traditional room, a soft ${styleLink("watercolor")} for a calm, light-filled one, or a ${styleLink("linocut")} for a modern gallery wall. With us you see the portrait free before paying, prints start at ${fromPrice("poster")}, and you can send a Gift Reveal the moment you order while the real thing ships.`,
+      text: `Okay, we're biased. But a portrait of their own dog is one of the few gifts that's both deeply personal and genuinely decorative. Choose a style that fits their home: ${styleLink("modern-oil")} for a warm, traditional room, a soft ${styleLink("watercolor")} for a calm, light-filled one, or a ${styleLink("fine-line")} for a modern gallery wall. With us you see the portrait before paying, and prints start at ${fromPrice("poster")}.`,
     },
     { type: "heading", level: 3, text: "2. A paw print keepsake" },
     {
@@ -165,15 +165,15 @@ export const giftIdeas: ArticleInput = {
     {
       type: "tip",
       title: "Need a gift fast?",
-      text: "Every portrait order can include an instant Gift Reveal: a beautiful digital reveal you can text, email or show in person the moment you order, while the print is made and shipped. Browse our [gift guide](/gifts) for occasions from [birthdays](/gifts/birthday) to [Christmas](/gifts/christmas).",
+      text: "With a portrait, the digital file arrives by email right after checkout, while the print is made and shipped. Browse our [gift guide](/gifts) for occasions from [birthdays](/gifts/birthday) to [Christmas](/gifts/christmas).",
     },
     {
       type: "cta",
       title: "Give them their dog, as art",
-      body: "Upload a photo of their dog and see the portrait free in about a minute. Only pay if you love it.",
+      body: "Upload a photo of their dog to see the portrait.",
       href: "/create",
-      label: "Create a free preview",
-      style: "oil-classic",
+      label: "Upload a photo",
+      style: "modern-oil",
     },
   ],
 };

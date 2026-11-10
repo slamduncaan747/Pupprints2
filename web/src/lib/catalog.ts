@@ -9,15 +9,12 @@
 
 export type StyleSlug =
   | "modern"
-  | "watercolor"
   | "modern-sage"
+  | "watercolor"
   | "fine-line"
   | "pastel"
   | "modern-oil"
-  | "charcoal"
-  | "oil-classic"
-  | "botanical"
-  | "linocut";
+  | "charcoal";
 
 export type ArtStyle = {
   slug: StyleSlug;
@@ -35,7 +32,10 @@ export type ArtStyle = {
   /** Featured in merchandising. Label it "Featured"/"Staff pick" — never "Popular"/"Best-selling" (no sales data yet). */
   popular?: boolean;
   isNew?: boolean;
-  /** The dog's name is lettered on the portrait (small capitals at the top) when the customer gives one. */
+  /**
+   * Tools with no "add the name" choice of their own (the admin gift studio) letter a given name on
+   * these styles. The create flow asks the customer instead (nameOnArt) and letters any style.
+   */
   lettering?: boolean;
   /** Flat-ground styles: the exact background color the finished portrait is set to. */
   ground?: string;
@@ -58,8 +58,6 @@ export type ArtStyle = {
  */
 const SUBJECT =
   "The dog itself is the whole subject: no costume, no clothing, no collar, no props, no scene.";
-const OIL =
-  "Rich oil paint on linen canvas: visible confident brushstrokes, soft impasto on the highlights, thin glazes in the shadows, the canvas weave showing through the thin passages, a satin varnish, not glossy.";
 const CALM = "A calm, dignified expression. Quiet, softly graded, empty background.";
 
 /** The Modern portrait: one brief, one flat ground color per style. */
@@ -71,67 +69,59 @@ export const STYLES: ArtStyle[] = [
   {
     slug: "modern",
     name: "Modern",
-    blurb: "A clean illustrated portrait on soft white.",
-    description:
-      "A contemporary illustration of your dog: head and chest, drawn in smooth, true-to-coat tones on one flat field of soft white. No line work, no drama. Light, graphic and easy to place in any room.",
+    blurb: "A clean illustration on soft white.",
+    description: "Your dog's head and chest, drawn in smooth, true colors on a flat off-white background.",
     prompt: modernPrompt("warm off-white (#F4F1EA)"),
     swatch: "#F4F1EA",
     lettering: true,
     ground: "#F4F1EA",
     goodFor: ["decor", "gift", "memorial"],
     popular: true,
-    isNew: true,
+  },
+  {
+    slug: "modern-sage",
+    name: "Modern Sage",
+    blurb: "The same illustration on sage green.",
+    description: "The Modern portrait on a flat, muted sage green. A little color for a pale wall.",
+    prompt: modernPrompt("muted sage green (#B9C2AE)"),
+    swatch: "#B9C2AE",
+    lettering: true,
+    ground: "#B9C2AE",
+    goodFor: ["decor", "gift", "memorial"],
   },
   {
     slug: "watercolor",
     name: "Watercolor",
-    blurb: "Soft washes on cotton paper, light and luminous.",
-    description:
-      "Transparent washes that bloom into cold-press paper, crisp in the eyes and loose at the edges, with plenty of white around your dog. Light, airy and gentle, and a natural choice for a memorial piece.",
+    blurb: "Soft washes on white paper.",
+    description: "Light, transparent washes with sharp detail in the eyes and plenty of white paper around your dog.",
     prompt: `A fine-art watercolor portrait of the dog on heavy white cold-press cotton watercolor paper. ${SUBJECT} Head and chest only. Transparent layered washes with visible pigment granulation and soft blooms, crisp precise detail in the eyes and nose; the painting dissolves into loose dry-brush strokes and bare paper toward the edges, with generous untouched white paper around the dog. The cold-press paper tooth is visible everywhere. Restrained natural palette of umber, sepia, warm ochre and slate grey with a touch of sage in the shadows. Calm and luminous, like a contemporary watercolor hung in a museum.`,
     swatch: "#7fa6b5",
     goodFor: ["memorial", "gift", "decor"],
     popular: true,
   },
   {
-    slug: "modern-sage",
-    name: "Modern Sage",
-    blurb: "The Modern portrait on a quiet sage ground.",
-    description:
-      "The same clean illustration, set on one flat field of muted sage. A little color for a pale wall, and a ground that flatters golden, cream and black coats alike.",
-    prompt: modernPrompt("muted sage green (#B9C2AE)"),
-    swatch: "#B9C2AE",
-    lettering: true,
-    ground: "#B9C2AE",
-    goodFor: ["decor", "gift", "memorial"],
-    isNew: true,
-  },
-  {
     slug: "fine-line",
-    name: "Fine Line",
-    blurb: "Minimal ink lines on warm paper.",
-    description:
-      "A minimalist portrait in confident black ink lines on warm off-white paper, with only a little hatching where the shadows fall. Quiet, modern and made for a gallery wall.",
+    name: "Line Drawing",
+    blurb: "Black ink lines on warm paper.",
+    description: "Your dog in black ink lines on off-white paper, with a little hatching in the shadows. No color.",
     prompt: `A refined fine-line ink drawing of the dog on warm white cotton rag paper. ${SUBJECT} Confident continuous black ink lines with a slight natural ink bleed into the paper fibres, sparse delicate hatching only where shadows fall; no color, no solid fills, no grey wash. A generous field of empty paper around the dog, the soft cotton paper texture visible. ${CALM} A refined contemporary gallery drawing.`,
     swatch: "#d8cfc0",
     goodFor: ["decor", "memorial"],
   },
   {
     slug: "pastel",
-    name: "Soft Pastel",
-    blurb: "Velvety pastel on toned paper.",
-    description:
-      "Soft pastel in the manner of a studio portrait: velvety layers for the coat, a few crisp marks in the eyes and the tooth of warm toned paper showing through. Gentle, tactile and very easy to live with.",
+    name: "Pastel",
+    blurb: "Soft pastel on toned paper.",
+    description: "Layered pastel strokes on warm, sand-colored paper, with fine detail in the eyes.",
     prompt: `A soft pastel portrait of the dog on warm toned pastel paper (a mid-tone sand or grey-beige). ${SUBJECT} Head and chest in a calm three-quarter view. Velvety layered pastel strokes follow the direction of the fur, softly blended in the shadows and left as open, chalky strokes in the lights; crisp precise detail in the eyes and nose with a small catch-light. The toned paper is left bare around the dog and shows through between strokes, its tooth visible everywhere; the drawing fades out loosely toward the chest. A single soft light from the upper left. Restrained natural palette of umber, bone, ochre and slate with the dog's true coat colors. Matte, powdery surface. Like a fine pastel portrait from an artist's studio.`,
     swatch: "#b3a394",
     goodFor: ["memorial", "gift", "decor"],
   },
   {
     slug: "modern-oil",
-    name: "Modern Oil",
-    blurb: "Thick, confident oil on a quiet field of color.",
-    description:
-      "A contemporary oil portrait in broad palette-knife strokes: your dog built from thick, simple planes of paint against one flat, muted color. Painterly up close, calm from across the room.",
+    name: "Oil",
+    blurb: "Thick oil paint on a flat color.",
+    description: "Broad palette-knife strokes in your dog's real colors, against one flat, muted background.",
     prompt: `A contemporary oil portrait of the dog painted with a palette knife and broad flat brushes on linen canvas. ${SUBJECT} Head and chest in a calm three-quarter view. The dog's true coat colors are built from thick, simplified planes of impasto paint with crisp knife edges and visible ridges; the eyes and nose are painted with smaller, careful strokes. Behind the dog, one single flat muted color field (a soft sage, slate or dusty ochre chosen to flatter the coat), scraped thin so the canvas weave shows through, with no objects and no horizon. A single soft daylight from the upper left. Restrained palette of bone, umber, slate, sage and ochre; no neon, no saturated primaries. Matte to satin surface, not glossy. Like a contemporary gallery painting, quiet and assured.`,
     swatch: "#8b958a",
     goodFor: ["decor", "gift"],
@@ -139,45 +129,13 @@ export const STYLES: ArtStyle[] = [
   },
   {
     slug: "charcoal",
-    name: "Charcoal Study",
-    blurb: "A charcoal drawing, all eyes and soft shadow.",
-    description:
-      "A monochrome study on warm paper: velvety blacks, soft smudged half-tones and fine detail in the eyes, with loose strokes that fade into bare paper. Timeless, and often the most moving of all.",
+    name: "Charcoal",
+    blurb: "A black-and-white charcoal drawing.",
+    description: "Deep blacks, soft grey shading and sharp eyes on warm paper. No color.",
     prompt: `An expressive charcoal portrait drawing of the dog on warm toned ivory drawing paper. ${SUBJECT} Rich velvety charcoal blacks, soft smudged half-tones, fine sharp detail in the eyes and nose, loose gestural strokes that fade into bare paper at the edges. The paper grain catches the charcoal everywhere, with a few soft finger smudges and lifted highlights. No color. A fine-art academic drawing from a master's studio.`,
     swatch: "#3a3733",
     goodFor: ["memorial", "decor", "gift"],
     popular: true,
-  },
-  {
-    slug: "oil-classic",
-    name: "Old Master",
-    blurb: "Your dog in oil, lit like a museum portrait.",
-    description:
-      "A quiet classical oil portrait: one soft light from the side, a warm umber ground and brushwork that follows every turn of the coat. It sits as easily above a mantel as beside modern furniture.",
-    prompt: `A quiet classical oil portrait of the dog, in the manner of a 17th-century Dutch old master. ${SUBJECT} A bust portrait in a calm three-quarter view; the fur is described by the brush, every hair direction followed. A single soft north light from the upper left. Plain background of warm umber and muted olive, softly graduated and empty. Restrained palette of umber, bone, slate and ochre. ${OIL}`,
-    swatch: "#4b4232",
-    goodFor: ["decor", "memorial", "gift"],
-    popular: true,
-  },
-  {
-    slug: "botanical",
-    name: "Botanical",
-    blurb: "Framed by garden stems, like a naturalist's plate.",
-    description:
-      "Your dog in fine ink and watercolor, loosely framed by olive, eucalyptus, ferns and a few garden roses, in the manner of a plate from an 18th-century natural-history book. A gentle way to remember a best friend.",
-    prompt: `A refined natural-history plate of the dog in fine ink line and transparent watercolor on warm ivory laid paper. The dog wears nothing: no costume, no clothing, no collar. The dog sits in the centre, loosely framed by a sparse arrangement of botanical stems drawn with naturalist precision: olive branches, eucalyptus, ferns and a few muted garden roses, with plenty of empty paper. Muted palette of sage, ochre, dusty rose and umber; the laid paper texture is visible. Like an 18th-century botanical plate colored by hand. No labels, no captions.`,
-    swatch: "#8a9a6c",
-    goodFor: ["memorial", "gift", "decor"],
-  },
-  {
-    slug: "linocut",
-    name: "Linocut",
-    blurb: "A relief print in one or two inks, carving marks and all.",
-    description:
-      "The look of a block print pulled on cream paper: bold carved shapes, one or two matte inks and the small gouge marks that make a relief print feel made. Graphic and warm, at home on a kitchen or hallway wall.",
-    prompt: `A hand-carved linocut relief print of the dog, printed by hand from two carved linoleum blocks on cream cotton printmaking paper: first one flat block of muted ochre, then the key block in dense black relief ink. ${SUBJECT} Head and chest only. Every mark is either solid opaque black ink or bare paper: the dark fur is solid black with thin white lines carved out of it, the light fur is bare cream paper with short black gouge cuts, and the fur is described by tapering V-shaped cuts that follow the direction of the hair. Bold simplified shapes with slightly rough, hand-cut edges. The muted ochre ink is one flat rectangular block behind the dog, with the same dry, slightly mottled hand-rolled texture as the black. A few stray chatter marks left by the gouge in the cleared areas, a slight misregistration between the two blocks. Empty cream paper around the print. No grey tones, no washes, no gradients, no pen lines, no watercolour. Like a limited-edition relief print from a small printmaker's studio, not a cartoon, not vector art.`,
-    swatch: "#2f3a35",
-    goodFor: ["decor", "gift"],
   },
 ];
 
@@ -189,7 +147,7 @@ export const DEFAULT_STYLE: StyleSlug = "modern";
  * these slugs, so: lookups must tolerate them (styleLabel), /api/generate refuses them with 410,
  * and next.config.ts redirects their old /styles/<slug> pages to /styles.
  */
-export const RETIRED_STYLE_SLUGS = ["royal", "admiral", "astronaut", "pop-art", "storybook", "holiday", "ink-wash", "mid-century"] as const;
+export const RETIRED_STYLE_SLUGS = ["royal", "admiral", "astronaut", "pop-art", "storybook", "holiday", "ink-wash", "mid-century", "oil-classic", "botanical", "linocut"] as const;
 
 export function isRetiredStyle(slug: string): boolean {
   return (RETIRED_STYLE_SLUGS as readonly string[]).includes(slug);
@@ -255,7 +213,7 @@ export const PRODUCTS: Product[] = [
     type: "canvas",
     name: "Gallery Canvas",
     shortName: "Canvas",
-    tagline: "Hand-stretched canvas with a gallery wrap. Our favorite way to hang a portrait.",
+    tagline: "Stretched canvas with wrapped edges, ready to hang.",
     details: [
       "Poly-cotton canvas, hand-stretched over a solid wood stretcher bar",
       "Image wraps the edges for a finished gallery look",
@@ -276,7 +234,7 @@ export const PRODUCTS: Product[] = [
     type: "framed",
     name: "Framed Print",
     shortName: "Framed",
-    tagline: "Ready to hang. The gift that gets the gasp.",
+    tagline: "A framed print, ready to hang.",
     details: [
       "Solid wood frame in black, white or natural oak",
       "Shatter-resistant acrylic glazing and hanging hardware included",
@@ -298,7 +256,7 @@ export const PRODUCTS: Product[] = [
     type: "poster",
     name: "Fine Art Print",
     shortName: "Print",
-    tagline: "Museum-grade matte paper, rich gallery color.",
+    tagline: "Archival matte paper, for your own frame.",
     details: [
       "Archival, acid-free matte paper (enhanced matte, 189gsm)",
       "Fade-resistant pigment inks",
@@ -317,7 +275,7 @@ export const PRODUCTS: Product[] = [
     type: "digital",
     name: "Digital Portrait",
     shortName: "Digital",
-    tagline: "The full-resolution file, delivered instantly. Free with any print.",
+    tagline: "The full-resolution file, sent right after checkout. Included with any print.",
     details: [
       "High-resolution, print-ready file",
       "No watermark: yours to print, share and post",

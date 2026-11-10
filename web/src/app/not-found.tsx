@@ -4,6 +4,7 @@ import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
 import { ButtonLink } from "@/components/ui/button";
 import { STYLE_MAP } from "@/lib/catalog";
+import { site } from "@/lib/config";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { PageHero } from "@/components/marketing/page-hero";
 import { CampaignImage } from "@/components/marketing/campaign";
@@ -15,10 +16,10 @@ export const metadata: Metadata = {
 
 const LINKS = [
   { href: "/", label: "Home" },
-  { href: "/styles", label: "The collection" },
-  { href: "/shop", label: "The shop" },
+  { href: "/styles", label: "Styles" },
+  { href: "/shop", label: "Shop" },
   { href: "/gifts", label: "Gifts" },
-  { href: "/faq", label: "Client services" },
+  { href: "/faq", label: "Help" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -31,7 +32,7 @@ export default function NotFound() {
         <PageHero
           eyebrow="Error 404"
           title="This page has wandered off."
-          lede="It may have moved, or the link might be a little off. Let's get you back on the trail."
+          lede="It may have moved, or the link might be a little off."
           media={
             <CampaignImage
               src={STYLE_SAMPLES[style.slug]}
@@ -43,7 +44,7 @@ export default function NotFound() {
           }
         >
           <ButtonLink href="/create" size="lg" className="w-full sm:w-auto">
-            Commission a portrait
+            {site.cta}
           </ButtonLink>
           <nav aria-label="Helpful links" className="mt-14 border-t border-line pt-8">
             <ul className="flex flex-wrap gap-x-6 gap-y-4">

@@ -131,8 +131,7 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
   if (!order) {
     return (
       <Container className="py-24 text-center sm:py-36">
-        <p className="label text-ink-3">Client services</p>
-        <h1 className="mx-auto mt-5 max-w-2xl font-display text-[44px] leading-[1.02] sm:text-[72px]">
+        <h1 className="mx-auto max-w-2xl font-display text-[38px] leading-[1.08] sm:text-[56px]">
           We couldn&apos;t find that order.
         </h1>
         <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
@@ -195,12 +194,12 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             <p className="label text-ink-3">
               Order {order.order_number} — Confirmed
             </p>
-            <h1 className="mt-5 font-display text-[48px] leading-[1.02] sm:text-[80px]">
+            <h1 className="mt-5 font-display text-[44px] leading-[1.08] sm:text-[64px]">
               {hi ? `Thank you, ${hi}.` : "Thank you."}
             </h1>
             <p className="mx-auto mt-6 max-w-md text-[14px] leading-relaxed text-ink-2 sm:text-[15px] lg:mx-0">
               {physical
-                ? `${pet ? `${pet}'s portrait` : "Your portrait"} is in good hands. A person on our team checks every piece before it is printed.`
+                ? `${pet ? `${pet}'s portrait` : "Your portrait"} is being prepared for printing.`
                 : `${pet ? `${pet}'s portrait` : "Your portrait"} is ready to download, without a watermark.`}
               {order.email ? (
                 <>
@@ -329,7 +328,7 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
         </div>
 
         <p className="mx-auto mt-14 max-w-md text-center text-[13px] leading-relaxed text-ink-3">
-          Love it, or we&apos;ll remake or refund it. Questions? Reply to your confirmation email or write to{" "}
+          Questions? Reply to your confirmation email or write to{" "}
           <a
             className="text-ink-2 underline decoration-ink/30 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
             href={`mailto:${site.supportEmail}`}

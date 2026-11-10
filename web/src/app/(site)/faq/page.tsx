@@ -9,9 +9,9 @@ import { JsonLd } from "@/components/marketing/json-ld";
 import { ALL_FAQS, FAQ_GROUPS } from "@/components/marketing/faq-data";
 
 export const metadata: Metadata = {
-  title: "FAQ — Custom Dog Portraits, Shipping, Photos & Guarantee",
+  title: "FAQ",
   description:
-    "Answers to common questions about Pup Prints: free previews, prices, photos, how the art is made, printing, shipping to the US and Canada, our love-it guarantee, Gift Reveal and privacy.",
+    "Answers to common questions about Pup Prints: previews, prices, photos, how the art is made, printing, shipping to the US and Canada, returns and privacy.",
   alternates: { canonical: "/faq" },
 };
 
@@ -20,9 +20,8 @@ export default function FaqPage() {
     <>
       <JsonLd data={faqJsonLd(ALL_FAQS)} />
       <PageHero
-        eyebrow="Client Services"
-        title="How may we help?"
-        lede="Previews, pieces, delivery and our guarantee, answered. Can't find it? Write to us; a person replies within one business day."
+        title="FAQ"
+        lede="Can't find it here? Write to us; a person replies within one business day."
       >
         <nav aria-label="FAQ topics">
           <ul className="flex flex-wrap gap-x-6 gap-y-3">
@@ -64,11 +63,7 @@ export default function FaqPage() {
         </p>
       </Block>
 
-      <CtaBand
-        eyebrow="Begin here"
-        title="Just try it, free"
-        body="The quickest way to know if it works for your dog is to upload a photo. You only pay if you love it."
-      />
+      <CtaBand />
     </>
   );
 }

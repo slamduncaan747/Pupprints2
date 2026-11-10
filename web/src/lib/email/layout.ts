@@ -149,7 +149,7 @@ export function shell(o: ShellOptions): string {
 ${o.body}
 </td></tr>
 <tr><td align="center" style="padding:26px 18px 0;font-family:${SANS};font-size:12px;line-height:1.7;color:${C.ink3};">
-Love it or we'll remake or refund it. Questions? Reply to this email or write to ${link(`mailto:${o.supportEmail}`, o.supportEmail)}.<br />
+Questions? Reply to this email or write to ${link(`mailto:${o.supportEmail}`, o.supportEmail)}.<br />
 ${o.footerNote ? `${esc(o.footerNote)}<br />` : ""}
 ${o.postalAddress ? `${esc(o.postalAddress)}<br />` : ""}
 Pup Prints &middot; <a href="${esc(o.siteUrl)}" target="_blank" style="color:${C.ink3};">${esc(host)}</a>${
@@ -175,7 +175,6 @@ export function textFooter(o: {
 }) {
   return [
     "—",
-    "Love it or we'll remake or refund it.",
     `Questions? Reply to this email or write to ${o.supportEmail}.`,
     o.footerNote,
     o.postalAddress,

@@ -88,13 +88,15 @@ export type GenerateResponse = {
   generationId: string;
   status: "succeeded";
   previewUrl: string;
+  /** Whether the name was lettered on the portrait. */
+  nameOnArt?: boolean;
   style: StyleSlug;
   width: number;
   height: number;
 };
 
 export function generatePortrait(
-  body: { uploadId: string; style: StyleSlug; petName?: string; memorial?: boolean },
+  body: { uploadId: string; style: StyleSlug; petName?: string; nameOnArt?: boolean },
   signal?: AbortSignal,
 ) {
   return postJson<GenerateResponse>("/api/generate", body, signal);
@@ -134,16 +136,10 @@ export type CheckoutItem = { generationId: string; variantId: string; frameColor
 export type CheckoutRequest = {
   items: CheckoutItem[];
   shipCountry?: ShipCountry;
-  giftMessage?: string;
-  giftSenderName?: string;
-  giftRecipientName?: string;
-  giftRecipientEmail?: string;
   /** Reveal token when buying a gift portrait from its reveal page. */
   giftToken?: string;
   /** A creator code entered on the product step. */
   code?: string;
-  /** The gentle track ("This portrait is in memory of my dog"). */
-  memorial?: boolean;
 };
 
 export function startCheckout(body: CheckoutRequest) {
@@ -152,7 +148,7 @@ export function startCheckout(body: CheckoutRequest) {
 
 export type LeadSource = "save_preview" | "checkout_unavailable" | "ai_unavailable";
 
-export function saveLead(body: { email: string; source: LeadSource; generationId?: string; petName?: string; memorial?: boolean }) {
+export function saveLead(body: { email: string; source: LeadSource; generationId?: string; petName?: string }) {
   return postJson<{ ok?: boolean }>("/api/leads", body);
 }
 

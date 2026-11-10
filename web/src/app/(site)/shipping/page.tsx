@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PRODUCTS } from "@/lib/catalog";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, Facts, Note, Prose, Rows, textLink } from "@/components/marketing/blocks";
+import { Block, Facts, Note, Rows, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
@@ -18,18 +18,12 @@ import {
 } from "@/components/marketing/commerce";
 
 export const metadata: Metadata = {
-  title: "Shipping & Delivery — Free US Shipping, Holiday Dates",
+  title: "Shipping & Delivery",
   description: `Free US shipping on every order. Prints, framed prints and canvas arrive in about ${PHYSICAL_SHIP_WINDOW}; digital files instantly. Canada ships for a flat ${CANADA_SHIPPING_LABEL}. Christmas 2026 order-by dates inside.`,
   alternates: { canonical: "/shipping" },
 };
 
 const FAQS = FAQ_GROUPS.find((g) => g.id === "shipping")?.items ?? [];
-
-const STEPS = [
-  { title: "Checked by a person", body: "Before anything is printed, a person on our team reviews your art and print file." },
-  { title: "Printed to order", body: "Your piece is printed, framed or stretched just for you by our print partner in the US." },
-  { title: "Packed and shipped", body: "We email a tracking link as soon as it leaves, so you always know where it is." },
-];
 
 export default function ShippingPage() {
   const christmasRows = [
@@ -39,26 +33,20 @@ export default function ShippingPage() {
       where: "Canada",
       when: formatDay(CHRISTMAS_2026.canadaCutoff, { weekday: true, long: true }),
     },
-    {
-      what: "Gift Reveal & digital files",
-      where: "Anywhere",
-      when: `Any time, up to ${formatDay(CHRISTMAS_2026.revealUntil, { long: true })}`,
-    },
+    { what: "Digital files", where: "Anywhere", when: "Any time, by email" },
   ];
 
   return (
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
-        eyebrow="Shipping & Delivery"
-        title="Free US shipping. Honest delivery times."
-        lede={`Every order ships free in the US, with tracking and no minimum. Canada is a flat ${CANADA_SHIPPING_LABEL}, and digital files arrive right after checkout.`}
+        title="Shipping"
+        lede={`Free in the US, with tracking and no minimum. Canada is a flat ${CANADA_SHIPPING_LABEL}. Digital files arrive by email right after checkout.`}
       />
 
       <Block
-        eyebrow="Timing"
         title="How long it takes"
-        intro="Estimates include production and delivery, in business days, for US addresses. US shipping is free on every product."
+        intro="Estimates include production and delivery, in business days, for US addresses. Each piece is printed to order."
       >
         <Facts
           items={PRODUCTS.map((p) => ({
@@ -74,30 +62,19 @@ export default function ShippingPage() {
         <Note className="mt-6">Canadian orders usually take a few extra business days.</Note>
       </Block>
 
-      <Block eyebrow="After you order" title="Made for you, then sent">
-        <Rows numbered items={STEPS} />
-      </Block>
-
       <Block
         id="holidays"
-        eyebrow="Christmas 2026"
-        title="Order-by dates"
-        intro="Our recommended last order dates for standard delivery before Christmas. They're honest guidance, not guarantees: carriers get very busy in December, so earlier is always better."
+        title="Christmas 2026 order-by dates"
+        intro="Our recommended last order dates for standard delivery before Christmas. They are guidance, not a promise: carriers get very busy in December, so earlier is better."
       >
         <Facts items={christmasRows.map((r) => ({ key: r.what + r.where, label: r.what, note: r.where, value: r.when }))} />
         <Note className="mt-6">
           The Canada date allows a little extra time for cross-border transit. Physical pieces are made to order, so please
           don&apos;t wait for the last day.
         </Note>
-        <Prose className="mt-8">
-          <p>
-            <strong>Missed the date?</strong> Order anyway and send a Gift Reveal instantly. They&apos;ll see their portrait on
-            Christmas morning, and the print follows.
-          </p>
-        </Prose>
       </Block>
 
-      <Block eyebrow="Good to know" title="The particulars">
+      <Block title="Details">
         <Rows
           items={[
             {
@@ -120,10 +97,10 @@ export default function ShippingPage() {
               title: "Damaged or lost?",
               body: (
                 <>
-                  Send us a photo of any damage and we&apos;ll replace it free. If tracking shows it never arrived, we&apos;ll
-                  replace it or refund you.{" "}
+                  Send us a photo of any damage and we&apos;ll replace it at no charge. If tracking shows it never arrived,
+                  we&apos;ll replace it or refund you.{" "}
                   <Link href="/guarantee" className={textLink}>
-                    Our guarantee
+                    Returns
                   </Link>
                 </>
               ),
@@ -136,11 +113,11 @@ export default function ShippingPage() {
         />
       </Block>
 
-      <Block titleStyle="label" title="Client services">
+      <Block titleStyle="label" title="Questions">
         <FaqList items={FAQS} />
       </Block>
 
-      <CtaBand eyebrow="Begin here" />
+      <CtaBand />
     </>
   );
 }

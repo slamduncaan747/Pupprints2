@@ -1,5 +1,4 @@
 import type { ArticleInput } from "@/content/types";
-import { styleName } from "@/content/helpers";
 
 export const dogPortraitHistory: ArticleInput = {
   slug: "history-of-dog-portraits",
@@ -9,7 +8,7 @@ export const dogPortraitHistory: ArticleInput = {
     "From Van Eyck and Titian to Velázquez, Hogarth, Gainsborough and Landseer: how the dog moved from a symbol at someone's feet to the subject of the painting.",
   date: "2026-11-10",
   category: "art-and-style",
-  heroStyle: "oil-classic",
+  heroStyle: "modern-oil",
   keywords: ["history of dog portraits", "dogs in art", "old master dog painting", "dog portrait painting"],
   related: ["watercolor-vs-oil-vs-line-art", "gift-ideas-for-dog-lovers", "canvas-vs-framed-print-vs-poster"],
   body: [
@@ -84,16 +83,16 @@ export const dogPortraitHistory: ArticleInput = {
     },
     {
       type: "styles",
-      slugs: ["oil-classic", "charcoal", "watercolor"],
+      slugs: ["modern-oil", "charcoal", "watercolor"],
       caption: "Three mediums with a long history of dogs",
     },
     {
       type: "cta",
       title: "A portrait in that tradition",
-      body: "Upload a photo and see your dog as a classical oil portrait, free, in about a minute.",
-      href: "/create?style=oil-classic",
-      label: `Try ${styleName("oil-classic")} free`,
-      style: "oil-classic",
+      body: "Upload a photo and see your dog as an oil portrait.",
+      href: "/create?style=modern-oil",
+      label: "Upload a photo",
+      style: "modern-oil",
     },
   ],
 };

@@ -5,7 +5,7 @@ import { site } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Track your order",
-  description: "Check where your Pup Prints portrait is: checked by hand, printed, shipped with tracking.",
+  description: "Check where your Pup Prints order is.",
   alternates: { canonical: "/track" },
 };
 
@@ -16,11 +16,7 @@ export default async function TrackPage({ searchParams }: PageProps<"/track">) {
   return (
     <Container className="py-20 sm:py-32">
       <div className="mx-auto max-w-2xl">
-        <p className="label text-center text-ink-3">Client services</p>
-        <h1 className="mt-5 text-center font-display text-[44px] leading-[1.02] sm:text-[64px]">Track your order.</h1>
-        <p className="mx-auto mt-6 max-w-sm text-center text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
-          Every portrait is checked by a person, then printed and shipped with tracking.
-        </p>
+        <h1 className="text-center font-display text-[40px] leading-[1.08] sm:text-[56px]">Track your order</h1>
 
         <div className="mx-auto mt-14 max-w-[460px]">
           <TrackForm initialOrder={initialOrder} supportEmail={site.supportEmail} />

@@ -94,7 +94,7 @@ function TrackResult({ data }: { data: TrackResponse }) {
       <p className="label text-ink-3">
         Order {data.orderNumber} — Placed {formatDay(new Date(data.placedAt), { month: "short", day: "numeric" })}
       </p>
-      <h2 id="track-result-title" className="mt-4 font-display text-[40px] leading-[1.04] sm:text-[52px]">
+      <h2 id="track-result-title" className="mt-4 font-display text-[40px] leading-[1.08] sm:text-[52px]">
         {data.title}.
       </h2>
       <p className="mt-4 text-[14px] leading-relaxed text-ink-2">{data.body}</p>

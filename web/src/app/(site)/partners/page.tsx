@@ -69,7 +69,7 @@ const IDEAS = [
   },
   {
     title: "Style try-on",
-    body: "Previews are free, so try your dog in several styles and let your followers vote on the one you frame.",
+    body: "Try your dog in several styles and let your followers vote on the one you frame.",
   },
   {
     title: "A memorial tribute",
@@ -85,7 +85,7 @@ const DISCLOSE = [
   <>In videos, say it out loud too (&ldquo;Pup Prints sent me this&rdquo;). Stories need it on every frame.</>,
   <>Gifted-only posts need disclosure as well, even when you&apos;re not earning commission yet.</>,
   <>
-    Keep claims honest: no invented urgency, prices or reviews, and say it&apos;s created by our AI artist and checked by
+    Keep claims honest: no invented urgency, prices or reviews, and say it&apos;s created by our AI artist and finished by
     our team if anyone asks.
   </>,
 ];
@@ -109,7 +109,7 @@ const FAQ = [
   },
   {
     q: "How is the art made?",
-    a: "Your portrait is created by our AI artist, then finished and checked by a person on our team before anything is printed. Please describe it that way if anyone asks; don't call it hand-painted.",
+    a: "Your portrait is created by our AI artist, then finished by our team. Please describe it that way if anyone asks; don't call it hand-painted.",
   },
   {
     q: "How long does my link track, and when do I get paid?",
@@ -127,7 +127,7 @@ const FAQ = [
 
 /** A gallery portrait for the hero, falling back to the default style sample. */
 const HERO = (() => {
-  const g = GALLERY.find((x) => x.style === "linocut");
+  const g = GALLERY[0];
   return g
     ? { src: g.src, style: g.style, alt: `Example ${STYLE_MAP[g.style].name} portrait of a ${g.dog}` }
     : { src: STYLE_SAMPLES[DEFAULT_STYLE], style: DEFAULT_STYLE, alt: `Example ${STYLE_MAP[DEFAULT_STYLE].name} dog portrait` };
@@ -171,7 +171,7 @@ export default function PartnersPage() {
         </ul>
       </Block>
 
-      <Block id="how" eyebrow="The process" title="From application to first payout">
+      <Block id="how" title="From application to first payout">
         <Rows numbered items={STEPS} />
       </Block>
 

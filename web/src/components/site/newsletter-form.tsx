@@ -75,7 +75,7 @@ export function NewsletterForm({
         type="submit"
         disabled={state === "loading"}
         className={cn(
-          "inline-flex h-12 shrink-0 items-center gap-2 rounded-none px-2 text-[11px] font-medium uppercase tracking-[0.2em] transition",
+          "inline-flex h-12 shrink-0 items-center gap-2 rounded-none px-2 text-[12px] font-medium uppercase tracking-[0.12em] transition",
           dark ? "text-paper hover:opacity-60" : "text-ink hover:opacity-60",
         )}
       >

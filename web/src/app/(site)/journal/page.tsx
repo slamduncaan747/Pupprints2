@@ -96,7 +96,7 @@ export default function JournalIndexPage() {
               </p>
               <h2
                 id="featured-heading"
-                className="mt-6 font-display text-[38px] leading-[1.04] tracking-[-0.02em] sm:text-[52px] xl:text-[60px]"
+                className="mt-6 font-display text-[38px] leading-[1.08] tracking-[-0.02em] sm:text-[52px] xl:text-[60px]"
               >
                 <Link href={`/journal/${featured.slug}`} className="after:absolute after:inset-0">
                   {featured.title}
@@ -119,7 +119,7 @@ export default function JournalIndexPage() {
           <Container>
             <div className="border-t border-line pb-16 pt-8 sm:pb-24 sm:pt-10 lg:grid lg:grid-cols-12 lg:gap-x-10">
               <header className="mb-4 lg:col-span-4 lg:mb-0">
-                <h2 id={`${g.id}-title`} className="font-display text-[30px] leading-[1.06] sm:text-[40px]">
+                <h2 id={`${g.id}-title`} className="font-display text-[30px] leading-[1.08] sm:text-[40px]">
                   {g.label}
                 </h2>
                 <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-ink-3">{g.blurb}</p>

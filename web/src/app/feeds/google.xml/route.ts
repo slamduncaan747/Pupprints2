@@ -8,7 +8,7 @@
  * Honesty: catalog copy that claims popularity ("most popular", "best-selling") is stripped,
  * and there is no rating/review data in the feed.
  */
-import { PRODUCTS, PROMISES, SHIPPING_RATES, STYLES, type ArtStyle, type Product, type Variant } from "@/lib/catalog";
+import { PRODUCTS, SHIPPING_RATES, STYLES, type ArtStyle, type Product, type Variant } from "@/lib/catalog";
 import { site } from "@/lib/config";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { siteUrl } from "@/lib/seo";
@@ -88,13 +88,13 @@ function describe(product: Product, variant: Variant, style?: ArtStyle) {
   const parts = [
     style
       ? `A custom ${shortStyle(style)}-style portrait of your dog, made from your photo. ${honest(style.description)}`
-      : "A custom fine-art portrait of your dog, made from your photo, in the style you choose: modern illustration, watercolor, fine line, charcoal, oil, linocut and more.",
-    `${PROMISES.preview}: upload a photo, see it in about a minute, and only order if you love it.`,
+      : `A custom portrait of your dog, made from your photo, in the style you choose: ${STYLES.map((s) => s.name).join(", ")}.`,
+    "Upload a photo and see the portrait before you order.",
     product.type === "digital"
       ? "The full-resolution file is emailed to you right after checkout."
       : `${product.name}${variant.widthIn ? `, ${variant.widthIn}×${variant.heightIn} inches` : ""}. ${honest(product.tagline)} ${product.details.join(". ")}.`,
-    product.type === "digital" ? "" : `${PROMISES.digital}. ${PROMISES.shipping}.`,
-    `${PROMISES.guarantee}. Every portrait is checked by a person on our team before it's printed.`,
+    product.type === "digital" ? "" : `The hi-res digital file is included.${SHIPPING_RATES.US === 0 ? " Free US shipping." : ""}`,
+    "Returns: remade or refunded within 30 days of delivery.",
   ];
   return parts.filter(Boolean).join(" ").replace(/\s+/g, " ").replace(/\.\./g, ".").trim();
 }

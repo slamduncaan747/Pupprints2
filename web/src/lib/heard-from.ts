@@ -10,7 +10,7 @@ export const HEARD_FROM = [
   { id: "pet_business", label: "A groomer, daycare or pet business" },
   { id: "creator", label: "A creator or influencer" },
   { id: "friend", label: "A friend or family member" },
-  { id: "gift_reveal", label: "A Gift Reveal I received" },
+  { id: "gift_reveal", label: "A portrait someone shared with me" },
   { id: "pinterest", label: "Pinterest" },
   { id: "other", label: "Other" },
 ] as const;

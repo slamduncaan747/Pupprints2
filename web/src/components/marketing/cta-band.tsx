@@ -2,25 +2,23 @@ import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { STYLE_MAP, type StyleSlug } from "@/lib/catalog";
-import { OFFER } from "@/lib/offer";
+import { site } from "@/lib/config";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { CampaignImage } from "@/components/marketing/campaign";
 import { BLEED_PAD_RIGHT } from "@/components/marketing/page-hero";
-import { EFFORT_LINE } from "@/components/marketing/offer";
 import { cn } from "@/lib/utils";
 
 /**
- * The one call to action at the end of a page: a Bodoni line and a single black button (OFFER.cta),
- * with the effort line beneath. Always points at the free preview. Pass `image` (a style) for a split
- * composition with a campaign portrait.
+ * The one call to action at the end of a page: a short line and a single black button to /create.
+ * Pass `image` (a style) for a split composition with an example portrait.
  */
 export function CtaBand({
-  eyebrow = "Commission",
-  title = "See your dog as a work of art",
+  eyebrow,
+  title = "Start with a photo.",
   body,
   href = "/create",
-  cta = OFFER.cta,
-  note = EFFORT_LINE,
+  cta = site.cta,
+  note,
   image,
   rule = true,
 }: {
@@ -37,7 +35,7 @@ export function CtaBand({
   const text = (
     <>
       {eyebrow && <p className="label mb-8 text-ink-3">{eyebrow}</p>}
-      <h2 className="max-w-3xl font-display text-[40px] leading-[1.02] tracking-[-0.02em] text-balance sm:text-[64px] lg:text-[76px]">
+      <h2 className="max-w-3xl font-display text-[36px] leading-[1.08] tracking-[-0.015em] text-balance sm:text-[56px]">
         {title}
       </h2>
       {body && <p className="mt-6 max-w-md text-[15px] leading-relaxed text-ink-2">{body}</p>}
@@ -73,7 +71,7 @@ export function CtaBand({
   return (
     <section>
       <Container>
-        <div className={cn("flex flex-col items-center py-28 text-center sm:py-40", rule && "border-t border-line")}>{text}</div>
+        <div className={cn("flex flex-col items-center py-24 text-center sm:py-36", rule && "border-t border-line")}>{text}</div>
       </Container>
     </section>
   );

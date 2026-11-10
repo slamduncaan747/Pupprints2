@@ -49,7 +49,7 @@ export const memorialIdeas: ArticleInput = {
     { type: "heading", level: 3, text: "4. A memorial portrait" },
     {
       type: "paragraph",
-      text: `A portrait made from a photo you love can bring a little of them back into the room. Softer styles like ${styleLink("watercolor")}, ${styleLink("botanical")} and ${styleLink("oil-classic")} suit a memorial piece, but there's no wrong answer. With us, older or imperfect photos usually work, you see the portrait free before deciding anything, and if you tell us it's a memorial order, we move it to the front of our queue.`,
+      text: `A portrait made from a photo you love can bring a little of them back into the room. Softer styles like ${styleLink("watercolor")}, ${styleLink("pastel")} and ${styleLink("charcoal")} suit a memorial piece, but there's no wrong answer. With us, older or imperfect photos usually work, you see the portrait before deciding anything, and if you tell us it's a memorial order, we move it to the front of our queue.`,
     },
     { type: "heading", level: 3, text: "5. A photo book of their life" },
     {
@@ -107,7 +107,7 @@ export const memorialIdeas: ArticleInput = {
     { type: "heading", level: 3, text: "15. A memorial gift" },
     {
       type: "paragraph",
-      text: "A portrait, a paw-print ornament or a donation in the dog's name. If you're giving a portrait, quietly find a favorite photo from their social media or ask a family member. You can ship it straight to them or, with us, send a Gift Reveal with a note when the moment feels right.",
+      text: "A portrait, a paw-print ornament or a donation in the dog's name. If you're giving a portrait, quietly find a favorite photo from their social media or ask a family member. You can ship it straight to them.",
     },
     { type: "heading", text: "Helping children say goodbye" },
     {
@@ -141,9 +141,9 @@ export const memorialIdeas: ArticleInput = {
     {
       type: "cta",
       title: "A gentle way to keep them close",
-      body: "See their portrait free, made from a photo you love. There's no rush and no obligation.",
+      body: "Made from a photo you love. There's no rush.",
       href: "/create?style=watercolor",
-      label: "Create their portrait",
+      label: "Upload a photo",
       style: "watercolor",
     },
   ],

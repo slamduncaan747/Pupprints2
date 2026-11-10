@@ -36,7 +36,7 @@ function campaignFiles(): string {
 }
 
 /** Styles we no longer sell (keep in step with RETIRED_STYLE_SLUGS in src/lib/catalog.ts). */
-const RETIRED_STYLES = ["royal", "admiral", "astronaut", "pop-art", "storybook", "holiday", "ink-wash", "mid-century"];
+const RETIRED_STYLES = ["royal", "admiral", "astronaut", "pop-art", "storybook", "holiday", "ink-wash", "mid-century", "oil-classic", "botanical", "linocut"];
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,

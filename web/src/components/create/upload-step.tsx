@@ -6,14 +6,12 @@ import { getStyle, type StyleSlug } from "@/lib/catalog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ApiError, uploadPhoto } from "./api";
+import { NameOption } from "./name-option";
 import { PhotoTips } from "./photo-tips";
 import { prepareImage, PrepareError } from "./prepare-image";
 import { updateFlow, type FlowState } from "./store";
 
 type Phase = "idle" | "preparing" | "uploading" | "error";
-
-/** Effort reduction, stated where the decision is made. */
-const NO_FRICTION = "No account. No card.";
 
 export function UploadStep({
   flow,
@@ -26,7 +24,6 @@ export function UploadStep({
 }) {
   const inputId = useId();
   const nameId = useId();
-  const memorialId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const [phase, setPhase] = useState<Phase>("idle");
   const [progress, setProgress] = useState(0);
@@ -84,14 +81,12 @@ export function UploadStep({
 
   return (
     <section className="mx-auto w-full max-w-[560px] px-5 pt-8 pb-20 sm:px-10 sm:pt-14">
-      <h1 className="text-center font-display text-[44px] leading-[1.02] sm:text-[68px]">Begin with a photograph.</h1>
-      <p className="mx-auto mt-5 max-w-[20rem] text-center text-[14px] leading-relaxed text-balance text-ink-2 sm:max-w-md sm:text-[15px]">
-        {style ? (
-          <>Your dog, as {style.name}. A complimentary preview in about a minute.</>
-        ) : (
-          <>A complimentary preview in about a minute.</>
-        )}
-      </p>
+      <h1 className="text-center font-display text-[44px] leading-[1.02] sm:text-[68px]">Upload a photo of your dog.</h1>
+      {style && (
+        <p className="mx-auto mt-5 max-w-[20rem] text-center text-[14px] leading-relaxed text-balance text-ink-2 sm:max-w-md sm:text-[15px]">
+          You&apos;ll see them as {style.name}.
+        </p>
+      )}
 
       <div className="mt-10 sm:mt-14">
         <input
@@ -161,13 +156,12 @@ export function UploadStep({
                 dragging ? "border-ink bg-paper-2" : "border-line hover:border-ink-3",
               )}
             >
-              <span className="link-cta text-ink group-hover:opacity-60">Select a photograph</span>
+              <span className="link-cta text-ink group-hover:opacity-60">Choose a photo</span>
               <span className="label text-ink-3">
                 <span className="sm:hidden">From your camera roll</span>
                 <span className="hidden sm:inline">Or drop it here</span>
               </span>
             </label>
-            <p className="label mt-4 text-center text-ink-2">{NO_FRICTION}</p>
             <PhotoTips className="mt-9" />
           </>
         )}
@@ -200,34 +194,7 @@ export function UploadStep({
           }}
           className="mt-1 h-12 w-full rounded-none border-0 border-b border-line bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none"
         />
-        <p className="mt-2.5 text-[12px] text-ink-3">Lettered in small capitals on Modern portraits. Leave blank for none.</p>
-      </div>
-
-      {/* The gentle track: unchecked by default, never mentioned anywhere else. */}
-      <div className="mt-8 border-y border-line">
-        <label htmlFor={memorialId} className="flex min-h-14 cursor-pointer items-start gap-3.5 py-4">
-          <input
-            id={memorialId}
-            type="checkbox"
-            checked={flow.memorial}
-            onChange={(e) => {
-              const memorial = e.target.checked;
-              updateFlow((s) => ({ ...s, memorial }));
-              track("MemorialToggle", { on: memorial });
-            }}
-            aria-describedby={flow.memorial ? `${memorialId}-note` : undefined}
-            className="mt-[3px] h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-none border border-ink-3 bg-paper transition-colors checked:border-ink checked:bg-ink checked:shadow-[inset_0_0_0_3px_var(--color-paper)] hover:border-ink"
-          />
-          <span className="min-w-0">
-            <span className="block text-[14px] text-ink">This portrait is in memory of my dog</span>
-            {flow.memorial && (
-              <span id={`${memorialId}-note`} className="mt-1.5 block text-[12px] leading-relaxed text-ink-3">
-                We&apos;re so sorry. Take all the time you need: every preview is free and stays saved, and we&apos;ll
-                show the gentlest styles first.
-              </span>
-            )}
-          </span>
-        </label>
+        {flow.petName.trim() && <NameOption checked={flow.nameOnArt} className="mt-3" />}
       </div>
 
       {displayUrl && (
@@ -235,10 +202,6 @@ export function UploadStep({
           <Button type="button" size="lg" onClick={onContinue} disabled={!ready} className="w-full">
             {continueLabel}
           </Button>
-          <p className="label mt-4 text-center text-ink-2">{NO_FRICTION}</p>
-          <p className="mt-2 text-center text-[12px] text-ink-3">
-            Your photograph stays private and is used only for your portrait.
-          </p>
         </div>
       )}
     </section>

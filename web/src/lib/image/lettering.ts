@@ -3,9 +3,14 @@ import sharp from "sharp";
 import { LETTERING_FONT_WOFF_BASE64 } from "./lettering-font";
 
 /**
- * Name lettering for the Modern styles: the dog's name in small, widely spaced capitals,
- * centred near the top of the portrait. The letters are drawn as vector outlines from an
- * embedded font, so they never depend on system fonts and are never left to the image model.
+ * Name lettering: the dog's name in small, widely spaced capitals, centred near the top of the
+ * portrait. The letters are drawn as vector outlines from an embedded font, so they never depend
+ * on system fonts and are never left to the image model.
+ *
+ * Flat-ground styles (Modern, Modern Sage) pass their `ground`: the background is made exactly
+ * that color and the dog is moved down if needed, so the name always fits. Every other style is
+ * lettered only when the background where the name sits is calm (nameStripIsCalm); if the head
+ * reaches into it the portrait is left without a name rather than printed over the dog.
  */
 
 let cachedFont: opentype.Font | null = null;
@@ -33,26 +38,90 @@ export function letteringText(name: string | null | undefined): string | null {
   return cleaned;
 }
 
-/** SVG overlay with the lettering, sized for a `width`×`height` portrait. */
-export function letteringSvg(text: string, width: number, height: number, color: string): string {
+/** Where the letters go on a `width`×`height` portrait. */
+function layout(text: string, width: number, height: number) {
   const f = font();
   const size = height * 0.034; // font size in px; capitals come out at about 2.4% of the height
   const tracking = size * 0.34;
   const scale = size / f.unitsPerEm;
   const glyphs = [...text].map((ch) => f.charToGlyph(ch));
   const advances = glyphs.map((g) => (g.advanceWidth ?? f.unitsPerEm * 0.3) * scale);
-  let total = advances.reduce((a, b) => a + b, 0) + tracking * (glyphs.length - 1);
+  const natural = advances.reduce((a, b) => a + b, 0) + tracking * (glyphs.length - 1);
   // Never wider than 70% of the portrait: tighten long names instead of running to the edges.
-  const fit = Math.min(1, (width * 0.7) / total);
-  total *= fit;
-  let x = (width - total) / 2;
+  const fit = Math.min(1, (width * 0.7) / natural);
   const baseline = height * 0.11; // low enough to survive the 8×10 crop and a frame lip
+  return { glyphs, advances, tracking, size, fit, total: natural * fit, baseline };
+}
+
+/** SVG overlay with the lettering, sized for a `width`×`height` portrait. */
+export function letteringSvg(text: string, width: number, height: number, color: string): string {
+  const { glyphs, advances, tracking, size, fit, total, baseline } = layout(text, width, height);
+  let x = (width - total) / 2;
   const paths: string[] = [];
   glyphs.forEach((g, i) => {
     paths.push(g.getPath(x, baseline, size * fit).toPathData(2));
     x += (advances[i] + tracking) * fit;
   });
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><path d="${paths.join(" ")}" fill="${color}" fill-opacity="0.9"/></svg>`;
+}
+
+/**
+ * The strip of the portrait the name sits on, with breathing room: the letters plus 8% of the
+ * width at each side and about a line of space above and below. In pixels.
+ */
+export function nameStrip(text: string, width: number, height: number) {
+  const { total, baseline, size } = layout(text, width, height);
+  const w = Math.min(width, Math.round(total + width * 0.16));
+  const top = Math.max(0, Math.round(baseline - size * 0.72 - height * 0.025));
+  const bottom = Math.min(height, Math.round(baseline + height * 0.025));
+  return { left: Math.round((width - w) / 2), top, width: w, height: Math.max(1, bottom - top) };
+}
+
+/** A strip is calm when its greyscale standard deviation is at most this (0–255 scale)... */
+export const NAME_STRIP_MAX_STDEV = 16;
+/** ...and at most this share of its pixels differ from the strip's median by more than NAME_STRIP_OUTLIER_DELTA. */
+export const NAME_STRIP_MAX_OUTLIERS = 0.03;
+export const NAME_STRIP_OUTLIER_DELTA = 40;
+
+export type NameStripStats = { mean: number; stdev: number; outliers: number };
+
+/**
+ * Greyscale statistics of the strip where `text` would be lettered. Paper grain, canvas weave and
+ * soft washes give a low spread; an ear or the top of the head gives a high one, or a patch of
+ * pixels far from the background (outliers).
+ */
+export async function nameStripStats(input: Buffer, text: string): Promise<NameStripStats> {
+  const base = sharp(input, { failOn: "none" }).autoOrient();
+  // Extract from a decoded buffer: sharp's own stats() ignores extract() and reads the whole image.
+  const { data: full, info } = await base.toColourspace("srgb").png().toBuffer({ resolveWithObject: true });
+  const { data } = await sharp(full)
+    .extract(nameStrip(text, info.width, info.height))
+    .greyscale()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const hist = new Uint32Array(256);
+  let sum = 0;
+  let sumSq = 0;
+  for (const v of data) {
+    hist[v]++;
+    sum += v;
+    sumSq += v * v;
+  }
+  const n = data.length || 1;
+  const mean = sum / n;
+  let median = 0;
+  for (let seen = 0; median < 256; median++) {
+    seen += hist[median];
+    if (seen >= n / 2) break;
+  }
+  let far = 0;
+  for (let v = 0; v < 256; v++) if (Math.abs(v - median) > NAME_STRIP_OUTLIER_DELTA) far += hist[v];
+  return { mean, stdev: Math.sqrt(Math.max(0, sumSq / n - mean * mean)), outliers: far / n };
+}
+
+/** True when the name can be set on this background without printing over the dog. */
+export function nameStripIsCalm(stats: NameStripStats): boolean {
+  return stats.stdev <= NAME_STRIP_MAX_STDEV && stats.outliers <= NAME_STRIP_MAX_OUTLIERS;
 }
 
 /** With a name, the dog's head must start no higher than this fraction of the height. */
@@ -132,31 +201,36 @@ export async function prepareGround(input: Buffer, ground: string, headroom: num
 }
 
 /**
- * Composite the name onto a finished portrait. Returns the input untouched when there is no
- * usable name. The ink is dark on light grounds and off-white on dark ones, judged from the
- * strip of background the lettering sits on.
+ * Composite the name onto a finished portrait. `lettered` says whether it was: false when there is
+ * no usable name, or when a style without a flat `ground` has the dog's head where the name would
+ * sit (the portrait is then returned as it came). The ink is dark on light backgrounds and
+ * off-white on dark ones, judged from the strip the lettering sits on.
  */
+export async function letterName(
+  input: Buffer,
+  name: string | null | undefined,
+  ground?: string,
+): Promise<{ bytes: Buffer; lettered: boolean; stats?: NameStripStats }> {
+  const text = letteringText(name);
+  if (ground) input = await prepareGround(input, ground, text ? HEADROOM_FOR_NAME : 0);
+  if (!text) return { bytes: input, lettered: false };
+  const stats = await nameStripStats(input, text);
+  if (!ground && !nameStripIsCalm(stats)) return { bytes: input, lettered: false, stats };
+  const { data, info } = await sharp(input, { failOn: "none" })
+    .autoOrient()
+    .toColourspace("srgb")
+    .png()
+    .toBuffer({ resolveWithObject: true });
+  const overlay = Buffer.from(letteringSvg(text, info.width, info.height, stats.mean > 120 ? "#2a2825" : "#f4f1ea"));
+  const bytes = await sharp(data).composite([{ input: overlay, top: 0, left: 0 }]).png().toBuffer();
+  return { bytes, lettered: true, stats };
+}
+
+/** letterName, returning only the image. */
 export async function addNameLettering(
   input: Buffer,
   name: string | null | undefined,
   ground?: string,
 ): Promise<Buffer> {
-  const text = letteringText(name);
-  if (ground) input = await prepareGround(input, ground, text ? HEADROOM_FOR_NAME : 0);
-  if (!text) return input;
-  const base = sharp(input, { failOn: "none" }).autoOrient();
-  const { data, info } = await base.clone().toColourspace("srgb").png().toBuffer({ resolveWithObject: true });
-  const { width, height } = info;
-  const strip = await sharp(data)
-    .extract({
-      left: Math.round(width * 0.2),
-      top: Math.round(height * 0.075),
-      width: Math.round(width * 0.6),
-      height: Math.max(1, Math.round(height * 0.045)),
-    })
-    .greyscale()
-    .stats();
-  const light = strip.channels[0].mean > 120;
-  const overlay = Buffer.from(letteringSvg(text, width, height, light ? "#2a2825" : "#f4f1ea"));
-  return sharp(data).composite([{ input: overlay, top: 0, left: 0 }]).png().toBuffer();
+  return (await letterName(input, name, ground)).bytes;
 }

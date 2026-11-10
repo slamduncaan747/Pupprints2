@@ -26,7 +26,7 @@ function BlockView({ block, id, index }: { block: Block; id?: string; index: num
     case "heading": {
       if ((block.level ?? 2) === 2) {
         return (
-          <h2 id={id} className="scroll-mt-28 font-display text-[32px] leading-[1.06] tracking-[-0.015em] text-ink sm:text-[42px]">
+          <h2 id={id} className="scroll-mt-28 font-display text-[32px] leading-[1.08] tracking-[-0.015em] text-ink sm:text-[42px]">
             {renderInline(block.text, k)}
           </h2>
         );

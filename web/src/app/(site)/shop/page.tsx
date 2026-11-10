@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ADDONS, PRODUCT_MAP, STARTING_PHYSICAL_PRICE } from "@/lib/catalog";
-import { HEIRLOOM_SET } from "@/lib/offer";
 import { formatPrice } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Block, DataTable, Facts, Note, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FormatShowcase } from "@/components/marketing/format-showcase";
-import { FROM_PRICE, GuaranteeNote, OfferCta, PriceAnchor, ValueStack } from "@/components/marketing/offer";
 import { CANADA_SHIPPING_LABEL, PHYSICAL_PRODUCTS, shipWindow } from "@/components/marketing/commerce";
 import { Photo } from "@/components/marketing/photo";
 import { campaign } from "@/lib/campaign";
@@ -16,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Custom Dog Portrait Prints, Framed Prints & Canvas",
-  description: `Custom dog portraits as fine art prints, framed prints, gallery canvas or a digital file. Physical pieces from ${formatPrice(STARTING_PHYSICAL_PRICE)}, free US shipping, hi-res digital file included. Preview free first.`,
+  description: `Custom dog portraits as fine art prints, framed prints, gallery canvas or a digital file. Physical pieces from ${formatPrice(STARTING_PHYSICAL_PRICE)}, free US shipping, hi-res digital file included.`,
   alternates: { canonical: "/shop" },
 };
 
@@ -36,9 +34,8 @@ export default function ShopPage() {
   return (
     <>
       <PageHero
-        eyebrow="The Shop"
-        title="Made to hang"
-        lede="Every piece begins with a free preview of your own dog. See the art first, then choose how to hang it."
+        title="Shop"
+        lede="Print, framed print, canvas or digital file. Upload a photo first; you choose the format after you have seen the portrait."
       />
 
       {wall.live && (
@@ -59,57 +56,18 @@ export default function ShopPage() {
               !wall.live && "border-t border-line pt-8 sm:pt-10",
             )}
           >
-            <h2 id="formats-title" className="font-display text-[30px] leading-[1.06] sm:text-[40px]">
-              Same portrait, four ways
+            <h2 id="formats-title" className="font-display text-[30px] leading-[1.08] sm:text-[40px]">
+              The formats
             </h2>
-            <p className="max-w-sm text-[14px] leading-relaxed text-ink-2">
-              One portrait shown in every format, so you can compare the pieces, not the pictures.
-            </p>
           </div>
           <FormatShowcase variant="compare" />
-
-          <div className="mt-16 grid gap-10 border-t border-line pt-8 sm:mt-20 md:grid-cols-2 md:gap-16">
-            <div>
-              <p className="label text-ink">See it before you pay</p>
-              <p className="mt-2 text-[14px] leading-relaxed text-ink-2">
-                Your portrait is free to preview, in any style, before you decide. Free US shipping, and the hi-res
-                file is included with every piece.
-              </p>
-            </div>
-            <div>
-              <p className="label text-ink">Every style, every piece</p>
-              <p className="mt-2 text-[14px] leading-relaxed text-ink-2">
-                Any of the styles works on any piece.{" "}
-                <Link href="/styles" className={textLink}>
-                  The collection
-                </Link>
-              </p>
-            </div>
-          </div>
         </Container>
       </section>
 
       <Block
-        id="included"
-        eyebrow="Everything included"
-        title="One price, everything included"
-        intro={
-          <>
-            <p className="font-display text-[36px] leading-none tracking-[-0.02em] text-ink sm:text-[44px]">{FROM_PRICE}</p>
-            <PriceAnchor className="mt-4" />
-          </>
-        }
-      >
-        <ValueStack />
-        <OfferCta className="mt-10" />
-        <GuaranteeNote className="mt-14" />
-      </Block>
-
-      <Block
         id="prices"
-        eyebrow="The price list"
-        title="The price you see is the price you pay"
-        intro={`No fake "compare at" prices, no countdown timers, no pre-checked add-ons. US shipping is included in every price.`}
+        title="Prices"
+        intro="US shipping is included in every price."
       >
         <DataTable
           caption="Prices by size and product"
@@ -162,7 +120,7 @@ export default function ShopPage() {
                   {digital.name}
                 </Link>
               ),
-              note: "Delivered instantly by email. Free with any print, framed print or canvas.",
+              note: "Delivered by email. Included with any print, framed print or canvas.",
               value: formatPrice(digital.variants[0].price),
             },
           ]}
@@ -177,31 +135,14 @@ export default function ShopPage() {
       </Block>
 
       {ADDONS.length > 0 && (
-        <Block
-          eyebrow={HEIRLOOM_SET.name}
-          title="Small companions"
-          intro={`With a print, framed print or canvas, you can add matching pieces. They're never pre-checked. ${HEIRLOOM_SET.line}`}
-        >
+        <Block title="Add-ons" intro="Optional, with a print, framed print or canvas.">
           <Facts
-            items={[
-              ...ADDONS.map((a) => ({ key: a.id, label: a.name, note: a.description, value: formatPrice(a.price) })),
-              {
-                key: "set",
-                label: "Both together",
-                note: `${HEIRLOOM_SET.name}: instead of ${formatPrice(HEIRLOOM_SET.addonsTotal)}`,
-                value: formatPrice(HEIRLOOM_SET.addonsTotal - HEIRLOOM_SET.discountCents),
-              },
-            ]}
+            items={ADDONS.map((a) => ({ key: a.id, label: a.name, note: a.description, value: formatPrice(a.price) }))}
           />
         </Block>
       )}
 
-      <CtaBand
-        eyebrow="Begin here"
-        title="Meet the portrait first"
-        body="See your portrait free in about a minute. Then choose a print, frame or canvas."
-        image="oil-classic"
-      />
+      <CtaBand image="modern" />
     </>
   );
 }

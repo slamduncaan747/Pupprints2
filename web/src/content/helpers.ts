@@ -14,7 +14,7 @@ import {
 } from "@/lib/catalog";
 import { formatPrice } from "@/lib/utils";
 
-/** Catalog style name, e.g. "oil-classic" -> "Old Master". */
+/** Catalog style name, e.g. "fine-line" -> "Line Drawing". */
 export function styleName(slug: StyleSlug) {
   return STYLE_MAP[slug].name;
 }

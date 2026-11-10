@@ -129,7 +129,7 @@ export function ProductLayout({
   );
 }
 
-/** Product-page title block: kicker, Bodoni name, optional price line. */
+/** Product-page title block: kicker, name, optional price line. */
 export function ProductTitle({
   kicker,
   title,
@@ -144,7 +144,7 @@ export function ProductTitle({
   return (
     <div className={className}>
       {kicker && <div className="mb-8">{kicker}</div>}
-      <h1 className="font-display text-[42px] leading-[1.02] tracking-[-0.02em] sm:text-[56px] xl:text-[64px]">{title}</h1>
+      <h1 className="font-display text-[38px] leading-[1.08] tracking-[-0.015em] sm:text-[52px] xl:text-[60px]">{title}</h1>
       {price && <p className="label mt-5 text-ink">{price}</p>}
     </div>
   );
@@ -152,7 +152,7 @@ export function ProductTitle({
 
 /**
  * One chapter of an editorial story: a large image running to the edge of the screen on one side,
- * a numeral, a short Bodoni line and a sentence or two on the other.
+ * a numeral, a short line and a sentence or two on the other.
  */
 export function Chapter({
   id,
@@ -181,7 +181,7 @@ export function Chapter({
         )}
       >
         <p className="label text-ink-3">{kicker}</p>
-        <h2 id={headingId} className="mt-6 max-w-lg font-display text-[40px] leading-[1.02] tracking-[-0.02em] sm:text-[56px] xl:text-[68px]">
+        <h2 id={headingId} className="mt-6 max-w-lg font-display text-[34px] leading-[1.08] tracking-[-0.015em] sm:text-[48px] xl:text-[56px]">
           {title}
         </h2>
         {children && <div className="mt-7 max-w-sm text-[15px] leading-relaxed text-ink-2">{children}</div>}

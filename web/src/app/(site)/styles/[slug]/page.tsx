@@ -20,7 +20,6 @@ import { Block, Facts, Note, Rows, textLink } from "@/components/marketing/block
 import { StyleCard } from "@/components/marketing/style-card";
 import { GOOD_FOR_LABELS, honestDescription, styleContent, stylesFor } from "@/components/marketing/style-content";
 import { fromPrice, toPrice, FRAME_LABELS } from "@/components/marketing/commerce";
-import { EFFORT_LINE, GuaranteeNote } from "@/components/marketing/offer";
 import { firstSentences } from "@/components/marketing/honest";
 import { breedsForStyle } from "@/content/breeds";
 
@@ -42,7 +41,7 @@ export async function generateMetadata({ params }: PageProps<"/styles/[slug]">):
   if (!styleAvailable(style)) {
     return {
       title: `${style.name} (retired)`,
-      description: `${style.name} has been retired. Explore the rest of the collection and preview any style free.`,
+      description: `${style.name} has been retired. See the rest of the collection.`,
       alternates: { canonical: `/styles/${style.slug}` },
       robots: { index: false, follow: true },
     };
@@ -91,7 +90,7 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
   const faqs: FaqItem[] = [
     {
       q: `Can I see my dog as ${style.name} before I buy?`,
-      a: `Yes. Upload a photo and your ${style.name} portrait appears free in about a minute. You can redo it as often as you like, or try other styles, and you only pay if you love it.`,
+      a: `Yes. Upload a photo and you'll see your ${style.name} portrait before you pay. You can redo it or try the other styles.`,
     },
     {
       q: `What photo works best for ${style.name}?`,
@@ -171,7 +170,6 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
               )),
             },
             { label: "Shown in", value: `${FRAME_LABELS[c.frame]} frame` },
-            { label: "Preview", value: "Free" },
           ]}
         />
         <p className="mt-9 font-display text-[22px] leading-[1.25] sm:text-[24px]">
@@ -180,8 +178,6 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
         <ButtonLink href={`/create?style=${style.slug}`} size="lg" className="mt-7 w-full">
           {OFFER.cta}
         </ButtonLink>
-        <p className="label mt-5 text-center text-ink-3">{EFFORT_LINE}</p>
-        <GuaranteeNote className="mt-9" link={false} />
         <Note className="mt-9 border-t border-line pt-6">Photo tip: {c.photoTip}</Note>
       </ProductLayout>
 
@@ -264,14 +260,14 @@ export default async function StylePage({ params }: PageProps<"/styles/[slug]">)
       <CtaBand
         eyebrow={style.name}
         title={`See your dog in ${style.name}`}
-        body={`Upload one photo and you'll see your own dog in ${style.name} in about a minute, before you pay anything.`}
+        body={`Upload a photo to see your own dog in ${style.name}.`}
         href={`/create?style=${style.slug}`}
       />
     </>
   );
 }
 
-/** A dated edition after its last day: a quiet note and the way back to the collection. */
+/** A dated edition after its last day: a short note and the way back to the collection. */
 function RetiredStyle({ style }: { style: ArtStyle }) {
   const others = stylesFor(style.goodFor, 4, style.slug);
   return (
@@ -280,8 +276,7 @@ function RetiredStyle({ style }: { style: ArtStyle }) {
         <p className="label text-ink-3">The Collection</p>
         <h1 className="mx-auto mt-5 max-w-2xl font-display text-[44px] leading-[1.02] sm:text-[72px]">{style.name}</h1>
         <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
-          {style.edition ? `${style.edition} ` : ""}It has been retired. Every other style is here, and every preview is
-          free.
+          {style.edition ? `${style.edition} ` : ""}It has been retired. Every other style is still here.
         </p>
         <div className="mt-12 flex flex-col items-center gap-5">
           <ButtonLink href="/styles" variant="primary" size="lg" className="w-full max-w-xs">

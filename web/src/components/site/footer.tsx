@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/site/newsletter-form";
 import { site, socialLinks } from "@/lib/config";
-import { GUARANTEE } from "@/lib/offer";
 
 const COLUMNS = [
   {
-    title: "Maison",
+    title: "About",
     links: [
       { href: "/about", label: "About" },
       { href: "/journal", label: "Journal" },
@@ -13,21 +12,21 @@ const COLUMNS = [
     ],
   },
   {
-    title: "Collection",
+    title: "Shop",
     links: [
-      { href: "/styles", label: "The styles" },
-      { href: "/shop", label: "Canvas & prints" },
+      { href: "/styles", label: "Styles" },
+      { href: "/shop", label: "Prints & canvas" },
       { href: "/gifts", label: "Gifts" },
       { href: "/breeds", label: "By breed" },
     ],
   },
   {
-    title: "Client services",
+    title: "Help",
     links: [
-      { href: "/how-it-works", label: "The process" },
+      { href: "/how-it-works", label: "How it works" },
       { href: "/faq", label: "FAQ" },
       { href: "/shipping", label: "Shipping" },
-      { href: "/guarantee", label: GUARANTEE.name },
+      { href: "/guarantee", label: "Returns" },
       { href: "/track", label: "Track an order" },
       { href: "/contact", label: "Contact" },
     ],
@@ -39,9 +38,9 @@ export function Footer() {
     <footer className="mt-auto bg-paper">
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-14 border-t border-line px-5 py-16 sm:px-10 md:grid-cols-[1.2fr_2fr]">
         <div className="min-w-0 max-w-sm">
-          <p className="label">The newsletter</p>
+          <p className="label">Newsletter</p>
           <p className="mt-4 text-[14px] leading-relaxed text-ink-2">
-            New styles, private previews and 10% off your first portrait.
+            New styles, and 10% off your first portrait.
           </p>
           <NewsletterForm source="footer" className="mt-6" />
         </div>
@@ -65,7 +64,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1440px] px-5 sm:px-10">
         <p
           aria-hidden="true"
-          className="select-none whitespace-nowrap text-center font-display uppercase leading-[0.8] tracking-[0.06em] text-[13.2vw] min-[1440px]:text-[190px]"
+          className="select-none whitespace-nowrap text-center font-display uppercase leading-[0.8] tracking-[0.04em] text-[13.2vw] min-[1440px]:text-[190px]"
         >
           Pup Prints
         </p>

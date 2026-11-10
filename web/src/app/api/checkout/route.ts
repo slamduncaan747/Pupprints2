@@ -4,7 +4,7 @@ import { after } from "next/server";
 import { z } from "zod";
 import { ADDONS, findAddon, findVariant, PRODUCT_MAP, SHIPPING_RATES, type FrameColor, type ProductType } from "@/lib/catalog";
 import { site } from "@/lib/config";
-import { applyBundles, GIFT_TWO, HEIRLOOM_SET, pickCheckoutDiscount, type DiscountOption } from "@/lib/offer";
+import { applyBundles, GIFT_TWO, pickCheckoutDiscount, type DiscountOption } from "@/lib/offer";
 import { db, previewUrl } from "@/lib/supabase/server";
 import { getSessionId } from "@/lib/session";
 import {
@@ -268,14 +268,12 @@ export async function POST(req: Request) {
     });
   }
 
-  // --- Bundles, priced from the catalog on the server's clock --------------------------
-  // GIFT_TWO first (Nov 1–Dec 10: two or more pieces → up to two ornaments at $0), then the
-  // Heirloom Set (ornament + mug together, $10 off a set) on the ornaments still paid for, so a
-  // free ornament is never discounted twice. Lines only partly in a bundle are split so every
-  // stored unit price is exact. Same function the product step uses for the price it shows.
+  // --- The one bundle, priced from the catalog on the server's clock --------------------
+  // GIFT_TWO (Nov 1–Dec 10: two or more pieces → up to two ornaments at $0). A line only partly
+  // in it is split so every stored unit price is exact. Same function the product step uses for
+  // the price it shows.
   const bundled = applyBundles(items);
   items.splice(0, items.length, ...bundled.lines);
-  const sets = bundled.heirloomSets;
   const freeOrnaments = bundled.freeOrnaments;
 
   // --- Attribution -------------------------------------------------------------------
@@ -390,9 +388,6 @@ export async function POST(req: Request) {
         const description = [
           i.petName ? `Portrait of ${i.petName}` : null,
           i.productType === "addon" ? findAddon(i.variantId)?.description : null,
-          i.bundle === "heirloom" && i.regularUnitAmount
-            ? `${HEIRLOOM_SET.name} price (regularly $${(i.regularUnitAmount / 100).toFixed(0)})`
-            : null,
           freeNote,
           i.productType === "digital" ? "Full-resolution file, no watermark. Delivered instantly." : null,
           i.frameColor ? `${i.frameColor.charAt(0).toUpperCase()}${i.frameColor.slice(1)} frame` : null,
@@ -421,7 +416,6 @@ export async function POST(req: Request) {
       giftSendNow: body.giftRecipientEmail && body.giftSendNow !== false ? "1" : "0",
       ...(applied ? { offer: applied } : {}),
       ...(referralUsed && partner ? { referral: partner.code } : {}),
-      ...(sets > 0 ? { heirloomSets: String(sets) } : {}),
       ...(freeOrnaments > 0 ? { giftTwoOrnaments: String(freeOrnaments) } : {}),
       ...(body.memorial ? { memorial: "1" } : {}),
     };
@@ -474,7 +468,7 @@ export async function POST(req: Request) {
       ];
       params.custom_text = {
         submit: {
-          message: `Every portrait is checked by a person before printing. Your hi-res digital file is included free.${
+          message: `Every portrait is checked by a person before printing. Your hi-res digital file is included.${
             freeOrnaments > 0
               ? ` ${freeOrnaments === 1 ? "A matching ornament ships" : "Two matching ornaments ship"} free with your portraits (${GIFT_TWO.name.toLowerCase()}, through ${GIFT_TWO.endsLabel}).`
               : ""

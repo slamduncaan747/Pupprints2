@@ -8,15 +8,12 @@ import type { StyleSlug } from "@/lib/catalog";
  */
 export const STYLE_SAMPLES: Record<StyleSlug, string> = {
   modern: "/samples/modern.webp",
-  watercolor: "/samples/watercolor.webp",
   "modern-sage": "/samples/modern-sage.webp",
+  watercolor: "/samples/watercolor.webp",
   "fine-line": "/samples/fine-line.webp",
   pastel: "/samples/pastel.webp",
   "modern-oil": "/samples/modern-oil.webp",
   charcoal: "/samples/charcoal.webp",
-  "oil-classic": "/samples/oil-classic.webp",
-  botanical: "/samples/botanical.webp",
-  linocut: "/samples/linocut.webp",
 };
 
 /**
@@ -35,7 +32,6 @@ export const BEFORE_AFTER: { before: string; after: string; style: StyleSlug; do
 /** Extra gallery portraits (various breeds/styles) for social-proof-free "wall of portraits" sections. */
 export const GALLERY: { src: string; style: StyleSlug; dog: string }[] = [
   { src: "/samples/gallery-1.webp", style: "modern-oil", dog: "Cavalier King Charles" },
-  { src: "/samples/gallery-2.webp", style: "linocut", dog: "French Bulldog" },
   { src: "/samples/gallery-3.webp", style: "watercolor", dog: "Cavapoo" },
   { src: "/samples/gallery-4.webp", style: "pastel", dog: "Poodle puppy" },
   { src: "/samples/gallery-5.webp", style: "modern-sage", dog: "Siberian Husky" },

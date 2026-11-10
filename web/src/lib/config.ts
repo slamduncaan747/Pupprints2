@@ -37,9 +37,11 @@ const social: Partial<Record<SocialNetwork, string>> = Object.fromEntries(
 export const site = {
   name: "Pup Prints",
   legalName: "Pup Prints",
-  tagline: "Your dog, as a piece of art for your home.",
+  tagline: "Your dog, as art.",
   description:
-    "Your dog, as a piece of art for your home. Made from your favorite photo as a modern illustration, watercolor, charcoal, oil and more. See your portrait free in about a minute, then order it as a print, canvas or framed piece.",
+    "Portraits of your dog, made from a photo. Upload one to see yours, then order it as a print, framed print, canvas or digital file.",
+  /** The one call to action, used on every button and link that leads to /create. */
+  cta: "Upload a photo",
   url: envValue(process.env.NEXT_PUBLIC_SITE_URL) ?? DEFAULT_SITE_URL,
   supportEmail: envValue(process.env.NEXT_PUBLIC_SUPPORT_EMAIL) ?? DEFAULT_SUPPORT_EMAIL,
   partnersEmail:

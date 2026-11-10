@@ -69,7 +69,7 @@ export async function generatePortrait(input: GeneratePortraitInput): Promise<Ge
   const providers = configuredProviders();
   if (providers.length === 0) throw new AiUnavailableError();
 
-  const prompt = buildStylePrompt(input.style);
+  const prompt = buildStylePrompt(input.style, { withName: input.withName });
   const deadline = input.deadline ?? Date.now() + PROVIDER_TIMEOUT_MS;
   const attempts: ProviderAttempt[] = [];
   const refusedFamilies = new Set<ModelFamily>();

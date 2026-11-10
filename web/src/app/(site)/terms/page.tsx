@@ -4,14 +4,14 @@ import { site } from "@/lib/config";
 import { LegalPage, type LegalSection } from "@/components/marketing/legal-page";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { CANADA_SHIPPING_LABEL } from "@/components/marketing/commerce";
-import { GUARANTEE, REFERRAL } from "@/lib/offer";
+import { REFERRAL } from "@/lib/offer";
 
 const usd = (cents: number) => `$${cents / 100}`;
 
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "The terms for using Pup Prints and ordering custom dog portraits, in plain English: previews, orders, shipping, our love-it guarantee, your photos and your portrait license.",
+    "The terms for using Pup Prints and ordering custom dog portraits, in plain English: previews, orders, shipping, returns, your photos and your portrait license.",
   alternates: { canonical: "/terms" },
 };
 
@@ -56,12 +56,11 @@ const SECTIONS: LegalSection[] = [
           portrait is generated, every version is a little different; you can regenerate or try other styles before you buy.
         </p>
         <p>
-          Portraits are digital artworks designed to look like paintings and drawings. They are not painted by hand. A person
-          on our team checks every print before it&apos;s printed.
+          Portraits are digital artworks designed to look like paintings and drawings. They are not painted by hand.
         </p>
         <p>
           Colors can look slightly different on paper or canvas than on a backlit screen. That&apos;s normal and not a defect,
-          though if you&apos;re unhappy with how your piece looks, our guarantee still applies.
+          though if you&apos;re unhappy with how your piece looks, our returns policy still applies.
         </p>
       </>
     ),
@@ -92,7 +91,7 @@ const SECTIONS: LegalSection[] = [
       <p>
         Every piece is made just for you after you order. If you need to change or cancel an order, email us as soon as
         possible. If it hasn&apos;t gone to print, we&apos;ll change or cancel it at no charge. Once printed, it&apos;s covered
-        by our love-it guarantee below. Being custom never takes away your rights under the guarantee.
+        by the returns policy below. Being custom never takes away your rights under that policy.
       </p>
     ),
   },
@@ -102,24 +101,24 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Delivery times shown on our site are estimates, not guarantees, and holiday order-by dates are guidance. We email
-        tracking when your order ships. If a package is lost or arrives damaged, we&apos;ll make it right as described in the
-        guarantee. Please make sure your shipping address is correct; if an order is returned because of an incorrect address,
+        tracking when your order ships. If a package is lost or arrives damaged, we&apos;ll replace or refund it as described under
+        returns below. Please make sure your shipping address is correct; if an order is returned because of an incorrect address,
         we&apos;ll work with you to reship it. See our <Link href="/shipping">shipping page</Link> for details.
       </p>
     ),
   },
   {
     id: "guarantee",
-    title: "Our love-it guarantee",
+    title: "Returns and refunds",
     body: (
       <>
         <ul>
           <li>
-            <strong>Don&apos;t love your printed piece?</strong> Tell us within 30 days of delivery and we&apos;ll remake it
+            <strong>Not happy with your printed piece?</strong> Tell us within 30 days of delivery and we&apos;ll remake it
             free or refund you in full. You choose.
           </li>
           <li>
-            <strong>Bought it as a gift?</strong> With {GUARANTEE.recipientName}, the person you give it to can ask for a
+            <strong>Bought it as a gift?</strong> The person you give it to can ask for a
             different style within 30 days of delivery, and we&apos;ll remake it free. They or you can ask by email; no receipt or
             return is needed.
           </li>
@@ -137,7 +136,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           Refunds go back to your original payment method. If we ever need a piece returned, we&apos;ll cover the return
           shipping. We ask only that claims are made honestly and in good faith. Read more on our{" "}
-          <Link href="/guarantee">guarantee page</Link>.
+          <Link href="/guarantee">returns page</Link>.
         </p>
       </>
     ),
@@ -196,10 +195,10 @@ const SECTIONS: LegalSection[] = [
   },
   {
     id: "gifts",
-    title: "Gift Reveals and gift cards",
+    title: "Gift links and gift cards",
     body: (
       <p>
-        A Gift Reveal is a private link to a digital preview of a gift order. Anyone with the link can view it, so share it
+        After you order, you get a private link to the finished portrait that you can share, for example with the person the gift is for. Anyone with the link can view it, so share it
         only with the people you intend to. Digital gift cards are not yet available; their terms will be published here
         before they go on sale.
       </p>
@@ -215,7 +214,7 @@ const SECTIONS: LegalSection[] = [
           {usd(REFERRAL.friendCents)} off their first order of {usd(REFERRAL.minimumCents)} or more (before shipping and tax).
         </li>
         <li>
-          When that friend&apos;s order is past its {REFERRAL.holdDays}-day guarantee window (counted from delivery) and
+          When that friend&apos;s order is past its {REFERRAL.holdDays}-day returns window (counted from delivery) and
           hasn&apos;t been refunded, we email you a single-use {usd(REFERRAL.rewardCents)} code, valid for one year on any
           order. Up to {usd(REFERRAL.rewardCents * REFERRAL.maxRewardsPerYear)} in rewards per year.
         </li>
@@ -295,7 +294,7 @@ export default function TermsPage() {
       <LegalPage
         eyebrow="Terms"
         title="Terms of service"
-        lede={<p>The rules of the road, written to be read. The short version: see it first, love it or it&apos;s on us.</p>}
+        lede={<p>Written to be read.</p>}
         updated={UPDATED}
         sections={SECTIONS}
       />

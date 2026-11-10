@@ -100,7 +100,7 @@ export function GeneratingView({
       >
         <div className="h-full bg-ink transition-[width] duration-700 ease-out" style={{ width: `${Math.max(2, pct)}%` }} />
       </div>
-      <p className="label mt-5 text-ink-3">Usually under a minute. Keep this page open.</p>
+      <p className="label mt-5 text-ink-3">Keep this page open.</p>
 
       <button type="button" onClick={onCancel} className="link-cta mt-8 inline-flex min-h-11 items-center">
         Choose another style

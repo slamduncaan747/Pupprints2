@@ -99,7 +99,7 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
           <Container className="pb-14 pt-12 text-center sm:pb-20 sm:pt-20">
             <ContentBreadcrumbs items={crumbs} className="mx-auto max-w-3xl [&_ol]:justify-center" />
             <p className="label mt-14 text-ink-3 sm:mt-20">{category.label}</p>
-            <h1 className="mx-auto mt-6 max-w-5xl font-display text-[40px] leading-[1.03] tracking-[-0.02em] sm:text-[64px] lg:text-[80px]">
+            <h1 className="mx-auto mt-6 max-w-5xl font-display text-[40px] leading-[1.08] tracking-[-0.02em] sm:text-[64px] lg:text-[80px]">
               {article.title}
             </h1>
             <p className="mx-auto mt-8 max-w-xl text-[17px] leading-relaxed text-ink-2 sm:text-[19px]">{article.description}</p>
@@ -161,7 +161,7 @@ export default async function ArticlePage({ params }: PageProps<"/journal/[slug]
           <Container>
             <div className="border-t border-line pb-20 pt-8 sm:pb-28 sm:pt-10">
               <p className="label text-ink-3">From the Journal</p>
-              <h2 id="related-title" className="mt-5 font-display text-[30px] leading-[1.06] sm:text-[40px]">
+              <h2 id="related-title" className="mt-5 font-display text-[30px] leading-[1.08] sm:text-[40px]">
                 Keep reading
               </h2>
               <ul className="mt-12 grid gap-y-8 sm:mt-14 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-16 lg:grid-cols-3">

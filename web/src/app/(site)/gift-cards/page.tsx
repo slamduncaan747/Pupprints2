@@ -11,7 +11,7 @@ import { itemLabel, itemsCoveredBy } from "@/components/marketing/commerce";
 export const metadata: Metadata = {
   title: "Digital Gift Cards — Coming Soon",
   description:
-    "Pup Prints digital gift cards are coming soon: the recipient chooses their own photo and style. Join the list to hear when they launch, or send a Gift Reveal today.",
+    "Pup Prints digital gift cards are coming soon: the recipient chooses their own photo and style. Join the list to hear when they launch.",
   alternates: { canonical: "/gift-cards" },
 };
 
@@ -20,7 +20,7 @@ const AMOUNTS = [5000, 7500, 10000, 15000, 20000];
 
 const STEPS = [
   { title: "You send it", body: "Choose an amount and add a note. The gift card arrives in their inbox by email." },
-  { title: "They upload a photo", body: "They choose their favorite photo of their dog and see the portrait free." },
+  { title: "They upload a photo", body: "They choose their favorite photo of their dog and see the portrait." },
   { title: "They choose the style", body: "Every style, every product. They pick what suits their home, and we print and ship it." },
 ];
 
@@ -31,7 +31,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: "I need a gift now. What can I do?",
-    a: "Make the portrait yourself from a photo of their dog, then send a Gift Reveal the moment you order. They see their portrait instantly, and the print follows in the mail.",
+    a: "Make the portrait yourself from a photo of their dog. The digital file arrives by email right after checkout, and the print follows in the mail.",
     link: { href: "/gifts", label: "See gift ideas" },
   },
   {
@@ -45,18 +45,18 @@ export default function GiftCardsPage() {
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
       <PageHero
-        eyebrow="Gift cards · Coming soon"
-        title="Let them choose"
-        lede="For someone whose dog you don't have a great photo of, or who'd love to pick their own style. Join the list and we'll tell you the moment gift cards are ready."
+        eyebrow="Coming soon"
+        title="Gift cards"
+        lede="For someone who would rather pick their own photo and style. Join the list and we'll email you when gift cards are ready."
       >
         <NewsletterForm
           source="gift_cards"
           cta="Notify me"
-          successMessage="You're on the list. We'll email you the moment gift cards go live."
+          successMessage="You're on the list. We'll email you when gift cards are ready."
         />
       </PageHero>
 
-      <Block eyebrow="Planned amounts" title="The whole amount, for the portrait" intro="US shipping is free on every order, so nothing is lost to delivery.">
+      <Block title="Planned amounts" intro="US shipping is free on every order.">
         <Rows
           items={AMOUNTS.map((amount) => ({
             key: String(amount),
@@ -66,19 +66,15 @@ export default function GiftCardsPage() {
         />
       </Block>
 
-      <Block eyebrow="How it will work" title="They pick, we print">
+      <Block title="How it will work">
         <Rows numbered items={STEPS} />
       </Block>
 
-      <Block titleStyle="label" title="About gift cards">
+      <Block titleStyle="label" title="Questions">
         <FaqList items={FAQS} />
       </Block>
 
-      <CtaBand
-        eyebrow="A gift today"
-        title="Make their portrait today"
-        body="Upload a photo of their dog, see it free in about a minute, and send a Gift Reveal instantly."
-      />
+      <CtaBand title="Start with a photo of their dog." />
     </>
   );
 }

@@ -3,7 +3,7 @@ import { Logo } from "@/components/ui/paw";
 
 const sideLink = "label inline-flex h-11 items-center px-2 transition-opacity hover:opacity-60";
 
-/** Focused boutique shell for the creation flow: Close, the wordmark, Client services. No nav, no footer. */
+/** Focused boutique shell for the creation flow: Close, the wordmark, Help. No nav, no footer. */
 export default function CreateLayout({ children }: LayoutProps<"/create">) {
   return (
     <>
@@ -15,8 +15,7 @@ export default function CreateLayout({ children }: LayoutProps<"/create">) {
           <Logo className="[&>span]:text-[19px] sm:[&>span]:text-[26px]" />
         </Link>
         <Link href="/faq" className={`${sideLink} justify-self-end`}>
-          <span className="sm:hidden">Help</span>
-          <span className="hidden sm:inline">Client services</span>
+          Help
         </Link>
       </header>
       <main id="main" className="flex-1">

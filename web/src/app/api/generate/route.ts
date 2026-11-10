@@ -3,7 +3,7 @@ import { getStyle, isRetiredStyle, styleAvailable } from "@/lib/catalog";
 import { env } from "@/lib/env";
 import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
 import { makeWatermarkedPreview, toPrintMaster } from "@/lib/image";
-import { addNameLettering } from "@/lib/image/lettering";
+import { letteringText, letterName } from "@/lib/image/lettering";
 import { BUCKETS, db, previewUrl, signedUrl } from "@/lib/supabase/server";
 import { storeObject } from "@/lib/image/storage";
 import { ensureSessionId, getIpHash, sessionStorageFolder } from "@/lib/session";
@@ -25,7 +25,9 @@ const Body = z.object({
     .max(40)
     .optional()
     .transform((v) => (v ? v : undefined)),
-  /** "This portrait is in memory of my dog" (the gentle track), stored on the generation. */
+  /** "Add the name to the portrait": letter petName at the top, on any style. Off unless true. */
+  nameOnArt: z.boolean().optional(),
+  /** The gentle track, stored on the generation. The create flow no longer sends it. */
   memorial: z.boolean().optional(),
 });
 
@@ -151,7 +153,7 @@ export async function POST(req: Request) {
       {
         error: "rate_limited",
         message:
-          "You've reached today's limit for free previews. Your portraits are saved, and you can make more tomorrow.",
+          "You've reached today's limit for previews. Your portraits are saved, and you can make more tomorrow.",
       },
       429,
     );
@@ -179,17 +181,22 @@ export async function POST(req: Request) {
     const imageBytes = Buffer.from(await file.arrayBuffer());
     const imageUrl = await signedUrl("uploads", upload.storage_path, 60 * 10);
 
+    // The name is lettered only when the customer asked for it and it is one we can set.
+    const withName = body.nameOnArt === true && letteringText(body.petName) !== null;
+
     const result = await generatePortrait({
       imageUrl,
       imageBytes,
       mime: "image/jpeg",
       style: style.slug,
       petName: body.petName,
+      withName,
       deadline: started + AI_BUDGET_MS,
     });
 
-    // Modern styles carry the dog's name in small capitals; it is type we set, never the model's.
-    const art = style.lettering ? await addNameLettering(result.bytes, body.petName, style.ground) : result.bytes;
+    // The name is type we set, never the model's. Flat-ground styles (Modern) are also set to their
+    // exact ground color, name or not. On other styles the name is left off if the head is in its way.
+    const { bytes: art, lettered } = await letterName(result.bytes, withName ? body.petName : null, style.ground);
     const [master, preview] = await Promise.all([toPrintMaster(art), makeWatermarkedPreview(art)]);
     // Never put the raw session id in object paths: preview URLs are public.
     const folder = sessionStorageFolder(sessionId);
@@ -227,6 +234,7 @@ export async function POST(req: Request) {
       status: "succeeded",
       previewUrl: previewUrl(previewPath),
       style: style.slug,
+      nameOnArt: lettered,
       width: preview.width,
       height: preview.height,
     });

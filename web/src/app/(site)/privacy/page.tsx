@@ -55,7 +55,7 @@ const SECTIONS: LegalSection[] = [
           </li>
           <li>
             <strong>Order details</strong> like your shipping address, the products you buy and, for gifts, the
-            recipient&apos;s name and email address if you choose to send them a Gift Reveal.
+            recipient&apos;s name and email address if you choose to share a portrait with them by email.
           </li>
           <li>
             <strong>Messages</strong> you send us through our contact form or by email.
@@ -91,8 +91,8 @@ const SECTIONS: LegalSection[] = [
     body: (
       <ul>
         <li>To create your portrait previews and the final artwork.</li>
-        <li>To process payments, print and ship your order, and send order, shipping and Gift Reveal emails.</li>
-        <li>To answer your questions and honor our love-it guarantee.</li>
+        <li>To process payments, print and ship your order, and send order, shipping and gift emails.</li>
+        <li>To answer your questions and handle returns.</li>
         <li>To send marketing emails if you&apos;ve signed up (you can unsubscribe any time).</li>
         <li>To understand how our site is used, improve it, and measure whether our ads work.</li>
         <li>To credit creator and affiliate partners when you arrive through their link.</li>
@@ -195,7 +195,7 @@ const SECTIONS: LegalSection[] = [
       <p>
         If you join our email list, we&apos;ll send you occasional emails about new styles, offers and holiday shipping dates.
         Every marketing email has an unsubscribe link, and unsubscribing takes effect promptly. We&apos;ll still send emails
-        about orders you place, like confirmations, Gift Reveals and shipping updates.
+        about orders you place, like confirmations, gift emails and shipping updates.
       </p>
     ),
   },
@@ -205,7 +205,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         We keep your photos, previews and portraits only as long as we need them to create, fulfill and support your order
-        (including remakes under our guarantee) and to let you come back to your previews, unless you ask us to delete them
+        (including remakes under our returns policy) and to let you come back to your previews, unless you ask us to delete them
         sooner. We keep order and payment records as long as needed for tax, accounting and legal reasons. Marketing contacts
         are kept until you unsubscribe or ask us to delete them.
       </p>

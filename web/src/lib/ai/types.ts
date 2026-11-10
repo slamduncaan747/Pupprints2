@@ -44,6 +44,11 @@ export type GeneratePortraitInput = {
   mime: string;
   style: StyleSlug;
   petName?: string;
+  /**
+   * The dog's name will be lettered at the top afterwards: ask the model for empty background
+   * there. The name itself is never sent to the model.
+   */
+  withName?: boolean;
   /** Absolute epoch-ms deadline for the whole provider chain. */
   deadline?: number;
 };

@@ -6,10 +6,10 @@ import { STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
 
 /**
- * The six styles that open the collection on the home page: the most at home in a
- * living room. In layout order, two per column, so dark and pale pieces alternate.
+ * The six styles that open the collection on the home page, in layout order, two per column, so
+ * dark and pale pieces alternate. Modern Sage (Modern on another background) is on /styles.
  */
-const CURATED: StyleSlug[] = ["modern", "watercolor", "modern-sage", "charcoal", "fine-line", "oil-classic"];
+const CURATED: StyleSlug[] = ["modern", "watercolor", "modern-oil", "fine-line", "pastel", "charcoal"];
 
 /**
  * Three staggered columns of two looks each (desktop): within a column one look runs the full width
@@ -47,7 +47,7 @@ export function Collection() {
             </h2>
           </div>
           <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-ink-2 lg:mt-0 lg:pb-2">
-            {count} styles, each made for one subject. Try every one with your own photo, free.
+            {count} styles. Pick one to start with your own photo.
           </p>
         </div>
 
@@ -66,7 +66,7 @@ export function Collection() {
                   >
                     <Link
                       href={`/create?style=${style.slug}`}
-                      aria-label={`${style.name}: create your free portrait in this style`}
+                      aria-label={`${style.name}: start a portrait in this style`}
                       className="group block"
                     >
                       {/* ZoomImage (SampleImage) shows the style's swatch if its sample file isn't in place yet. */}

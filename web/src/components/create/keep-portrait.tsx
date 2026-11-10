@@ -44,7 +44,6 @@ export function KeepPortrait({
   petName,
   watchIdle,
   suppressed,
-  memorial = false,
 }: {
   generationId: string;
   previewUrl: string;
@@ -53,8 +52,6 @@ export function KeepPortrait({
   watchIdle: boolean;
   /** True once the visitor is on the way to checkout. */
   suppressed: boolean;
-  /** The gentle track: no offer line, and the saved lead gets no offers by email. */
-  memorial?: boolean;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const shownRef = useRef(false);
@@ -148,14 +145,13 @@ export function KeepPortrait({
           </h2>
           <p className="mt-3 text-[13px] leading-relaxed text-ink-2">
             We&apos;ll email you {name ? `${name}'s` : "your"} preview so you can come back to it whenever you&apos;re
-            ready. No account needed.
+            ready.
           </p>
           <EmailCapture
             className="mt-5"
             source="save_preview"
             generationId={generationId}
             petName={name || undefined}
-            memorial={memorial}
             cta="Send"
             doneMessage="Sent. Your portrait is waiting in your inbox."
             onDone={() => {

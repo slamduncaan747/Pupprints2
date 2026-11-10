@@ -8,11 +8,11 @@ export const alt = "A Pup Prints gift";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/** Bodoni Moda subset from Google Fonts (TTF); falls back to the default font when offline. */
+/** Newsreader subset from Google Fonts (TTF); falls back to the default font when offline. */
 async function loadSerif(text: string): Promise<ArrayBuffer | null> {
   try {
     const css = await fetch(
-      `https://fonts.googleapis.com/css2?family=Bodoni+Moda&text=${encodeURIComponent(text)}`,
+      `https://fonts.googleapis.com/css2?family=Newsreader&text=${encodeURIComponent(text)}`,
       {
         headers: {
           // An old Safari UA makes Google Fonts return a TTF (Satori can't read WOFF2).
@@ -60,12 +60,10 @@ export default async function Image({ params }: { params: Promise<{ token: strin
     : "A gift for you";
   const sub = data?.senderName ? `From ${data.senderName}` : "Made with Pup Prints";
   const pet = data?.petName
-    ? data.kind === "gift"
-      ? `${data.petName}, as a work of art`
-      : `A portrait of ${data.petName}`
-    : "A one-of-a-kind portrait";
+    ? `A portrait of ${data.petName}`
+    : "A portrait";
   const [font, portrait] = await Promise.all([loadSerif(`${headline}${pet}PUP PRINTS${sub.toUpperCase()}TAP TO REVEAL`), portraitDataUri(data?.imagePath ?? null)]);
-  const serif = font ? "Bodoni Moda" : undefined;
+  const serif = font ? "Newsreader" : undefined;
 
   return new ImageResponse(
     (
@@ -118,7 +116,7 @@ export default async function Image({ params }: { params: Promise<{ token: strin
     ),
     {
       ...size,
-      fonts: font ? [{ name: "Bodoni Moda", data: font, style: "normal", weight: 400 }] : undefined,
+      fonts: font ? [{ name: "Newsreader", data: font, style: "normal", weight: 400 }] : undefined,
     },
   );
 }

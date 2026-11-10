@@ -4,14 +4,15 @@ import { SampleImage } from "@/components/ui/sample-image";
 import { OfferCta } from "@/components/marketing/offer";
 import { STYLE_MAP } from "@/lib/catalog";
 import { campaign } from "@/lib/campaign";
-import { OFFER } from "@/lib/offer";
 import { GALLERY } from "@/lib/samples";
 import { BLEED_PAD_LEFT } from "@/components/marketing/page-hero";
 import { cn } from "@/lib/utils";
 
+/** The line under the headline: what it is, in one sentence. */
+const SUB = "A portrait made from your photo, as a print, framed print or canvas.";
+
 /**
- * The campaign, then the offer in one breath: the dream outcome as the headline, free and fast in
- * the line beneath, one black button and the effort line.
+ * One picture, one headline, one sentence, one button to /create.
  *
  * With the campaign photographs in place, one full-bleed scene: hero-wide from tablet up (the type
  * sits on the calm left of the wall from laptop up), hero-tall on phones (the headline on its calm
@@ -27,10 +28,10 @@ function HeroTitle({ className }: { className?: string }) {
   return (
     <h1
       id="hero-title"
-      className={cn("font-display text-[44px] leading-[1.02] tracking-[-0.02em] sm:text-[64px]", className)}
+      className={cn("font-display text-[46px] leading-[1.08] tracking-[-0.02em] sm:text-[64px]", className)}
     >
-      Your dog, <br className="sm:hidden" />
-      immortalized.
+      Your dog, <br />
+      as art.
     </h1>
   );
 }
@@ -41,7 +42,7 @@ const SCENE_H = "md:h-[min(calc(100svh-7rem),56.25vw)] md:min-h-[400px]";
 /**
  * Laptop up, the type must stay on the calm left of the wall (about 36% of the scene's width) at
  * every screen size. The scene scales with the viewport, so the type does too: the headline is 5vw
- * (52–76px, "immortalized." is about 5.95em wide), and on very wide screens the left edge stops
+ * (52–76px, in two short lines), and on very wide screens the left edge stops
  * following the 1440px container once that would push the headline past 36vw.
  */
 const HERO_PAD = cn(BLEED_PAD_LEFT, "2xl:pl-[min(max(2.5rem,calc((100vw-1440px)/2+2.5rem)),calc(36vw-452px))]");
@@ -96,8 +97,7 @@ function CampaignHero() {
         )}
       >
         <div className="lg:max-w-[34vw]">
-          <p className="label hidden text-ink-2 lg:block">The Portrait Collection</p>
-          <HeroTitle className="lg:mt-6 lg:text-[length:clamp(52px,5vw,76px)]" />
+          <HeroTitle className="lg:text-[length:clamp(52px,5vw,76px)]" />
         </div>
       </div>
 
@@ -110,9 +110,8 @@ function CampaignHero() {
         )}
       >
         <div className="mx-auto max-w-md lg:mx-0 lg:max-w-[min(30vw,400px)]">
-          <p className="text-[15px] leading-relaxed text-ink-2 sm:text-[16px]">{OFFER.promise}</p>
-          {/* The effort line in ink-2, not ink-3: on the limewashed wall ink-3 falls under 4.5:1. */}
-          <OfferCta className="mt-6 sm:mt-8 lg:items-start lg:text-left [&>p]:text-ink-2" align="center" />
+          <p className="text-[16px] leading-relaxed text-ink-2 sm:text-[17px]">{SUB}</p>
+          <OfferCta className="mt-6 sm:mt-8 lg:items-start lg:text-left" align="center" />
         </div>
       </div>
     </section>
@@ -144,7 +143,7 @@ function TriptychHero() {
               priority={i === MOBILE_PANEL}
               className={cn(
                 "aspect-square md:aspect-auto",
-                // Leave room below for the line, the button and the effort line on desktop screens.
+                // Leave room below for the line and the button on desktop screens.
                 "md:h-[min(41.67vw,max(calc(100svh_-_21rem),30vw))]",
                 i !== MOBILE_PANEL && "hidden md:block",
               )}
@@ -155,11 +154,10 @@ function TriptychHero() {
 
       <Container className="flex flex-col items-center pt-7 text-center sm:pt-12 lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-10 lg:pt-10 lg:text-left">
         <div className="lg:col-span-7">
-          <p className="label hidden text-ink-3 sm:block">The Portrait Collection</p>
-          <HeroTitle className="sm:mt-5 lg:text-[60px] xl:text-[72px]" />
+          <HeroTitle className="lg:text-[60px] xl:text-[72px]" />
         </div>
         <div className="mt-4 w-full max-w-md sm:mt-6 lg:col-span-5 lg:mt-0 lg:max-w-none lg:pb-1.5">
-          <p className="text-[15px] leading-relaxed text-ink-2 sm:text-[16px]">{OFFER.promise}</p>
+          <p className="text-[16px] leading-relaxed text-ink-2 sm:text-[17px]">{SUB}</p>
           <OfferCta className="mt-6 lg:items-start lg:text-left" align="center" />
         </div>
       </Container>

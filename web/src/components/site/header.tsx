@@ -4,16 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/ui/paw";
-import { OFFER } from "@/lib/offer";
+import { site } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/styles", label: "Collection" },
+  { href: "/styles", label: "Styles" },
   { href: "/shop", label: "Shop" },
   { href: "/gifts", label: "Gifts" },
 ];
 
-const NAV_RIGHT = [{ href: "/how-it-works", label: "The Process" }];
+const NAV_RIGHT = [{ href: "/how-it-works", label: "How it works" }];
 
 export function Header() {
   const pathname = usePathname();
@@ -63,8 +63,14 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <Link href="/create" className="label whitespace-nowrap underline underline-offset-[6px] transition-opacity hover:opacity-60">
-            Create free
+          <Link
+            href="/create"
+            aria-label={site.cta}
+            className="label whitespace-nowrap underline underline-offset-[6px] transition-opacity hover:opacity-60"
+          >
+            {/* Phones: one word, so the wordmark stays centred between "Menu" and the link. */}
+            <span className="sm:hidden">Upload</span>
+            <span className="hidden sm:inline">{site.cta}</span>
           </Link>
         </div>
       </div>
@@ -73,14 +79,14 @@ export function Header() {
         // Hangs from the header itself, so it starts right below it whether or not the top line is showing.
         <div className="absolute inset-x-0 top-full z-40 h-[calc(100dvh-4rem)] overflow-y-auto bg-paper md:hidden">
           <nav className="flex flex-col gap-6 px-5 pt-10" aria-label="Mobile">
-            {[...NAV, ...NAV_RIGHT, { href: "/create", label: OFFER.cta }].map((item) => (
+            {[...NAV, ...NAV_RIGHT, { href: "/create", label: site.cta }].map((item) => (
               <Link key={item.href} href={item.href} className="font-display text-[34px] leading-none">
                 {item.label}
               </Link>
             ))}
             <div className="mt-8 flex flex-col gap-4">
               {[
-                { href: "/faq", label: "Client services" },
+                { href: "/faq", label: "Help" },
                 { href: "/track", label: "Track an order" },
                 { href: "/journal", label: "Journal" },
               ].map((item) => (

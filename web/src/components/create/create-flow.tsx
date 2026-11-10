@@ -192,8 +192,14 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
       return;
     }
     const upload = s.upload;
+    const petName = s.petName.trim() || undefined;
+    /** "Add the name to the portrait" only means something when there is a name. */
+    const nameOnArt = Boolean(petName) && s.nameOnArt;
     if (!opts.force) {
-      const existing = s.generations.find((g) => g.uploadId === upload.uploadId && g.style === style);
+      // Reuse this style's portrait unless it was made with the other name choice.
+      const existing = s.generations.find(
+        (g) => g.uploadId === upload.uploadId && g.style === style && (g.nameAsked === undefined || g.nameAsked === nameOnArt),
+      );
       if (existing) {
         updateFlow((st) => ({ ...st, activeId: existing.generationId }));
         setJob({ kind: "idle" });
@@ -213,11 +219,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
     track("GeneratePreview", { style, regenerate: Boolean(opts.force) });
 
     try {
-      const petName = s.petName.trim() || undefined;
-      const res = await generatePortrait(
-        { uploadId: upload.uploadId, style, petName, ...(s.memorial ? { memorial: true } : {}) },
-        controller.signal,
-      );
+      const res = await generatePortrait({ uploadId: upload.uploadId, style, petName, nameOnArt }, controller.signal);
       const gen: Generation = {
         generationId: res.generationId,
         style: res.style,
@@ -225,6 +227,8 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
         createdAt: new Date().toISOString(),
         uploadId: upload.uploadId,
         petName: petName ?? null,
+        nameAsked: nameOnArt,
+        named: res.nameOnArt === true,
       };
       updateFlow((st) => ({ ...st, generations: mergeGenerations(st.generations, [gen]), activeId: gen.generationId }));
       setJob({ kind: "idle" });
@@ -303,7 +307,8 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
           active={active}
           generations={currentGens}
           petName={flow.petName}
-          memorial={flow.memorial}
+          nameOnArt={flow.nameOnArt}
+          onNameChange={() => void generate(active.style, { force: true })}
           onSelect={(id) => updateFlow((s) => ({ ...s, activeId: id }))}
           onLoveIt={() => goTo("product")}
           onTryAnother={() => {
@@ -320,7 +325,6 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
             <JobError
               job={job}
               petName={flow.petName}
-              memorial={flow.memorial}
               hasPreviews={currentGens.length > 0}
               onRetry={() => void generate(job.style, { force: true })}
               onDismiss={() => setJob({ kind: "idle" })}
@@ -333,7 +337,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
           <StyleGrid
             upload={flow.upload}
             petName={flow.petName}
-            memorial={flow.memorial}
+            nameOnArt={flow.nameOnArt}
             generations={currentGens}
             highlighted={job.kind === "error" ? job.style : preselected}
             onPick={(style) => void generate(style)}
@@ -388,7 +392,6 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
           petName={flow.petName}
           watchIdle={step === "product"}
           suppressed={checkingOut}
-          memorial={flow.memorial}
         />
       )}
       {flow.upload && step === "upload" && (
@@ -476,7 +479,6 @@ function GiftOrder({
 function JobError({
   job,
   petName,
-  memorial,
   hasPreviews,
   onRetry,
   onDismiss,
@@ -484,7 +486,6 @@ function JobError({
 }: {
   job: Extract<Job, { kind: "error" }>;
   petName: string;
-  memorial: boolean;
   hasPreviews: boolean;
   onRetry: () => void;
   onDismiss: () => void;
@@ -509,7 +510,6 @@ function JobError({
           source="ai_unavailable"
           generationId={job.generationId}
           petName={petName.trim() || undefined}
-          memorial={memorial}
           cta="Notify me"
           doneMessage="Thank you. We'll email your preview as soon as it's ready."
         />
@@ -521,7 +521,7 @@ function JobError({
     return (
       <div role="alert" className={box}>
         <p className={title}>{style ? `${style.name} has been retired.` : "That style has been retired."}</p>
-        <p className={body}>Every other style is still here, and every preview is free.</p>
+        <p className={body}>Every other style is still here.</p>
         <button type="button" onClick={onDismiss} className={buttonClasses("primary", "lg", "mt-7")}>
           Choose another style
         </button>

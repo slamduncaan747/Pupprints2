@@ -9,7 +9,7 @@ export const photoGuide: ArticleInput = {
     "The photo is the biggest factor in a great dog portrait. How to get a sharp, well-lit, eye-level shot on your phone, plus what to do with old or imperfect photos.",
   date: "2026-10-01",
   category: "photo-tips",
-  heroStyle: "oil-classic",
+  heroStyle: "modern",
   keywords: [
     "how to photograph your dog for a portrait",
     "best photo for pet portrait",
@@ -115,7 +115,7 @@ export const photoGuide: ArticleInput = {
         styleLink("watercolor") +
         " and " +
         styleLink("charcoal") +
-        ". Because the preview is free, the simplest thing is to try a few and see.",
+        ". The simplest thing is to try a few and see.",
     },
     { type: "paragraph", text: "A few things help when you're working with older photos:" },
     {
@@ -147,10 +147,10 @@ export const photoGuide: ArticleInput = {
     {
       type: "cta",
       title: "Got the shot? See it as art.",
-      body: "Upload your photo and see your portrait free in about a minute. Try every style, redo it as often as you like, and only order if you love it.",
+      body: "Upload your photo to see the portrait. Try every style, as often as you like.",
       href: "/create",
-      label: "Create your free preview",
-      style: "oil-classic",
+      label: "Upload a photo",
+      style: "modern",
     },
   ],
 };

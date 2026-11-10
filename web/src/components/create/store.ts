@@ -29,6 +29,10 @@ export type Generation = {
   createdAt: string;
   uploadId: string | null;
   petName?: string | null;
+  /** The customer asked for the name on this portrait (unknown for portraits restored from the server). */
+  nameAsked?: boolean;
+  /** The name was actually lettered (it is left off when the head is where the name would sit). */
+  named?: boolean;
 };
 
 export type Selection = {
@@ -45,30 +49,18 @@ export type Selection = {
 /** Most of one piece the product step offers in a single order. */
 export const MAX_QUANTITY = 5;
 
-export type Gift = {
-  enabled: boolean;
-  senderName: string;
-  recipientName: string;
-  recipientEmail: string;
-  message: string;
-};
-
 export type FlowState = {
   v: 1;
   step: Step;
   upload: UploadInfo | null;
   petName: string;
+  /** "Add the name to the portrait": letter petName on new portraits, in any style. On by default. */
+  nameOnArt: boolean;
   generations: Generation[];
   activeId: string | null;
   selection: Selection;
-  gift: Gift;
   /** A creator code the visitor entered on the product step (validated by /api/offer). */
   creatorCode: string;
-  /**
-   * "This portrait is in memory of my dog": the gentle track. No urgency or promotions anywhere in
-   * the flow; passed to /api/generate, /api/leads and /api/checkout so emails stay gentle too.
-   */
-  memorial: boolean;
   /** Set by "Start over": server-side history older than this is not restored. */
   resetAt: number | null;
 };
@@ -80,6 +72,7 @@ export const INITIAL: FlowState = {
   step: "upload",
   upload: null,
   petName: "",
+  nameOnArt: true,
   generations: [],
   activeId: null,
   selection: {
@@ -90,9 +83,7 @@ export const INITIAL: FlowState = {
     shipCountry: "US",
     quantity: 1,
   },
-  gift: { enabled: false, senderName: "", recipientName: "", recipientEmail: "", message: "" },
   creatorCode: "",
-  memorial: false,
   resetAt: null,
 };
 
@@ -128,12 +119,11 @@ function sanitize(raw: unknown): FlowState {
     step,
     upload,
     petName: typeof s.petName === "string" ? s.petName.slice(0, 40) : "",
+    nameOnArt: s.nameOnArt !== false,
     generations,
     activeId,
     selection,
-    gift: { ...INITIAL.gift, ...(s.gift ?? {}) },
     creatorCode: typeof s.creatorCode === "string" ? s.creatorCode.slice(0, 40) : "",
-    memorial: s.memorial === true,
     resetAt: typeof s.resetAt === "number" ? s.resetAt : null,
   };
 }

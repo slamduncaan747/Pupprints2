@@ -123,7 +123,7 @@ export const sizeGuide: ArticleInput = {
         "**Tape it out.** Mark the size on the wall with painter's tape or a sheet of paper and live with it for a day.",
         "**When in doubt, go bigger.** Art that's slightly too large almost always looks better than art that's slightly too small.",
         "**Think about viewing distance.** Pieces seen from across a room need to be bigger than pieces seen up close.",
-        `**Let the style guide you.** Detailed styles like ${styleLink("fine-line")} reward a closer look; bold styles like ${styleLink("modern-oil")} and ${styleLink("linocut")} read beautifully from across the room.`,
+        `**Let the style guide you.** Detailed styles like ${styleLink("fine-line")} reward a closer look; bold styles like ${styleLink("modern-oil")} and ${styleLink("charcoal")} read well from across the room.`,
       ],
     },
     {
@@ -133,9 +133,9 @@ export const sizeGuide: ArticleInput = {
     {
       type: "cta",
       title: "Find the right portrait for your wall",
-      body: "Create your portrait free, then choose the size and finish that fits your room.",
+      body: "Upload a photo, then choose the size and finish that fits your room.",
       href: "/create",
-      label: "Create your free preview",
+      label: "Upload a photo",
       style: "modern",
     },
   ],

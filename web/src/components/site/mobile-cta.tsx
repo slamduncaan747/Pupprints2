@@ -4,9 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buttonClasses } from "@/components/ui/button";
+import { site } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
-/** Pages where a "create" bar would get in the way of the task at hand. */
+/** Pages where an "upload" bar would get in the way of the task at hand. */
 const QUIET = ["/order", "/track", "/contact", "/partners", "/privacy", "/terms", "/gift-cards"];
 
 /**
@@ -45,9 +46,8 @@ export function MobileCta() {
       )}
     >
       <Link href="/create" tabIndex={show ? 0 : -1} className={buttonClasses("primary", "md", "w-full")}>
-        Create your free portrait
+        {site.cta}
       </Link>
-      <p className="label mt-2 text-center text-ink-3">No account. No card.</p>
     </div>
   );
 }

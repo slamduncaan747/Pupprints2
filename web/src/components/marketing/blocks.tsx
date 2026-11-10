@@ -3,12 +3,12 @@ import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
 
 /**
- * Building blocks for the maison's secondary pages: hairline-ruled sections, `.label` rows,
+ * Building blocks for the secondary pages: hairline-ruled sections, `.label` rows,
  * definition lists and tables. No backgrounds, icons or cards; type, rules and space do the work.
  */
 
 /**
- * One page section. A hairline rule, then the title in the left third (Bodoni, or a small `.label`
+ * One page section. A hairline rule, then the title in the left third (the display serif, or a small `.label`
  * with `titleStyle="label"`) and the content in a ~680px column on the right ("split"). "stack" puts
  * wide content (image grids) under the title instead.
  */
@@ -58,7 +58,7 @@ export function Block({
                 ) : (
                   <h2
                     id={headingId}
-                    className="max-w-xl font-display text-[30px] leading-[1.06] sm:text-[40px]"
+                    className="max-w-xl font-display text-[30px] leading-[1.08] sm:text-[40px]"
                   >
                     {title}
                   </h2>
@@ -205,7 +205,7 @@ export function Note({ children, className }: { children: ReactNode; className?:
   return <p className={cn("text-[13px] leading-relaxed text-ink-3", className)}>{children}</p>;
 }
 
-/** A large Bodoni statement, centered, for the one line a page should be remembered by. */
+/** One larger line, centered. Use sparingly. */
 export function Statement({
   eyebrow,
   children,
@@ -221,7 +221,7 @@ export function Statement({
     <section className={cn("py-24 sm:py-36", className)}>
       <Container className="text-center">
         {eyebrow && <p className="label mb-8 text-ink-3">{eyebrow}</p>}
-        <p className="mx-auto max-w-5xl font-display text-[34px] leading-[1.08] tracking-[-0.015em] text-balance sm:text-[56px] lg:text-[72px]">
+        <p className="mx-auto max-w-5xl font-display text-[32px] leading-[1.1] tracking-[-0.015em] text-balance sm:text-[44px] lg:text-[52px]">
           {children}
         </p>
         {body && <div className="mx-auto mt-8 max-w-md text-[15px] leading-relaxed text-ink-2">{body}</div>}

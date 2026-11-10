@@ -19,8 +19,6 @@ import {
   discountSaving,
   GIFT_TWO,
   giftTwoActive,
-  GUARANTEE,
-  HEIRLOOM_SET,
   holidayNotice,
   percentOffCents,
   pickCheckoutDiscount,
@@ -35,13 +33,12 @@ import { cn, formatPrice } from "@/lib/utils";
 import { FrameMockup } from "@/components/product/frame-mockup";
 import { shipWindow } from "@/components/order/timeline";
 import { ApiError, fetchOffer, peekOffer, startCheckout, type CheckoutRequest } from "./api";
-import { EmailCapture, isEmail } from "./email-capture";
+import { EmailCapture } from "./email-capture";
 import { MAX_QUANTITY, updateFlow, type FlowState, type Generation, type ShipCountry } from "./store";
 
 const FRAME_LABEL: Record<FrameColor, string> = { black: "Black", white: "White", oak: "Natural oak" };
 const FRAME_SWATCH: Record<FrameColor, string> = { black: "#121212", white: "#fcfcfb", oak: "#c4a582" };
 const COUNTRY_LABEL: Record<ShipCountry, string> = { US: "United States", CA: "Canada" };
-const GIFT_MESSAGE_MAX = 300;
 
 /* -------------------------- delivery estimate -------------------------- */
 
@@ -134,14 +131,14 @@ export function ProductStep({
   flow: FlowState;
   active: Generation;
   onBack: () => void;
-  /** Set when ordering a gift portrait from its reveal link (not made in this browser). */
+  /** Set when ordering a portrait we made for someone, from its link (not made in this browser). */
   giftToken?: string;
   /** Shown after "Back" on wider screens. */
   backLabel?: string;
   /** Called when the visitor commits to checkout (e.g. to quiet the keep-your-portrait prompt). */
   onCheckoutStart?: () => void;
 }) {
-  const { selection, gift } = flow;
+  const { selection } = flow;
   const product = PRODUCT_MAP[selection.productType];
   const variant = product.variants.find((v) => v.id === selection.variantId) ?? product.variants[0];
   const physical = product.type !== "digital";
@@ -149,11 +146,9 @@ export function ProductStep({
   const shipping = physical ? SHIPPING_RATES[selection.shipCountry] : 0;
   /** Pieces of this portrait (add-ons come one per piece). The digital file is always one. */
   const qty = physical ? Math.min(MAX_QUANTITY, Math.max(1, selection.quantity || 1)) : 1;
-  /** "This portrait is in memory of my dog": no urgency, no promotions, no referral asks. */
-  const memorial = flow.memorial;
 
   // Same pricing as /api/checkout (applyBundles): catalog prices, "two portraits, two ornaments"
-  // (Nov 1–Dec 10, on the server's clock via /api/offer), the Heirloom Set on paid ornaments, then
+  // (Nov 1–Dec 10, on the server's clock via /api/offer), then
   // the one automatic discount, if any (a creator code or a friend's referral code), on the paid
   // merchandise, never on shipping.
   const offer = useOffer(flow.creatorCode);
@@ -168,10 +163,8 @@ export function ProductStep({
   );
   const addonLines = bundled.lines.filter((l) => l.kind === "addon");
   const addonTotal = (id: string) => addonLines.filter((l) => l.variantId === id).reduce((sum, l) => sum + l.unitAmount * l.quantity, 0);
-  const heirloom = bundled.heirloomSets > 0;
   const freeOrnaments = bundled.freeOrnaments;
   const hasOrnament = selection.addons.includes(GIFT_TWO.ornamentId);
-  const hasMug = chosenAddons.some((a) => a.id !== GIFT_TWO.ornamentId);
   const merchandise = bundled.lines.reduce((sum, l) => sum + l.unitAmount * l.quantity, 0);
   const options = offer?.discounts ?? [];
   const discount = pickCheckoutDiscount(options, merchandise);
@@ -187,7 +180,7 @@ export function ProductStep({
       : opt.source === "referral"
         ? Math.min(discountSaving(opt, subtotal), variantCents)
         : percentOffCents(variantCents, opt.percentOff);
-    return { cents: variantCents - off, option: off > 0 && !memorial ? opt : null };
+    return { cents: variantCents - off, option: off > 0 ? opt : null };
   };
   const tagFor = (opt: DiscountOption | null) => (opt?.source === "referral" ? "With a friend's code" : "With your code");
   const priceTag = tagFor(discount);
@@ -195,7 +188,7 @@ export function ProductStep({
   /** A friend's referral code that doesn't apply to this order yet (below its $59 minimum). */
   const referral = options.find((o): o is Extract<DiscountOption, { source: "referral" }> => o.source === "referral") ?? null;
   const referralNote =
-    referral && discount?.source !== "referral" && !memorial && merchandise < referral.minimumCents
+    referral && discount?.source !== "referral" && merchandise < referral.minimumCents
       ? `Referral code ${referral.code}: $${referral.amountOffCents / 100} off first orders of $${referral.minimumCents / 100} or more`
       : null;
   const style = getStyle(active.style);
@@ -203,9 +196,8 @@ export function ProductStep({
 
   const [view, setView] = useState<"room" | "closeup">("room");
   const [checkout, setCheckout] = useState<CheckoutState>({ kind: "idle" });
-  const [giftError, setGiftError] = useState<string | null>(null);
   const today = useToday();
-  const ids = { gift: useId(), from: useId(), to: useId(), email: useId(), msg: useId(), stack: useId(), qty: useId() };
+  const ids = { stack: useId(), qty: useId() };
 
   const printSize = variant.widthIn > 0 ? { widthIn: variant.widthIn, heightIn: variant.heightIn } : undefined;
   const showRoom = physical && view === "room";
@@ -225,7 +217,6 @@ export function ProductStep({
 
   const setSelection = (patch: Partial<FlowState["selection"]>) =>
     updateFlow((s) => ({ ...s, selection: { ...s.selection, ...patch } }));
-  const setGift = (patch: Partial<FlowState["gift"]>) => updateFlow((s) => ({ ...s, gift: { ...s.gift, ...patch } }));
 
   function toggleAddon(id: string) {
     const has = selection.addons.includes(id);
@@ -238,11 +229,6 @@ export function ProductStep({
   }
 
   async function onCheckout() {
-    if (gift.enabled && gift.recipientEmail.trim() && !isEmail(gift.recipientEmail)) {
-      setGiftError("Please check the recipient's email address, or leave it blank.");
-      return;
-    }
-    setGiftError(null);
     setCheckout({ kind: "loading" });
     onCheckoutStart?.();
 
@@ -259,14 +245,7 @@ export function ProductStep({
       shipCountry: physical ? selection.shipCountry : undefined,
       ...(giftToken ? { giftToken } : {}),
       ...(flow.creatorCode ? { code: flow.creatorCode } : {}),
-      ...(memorial ? { memorial: true } : {}),
     };
-    if (gift.enabled) {
-      body.giftSenderName = gift.senderName.trim() || undefined;
-      body.giftRecipientName = gift.recipientName.trim() || undefined;
-      body.giftRecipientEmail = gift.recipientEmail.trim() || undefined;
-      body.giftMessage = gift.message.trim().slice(0, GIFT_MESSAGE_MAX) || undefined;
-    }
 
     // No cart: committing to checkout is the add-to-cart moment. Same item ids as the Purchase event.
     const ecommerce = {
@@ -292,10 +271,8 @@ export function ProductStep({
         product: product.type,
         variant: variant.id,
         num_items: body.items.reduce((n, i) => n + i.quantity, 0),
-        gift: gift.enabled,
         offer: discount?.source ?? null,
         free_ornaments: freeOrnaments || undefined,
-        memorial: memorial || undefined,
       },
       ecommerce,
     );
@@ -328,8 +305,8 @@ export function ProductStep({
     delivery = `Delivered in ${product.shipDays[0]}–${product.shipDays[1]} business days`;
   }
 
-  // The real holiday cutoff, never on the gentle track.
-  const holiday = today !== null && !memorial ? holidayNotice(today, { physical, shipCountry: selection.shipCountry }) : null;
+  // The real holiday cutoff (Nov 1 to Dec 10, US physical orders only).
+  const holiday = today !== null ? holidayNotice(today, { physical, shipCountry: selection.shipCountry }) : null;
   const stack = valueStackFor({ productType: product.type, shipCountry: selection.shipCountry });
   const checkoutLabel = `Proceed to checkout — ${formatPrice(total)}`;
   const loading = checkout.kind === "loading";
@@ -423,7 +400,7 @@ export function ProductStep({
           {name || "Your dog"}, as {style?.name ?? "a portrait"}
         </p>
         <h1 className="mt-3 font-display text-[40px] leading-[1.04] sm:text-[52px]">{product.name}</h1>
-        {discount && headline.option && !memorial ? (
+        {discount && headline.option ? (
           <div className="mt-4 motion-safe:animate-fade-up">
             <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="sr-only">Regular price</span>
@@ -601,7 +578,7 @@ export function ProductStep({
                       {COUNTRY_LABEL[c]}
                     </span>
                     <span className={cn("tabular-nums", sel ? "text-ink" : "text-ink-3 group-hover:text-ink")}>
-                      {rate === 0 ? "Complimentary" : `${formatPrice(rate)} flat`}
+                      {rate === 0 ? "Included" : `${formatPrice(rate)} flat`}
                     </span>
                   </button>
                 );
@@ -610,11 +587,11 @@ export function ProductStep({
           </fieldset>
         )}
 
-        {/* Add-ons: the order bump, with the bundle savings shown as they happen. Never pre-checked. */}
+        {/* Add-ons. Never pre-checked. */}
         {physical && (
           <fieldset className="mt-10">
-            <legend className={LEGEND}>Complete the set</legend>
-            {giftTwoOn && !memorial && !(qty >= GIFT_TWO.minPieces && hasOrnament) && (
+            <legend className={LEGEND}>Add-ons</legend>
+            {giftTwoOn && !(qty >= GIFT_TWO.minPieces && hasOrnament) && (
               <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                 <p className="text-[13px] leading-snug text-ink">{GIFT_TWO.prompt}</p>
                 {qty < GIFT_TWO.minPieces ? (
@@ -651,7 +628,7 @@ export function ProductStep({
                           <span className="sr-only">Regular price </span>
                           <s className="mr-2 text-ink-3 decoration-1">{formatPrice(regular)}</s>
                           <span className="sr-only">Your price </span>
-                          {price === 0 ? "Free" : formatPrice(price)}
+                          {price === 0 ? "Included" : formatPrice(price)}
                         </>
                       ) : (
                         `+ ${formatPrice(a.price)}${qty > 1 ? " each" : ""}`
@@ -667,99 +644,17 @@ export function ProductStep({
                   {freeOrnaments >= GIFT_TWO.freeOrnaments ? GIFT_TWO.applied : "A matching ornament, on us"}
                 </p>
               )}
-              {heirloom ? (
-                <p className="label mt-3 text-[12px] leading-snug text-ink">
-                  {`${HEIRLOOM_SET.name.replace(/^The /, "")} — you save ${formatPrice(HEIRLOOM_SET.discountCents * bundled.heirloomSets)}`}
-                </p>
-              ) : freeOrnaments > 0 ? (
-                hasMug && <p className="mt-3 text-[12px] leading-snug text-ink-3">Free ornaments don&apos;t count toward the Heirloom Set saving.</p>
-              ) : (
-                !memorial && <p className="mt-3 text-[12px] leading-snug text-ink-3">{HEIRLOOM_SET.line}</p>
-              )}
             </div>
           </fieldset>
         )}
 
-        {/* Gift */}
-        <div className="mt-8 border-y border-line">
-          <button
-            type="button"
-            role="switch"
-            aria-checked={gift.enabled}
-            aria-controls={ids.gift}
-            onClick={() => setGift({ enabled: !gift.enabled })}
-            className="group flex min-h-14 w-full items-center justify-between gap-4 text-left"
-          >
-            <span>
-              <span className="link-cta block group-hover:opacity-60">Send as a gift</span>
-              <span className="mt-2 block text-[12px] text-ink-3">A note and an instant Gift Reveal, sent today.</span>
-            </span>
-            <span aria-hidden className="label w-4 text-center text-[15px] text-ink">
-              {gift.enabled ? "−" : "+"}
-            </span>
-          </button>
-          {gift.enabled && (
-            <div id={ids.gift} className="grid gap-x-6 gap-y-6 pt-3 pb-8 sm:grid-cols-2">
-              <Field id={ids.from} label="From" placeholder="Your name" value={gift.senderName} onChange={(v) => setGift({ senderName: v })} autoComplete="name" />
-              <Field id={ids.to} label="To" placeholder="Their name" value={gift.recipientName} onChange={(v) => setGift({ recipientName: v })} />
-              <div className="sm:col-span-2">
-                <Field
-                  id={ids.email}
-                  label="Their email — optional"
-                  type="email"
-                  placeholder="them@email.com"
-                  value={gift.recipientEmail}
-                  onChange={(v) => setGift({ recipientEmail: v })}
-                  invalid={Boolean(giftError)}
-                />
-                <p className="mt-2.5 text-[12px] leading-snug text-ink-3">
-                  We&apos;ll email them a Gift Reveal right after checkout; the print follows. Leave blank to keep it a
-                  surprise.
-                </p>
-                {giftError && (
-                  <p role="alert" className="mt-2 text-[13px] text-ink">
-                    {giftError}
-                  </p>
-                )}
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor={ids.msg} className="label text-ink-3">
-                  Message
-                </label>
-                <textarea
-                  id={ids.msg}
-                  rows={3}
-                  maxLength={GIFT_MESSAGE_MAX}
-                  value={gift.message}
-                  onChange={(e) => setGift({ message: e.target.value })}
-                  placeholder="Happy birthday. I thought Biscuit deserved a proper portrait."
-                  className="mt-2.5 w-full resize-none rounded-none border border-line bg-transparent px-3.5 py-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus-visible:outline-none"
-                />
-                <p className="label mt-1.5 text-right text-ink-3 tabular-nums">
-                  {gift.message.length}/{GIFT_MESSAGE_MAX}
-                </p>
-              </div>
-              <p className="text-[12px] leading-snug text-ink-3 sm:col-span-2">
-                <span className="label text-ink">{GUARANTEE.recipientName}</span>
-                <span className="mt-1.5 block">{GUARANTEE.recipient}</span>
-              </p>
-            </div>
-          )}
-        </div>
-
         {/* Delivery (+ the real holiday cutoff, from Nov 1 only) */}
         <p className="mt-6 text-[13px] leading-relaxed text-ink-3">{delivery}</p>
         {holiday && <p className="label mt-2 text-ink">{holiday}</p>}
-        {memorial && (
-          <p className="mt-2 text-[13px] leading-relaxed text-ink-2">
-            There&apos;s no rush. Your portrait is saved here whenever you&apos;re ready.
-          </p>
-        )}
-
-        {/* The value stack: everything in the bag, then the price, then the guarantee, then the button */}
+        {/* The order: what's in it, what it includes, then the price and the button */}
         <section aria-labelledby={ids.stack} className="mt-10" aria-live="polite">
           <h2 id={ids.stack} className={LEGEND}>
-            Your commission
+            Your order
           </h2>
           <dl className="mt-3 border-t border-line pt-3 text-[13px]">
             <StackRow
@@ -768,12 +663,11 @@ export function ProductStep({
             />
             {addonLines.map((l) => {
               const name = ADDONS.find((a) => a.id === l.variantId)?.name ?? l.variantId;
-              const tag = l.bundle === "heirloom" ? ` · ${HEIRLOOM_SET.name.replace(/^The /, "")}` : "";
               return (
                 <StackRow
                   key={`${l.variantId}-${l.bundle ?? "regular"}`}
-                  item={`${name}${tag}${l.quantity > 1 ? ` × ${l.quantity}` : ""}`}
-                  value={l.bundle === "gift-two" ? "Free" : formatPrice(l.unitAmount * l.quantity)}
+                  item={`${name}${l.quantity > 1 ? ` × ${l.quantity}` : ""}`}
+                  value={l.bundle === "gift-two" ? "Included" : formatPrice(l.unitAmount * l.quantity)}
                 />
               );
             })}
@@ -788,7 +682,7 @@ export function ProductStep({
           <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-line pt-4">
             <p className="label text-ink">Total</p>
             <p className="flex items-baseline gap-3">
-              {discountCents > 0 && !memorial && (
+              {discountCents > 0 && (
                 <>
                   <span className="sr-only">Regular total </span>
                   <s className="text-[14px] text-ink-3 tabular-nums decoration-1">{formatPrice(merchandise + shipping)}</s>
@@ -799,19 +693,8 @@ export function ProductStep({
             </p>
           </div>
           <p className="mt-3 text-[12px] text-ink-3">No hidden fees. Sales tax, if any, is shown before you pay.</p>
-          <CreatorCode code={flow.creatorCode} kind={offer?.code?.kind} memorial={memorial} className="mt-4" />
+          <CreatorCode code={flow.creatorCode} kind={offer?.code?.kind} className="mt-4" />
         </section>
-
-        {/* Risk reversal: the last thing read before the button */}
-        <div className="mt-9 border-t border-line pt-7">
-          <p className="font-display text-[24px] leading-tight">{GUARANTEE.name}</p>
-          <p className="mt-2.5 text-[13px] leading-relaxed text-ink-2">{GUARANTEE.body}</p>
-          {gift.enabled && (
-            <p className="mt-2.5 text-[13px] leading-relaxed text-ink-2">
-              <span className="text-ink">{GUARANTEE.recipientName}.</span> {GUARANTEE.recipient}
-            </p>
-          )}
-        </div>
 
         <div className="mt-8">
           {checkout.kind === "unavailable" ? (
@@ -826,7 +709,6 @@ export function ProductStep({
                 source="checkout_unavailable"
                 generationId={active.generationId}
                 petName={name || undefined}
-                memorial={memorial}
                 cta="Send link"
                 doneMessage="Thank you. We'll email your checkout link shortly."
               />
@@ -861,12 +743,12 @@ export function ProductStep({
             <div className="min-w-0 flex-1" aria-hidden>
               <p className="flex items-baseline gap-2.5">
                 <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(total)}</span>
-                {discountCents > 0 && !memorial && (
+                {discountCents > 0 && (
                   <s className="text-[13px] text-ink-3 tabular-nums decoration-1">{formatPrice(merchandise + shipping)}</s>
                 )}
               </p>
               <p className="label mt-1.5 truncate text-ink-3">
-                {discountCents > 0 && !memorial
+                {discountCents > 0
                   ? `${priceTag} · ${variant.widthIn ? variant.label : product.shortName}`
                   : `${product.shortName} · ${variant.widthIn ? variant.label : "Hi-res file"}${qty > 1 ? ` × ${qty}` : ""}`}
               </p>
@@ -911,49 +793,7 @@ function ProductTab({ product, selected, onSelect }: { product: Product; selecte
   );
 }
 
-function Field({
-  id,
-  label,
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-  autoComplete,
-  invalid,
-}: {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  type?: string;
-  autoComplete?: string;
-  invalid?: boolean;
-}) {
-  return (
-    <div>
-      <label htmlFor={id} className="label text-ink-3">
-        {label}
-      </label>
-      <input
-        id={id}
-        type={type}
-        value={value}
-        maxLength={type === "email" ? 254 : 60}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        autoComplete={autoComplete ?? "off"}
-        aria-invalid={invalid || undefined}
-        className={cn(
-          "mt-1 h-11 w-full rounded-none border-0 border-b bg-transparent px-0 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3/70 focus:border-ink focus:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-none",
-          invalid ? "border-ink" : "border-line",
-        )}
-      />
-    </div>
-  );
-}
-
-/** One line of the value stack: what's in the bag on the left, its price (or Included) on the right. */
+/** One line of the order: the item on the left, its price (or Included) on the right. */
 function StackRow({ item, value, quiet }: { item: string; value: ReactNode; quiet?: boolean }) {
   return (
     <div className="flex items-baseline justify-between gap-6 py-[5px]">
@@ -971,13 +811,10 @@ function StackRow({ item, value, quiet }: { item: string; value: ReactNode; quie
 function CreatorCode({
   code,
   kind,
-  memorial,
   className,
 }: {
   code: string;
   kind?: "creator" | "customer";
-  /** The gentle track: no "share your code" ask. */
-  memorial?: boolean;
   className?: string;
 }) {
   const id = useId();
@@ -1065,9 +902,7 @@ function CreatorCode({
           {state === "invalid"
             ? "We don't recognize that code."
             : state === "own"
-              ? memorial
-                ? "That's your own code, so it can't be used on your order."
-                : `That's your own code. Share it with a friend: they take $${REFERRAL.friendCents / 100} off, and you get $${REFERRAL.rewardCents / 100}.`
+              ? `That's your own code. Share it with a friend: they take $${REFERRAL.friendCents / 100} off, and you get $${REFERRAL.rewardCents / 100}.`
               : "We couldn't check that code just now. Please try again."}
         </p>
       )}

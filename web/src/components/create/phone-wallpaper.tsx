@@ -18,19 +18,16 @@ type State =
 const digitalPrice = PRODUCT_MAP.digital.variants[0].price;
 
 /**
- * The Free Phone Portrait: email capture → POST /api/wallpaper → a 1080×1920 crop of this
+ * The phone portrait: email capture → POST /api/wallpaper → a 1080×1920 crop of this
  * portrait, no watermark, emailed as a download link (or shown here when email isn't available).
  */
 export function PhoneWallpaper({
   generationId,
   petName,
-  memorial,
   className,
 }: {
   generationId: string;
   petName?: string;
-  /** The gentle track: the lead's emails skip any offer. */
-  memorial?: boolean;
   className?: string;
 }) {
   const id = useId();
@@ -50,7 +47,7 @@ export function PhoneWallpaper({
       const res = await fetch("/api/wallpaper", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), generationId, petName: petName || undefined, ...(memorial ? { memorial: true } : {}) }),
+        body: JSON.stringify({ email: email.trim(), generationId, petName: petName || undefined }),
       });
       const json = (await res.json().catch(() => ({}))) as { ok?: boolean; emailed?: boolean; url?: string; message?: string };
       if (!res.ok || !json.ok) throw new Error(json.message ?? "We couldn't prepare your wallpaper just now. Please try again.");

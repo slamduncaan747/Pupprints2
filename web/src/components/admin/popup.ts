@@ -5,8 +5,8 @@ import type { StyleSlug } from "@/lib/catalog";
  * portrait's reveal link by QR, text or email and buys on their own phone. Client-safe helpers.
  */
 
-/** Six house styles for selling in person, in picker order (the first, Modern, is the default). */
-export const POPUP_STYLES = ["modern", "watercolor", "modern-sage", "charcoal", "oil-classic", "linocut"] as const satisfies readonly StyleSlug[];
+/** The styles for selling in person, in picker order (the first, Modern, is the default). */
+export const POPUP_STYLES = ["modern", "modern-sage", "watercolor", "fine-line", "pastel", "modern-oil", "charcoal"] as const satisfies readonly StyleSlug[];
 
 /** YYYY-MM-DD for a date, in a time zone (default: the device's own). */
 export function isoDay(date: Date = new Date(), timeZone?: string): string {

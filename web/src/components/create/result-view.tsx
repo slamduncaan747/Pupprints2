@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import Link from "next/link";
 import { getStyle } from "@/lib/catalog";
-import { GUARANTEE } from "@/lib/offer";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EmailCapture } from "./email-capture";
 import { markPortraitSaved } from "./keep-portrait";
+import { NameOption } from "./name-option";
 import { PhoneWallpaper } from "./phone-wallpaper";
 import type { Generation } from "./store";
 
@@ -18,26 +17,29 @@ export function ResultView({
   active,
   generations,
   petName,
+  nameOnArt,
+  onNameChange,
   onSelect,
   onLoveIt,
   onTryAnother,
   onRegenerate,
-  memorial = false,
 }: {
   active: Generation;
   /** This upload's generations, newest first. */
   generations: Generation[];
   petName: string;
+  /** "Add the name to the portrait" (shown only when a name was given). */
+  nameOnArt: boolean;
+  /** The name choice changed: remake this portrait with or without the name. */
+  onNameChange: () => void;
   onSelect: (generationId: string) => void;
   onLoveIt: () => void;
   onTryAnother: () => void;
   onRegenerate: () => void;
-  /** The gentle track: passed to the lead so its emails skip every offer. */
-  memorial?: boolean;
 }) {
   const style = getStyle(active.style);
   const name = petName.trim();
-  /** One quiet panel at a time: email the preview, or the free phone wallpaper. */
+  /** One panel at a time: email the preview, or the phone wallpaper. */
   const [panel, setPanel] = useState<"email" | "wallpaper" | null>(null);
   const strip = [...generations].reverse(); // oldest → newest, reads left to right
 
@@ -67,17 +69,12 @@ export function ResultView({
           {name || "Your dog"}, as {style?.name}.
         </h1>
         <p className="mx-auto mt-4 max-w-xs text-[14px] leading-relaxed text-ink-2 lg:mx-0">
-          Love it? Choose a size and finish next.
+          Choose a size and finish next.
         </p>
 
         <Button type="button" size="lg" onClick={onLoveIt} className="mt-9 hidden w-full sm:inline-flex sm:max-w-sm lg:max-w-none">
           Choose your piece
         </Button>
-        <p className="mt-4 hidden sm:block">
-          <Link href="/guarantee" className="label text-ink-3 underline-offset-[5px] transition-colors hover:text-ink hover:underline">
-            {GUARANTEE.short}
-          </Link>
-        </p>
         <div className="mt-5 flex items-center justify-center gap-10 sm:mt-3 lg:justify-start">
           <button type="button" onClick={onTryAnother} className={textLink}>
             Another style
@@ -86,6 +83,17 @@ export function ResultView({
             Redo
           </button>
         </div>
+        {name && (
+          <div className="mt-2">
+            {/* Changing it remakes this portrait with or without the name. */}
+            <NameOption checked={nameOnArt} name={name} onChange={onNameChange} />
+            {active.nameAsked && active.named === false && (
+              <p className="mt-1 text-[12px] leading-snug text-ink-3">
+                There wasn&apos;t room above the head for the name this time. Redo to try again.
+              </p>
+            )}
+          </div>
+        )}
 
         {strip.length > 1 && (
           <div className="mt-12 border-t border-line pt-7">
@@ -133,7 +141,7 @@ export function ResultView({
 
         <div className={cn("mt-10", strip.length > 1 ? "" : "border-t border-line pt-7")}>
           {panel === "wallpaper" ? (
-            <PhoneWallpaper key={active.generationId} generationId={active.generationId} petName={name || undefined} memorial={memorial} />
+            <PhoneWallpaper key={active.generationId} generationId={active.generationId} petName={name || undefined} />
           ) : panel === "email" ? (
             <div className="text-left">
               <p className="text-[13px] leading-relaxed text-ink-2">
@@ -144,7 +152,6 @@ export function ResultView({
                 source="save_preview"
                 generationId={active.generationId}
                 petName={name || undefined}
-                memorial={memorial}
                 cta="Send"
                 doneMessage="Sent. Your preview is on its way."
                 onDone={markPortraitSaved}
@@ -156,7 +163,7 @@ export function ResultView({
                 Email me this preview
               </button>
               <button type="button" onClick={() => setPanel("wallpaper")} className={cn(textLink, "text-ink-3")}>
-                Get it as a free phone wallpaper
+                Get it as a phone wallpaper
               </button>
             </div>
           )}
@@ -169,11 +176,6 @@ export function ResultView({
         <Button type="button" size="lg" onClick={onLoveIt} className="w-full">
           Choose your piece
         </Button>
-        <p className="mt-2 text-center">
-          <Link href="/guarantee" className="label inline-flex min-h-8 items-center text-ink-3">
-            {GUARANTEE.short}
-          </Link>
-        </p>
       </div>
     </section>
   );

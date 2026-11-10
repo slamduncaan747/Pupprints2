@@ -243,7 +243,7 @@ export function summarizeOrder(order: OrderRow) {
     detail: [
       i.styleName,
       i.petName ? `Portrait of ${i.petName}` : null,
-      i.bundle === "gift-two" ? "Free with two portraits" : i.bundle === "heirloom" ? "Heirloom Set" : null,
+      i.bundle === "gift-two" ? "Free with two portraits" : i.bundle === "heirloom" ? "Ornament and mug together" : null,
     ]
       .filter(Boolean)
       .join(" · "),

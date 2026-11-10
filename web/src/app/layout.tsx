@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Hanken_Grotesk } from "next/font/google";
+import { Hanken_Grotesk, Newsreader } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { site } from "@/lib/config";
 import { Tracking } from "@/components/site/tracking";
 import "./globals.css";
 
-const couture = Bodoni_Moda({
-  variable: "--font-couture",
+/** Headings: Newsreader, a sturdy text serif that stays readable at every size (variable weight). */
+const serif = Newsreader({
+  variable: "--font-serif",
   subsets: ["latin"],
   style: ["normal", "italic"],
   axes: ["opsz"],
@@ -51,7 +52,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${couture.variable} ${grotesk.variable} antialiased`}>
+    <html lang="en" className={`${serif.variable} ${grotesk.variable} antialiased`}>
       <body className="min-h-dvh flex flex-col bg-paper text-ink">
         {children}
         <Tracking />

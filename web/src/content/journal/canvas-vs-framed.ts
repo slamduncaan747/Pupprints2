@@ -30,7 +30,7 @@ export const canvasVsFramed: ArticleInput = {
         "**Choose a gallery canvas** if you want a painting-like, frameless look for a living room or a big wall.",
         "**Choose a framed print** if it's a gift, if you want it ready to hang the moment it arrives, or if your home leans classic or tailored.",
         "**Choose a fine art print** if you already have a frame you love, want to use your own framer, or are building a gallery wall on a budget.",
-        "**Choose the digital file** if you want to print it yourself, use it on cards or make it your lock screen. It's also included free with every physical piece.",
+        "**Choose the digital file** if you want to print it yourself, use it on cards or make it your lock screen. It's also included with every physical piece.",
       ],
     },
     { type: "heading", text: "Side by side" },
@@ -55,7 +55,7 @@ export const canvasVsFramed: ArticleInput = {
     { type: "heading", text: "Gallery canvas: the painting look" },
     {
       type: "paragraph",
-      text: `Our canvas is poly-cotton, hand-stretched over a solid wood stretcher bar, with the image wrapping around the edges for a finished gallery look. There's no glazing, so there's no glare, and the woven texture gives the art a painted feel up close. That makes canvas a natural partner for the painterly styles: ${styleLink("oil-classic")} and ${styleLink("modern-oil")}.`,
+      text: `Our canvas is poly-cotton, hand-stretched over a solid wood stretcher bar, with the image wrapping around the edges for a finished gallery look. There's no glazing, so there's no glare, and the woven texture gives the art a painted feel up close. That makes canvas a natural partner for the painterly styles, like ${styleLink("modern-oil")}.`,
     },
     {
       type: "paragraph",
@@ -77,13 +77,13 @@ export const canvasVsFramed: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: `Framed prints suit crisp, detailed styles beautifully, like ${styleLink("fine-line")}, ${styleLink("botanical")} and ${styleLink("watercolor")}, and they look at home in both classic and modern rooms. They're also lovely in smaller sizes, on desks, shelves and gallery walls.`,
+      text: `Framed prints suit crisp, detailed styles beautifully, like ${styleLink("fine-line")} and ${styleLink("watercolor")}, and they look at home in both classic and modern rooms. They're also lovely in smaller sizes, on desks, shelves and gallery walls.`,
     },
     { type: "heading", level: 3, text: "Which frame color?" },
     {
       type: "list",
       items: [
-        `**Black** sharpens everything. Great with graphic styles like ${styleLink("linocut")} and ${styleLink("charcoal")}, and with high-contrast dogs.`,
+        `**Black** sharpens everything. Great with graphic styles like ${styleLink("fine-line")} and ${styleLink("charcoal")}, and with high-contrast dogs.`,
         "**White** feels light and airy. Perfect for watercolor and for bright, modern rooms.",
         `**Natural oak** is warm and relaxed. It loves the warm tones of the oil styles and ${styleLink("modern-sage")}.`,
       ],
@@ -116,7 +116,7 @@ export const canvasVsFramed: ArticleInput = {
       type: "list",
       items: [
         "**Above a sofa or bed:** a large canvas or framed piece, or a pair. Our [size guide](/journal/what-size-art-for-your-wall) has the numbers.",
-        `**Home office:** a framed ${styleLink("oil-classic")} or ${styleLink("charcoal")} in natural oak.`,
+        `**Home office:** a framed ${styleLink("charcoal")} in natural oak.`,
         `**Nursery or kids' room:** a framed ${styleLink("pastel")} or ${styleLink("watercolor")} in white.`,
         "**Gallery wall:** framed prints in mixed sizes, all in one frame color.",
         "**A gift:** framed, almost always. It's ready to hang and feels complete when it's unwrapped.",
@@ -124,14 +124,14 @@ export const canvasVsFramed: ArticleInput = {
     },
     {
       type: "paragraph",
-      text: "And if your piece arrives and you don't love it, our [love-it guarantee](/guarantee) has you covered: we'll remake it or refund you. When it's time to put it up, here's [how to hang a canvas or framed print](/journal/how-to-hang-a-canvas-or-framed-print).",
+      text: "If your piece arrives and it isn't right, see our [returns policy](/guarantee): we'll remake it or refund you. When it's time to put it up, here's [how to hang a canvas or framed print](/journal/how-to-hang-a-canvas-or-framed-print).",
     },
     {
       type: "cta",
       title: "See it before you choose",
-      body: "Create your portrait free in about a minute, then choose canvas, framed print or fine art print only if you love it.",
+      body: "Upload a photo to see the portrait, then choose canvas, framed print or fine art print.",
       href: "/create",
-      label: "Create your free preview",
+      label: "Upload a photo",
       style: "modern-oil",
     },
   ],

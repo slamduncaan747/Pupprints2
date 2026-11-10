@@ -7,7 +7,9 @@ dog-centred collection: the six costume and novelty styles (Royal, Admiral, Spac
 Holiday Cozy) are retired and craft media are added (Modern Oil, Linocut, Pastel). Revised again later on
 Nov 10 after owner feedback ("some are a little dramatic; go for more of a modern style"): **Modern** (a flat-ground
 illustrated portrait, in off-white and sage) is added as the lead style and the hero, and Ink Wash and Mid-Century
-are retired.
+are retired. Final cut, same day: the collection is **seven styles with plain names** — Modern, Modern Sage,
+Watercolor, Line Drawing (`fine-line`), Pastel, Oil (`modern-oil`) and Charcoal. Old Master (`oil-classic`),
+Botanical and Linocut are retired.
 
 The goal: the site should read like a museum or a fashion house photographing its collection, not like a pet
 novelty shop. The portraits are the product photography. Treat them like a campaign.
@@ -17,18 +19,16 @@ novelty shop. The portraits are the product photography. Treat them like a campa
 **The dog is the subject. No costumes, props, scenes or novelty.** Every piece is simply that dog, beautifully
 made in a real craft medium: the kind of work a small-studio painter or printmaker would sell and an interior
 designer would hang in a calm living room. No clothing, no collars or accessories, no settings or storylines.
-The only permitted surround is a plain ground, bare paper, one flat colour field (Modern, Modern Oil, Linocut),
-or the sparse naturalist stems of Botanical.
+The only permitted surround is a plain ground, bare paper, or one flat colour field (Modern, Oil).
 
 **Light, calm, undramatic.** The collection leads with Modern: a softly shaded dog on one flat, pale ground. Prefer
 light grounds, even light and gentle expressions; no moody chiaroscuro, heavy blacks or theatrical lighting in new
-work. Darker media (Old Master, Charcoal, Linocut) stay in the range but are not used for the hero or the gallery wall.
+work. Charcoal is the one darker medium left in the range; it is not used for the hero or the gallery wall.
 
 1. **Museum, not novelty.** Each portrait should look like a real artwork photographed straight-on: true medium
    texture. Oils show linen canvas weave, soft impasto and a satin varnish. Watercolour shows cold-press tooth,
    pigment granulation and blooms. Charcoal shows paper grain and smudges. Fine line shows ink bleed on cotton
-   paper. Palette-knife oil shows ridges of impasto on a matte field. Linocut shows gouge marks and uneven
-   hand-rolled ink. Pastel shows velvety pigment on toned, toothy paper. Modern is the one
+   paper. Palette-knife oil shows ridges of impasto on a matte field. Pastel shows velvety pigment on toned, toothy paper. Modern is the one
    deliberately digital finish: smooth, softly blended shading on a perfectly flat matte ground, no faux texture.
 2. **The dog is a dog.** Natural canine anatomy, posture and proportions. No human torsos, arms, hands or long
    necks. Bust or seated three-quarter pose. The phrase that fixes this when a body shows:
@@ -40,15 +40,16 @@ work. Darker media (Old Master, Charcoal, Linocut) stay in the range but are not
    saturated primaries. Colour fields and second inks are always muted (sage, ochre, slate or oxblood).
 5. **Composition 4:5.** Eyes near the upper third. The whole head and both ears sit inside the picture with a calm
    margin; never crop an ear. Centred or classic three-quarter.
-6. **Calm expressions.** Mouth closed or nearly closed for the graphic styles (Fine Line, Linocut). No grins,
+6. **Calm expressions.** Mouth closed or nearly closed for the graphic styles (Line Drawing). No grins,
    no cartoon eyes.
 7. **No text of any kind.** No letters, numbers, signatures, monograms, watermarks, seals or stamps, painted
    frames or borders. Every prompt ends with the CLEAN clause below.
-   The one exception is **name lettering on the Modern styles**, and it is never made by the image model: the
-   model's prompt keeps the full "no text" clause, and the dog's name is then set as real type by our own code
-   (`web/src/lib/image/lettering.ts`; for samples `npx tsx scripts/add-name.ts in.png out.png "Name"`): small spaced
-   capitals, centred, baseline 11% from the top, at most 70% of the width, dark ink on light grounds. It is applied
-   to the full portrait before any crop, export or scene compositing. No other style carries lettering.
+   The one exception is **name lettering**, and it is never made by the image model. The dog's name is an option
+   the customer chooses, available on every style (the Modern samples show it; the other samples are shown
+   without). The model's prompt always keeps the full "no text" clause, and the name is then set as real type by
+   our own code (`web/src/lib/image/lettering.ts`; for samples `npx tsx scripts/add-name.ts in.png out.png "Name"`):
+   small spaced capitals, centred, baseline 11% from the top, at most 70% of the width, dark ink on light grounds.
+   It is applied to the full portrait before any crop, export or scene compositing.
 8. **Likeness is real.** Every portrait is a reference edit of a real photo of that dog (FLUX.2 klein image
    reference). The prompt asks for *this exact dog* and lists what to keep (KEEP clause).
 
@@ -63,7 +64,7 @@ work. Darker media (Old Master, Charcoal, Linocut) stay in the range but are not
   monogram, no watermark, no frame, no border."
 - **OIL (surface):** "Painted with loose, confident, buttery brushstrokes and soft impasto; fur is suggested by visible brushwork rather than photographic detail; thin glazes in the shadows; the linen canvas
   weave shows through the thin passages; a soft satin varnish, not glossy."
-  (The first-pass variant used for oil-classic: "Rich oil paint on linen canvas: visible confident
+  (An earlier variant, used for the retired Old Master: "Rich oil paint on linen canvas: visible confident
   brushstrokes, soft impasto on the highlights, thin glazes in the shadows, the canvas weave showing through the
   thin passages, a satin varnish.")
 - **DOGBUST (only when the chest and shoulders show):** "Painted from the top of its head down to its chest, in a calm three-quarter view, with the deep
@@ -98,14 +99,6 @@ Notes from testing:
   ground is simply extended above the dog and the name is set on that taller canvas.
 - No paper or canvas surface pass on export for Modern (medium `none`).
 
-### Old Master
-
-Used for: oil-classic.webp (Border Collie), pair-1-after.webp (Golden Retriever; also the hero portrait in every campaign scene).
-
-```text
-Turn this photo into a quiet classical oil portrait of this exact {breed}, no costume, no collar, no accessories. Keep this exact dog from the photo: the same face, eye colour, nose, muzzle, ear shape, fur length, fur colours and markings, so the owner instantly recognises their own dog. Natural canine anatomy and proportions, two eyes. A bust portrait in a calm three-quarter view. The fur is described by the brush, every hair direction followed. A single soft north light from the upper left. Plain background of warm umber and muted olive, softly graduated and empty. Restrained palette of umber, bone, slate and ochre. Rich oil paint on linen canvas: visible confident brushstrokes, soft impasto on the highlights, thin glazes in the shadows, the canvas weave showing through the thin passages, a satin varnish. Composition: the whole head and both ears sit comfortably inside the picture with a calm margin of background above the ears and at both sides, the eyes near the upper third. A museum-quality 17th-century Dutch old master painting. The artwork fills the entire image edge to edge. No text, no letters, no numbers, no signature, no monogram, no watermark, no frame, no border.
-```
-
 ### Watercolor
 
 Used for: watercolor.webp (Beagle), pair-2-after.webp (French Bulldog), gallery-3.webp (Cavapoo).
@@ -114,7 +107,7 @@ Used for: watercolor.webp (Beagle), pair-2-after.webp (French Bulldog), gallery-
 Turn this photo into a fine-art watercolour portrait of this exact {breed}, painted on heavy white cold-press cotton watercolour paper. Keep this exact dog from the photo: the same face, eye colour, nose, muzzle, ear shape, fur length, fur colours and markings, so the owner instantly recognises their own dog. Natural canine anatomy and proportions, two eyes. Head and chest only. Transparent layered washes with visible pigment granulation and soft blooms, crisp precise detail in the eyes and nose, the painting dissolves into loose dry-brush strokes and bare paper toward the edges, generous untouched white paper around the dog. The cold-press paper tooth is visible everywhere. Restrained natural palette of umber, sepia, warm ochre and slate grey with a touch of sage in the shadows. Composition: the whole head and both ears sit comfortably inside the picture with a calm margin of background above the ears and at both sides, the eyes near the upper third. Calm, luminous, gallery-quality, like a contemporary watercolour hung in a museum. The artwork fills the entire image edge to edge. No text, no letters, no numbers, no signature, no monogram, no watermark, no frame, no border.
 ```
 
-### Fine Line
+### Line Drawing (`fine-line`)
 
 Used for: fine-line.webp (French Bulldog).
 
@@ -122,15 +115,7 @@ Used for: fine-line.webp (French Bulldog).
 Turn this photo into a refined fine-line ink drawing of this exact {breed} on warm white cotton rag paper. Keep this exact dog from the photo: the same face, eye colour, nose, muzzle, ear shape, fur length, fur colours and markings, so the owner instantly recognises their own dog. Natural canine anatomy and proportions, two eyes. Confident continuous black ink lines with a slight natural ink bleed into the paper fibres, sparse delicate hatching only where shadows fall, no colour, no solid fills, no grey wash. A generous field of empty paper around the dog. The soft cotton paper texture is visible. Composition: the whole head and both ears sit comfortably inside the picture with a calm margin of background above the ears and at both sides, the eyes near the upper third. A refined contemporary gallery drawing. The artwork fills the entire image edge to edge. No text, no letters, no numbers, no signature, no monogram, no watermark, no frame, no border.
 ```
 
-### Botanical
-
-Used for: botanical.webp (Cavapoo).
-
-```text
-Turn this photo into a refined natural-history plate of this exact {breed} in fine ink line and transparent watercolour on warm ivory laid paper. Keep this exact dog from the photo: the same face, eye colour, nose, muzzle, ear shape, fur length, fur colours and markings, so the owner instantly recognises their own dog. Natural canine anatomy and proportions, two eyes. The dog sits in the centre, loosely framed by a sparse arrangement of botanical stems drawn with naturalist precision: olive branches, eucalyptus, ferns and a few muted garden roses, with plenty of empty paper. Muted palette of sage, ochre, dusty rose and umber; the laid paper texture is visible. Composition: the whole head and both ears sit comfortably inside the picture with a calm margin of background above the ears and at both sides, the eyes near the upper third. Like an 18th-century botanical plate coloured by hand. No labels, no captions. The artwork fills the entire image edge to edge. No text, no letters, no numbers, no signature, no monogram, no watermark, no frame, no border.
-```
-
-### Charcoal Study
+### Charcoal
 
 Used for: charcoal.webp (Labrador), gallery-6.webp (Beagle, beagle-2.jpg), pair-3-after.webp (Beagle, beagle.jpg).
 
@@ -138,23 +123,13 @@ Used for: charcoal.webp (Labrador), gallery-6.webp (Beagle, beagle-2.jpg), pair-
 Turn this photo into an expressive charcoal portrait drawing of this exact {breed} on warm toned ivory drawing paper. Keep this exact dog from the photo: the same face, eye colour, nose, muzzle, ear shape, fur length, fur colours and markings, so the owner instantly recognises their own dog. Natural canine anatomy and proportions, two eyes. Rich velvety charcoal blacks, soft smudged half-tones, fine sharp detail in the eyes and nose, loose gestural strokes that fade into bare paper at the edges. The paper grain catches the charcoal everywhere, a few soft finger smudges and lifted highlights. No colour. Composition: the whole head and both ears sit comfortably inside the picture with a calm margin of background above the ears and at both sides, the eyes near the upper third. A fine-art academic drawing from a master's studio. The artwork fills the entire image edge to edge. No text, no letters, no numbers, no signature, no monogram, no watermark, no frame, no border.
 ```
 
-### Modern Oil
+### Oil (`modern-oil`)
 
 Used for: modern-oil.webp (Dachshund, field "muted ochre"), gallery-1.webp (Cavalier, field "muted slate blue").
 `{field}` is the one flat background colour: "muted sage green" (production default), "muted ochre", "muted slate blue" or "muted oxblood".
 
 ```text
 Turn this photo into a contemporary palette-knife oil portrait of this exact {breed}, no costume, no collar, no accessories. Keep this exact dog from the photo: the same face, eye colour, nose, muzzle, ear shape, fur length, fur colours and markings, so the owner instantly recognises their own dog. Natural canine anatomy and proportions, two eyes. Head and chest only, in a calm pose. Thick, confident impasto laid with a palette knife and a broad flat brush: the fur is built from simplified planes of broken colour, with ridges of paint that catch the light, and crisp detail only in the eyes and nose. The background is one flat, matte colour field of {field}, thinly brushed and empty. A single soft light from the upper left. Restrained palette of umber, bone, ochre, slate and sage. The linen canvas weave shows through the thin passages; matte, unvarnished surface. Composition: the whole head and both ears sit comfortably inside the picture with a calm margin of background above the ears and at both sides, the eyes near the upper third. Like a painting by a contemporary small-studio painter, hung in a calm living room. The artwork fills the entire image edge to edge. No text, no letters, no numbers, no signature, no monogram, no watermark, no frame, no border.
-```
-
-### Linocut
-
-Used for: linocut.webp (Husky, second ink "muted sage green"), gallery-2.webp (French Bulldog, second ink "muted ochre").
-The second ink is printed as one flat block behind the dog; the dog itself is black on bare paper, so coat colour is carried by shape, not hue.
-`{field}` (it appears twice) is the second ink: "muted ochre" (production default), "muted sage green", "muted slate blue" or "muted oxblood".
-
-```text
-Turn this photo into a hand-carved linocut relief print of this exact {breed}, printed by hand from two carved linoleum blocks on cream cotton printmaking paper: first one flat block of {field}, then the key block in dense black relief ink. Keep this exact dog from the photo: the same face, eye colour, nose, muzzle, ear shape, fur length, fur colours and markings, so the owner instantly recognises their own dog. Natural canine anatomy and proportions, two eyes. Head and chest only. Every mark is either solid opaque black ink or bare paper: the dark fur is solid black with thin white lines carved out of it, the light fur is bare cream paper with short black gouge cuts, and the fur is described by tapering V-shaped cuts that follow the direction of the hair. Bold simplified shapes with slightly rough, hand-cut edges. The {field} ink is one flat rectangular block behind the dog, with the same dry, slightly mottled hand-rolled texture as the black. A few stray chatter marks left by the gouge in the cleared areas, a slight misregistration between the two blocks. Empty cream paper around the print. No grey tones, no washes, no gradients, no pen lines, no watercolour. Composition: the whole head and both ears sit comfortably inside the picture with a calm margin of background above the ears and at both sides, the eyes near the upper third. Like a limited-edition relief print from a small printmaker's studio. The artwork fills the entire image edge to edge. No text, no letters, no numbers, no signature, no monogram, no watermark, no frame, no border.
 ```
 
 ### Pastel

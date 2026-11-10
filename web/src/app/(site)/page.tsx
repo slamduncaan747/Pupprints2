@@ -1,22 +1,15 @@
 import type { Metadata } from "next";
 import { site } from "@/lib/config";
 import { DEFAULT_OG_IMAGE, jsonLdProps, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
-import { faqJsonLd } from "@/components/marketing/faq";
 import { Hero } from "@/components/home/hero";
 import { Proof } from "@/components/home/proof";
 import { Collection } from "@/components/home/collection";
 import { Pieces } from "@/components/home/pieces";
 import { Moment } from "@/components/home/moment";
-import { Gifting } from "@/components/home/gifting";
-import { OfferStack } from "@/components/home/offer-stack";
-import { Heirloom } from "@/components/home/heirloom";
-import { Guarantee } from "@/components/home/guarantee";
-import { Questions, homeFaq } from "@/components/home/questions";
 import { Closing } from "@/components/home/closing";
 
-const TITLE = "Custom Dog Portraits from Your Photo — See Yours Free";
-const DESCRIPTION =
-  "Your dog, as a piece of art for your home. See your portrait free in about a minute, then we print, frame and ship it to your door. Love it, or it's free.";
+const TITLE = "Custom Dog Portraits from Your Photo";
+const DESCRIPTION = site.description;
 
 export const metadata: Metadata = {
   title: { absolute: `${TITLE} | ${site.name}` },
@@ -40,27 +33,19 @@ export const metadata: Metadata = {
 };
 
 /**
- * The home page as a Grand Slam Offer in campaign clothing. Each section moves one lever of the value
- * equation: the dream outcome (hero), likelihood (a real photo beside its portrait), effort and time
- * (one photo, a minute, no card), the pieces, one campaign moment, the stacked offer, the instant
- * Gift Reveal, a premium bundle, risk reversal, objections, and one last call to action. One call
- * to action per screen.
+ * The home page: very few words, and every screen leads to one action, uploading a photo (/create).
+ * Hero, one photo beside its portrait, the styles, the four formats with prices, one picture, and a
+ * last call to upload. The portraits do the talking.
  */
 export default function HomePage() {
-  const faqs = homeFaq();
   return (
     <>
-      <script {...jsonLdProps([organizationJsonLd({ logo: "/logo.png" }), websiteJsonLd(), faqJsonLd(faqs)])} />
+      <script {...jsonLdProps([organizationJsonLd({ logo: "/logo.png" }), websiteJsonLd()])} />
       <Hero />
       <Proof />
       <Collection />
       <Pieces />
       <Moment />
-      <OfferStack />
-      <Gifting />
-      <Heirloom />
-      <Guarantee />
-      <Questions items={faqs} />
       <Closing />
     </>
   );

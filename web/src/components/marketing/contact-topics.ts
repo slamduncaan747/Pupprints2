@@ -6,7 +6,7 @@ export const CONTACT_TOPICS = [
   { value: "shipping", label: "Shipping & delivery" },
   { value: "guarantee", label: "Returns, remakes & refunds" },
   { value: "memorial", label: "A memorial portrait" },
-  { value: "gifts", label: "Gift Reveal & gift cards" },
+  { value: "gifts", label: "Gifts & gift cards" },
   { value: "privacy", label: "Privacy & photo deletion" },
   { value: "partnerships", label: "Partnerships & press" },
   { value: "other", label: "Something else" },

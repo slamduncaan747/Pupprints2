@@ -10,7 +10,7 @@ export const dogMomGifts: ArticleInput = {
     "Thoughtful gifts for dog moms, for Mother's Day (Sunday, May 9, 2027) or any day: personal keepsakes, practical upgrades, gifts of time, and how to make it come from the dog.",
   date: "2026-10-09",
   category: "gift-guides",
-  heroStyle: "botanical",
+  heroStyle: "watercolor",
   keywords: ["dog mom gifts", "gifts for dog moms", "mother's day gifts for dog moms", "dog mom gift ideas"],
   related: ["gift-ideas-for-dog-lovers", "new-puppy-gift-ideas", "what-to-write-in-a-pet-sympathy-card"],
   body: [
@@ -50,7 +50,7 @@ export const dogMomGifts: ArticleInput = {
     { type: "heading", level: 3, text: "A portrait of her dog" },
     {
       type: "paragraph",
-      text: `A framed portrait is a gift she'll see every day. Match the style to her home: ${styleLink("watercolor")} or ${styleLink("botanical")} for a soft, light-filled space, ${styleLink("modern")} or ${styleLink("fine-line")} for a modern apartment, or ${styleLink("oil-classic")} for a room with some warmth and weight. Framed prints arrive ready to hang, and you can send her a Gift Reveal on Mother's Day morning while the print is on its way.`,
+      text: `A framed portrait is a gift she'll see every day. Match the style to her home: ${styleLink("watercolor")} or ${styleLink("pastel")} for a soft, light-filled space, ${styleLink("modern")} or ${styleLink("fine-line")} for a modern apartment, or ${styleLink("modern-oil")} for a room with some warmth and weight. Framed prints arrive ready to hang.`,
     },
     { type: "heading", level: 3, text: "Jewelry with meaning" },
     {
@@ -112,15 +112,15 @@ export const dogMomGifts: ArticleInput = {
     { type: "heading", text: "When to order for Mother's Day" },
     {
       type: "paragraph",
-      text: `Physical pieces take ${PHYSICAL_SHIP_WINDOW} to arrive in the US, so ordering about two weeks ahead is comfortable. Cutting it close? The Gift Reveal can be sent instantly, even on the morning of May 9. See our [Mother's Day gifts page](/gifts/mothers-day) for more.`,
+      text: `Physical pieces take ${PHYSICAL_SHIP_WINDOW} to arrive in the US, so ordering about two weeks ahead is comfortable. Cutting it close? The digital file arrives by email right after checkout. See our [Mother's Day gifts page](/gifts/mothers-day) for more.`,
     },
     {
       type: "cta",
       title: "Make her dog's portrait",
-      body: "Upload a photo of her dog and see the portrait free in about a minute. Only order if you love it.",
-      href: "/create?style=botanical",
-      label: "Create a free preview",
-      style: "botanical",
+      body: "Upload a photo of her dog to see the portrait.",
+      href: "/create?style=watercolor",
+      label: "Upload a photo",
+      style: "watercolor",
     },
   ],
 };

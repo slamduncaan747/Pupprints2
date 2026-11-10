@@ -68,7 +68,7 @@ export function ReferralCard({ code, shareUrl, shareText }: { code: string; shar
       <div className="min-w-0">
         <p className="max-w-md text-[14px] leading-relaxed text-ink-2">
           Know someone with a dog worth framing? Your code takes ${REFERRAL.friendCents / 100} off their first portrait. When
-          their order is past its {REFERRAL.holdDays}-day guarantee window, we send you ${REFERRAL.rewardCents / 100}.
+          their order is past its {REFERRAL.holdDays}-day returns window, we send you ${REFERRAL.rewardCents / 100}.
         </p>
 
         <div className="max-w-lg">

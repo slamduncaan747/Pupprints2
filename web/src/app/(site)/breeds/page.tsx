@@ -13,7 +13,7 @@ import { JsonLd } from "@/components/content/json-ld";
 
 export const metadata: Metadata = pageMetadata({
   title: "Custom Dog Portraits by Breed",
-  description: `Custom portraits of French Bulldogs, Labs, Goldens, Doodles, rescues and ${BREEDS_SORTED.length - 6} more breeds, with breed-specific photo tips and style picks. Preview yours free.`,
+  description: `Custom portraits of French Bulldogs, Labs, Goldens, Doodles, rescues and ${BREEDS_SORTED.length - 6} more breeds, with breed-specific photo tips and style picks.`,
   path: "/breeds",
 });
 
@@ -39,8 +39,8 @@ export default function BreedsIndexPage() {
       <PageHero
         align="center"
         breadcrumbs={<ContentBreadcrumbs items={[{ name: "Breeds", path: "/breeds" }]} />}
-        title="Every breed has its best angle"
-        lede="Bat ears, beards, merle coats, mismatched eyes: the details a portrait has to get right. Find your breed for photo tips and the styles we'd pick."
+        title="By breed"
+        lede="Find your breed for photo tips and the styles we'd pick."
       />
 
       {shown.length > 0 && (
@@ -77,8 +77,7 @@ export default function BreedsIndexPage() {
         <Container>
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-10">
             <div className="mb-12 lg:col-span-4 lg:mb-0">
-              <p className="label text-ink-3">The index</p>
-              <h2 id="all-breeds" className="mt-5 font-display text-[30px] leading-[1.06] sm:text-[40px]">
+              <h2 id="all-breeds" className="font-display text-[30px] leading-[1.08] sm:text-[40px]">
                 All breeds
               </h2>
               <p className="mt-5 max-w-sm text-[13px] leading-relaxed text-ink-3">
@@ -100,7 +99,7 @@ export default function BreedsIndexPage() {
       </section>
 
       {mixed && (
-        <Block eyebrow="Mixed & rescue" title="Don't see your breed? Even better.">
+        <Block title="Mixed breeds and rescues">
           <Prose>
             <p>
               Portraits are made from your photo, not a breed template, so every one-of-a-kind ear, freckle and patch carries

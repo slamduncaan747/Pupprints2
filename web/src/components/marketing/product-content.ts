@@ -16,7 +16,7 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
   canvas: {
     title: "Custom Dog Portrait on Canvas",
     metaDescription:
-      "Your dog's portrait on hand-stretched gallery canvas, wrapped around a solid wood stretcher bar and ready to hang. Preview free, free US shipping, hi-res digital file included.",
+      "Your dog's portrait on hand-stretched gallery canvas, wrapped around a solid wood stretcher bar and ready to hang. Free US shipping, hi-res digital file included.",
     h1: "Your dog on gallery canvas",
     intro:
       "Printed on poly-cotton canvas and hand-stretched over a solid wood stretcher bar, with the image wrapping around the edges. No frame needed: it arrives ready to hang.",
@@ -32,7 +32,7 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
       },
       {
         q: "Will the gallery wrap cut off part of my dog?",
-        a: "Your portrait is composed with comfortable space around your dog, and a person on our team checks every print file before it's printed, so nothing important ends up on the edges.",
+        a: "No. Your portrait is composed with space around your dog, so nothing important ends up on the edges.",
       },
       {
         q: "Which size should I choose?",
@@ -43,7 +43,7 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
   framed: {
     title: "Framed Custom Dog Portrait",
     metaDescription:
-      "Your dog's portrait framed in solid wood (black, white or natural oak) with shatter-resistant acrylic, ready to hang. Preview free, free US shipping, hi-res digital file included.",
+      "Your dog's portrait framed in solid wood (black, white or natural oak) with shatter-resistant acrylic, ready to hang. Free US shipping, hi-res digital file included.",
     h1: "Framed, and ready to hang",
     intro:
       "Your portrait on archival matte paper, framed in solid wood behind shatter-resistant acrylic. Choose black, white or natural oak. Hanging hardware is included, so it can go straight on the wall.",
@@ -59,7 +59,7 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
       },
       {
         q: "Which frame color should I choose?",
-        a: "Black makes colors pop and suits dramatic styles. White feels light and modern, lovely with watercolor and line art. Natural oak is warm and works almost anywhere. You can compare the frames with your own portrait before you order.",
+        a: "Black makes colors stand out and suits darker styles. White feels light and modern, good with watercolor and line drawings. Natural oak is warm and works almost anywhere. You can compare the frames with your own portrait before you order.",
       },
       {
         q: "Is it ready to hang?",
@@ -70,7 +70,7 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
   poster: {
     title: "Custom Dog Portrait Fine Art Print",
     metaDescription:
-      "Your dog's portrait on archival, acid-free matte paper with fade-resistant pigment inks, in standard frame sizes. Preview free, free US shipping, hi-res digital file included.",
+      "Your dog's portrait on archival, acid-free matte paper with fade-resistant pigment inks, in standard frame sizes. Free US shipping, hi-res digital file included.",
     h1: "A fine art print of your dog",
     intro:
       "Archival, acid-free matte paper printed with fade-resistant pigment inks for rich, gallery-quality color. Every size is a standard frame size, so it's easy to frame your own way.",
@@ -97,10 +97,10 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
   digital: {
     title: "Digital Dog Portrait — Hi-Res File",
     metaDescription:
-      "The high-resolution, unwatermarked file of your custom dog portrait, delivered by email right after checkout. Included free with every print, framed print and canvas.",
+      "The high-resolution, unwatermarked file of your custom dog portrait, delivered by email right after checkout. Included with every print, framed print and canvas.",
     h1: "Your portrait, delivered instantly",
     intro:
-      "The full-resolution, unwatermarked file of your portrait, delivered to your inbox right after checkout. Use it as a lock screen, post it, or print it for your own home. It's included free with every print, framed print and canvas.",
+      "The full-resolution, unwatermarked file of your portrait, delivered to your inbox right after checkout. Use it as a lock screen, post it, or print it for your own home. It's included with every print, framed print and canvas.",
     care: [
       "Download it and keep a backup somewhere safe, like your photo library or cloud storage.",
       "For printing at home or at a local print shop, use the original file rather than a screenshot.",
@@ -108,7 +108,7 @@ export const PRODUCT_CONTENT: Record<ProductType, ProductContent> = {
     faq: [
       {
         q: "Is the digital file included with prints?",
-        a: "Yes. Every print, framed print and canvas includes the hi-res digital file free. Buy the digital file on its own only if you don't want a physical piece.",
+        a: "Yes. Every print, framed print and canvas includes the hi-res digital file. Buy the digital file on its own only if you don't want a physical piece.",
       },
       {
         q: "Can I print it myself?",

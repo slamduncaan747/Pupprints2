@@ -8,7 +8,7 @@ import { OfferCta, beforeHolidayCutoff } from "@/components/marketing/offer";
 import { cn, formatPrice } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, Facts, Rows, textLink } from "@/components/marketing/blocks";
+import { Block, Facts, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { ZoomImage } from "@/components/marketing/campaign";
 import { EVERYTHING_CARD, OCCASIONS } from "@/components/marketing/gift-occasions";
@@ -19,7 +19,7 @@ import { campaign } from "@/lib/campaign";
 export const metadata: Metadata = {
   title: "Gifts for Dog Lovers — Custom Dog Portrait Gift Guide",
   description:
-    "The gift guide for dog people: custom portraits of their dog for birthdays, Christmas, Mother's Day, memorials and new puppies. Preview free, send a Gift Reveal instantly, free US shipping.",
+    "Custom portraits of their dog as a gift: for birthdays, Christmas, Mother's Day, memorials and new puppies. Free US shipping.",
   alternates: { canonical: "/gifts" },
 };
 
@@ -34,12 +34,6 @@ function bandPiece(items: PricedItem[], index: number) {
   const ofType = items.filter((i) => i.product.type === type);
   return ofType.sort((a, b) => b.variant.widthIn * b.variant.heightIn - a.variant.widthIn * a.variant.heightIn)[0];
 }
-
-const REVEAL_STEPS = [
-  { title: "Make it from any photo", body: "A photo of their dog from your phone or their social media. See the portrait free." },
-  { title: "Reveal it instantly", body: "The moment you order, send a digital reveal by text or email, or show it in person." },
-  { title: "The real thing follows", body: "We print, check and ship the piece, to them directly or to you to wrap." },
-];
 
 /**
  * Magazine layout for the occasion stories (12 columns on desktop): a large lead, then smaller
@@ -62,9 +56,8 @@ export default function GiftsPage() {
     <>
       <PageHero
         align="center"
-        eyebrow="The Gift Guide"
-        title="Give it today. Hang it in days."
-        lede="Make a portrait of their dog from any photo and see it free. The moment you order, send a Gift Reveal they can open right away; the piece follows, ready to hang."
+        title="Gifts"
+        lede="A portrait of their dog, made from any photo you have of it."
         media={
           gift.live ? (
             <Photo photo={gift} ratio={null} eager sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-[4/5] lg:aspect-auto lg:h-full" />
@@ -72,21 +65,10 @@ export default function GiftsPage() {
         }
       >
         {beforeCutoff && (
-          <div className={cn("mb-9 flex flex-col gap-2", gift.live ? "items-start" : "items-center")}>
-            <p className="label text-ink">{HOLIDAY.label}</p>
-            <p className="label text-ink-3">{HOLIDAY.reveal}</p>
-          </div>
+          <p className="label mb-9 text-ink">{HOLIDAY.label}</p>
         )}
         <OfferCta align={gift.live ? "start" : "center"} />
       </PageHero>
-
-      <Block
-        eyebrow="The Gift Reveal"
-        title="The moment they see it doesn't wait for the mail"
-        intro="The best part of a gift is the moment they see it. With a Gift Reveal, that moment is the day you order."
-      >
-        <Rows numbered items={REVEAL_STEPS} />
-      </Block>
 
       <section id="occasions" aria-labelledby="occasions-title" className="scroll-mt-24 pb-24 sm:pb-36">
         <Container>
@@ -118,14 +100,14 @@ export default function GiftsPage() {
                       </p>
                       <h3
                         className={cn(
-                          "mt-4 font-display leading-[1.04] tracking-[-0.015em]",
+                          "mt-4 font-display leading-[1.08] tracking-[-0.015em]",
                           i === 0 ? "text-[40px] sm:text-[56px]" : "text-[32px] sm:text-[40px]",
                         )}
                       >
                         {o.name}
                       </h3>
                       <p className="mt-3 text-[14px] leading-relaxed text-ink-2">{o.card}</p>
-                      <span className="link-cta mt-6 inline-block text-ink">Discover</span>
+                      <span className="link-cta mt-6 inline-block text-ink">View</span>
                     </div>
                   </Link>
                 </li>
@@ -147,9 +129,8 @@ export default function GiftsPage() {
       </section>
 
       <Block
-        eyebrow="By price"
-        title="Gifts at every price"
-        intro="Real prices, with free US shipping. Every physical piece comes with the hi-res digital file."
+        title="By price"
+        intro="US shipping is included. Every physical piece comes with the hi-res digital file."
         layout="stack"
       >
         <div className="grid gap-16 md:grid-cols-3 md:gap-10">
@@ -194,12 +175,7 @@ export default function GiftsPage() {
         </div>
       </Block>
 
-      <CtaBand
-        eyebrow="Begin a gift"
-        title="A gift they'll never see coming"
-        body="Upload a photo of their dog and see the portrait free in about a minute. Send the Gift Reveal the moment you order."
-        image="botanical"
-      />
+      <CtaBand title="Start with a photo of their dog." image="watercolor" />
     </>
   );
 }

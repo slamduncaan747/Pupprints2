@@ -26,7 +26,7 @@ export const BREEDS: Breed[] = [
     personality: "Bat ears, big opinions and a face built for close-ups.",
     intro: [
       "The French Bulldog is America's most popular breed right now, No. 1 on the AKC's list for the fourth year running, and it isn't hard to see why. Frenchies pack a huge personality into a compact, muscular frame and treat every room as a stage. They descend from toy-sized bulldogs that traveled from England to France in the 1800s, where they became the darlings of Paris.",
-      "For a portrait, everything starts with the face: the upright bat ears, the short muzzle, the soft folds above the nose and those round, dark eyes. Those are the features that make a Frenchie instantly recognizable, so they're the ones we protect. The good news is that a Frenchie face carries a classical oil painting as easily as a bold carved print. The shapes are that strong.",
+      "For a portrait, everything starts with the face: the upright bat ears, the short muzzle, the soft folds above the nose and those round, dark eyes. Those are the features that make a Frenchie instantly recognizable, so they're the ones we protect. The good news is that a Frenchie face carries an oil painting as easily as a simple line drawing. The shapes are that strong.",
     ],
     coat: "Brindle, fawn, cream, white and pied coats all paint well. Dark brindle looks rich in the oil styles; fawn and cream glow in watercolor.",
     tips: [
@@ -44,9 +44,8 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "Dark brindle and a wrinkled brow look rich in warm, quiet oil." },
+      { slug: "modern-oil", why: "Dark brindle and a wrinkled brow look rich in thick oil paint." },
       { slug: "watercolor", why: "Soft washes flatter fawn and cream coats while keeping the ears crisp." },
-      { slug: "linocut", why: "That compact silhouette and those bat ears carve into bold, simple shapes." },
       { slug: "charcoal", why: "Soft smudges suit the folds over the nose, with all the detail kept for the eyes." },
     ],
     faq: [
@@ -56,7 +55,7 @@ export const BREEDS: Breed[] = [
       },
       {
         q: "My Frenchie is brindle. Which style shows that best?",
-        a: `Brindle striping comes through beautifully in the painterly styles, especially ${n("oil-classic")} and ${n("modern-oil")}, where a quiet background lets a dark coat glow. For a lighter, airier look, try ${n("watercolor")}.`,
+        a: `Brindle striping comes through beautifully in the painterly styles, especially ${n("modern-oil")}, where a flat background sets off a dark coat. For a lighter, airier look, try ${n("watercolor")}.`,
       },
     ],
     sampleNames: ["French Bulldog"],
@@ -90,7 +89,6 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "A Lab's honest face is made for a quiet, museum-style oil." },
       { slug: "charcoal", why: "A black Lab becomes a study in soft shadow, with the kind eyes kept sharp." },
       { slug: "watercolor", why: "Lovely with yellow and fox-red coats, and gentle enough for a memorial piece." },
       { slug: "modern-oil", why: "A broad, simple head suits thick strokes on a calm field of color." },
@@ -98,7 +96,7 @@ export const BREEDS: Breed[] = [
     faq: [
       {
         q: "Will a black Lab look good in a portrait?",
-        a: `Yes, as long as the photo shows detail in the face. Choose one taken in good daylight where you can clearly see their eyes, not a dim indoor shot. Styles like ${n("oil-classic")} and ${n("charcoal")} handle black coats especially well.`,
+        a: `Yes, as long as the photo shows detail in the face. Choose one taken in good daylight where you can clearly see their eyes, not a dim indoor shot. Styles like ${n("modern-oil")} and ${n("charcoal")} handle black coats especially well.`,
       },
     ],
     sampleNames: ["Labrador", "Labrador Retriever"],
@@ -114,9 +112,9 @@ export const BREEDS: Breed[] = [
     personality: "Sunshine in dog form, with a coat to match.",
     intro: [
       "The Golden Retriever was developed in the Scottish Highlands in the 1800s, largely through the breeding program of Lord Tweedmouth, to retrieve game across rough country and cold water. Today it's No. 3 on the AKC's popularity list and a strong contender for friendliest dog on any street. Goldens are gentle, people-focused and blessed with a face that seems to be permanently smiling.",
-      "That warmth is what a good Golden portrait captures. The details to protect are the soft, feathered ears, the dark eyes and nose set against a light coat, and the feathering on the chest that frames the face. Goldens range from pale cream to deep red-gold, and the shade matters: lighter coats sing in watercolor and botanical styles, while deeper reds look magnificent in classical oil. Seniors with frosted muzzles make especially moving portraits.",
+      "That warmth is what a good Golden portrait captures. The details to protect are the soft, feathered ears, the dark eyes and nose set against a light coat, and the feathering on the chest that frames the face. Goldens range from pale cream to deep red-gold, and the shade matters: lighter coats suit watercolor and pastel, while deeper reds look rich in oil. Seniors with frosted muzzles make especially moving portraits.",
     ],
-    coat: "Light golden, golden and dark golden, from near-cream to deep red. Darker coats glow in the old-master styles; paler coats are lovely on light watercolor and botanical backgrounds.",
+    coat: "Light golden, golden and dark golden, from near-cream to deep red. Darker coats look rich in oil; paler coats are lovely in watercolor and pastel.",
     tips: [
       {
         title: "Include the chest feathering",
@@ -134,7 +132,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "modern", why: "A golden coat and a dark nose read warm and clear on soft white." },
       { slug: "pastel", why: "Layered pastel suits a feathered coat, and it is kind to a frosted muzzle." },
-      { slug: "oil-classic", why: "Warm Rembrandt light makes a red-gold coat look like it belongs in a museum." },
+      { slug: "modern-oil", why: "Broad strokes of paint suit a red-gold coat." },
       { slug: "watercolor", why: "Light washes suit cream coats and keep the feathering airy." },
     ],
     faq: [
@@ -156,7 +154,7 @@ export const BREEDS: Breed[] = [
     personality: "Loyal, sharp and always on duty, even from the couch.",
     intro: [
       "German Shepherds were developed in Germany in the late 1890s, largely through the work of former cavalry officer Max von Stephanitz, who set out to breed the ideal herding dog. Their intelligence and steadiness soon made them famous as police, military, guide and search-and-rescue dogs, and they're No. 4 on the AKC's 2025 list. At home they tend to be devoted to their family and quietly watchful of everyone else.",
-      "A great Shepherd portrait is all about presence: the tall, upright ears, the long muzzle, the intelligent eyes and the saddle markings across the back and shoulders. The black-and-tan pattern gives a portrait gorgeous contrast, while sable and solid black coats call for good light so the face doesn't disappear. Because the breed has such a serious, noble look, the classical styles suit it especially well.",
+      "A great Shepherd portrait is all about presence: the tall, upright ears, the long muzzle, the intelligent eyes and the saddle markings across the back and shoulders. The black-and-tan pattern gives a portrait gorgeous contrast, while sable and solid black coats call for good light so the face doesn't disappear. Because the breed has such a serious, noble look, oil and charcoal suit it especially well.",
     ],
     coat: "Black and tan, black and red, sable and solid black are the most familiar. Contrasting saddle markings look superb in oil and charcoal; solid black dogs need a bright photo.",
     tips: [
@@ -176,13 +174,12 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "modern-oil", why: "A strong head and saddle markings hold up to bold, simple planes of paint." },
       { slug: "charcoal", why: "Strong contrast and expressive eyes make a Shepherd a perfect monochrome study." },
-      { slug: "oil-classic", why: "Rich black-and-tan markings glow in warm old-master light." },
       { slug: "modern", why: "Upright ears and a black-and-tan mask read cleanly on soft white." },
     ],
     faq: [
       {
         q: "Can you make a portrait of a working or K-9 dog?",
-        a: `Absolutely. Upload a clear photo of their face. Every portrait shows the dog alone, so it won't include a vest, harness or badge, and ${n("oil-classic")} has the dignified feel many handlers and owners of working dogs love.`,
+        a: `Absolutely. Upload a clear photo of their face. Every portrait shows the dog alone, so it won't include a vest, harness or badge, and ${n("charcoal")} has the serious look many handlers and owners of working dogs like.`,
       },
     ],
     related: ["doberman-pinscher", "rottweiler", "siberian-husky"],
@@ -198,7 +195,7 @@ export const BREEDS: Breed[] = [
       "Despite being France's national dog, the Poodle was first bred in Germany as a water retriever; the name comes from the German pudel, linked to splashing in water. The breed comes in three sizes (Standard, Miniature and Toy) and all of them are sharp, playful and surprisingly sporty. Poodles rank No. 6 on the AKC's 2025 list.",
       "Portrait-wise, Poodles are a dream and a challenge. The dream: an elegant head, a long muzzle and sculptural curls give every style something to work with. The challenge: a dense topknot can hide the eyes, and solid black or brown coats swallow light. Pick a photo where the eyes are clearly visible and the current clip is one you love, because the portrait will keep it. Then let the outline do the work. A Poodle's silhouette is half the portrait.",
     ],
-    coat: "Solid colors are the norm: black, white, apricot, red, cream, silver, blue, brown and more. White and apricot look stunning in fine line and watercolor; a black Poodle is striking as a linocut or in ink wash.",
+    coat: "Solid colors are the norm: black, white, apricot, red, cream, silver, blue, brown and more. White and apricot look stunning in fine line and watercolor; a black Poodle is striking in charcoal.",
     tips: [
       {
         title: "Show the eyes",
@@ -216,8 +213,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "modern", why: "Curls settle into soft tonal shapes while the long profile stays crisp." },
       { slug: "fine-line", why: "Curls and a long, elegant profile look wonderful in minimal ink." },
-      { slug: "linocut", why: "A sculpted clip makes a clean, graphic shape for a carved print." },
-      { slug: "modern-sage", why: "A poised outline, set on a quiet sage ground." },
+      { slug: "modern-sage", why: "A poised outline, set on sage green." },
     ],
     faq: [
       {
@@ -255,9 +251,8 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "linocut", why: "A long nose and low-set ears make a profile worth carving." },
-      { slug: "oil-classic", why: "Red and black-and-tan coats glow in warm, quiet oil." },
-      { slug: "modern-sage", why: "Red and black-and-tan coats sit well on quiet sage." },
+      { slug: "modern-oil", why: "Red and black-and-tan coats look rich in oil paint." },
+      { slug: "modern-sage", why: "Red and black-and-tan coats sit well on sage green." },
       { slug: "fine-line", why: "A tapered muzzle and floppy ears, in a few confident lines." },
     ],
     faq: [
@@ -297,7 +292,7 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "charcoal", why: "Long soft ears and a pleading look are all a charcoal study needs." },
-      { slug: "oil-classic", why: "Tricolor markings look rich and painterly in warm, quiet oil." },
+      { slug: "modern-oil", why: "Tricolor markings come out bold in oil paint." },
       { slug: "watercolor", why: "Tricolor markings stay clear while the edges go soft." },
       { slug: "pastel", why: "Velvety ears, drawn in a medium that is velvety too." },
     ],
@@ -320,9 +315,9 @@ export const BREEDS: Breed[] = [
     personality: "A gentle goofball at home and a serious guardian at the door.",
     intro: [
       "Rottweilers take their name from the German town of Rottweil, where they drove cattle to market and pulled butchers' carts. Their roots are usually traced back to the drover dogs that traveled with Roman armies. Today they're No. 8 on the AKC's 2025 list, loved for their loyalty, their calm confidence and a goofy side they save for the people they trust.",
-      "In a portrait, a Rottweiler's power comes from the broad head, the strong muzzle and the rich mahogany markings: the spots above the eyes, on the cheeks and on the chest. Those tan points carry most of the expression, so they need to be visible in your photo. Against a black coat they create exactly the kind of contrast old-master painters loved, which is why the oil styles look so natural on this breed.",
+      "In a portrait, a Rottweiler's power comes from the broad head, the strong muzzle and the rich mahogany markings: the spots above the eyes, on the cheeks and on the chest. Those tan points carry most of the expression, so they need to be visible in your photo. Against a black coat they create strong contrast, which is why oil and charcoal suit this breed so well.",
     ],
-    coat: "Black with rust to mahogany markings. That contrast is ideal for classical oil and charcoal; the trick is a photo bright enough to show the tan eyebrows.",
+    coat: "Black with rust to mahogany markings. That contrast is ideal for oil and charcoal; the trick is a photo bright enough to show the tan eyebrows.",
     tips: [
       {
         title: "Light the eyebrows",
@@ -339,9 +334,8 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "modern-oil", why: "A broad head in thick, simple strokes, with the mahogany points left clean." },
-      { slug: "linocut", why: "Black with rust points is nearly a two-ink print already." },
       { slug: "charcoal", why: "Black and tan become a striking monochrome study full of depth." },
-      { slug: "oil-classic", why: "Warm, quiet light shows off the mahogany points beautifully." },
+      { slug: "modern", why: "A broad head and tan eyebrows read clearly on soft white." },
     ],
     faq: [
       {
@@ -360,9 +354,9 @@ export const BREEDS: Breed[] = [
     personality: "Wrinkles, an underbite and the calm of a retired heavyweight.",
     intro: [
       "The Bulldog is so tied to British grit that 'bulldog spirit' became a national figure of speech. The breed's early history is darker (the name comes from the long-banned blood sport of bull-baiting), but generations of breeding turned it into the mellow, affectionate companion that ranks No. 10 on the AKC's 2025 list. Bulldogs are famously happy to supervise from the sofa.",
-      "Few breeds give a portrait more character per square inch. The loose wrinkles, the small rose ears, the wide-set eyes and the trademark underbite are what make a Bulldog face, and they all reward good directional light. Bulldogs come in brindle, white, red, fawn and pied combinations, and their solid, sculptural build looks fantastic in heavy classical styles. Their deadpan dignity gives even a quiet portrait a great deal of presence.",
+      "Few breeds give a portrait more character per square inch. The loose wrinkles, the small rose ears, the wide-set eyes and the trademark underbite are what make a Bulldog face, and they all reward good directional light. Bulldogs come in brindle, white, red, fawn and pied combinations, and their solid, sculptural build looks fantastic in thick oil paint. Their deadpan dignity gives even a simple portrait a great deal of presence.",
     ],
-    coat: "Brindle, fawn, red, white and piebald patterns. Brindle and red look superb in oil; white and fawn pied coats suit linocut and fine line.",
+    coat: "Brindle, fawn, red, white and piebald patterns. Brindle and red look superb in oil; white and fawn pied coats suit a line drawing.",
     tips: [
       {
         title: "Side light for the wrinkles",
@@ -380,8 +374,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "charcoal", why: "Wrinkles and rose ears become soft shadow, with a steady gaze in the middle." },
       { slug: "modern-oil", why: "A solid, sculptural head suits thick paint and simple planes." },
-      { slug: "oil-classic", why: "Rembrandt light turns every wrinkle into texture worth framing." },
-      { slug: "linocut", why: "A broad face with strong folds carves into bold shapes." },
+      { slug: "fine-line", why: "Wrinkles and an underbite make a line drawing full of character." },
     ],
     faq: [
       {
@@ -401,7 +394,7 @@ export const BREEDS: Breed[] = [
     personality: "An athlete in a ticked coat who never, ever runs out of energy.",
     intro: [
       "The German Shorthaired Pointer was developed in Germany in the 1800s as a do-it-all hunting dog that could point, retrieve and swim. That versatility, plus a friendly, eager nature, has carried the GSP up to No. 9 on the AKC's 2025 list. They're happiest with a job and a long run, and they'll remind you of both every day.",
-      "GSPs have a noble, chiseled head: a long muzzle, high-set ears and almond eyes that always seem to be scanning the horizon. Their coats, usually liver or black with white ticking or roan patches, are a joy in paint because the speckles add texture and life. A classic pose in profile echoes centuries of sporting art, which is why a GSP looks so at home in old-master and naturalist styles.",
+      "GSPs have a noble, chiseled head: a long muzzle, high-set ears and almond eyes that always seem to be scanning the horizon. Their coats, usually liver or black with white ticking or roan patches, are a joy in paint because the speckles add texture and life. A classic pose in profile echoes centuries of sporting art, which is why a GSP looks so at home in oil.",
     ],
     coat: "Solid liver, liver and white, black and white, ticked and roan. Ticking adds lovely texture in oil and watercolor if the photo is sharp enough to show it.",
     tips: [
@@ -419,9 +412,8 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "Sporting dogs have been painted in oil for centuries; a GSP fits right in." },
+      { slug: "modern-oil", why: "Sporting dogs have been painted in oil for centuries; a GSP fits right in." },
       { slug: "modern", why: "A lean head and liver ticking, drawn clean on soft white." },
-      { slug: "botanical", why: "Leaves and wildflowers nod to the fields where they're happiest." },
       { slug: "watercolor", why: "Loose washes make liver-and-white ticking look effortlessly elegant." },
     ],
     faq: [
@@ -442,7 +434,7 @@ export const BREEDS: Breed[] = [
     personality: "Tiny, fearless and fabulous, with a terrier's heart under all that silk.",
     intro: [
       "Yorkshire Terriers were developed in the north of England in the 1800s, where mill workers kept them to catch rats. Within a few generations the little ratter had become a fashionable companion, and it never looked back. Yorkies sit at No. 13 on the AKC's 2025 list and remain big-hearted, bossy and brave.",
-      "Portrait-wise, a Yorkie is all about the face: dark, bright eyes, small upright ears and the silky blue-and-tan coat that frames it all. Long, flowing coats and short puppy cuts both work, and the portrait follows your photo, so choose the look you love. Because they're so small, the real trick is getting down to their level. Their spunky elegance suits classical oil and soft pastel beautifully.",
+      "Portrait-wise, a Yorkie is all about the face: dark, bright eyes, small upright ears and the silky blue-and-tan coat that frames it all. Long, flowing coats and short puppy cuts both work, and the portrait follows your photo, so choose the look you love. Because they're so small, the real trick is getting down to their level. Their spunky elegance suits oil and soft pastel beautifully.",
     ],
     coat: "Adults are blue and tan or black and tan, with gold on the face. Warm tan details shine in oil, and the silky texture looks lovely in watercolor.",
     tips: [
@@ -460,9 +452,8 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "Steel blue and tan look deep and lasting in classical oil." },
+      { slug: "modern-oil", why: "Steel blue and tan look deep in oil paint." },
       { slug: "pastel", why: "A silky coat suits soft, layered strokes on toned paper." },
-      { slug: "botanical", why: "Silky tan and steel blue look lovely in a wreath of soft flowers." },
       { slug: "watercolor", why: "Soft washes bring out the silky, flowing coat." },
     ],
     faq: [
@@ -483,7 +474,7 @@ export const BREEDS: Breed[] = [
     personality: "A herding genius with marbled coats and eyes you never forget.",
     intro: [
       "Despite the name, the Australian Shepherd as we know it was developed in the western United States, working livestock on ranches; the 'Australian' probably refers to herding dogs that arrived alongside sheep imported from Australia. Aussies are clever, tireless and devoted, and they rank No. 14 on the AKC's 2025 list.",
-      "No two Aussies look alike. Blue merle and red merle coats marble like stone, and many Aussies have striking blue or amber eyes, or one of each. Those unique details are the whole point of a portrait, so choose a photo with even light where the merle pattern and eye color are clear. The complexity of the coat looks gorgeous in loose, painterly styles, while the intense herding stare holds its own in a dramatic old-master treatment.",
+      "No two Aussies look alike. Blue merle and red merle coats marble like stone, and many Aussies have striking blue or amber eyes, or one of each. Those unique details are the whole point of a portrait, so choose a photo with even light where the merle pattern and eye color are clear. The complexity of the coat looks gorgeous in loose, painterly styles, while the intense herding stare holds its own in charcoal.",
     ],
     coat: "Blue merle, red merle, black and red, with or without white and copper trim. Merle patterns are stunning in watercolor and oil.",
     tips: [
@@ -502,9 +493,8 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "watercolor", why: "Merle marbling and soft color blooms were made for each other." },
-      { slug: "oil-classic", why: "That focused stare and copper trim look magnificent in warm old-master light." },
+      { slug: "modern-oil", why: "That focused stare and copper trim hold up well in thick paint." },
       { slug: "pastel", why: "Merle is all soft transitions, which is what pastel does best." },
-      { slug: "botanical", why: "Red merles and copper points glow against muted greens and florals." },
     ],
     faq: [
       {
@@ -524,9 +514,9 @@ export const BREEDS: Breed[] = [
     personality: "A lap dog with court ancestry and a face old-master painters loved.",
     intro: [
       "Toy spaniels were favorites of England's Stuart court, and King Charles II was so fond of them that the dogs took his name. Painters such as Van Dyck put little spaniels into court portraits, and in the 1920s an American, Roswell Eldridge, offered prizes at Crufts for spaniels that looked like the ones in those old paintings. That revival became the Cavalier, now No. 12 on the AKC's 2025 list.",
-      "So a Cavalier in a classical oil portrait is less a novelty than a homecoming. The features to protect are the long, silky, feathered ears, the large round eyes and the gently tapered muzzle. Many Blenheim Cavaliers carry a chestnut spot on the top of the head, known as the 'Blenheim spot', so keep it in frame. Their sweet expression is also perfect for the softer floral and watercolor styles.",
+      "So a Cavalier in an oil portrait is less a novelty than a homecoming. The features to protect are the long, silky, feathered ears, the large round eyes and the gently tapered muzzle. Many Blenheim Cavaliers carry a chestnut spot on the top of the head, known as the 'Blenheim spot', so keep it in frame. Their sweet expression also suits pastel and watercolor.",
     ],
-    coat: "Four colors: Blenheim (chestnut on white), tricolor, black and tan, and ruby. Blenheim and ruby glow in oil; tricolor is crisp in botanical and watercolor.",
+    coat: "Four colors: Blenheim (chestnut on white), tricolor, black and tan, and ruby. Blenheim and ruby glow in oil; tricolor is crisp in watercolor.",
     tips: [
       {
         title: "Keep the top of the head in frame",
@@ -542,15 +532,14 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "Toy spaniels sat for old-master painters for centuries. Blenheim and ruby coats look rich in oil." },
-      { slug: "botanical", why: "A wreath of roses and ferns suits that sweet, gentle face." },
+      { slug: "modern-oil", why: "Toy spaniels have been painted in oil for centuries. Blenheim and ruby coats look rich in it." },
       { slug: "pastel", why: "Silky feathered ears and big round eyes suit pastel's softness." },
       { slug: "watercolor", why: "Feathered ears and big eyes look lovely in soft, luminous washes." },
     ],
     faq: [
       {
-        q: `Why is ${n("oil-classic")} such a good fit for Cavaliers?`,
-        a: "Because it's history. Toy spaniels appear in 17th-century court paintings, and the breed is named for King Charles II. A quiet oil portrait in that tradition feels right at home on a Cavalier.",
+        q: "Why is oil such a good fit for Cavaliers?",
+        a: "Because it's history. Toy spaniels appear in 17th-century court paintings, and the breed is named for King Charles II. An oil portrait feels right at home on a Cavalier.",
       },
     ],
     sampleNames: ["Cavalier King Charles", "Cavalier King Charles Spaniel", "Cavalier"],
@@ -568,7 +557,7 @@ export const BREEDS: Breed[] = [
       "Pembroke Welsh Corgis were bred in Wales to herd cattle, nipping at heels while staying low enough to dodge the kicks. They're quick, bossy, funny and loyal, and they rank No. 16 on the AKC's 2025 list. Queen Elizabeth II famously kept Pembrokes for most of her long life, which made the breed famous far beyond Wales.",
       "In a portrait, a Corgi's face is pure charm: the big, upright, fox-like ears, the bright eyes, the white blaze and that famous open-mouthed smile. Red, sable, fawn and black-and-tan coats with white markings each bring their own warmth. Because Corgis are so cheerful, they shine in whimsical and playful styles, and those ears give bold graphic styles a terrific silhouette to work with.",
     ],
-    coat: "Red, sable, fawn, and black and tan, usually with white. Red and sable glow in oil and watercolor; tricolor is crisp as a linocut.",
+    coat: "Red, sable, fawn, and black and tan, usually with white. Red and sable glow in oil and watercolor; tricolor is crisp as a line drawing.",
     tips: [
       {
         title: "Ears are everything",
@@ -581,15 +570,14 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "linocut", why: "Big upright ears and a fox-like face make a bold, cheerful print." },
-      { slug: "modern-sage", why: "Red and white, with those ears, on a quiet sage ground." },
+      { slug: "modern-sage", why: "Red and white, with those ears, on sage green." },
       { slug: "watercolor", why: "Red and sable coats glow in loose, warm washes." },
-      { slug: "oil-classic", why: "A red-and-white coat looks rich in quiet classical oil." },
+      { slug: "modern-oil", why: "A red-and-white coat looks rich in oil paint." },
     ],
     faq: [
       {
         q: "Which style shows off a Corgi's ears best?",
-        a: `The graphic ones. ${n("linocut")} and ${n("modern-sage")} both make the most of that silhouette, and ${n("watercolor")} is the softer choice. Try them all free and see which one looks most like yours.`,
+        a: `The graphic ones. ${n("fine-line")} and ${n("modern-sage")} both make the most of that silhouette, and ${n("watercolor")} is the softer choice. Try them all free and see which one looks most like yours.`,
       },
     ],
     sampleNames: ["Corgi", "Pembroke Welsh Corgi"],
@@ -605,9 +593,9 @@ export const BREEDS: Breed[] = [
     personality: "Sleek, alert and secretly a velcro dog.",
     intro: [
       "The Doberman Pinscher was created in Germany in the late 1800s by Karl Friedrich Louis Dobermann, a tax collector who wanted a loyal protector on his rounds. The result was one of the most elegant working dogs ever bred: athletic, intelligent and deeply bonded to its family. Dobermans rank No. 15 on the AKC's 2025 list.",
-      "A Doberman portrait lives on line and contrast: the long, wedge-shaped head, the rust markings above the eyes and on the muzzle, and a short, glossy coat that catches light like polished wood. Cropped or natural ears both work beautifully, and the portrait follows your photo. That noble profile suits disciplined, classical styles, and the sleek lines translate just as well into a graphic mid-century poster.",
+      "A Doberman portrait lives on line and contrast: the long, wedge-shaped head, the rust markings above the eyes and on the muzzle, and a short, glossy coat that catches light like polished wood. Cropped or natural ears both work beautifully, and the portrait follows your photo. That noble profile suits oil and charcoal, and the sleek lines translate just as well into a line drawing.",
     ],
-    coat: "Black and rust, red and rust, blue and rust, and fawn (Isabella) and rust. The rust points are key; a glossy black coat looks magnificent in classical oil.",
+    coat: "Black and rust, red and rust, blue and rust, and fawn (Isabella) and rust. The rust points are key; a glossy black coat looks magnificent in oil.",
     tips: [
       {
         title: "No flash on a glossy coat",
@@ -620,8 +608,7 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "linocut", why: "Sleek lines and rust points carve cleanly into one or two inks." },
-      { slug: "oil-classic", why: "A glossy coat and rust points glow like polished wood in old-master light." },
+      { slug: "modern-oil", why: "A glossy coat and rust points look rich in oil paint." },
       { slug: "modern", why: "Sleek lines and rust points, clean on soft white." },
       { slug: "charcoal", why: "Strong contrast and a noble profile make a striking monochrome study." },
     ],
@@ -654,10 +641,9 @@ export const BREEDS: Breed[] = [
       { title: "Use burst mode", body: "Boxers rarely hold still. Take a dozen and pick the sharpest." },
     ],
     styles: [
-      { slug: "oil-classic", why: "A fawn coat and a dark mask glow in warm old-master light." },
       { slug: "charcoal", why: "Brindle and a worried brow are a gift to a charcoal study." },
       { slug: "modern-oil", why: "A square jaw and broad head suit bold strokes of thick paint." },
-      { slug: "linocut", why: "A dark mask and a white flash make a strong two-tone print." },
+      { slug: "modern", why: "A dark mask and a white flash stand out on soft white." },
     ],
     faq: [
       {
@@ -718,7 +704,7 @@ export const BREEDS: Breed[] = [
     personality: "A calm, quiet guardian with the head of a Roman statue.",
     intro: [
       "The Cane Corso is an Italian mastiff whose ancestors are generally traced to the mastiff-type dogs of ancient Rome. For centuries they guarded farms and property across southern Italy, and the breed was brought back from near-extinction by Italian enthusiasts in the 1970s. Corsos have climbed fast in the US and reached No. 11 on the AKC's 2025 list.",
-      "In a portrait, the Corso's huge, square head and deep muzzle create instant drama, and a calm, steady gaze reads as pure authority. Black, gray, fawn, red and brindle coats are all common, and the darker ones need strong, soft light so the face keeps its shape. Few breeds look so natural in an old-master painting. The classical styles look like portraits that could hang in a palazzo.",
+      "In a portrait, the Corso's huge, square head and deep muzzle create instant drama, and a calm, steady gaze reads as pure authority. Black, gray, fawn, red and brindle coats are all common, and the darker ones need strong, soft light so the face keeps its shape. Few breeds look so natural in oil or charcoal.",
     ],
     coat: "Black, gray, fawn, red and brindle, sometimes with a gray or black mask. Gray and fawn look superb in charcoal and oil; black needs a bright photo.",
     tips: [
@@ -739,7 +725,6 @@ export const BREEDS: Breed[] = [
       { slug: "modern-oil", why: "A huge square head, built from broad planes of paint." },
       { slug: "modern", why: "Calm authority, with nothing else in the picture." },
       { slug: "charcoal", why: "Gray and brindle coats become sculptural in charcoal." },
-      { slug: "oil-classic", why: "A big, quiet head in warm old-master light looks like a museum piece." },
     ],
     faq: [
       {
@@ -759,9 +744,9 @@ export const BREEDS: Breed[] = [
     personality: "A gentle giant who still thinks they're a lap dog.",
     intro: [
       "Great Danes were developed in Germany (not Denmark, despite the name) to hunt wild boar, and later became guardians of grand estates. Today they're famously sweet-natured, a little clumsy and convinced they fit on any sofa. The breed sits at No. 22 on the AKC's 2025 list.",
-      "A Dane's long, rectangular head, high-set ears and soulful eyes give a portrait real gravity, and their coat colors offer beautiful variety: fawn, brindle, black, blue, harlequin, mantle and merle. Harlequins and mantles have bold patches that need to land in the right places, so choose a clear, front-facing photo. A dog this stately suits a large piece: a Dane in classical oil or charcoal fills a wall with quiet authority.",
+      "A Dane's long, rectangular head, high-set ears and soulful eyes give a portrait real gravity, and their coat colors offer beautiful variety: fawn, brindle, black, blue, harlequin, mantle and merle. Harlequins and mantles have bold patches that need to land in the right places, so choose a clear, front-facing photo. A dog this stately suits a large piece: a Dane in oil or charcoal fills a wall.",
     ],
-    coat: "Fawn, brindle, black, blue, harlequin, mantle and merle. Harlequin and mantle patterns are striking as a linocut; fawn and brindle glow in oil.",
+    coat: "Fawn, brindle, black, blue, harlequin, mantle and merle. Harlequin and mantle patterns are striking as a line drawing; fawn and brindle look rich in oil.",
     tips: [
       {
         title: "Don't shoot down at them",
@@ -777,10 +762,9 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "charcoal", why: "A long, noble head and soulful eyes make a quiet, grand drawing." },
+      { slug: "charcoal", why: "A long, noble head and soulful eyes make a grand drawing." },
       { slug: "modern-oil", why: "A dog this large suits a big canvas and broad strokes." },
-      { slug: "oil-classic", why: "Fawn and brindle coats glow in quiet, warm old-master light." },
-      { slug: "linocut", why: "Harlequin and mantle patches are bold shapes already." },
+      { slug: "modern", why: "A long head and bold patches read clearly on soft white." },
     ],
     faq: [
       {
@@ -799,7 +783,7 @@ export const BREEDS: Breed[] = [
     personality: "A palace dog at heart, with a face like a chrysanthemum.",
     intro: [
       "The Shih Tzu's history runs through the imperial courts of China, where small 'lion dogs' were treasured companions, and the breed's ancestors are thought to have come from Tibet. The name is usually translated as 'little lion', and while they're more cuddle than roar, they carry themselves with unmistakable dignity. Shih Tzus are No. 21 on the AKC's 2025 list.",
-      "The coat grows outward in every direction around the face, giving the Shih Tzu its famous 'chrysanthemum' look, framed by big, dark, round eyes and a short muzzle. Whether your dog wears a full flowing coat, a topknot or a practical puppy cut, the portrait follows your photo. Their long history as palace companions makes classical oil an easy choice, while their sweetness suits the softer pastel and floral styles.",
+      "The coat grows outward in every direction around the face, giving the Shih Tzu its famous 'chrysanthemum' look, framed by big, dark, round eyes and a short muzzle. Whether your dog wears a full flowing coat, a topknot or a practical puppy cut, the portrait follows your photo. Their long history as palace companions makes oil an easy choice, while their sweetness suits pastel and watercolor.",
     ],
     coat: "Almost every color and pattern: gold, white, black, liver, brindle and parti. Gold and white coats glow in oil; parti coats look charming in watercolor.",
     tips: [
@@ -812,8 +796,7 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "pastel", why: "The soft chrysanthemum face is made for layered pastel." },
-      { slug: "oil-classic", why: "Gold and white coats glow in warm classical oil." },
-      { slug: "botanical", why: "The chrysanthemum face among real flowers is a lovely visual rhyme." },
+      { slug: "modern-oil", why: "Gold and white coats look warm in oil paint." },
       { slug: "watercolor", why: "Soft washes bring out the silky texture of the coat." },
     ],
     faq: [
@@ -894,9 +877,8 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "Black, rust and white glow like an Alpine farmhouse painting." },
+      { slug: "modern-oil", why: "Black, rust and white make a bold painting." },
       { slug: "pastel", why: "A long, soft tricolor coat suits velvety strokes on warm paper." },
-      { slug: "botanical", why: "Wildflowers frame that gentle face like a Swiss meadow." },
       { slug: "watercolor", why: "Soft washes keep the tricolor bold but tender, lovely for a memorial." },
     ],
     faq: [
@@ -917,7 +899,7 @@ export const BREEDS: Breed[] = [
     personality: "A tiny, foxy cloud of fluff with a big-dog attitude.",
     intro: [
       "Pomeranians descend from much larger Spitz-type working dogs and take their name from Pomerania, a region on the Baltic coast. Queen Victoria fell for a small Pom in Italy in the 1880s and helped make the little ones fashionable in Britain. Today they're No. 19 on the AKC's 2025 list, still bold, bright and very much in charge.",
-      "Poms have a sweet, fox-like face with almond eyes, small pricked ears and a huge ruff of fluff around the neck. In photos, that coat can swallow the face, so the best portrait photos are crisp and close, with the eyes and ears clearly visible. Orange, cream, sable, black and parti coats all look lovely, and the fluff gives painterly styles wonderful texture. Thomas Gainsborough painted a Pomeranian in the 1770s, so the classical styles have precedent.",
+      "Poms have a sweet, fox-like face with almond eyes, small pricked ears and a huge ruff of fluff around the neck. In photos, that coat can swallow the face, so the best portrait photos are crisp and close, with the eyes and ears clearly visible. Orange, cream, sable, black and parti coats all look lovely, and the fluff gives painterly styles wonderful texture. Thomas Gainsborough painted a Pomeranian in the 1770s, so a Pom in oil has precedent.",
     ],
     coat: "Orange, red, cream, sable, black, chocolate, merle and parti. Orange and cream glow in oil and watercolor; parti and merle are lovely in pastel.",
     tips: [
@@ -934,8 +916,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "pastel", why: "All that fluff calls for the softest medium we have." },
       { slug: "watercolor", why: "Orange and cream coats bloom in loose washes." },
-      { slug: "oil-classic", why: "A bright little face against a dark, quiet ground." },
-      { slug: "botanical", why: "Cream and orange fluff looks lovely among muted florals." },
+      { slug: "modern-oil", why: "A bright little face against one flat color." },
     ],
     faq: [
       {
@@ -955,9 +936,9 @@ export const BREEDS: Breed[] = [
     personality: "The American Gentleman: tuxedoed, friendly and a little bit goofy.",
     intro: [
       "The Boston Terrier really is from Boston, developed there in the late 1800s from bulldog and terrier crosses. Its neat black-and-white markings earned it the nickname 'the American Gentleman', and its friendly, clownish temperament made it a classic city dog. Bostons are No. 23 on the AKC's 2025 list.",
-      "Boston portraits work because the face is so graphic: big, round, wide-set eyes, a short square muzzle, upright ears and that crisp white blaze down the middle. The tuxedo pattern (black, brindle or seal with white) needs balanced light so the white doesn't blow out and the dark doesn't go flat. Those bold markings were practically designed for a relief print.",
+      "Boston portraits work because the face is so graphic: big, round, wide-set eyes, a short square muzzle, upright ears and that crisp white blaze down the middle. The tuxedo pattern (black, brindle or seal with white) needs balanced light so the white doesn't blow out and the dark doesn't go flat. Those bold markings were practically designed for a line drawing.",
     ],
-    coat: "Black, brindle or seal, with white markings. The high contrast looks crisp in linocut and fine line, and against a sage ground.",
+    coat: "Black, brindle or seal, with white markings. The high contrast looks crisp as a line drawing, and against sage green.",
     tips: [
       {
         title: "Tame the contrast",
@@ -973,7 +954,6 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "linocut", why: "Crisp black-and-white markings are a relief print waiting to be carved." },
       { slug: "modern-sage", why: "A tuxedo coat on muted sage, where the white stays white." },
       { slug: "modern", why: "A dapper, graphic face suits a clean illustration." },
       { slug: "fine-line", why: "Simple ink lines capture that neat tuxedo pattern beautifully." },
@@ -1006,8 +986,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "pastel", why: "A long, silky coat in soft layered strokes." },
       { slug: "watercolor", why: "Silky, wavy coats look beautiful in loose washes." },
-      { slug: "botanical", why: "Soft florals suit a sweet face and a flowing coat." },
-      { slug: "oil-classic", why: "Dark, expressive eyes hold a quiet classical portrait." },
+      { slug: "modern-oil", why: "Dark, expressive eyes stand out in oil paint." },
     ],
     faq: [
       {
@@ -1027,7 +1006,7 @@ export const BREEDS: Breed[] = [
     personality: "A happy, bouncing bird dog with freckles and feathered ears.",
     intro: [
       "English Springer Spaniels were bred to 'spring', or flush, birds from cover for hunters, and they still bring that bouncy enthusiasm to everything they do. They're friendly, eager to please and hard-working, and they rank No. 27 on the AKC's 2025 list.",
-      "A Springer's portrait features are the long, wavy, feathered ears, the kind eyes and the freckled muzzle so many Springers have. Liver-and-white and black-and-white coats are classic, sometimes with tan points, and that contrast is beautiful in classical styles. Because Springers belong outdoors, a portrait that hints at the countryside, whether leafy botanicals or sporting-art oil, feels just right. They're also wonderfully photogenic when they finally sit still.",
+      "A Springer's portrait features are the long, wavy, feathered ears, the kind eyes and the freckled muzzle so many Springers have. Liver-and-white and black-and-white coats are classic, sometimes with tan points, and that contrast is beautiful in oil and charcoal. They're also wonderfully photogenic when they finally sit still.",
     ],
     coat: "Liver and white, black and white, or either with tan, often ticked or roan. Freckled muzzles look wonderful in oil and watercolor.",
     tips: [
@@ -1042,8 +1021,7 @@ export const BREEDS: Breed[] = [
       { title: "Outdoors is best", body: "Springers are happiest outside. Shade under a tree gives soft, even light." },
     ],
     styles: [
-      { slug: "oil-classic", why: "Springers have starred in sporting paintings for generations." },
-      { slug: "botanical", why: "Ferns and wildflowers nod to the hedgerows they love." },
+      { slug: "modern-oil", why: "Springers have appeared in sporting paintings for generations." },
       { slug: "watercolor", why: "Feathered ears and freckles look lovely in loose washes." },
       { slug: "pastel", why: "Feathered ears and a soft expression suit pastel on toned paper." },
     ],
@@ -1065,7 +1043,7 @@ export const BREEDS: Breed[] = [
     personality: "A sensitive, clever herder in a miniature collie coat.",
     intro: [
       "Shetland Sheepdogs come from the Shetland Islands off the north of Scotland, where small, hardy dogs herded sheep, ponies and poultry. They look like a small Collie but are their own breed: bright, sensitive, devoted and famously quick learners. Shelties are No. 29 on the AKC's 2025 list.",
-      "Sheltie portraits hinge on the elegant, wedge-shaped head, the almond eyes, the tipped ears and the magnificent mane and frill around the neck. Sable, tricolor and blue merle are the most familiar colors, and some blue merles have blue or partly blue eyes. That luxurious coat is a gift to painterly styles, and the Sheltie's gentle expression makes soft watercolor and floral portraits especially lovely.",
+      "Sheltie portraits hinge on the elegant, wedge-shaped head, the almond eyes, the tipped ears and the magnificent mane and frill around the neck. Sable, tricolor and blue merle are the most familiar colors, and some blue merles have blue or partly blue eyes. That luxurious coat is a gift to painterly styles, and the Sheltie's gentle expression makes soft watercolor and pastel portraits especially lovely.",
     ],
     coat: "Sable, tricolor, blue merle, bi-black and bi-blue, with white. Sable glows in oil; blue merle is beautiful in watercolor.",
     tips: [
@@ -1078,8 +1056,7 @@ export const BREEDS: Breed[] = [
     ],
     styles: [
       { slug: "watercolor", why: "Blue merle and sable look luminous in soft, blooming washes." },
-      { slug: "botanical", why: "A gentle face framed in flowers, perfect for a sensitive soul." },
-      { slug: "oil-classic", why: "A golden sable mane glows in warm old-master light." },
+      { slug: "modern-oil", why: "A golden sable mane looks rich in thick paint." },
       { slug: "pastel", why: "A full mane, built up in soft layers on toned paper." },
     ],
     faq: [
@@ -1117,7 +1094,7 @@ export const BREEDS: Breed[] = [
       { slug: "fine-line", why: "Minimal ink matches their focus: nothing wasted, every line deliberate." },
       { slug: "charcoal", why: "Black-and-white coats and that intense stare make a powerful drawing." },
       { slug: "watercolor", why: "Merle and red coats bloom beautifully in soft washes." },
-      { slug: "modern-sage", why: "A black-and-white coat stands clear on a quiet sage ground." },
+      { slug: "modern-sage", why: "A black-and-white coat stands clear on sage green." },
     ],
     faq: [
       {
@@ -1140,7 +1117,7 @@ export const BREEDS: Breed[] = [
       "The Chihuahua is named for the Mexican state of Chihuahua, and its ancestors are often linked to the Techichi, a small companion dog of ancient Mexico. Widely considered the smallest dog breed, Chihuahuas make up for it with loyalty, sass and a fierce attachment to their favorite person. They're No. 24 on the AKC's 2025 list.",
       "A Chihuahua portrait is a study in big features on a tiny face: huge upright ears, large luminous eyes and either a rounded 'apple head' or a longer 'deer head' shape. Smooth and long coats come in nearly every color. Because they're so small, they're easy to photograph badly from above, so get low. And because their attitude is enormous, they're perfect candidates for the grandest, silliest styles we offer.",
     ],
-    coat: "Smooth or long coats in almost any color: fawn, cream, chocolate, black, white, merle and parti. Fawn and cream glow in oil and pastel; bolder coats suit linocut.",
+    coat: "Smooth or long coats in almost any color: fawn, cream, chocolate, black, white, merle and parti. Fawn and cream glow in oil and pastel; bolder coats suit a line drawing.",
     tips: [
       {
         title: "Lie down. Lower.",
@@ -1153,8 +1130,7 @@ export const BREEDS: Breed[] = [
       { title: "Steady the shivers", body: "A warm, calm spot and burst mode help with a nervous or shivery Chi." },
     ],
     styles: [
-      { slug: "oil-classic", why: "A small dog, painted with the seriousness of a museum portrait." },
-      { slug: "linocut", why: "Big ears make a bold, simple shape to carve." },
+      { slug: "modern-oil", why: "A small dog, painted in thick, bold strokes." },
       { slug: "pastel", why: "Fawn and cream coats look soft and warm on toned paper." },
       { slug: "modern", why: "Big ears and bright eyes, drawn clean on soft white." },
     ],
@@ -1195,8 +1171,7 @@ export const BREEDS: Breed[] = [
     styles: [
       { slug: "pastel", why: "Soft curls in a soft medium, with the dark eyes kept crisp." },
       { slug: "watercolor", why: "Cream and apricot curls look dreamy in soft washes." },
-      { slug: "oil-classic", why: "Red and apricot coats look rich in warm classical oil." },
-      { slug: "botanical", why: "Warm coats look lovely nestled among muted flowers." },
+      { slug: "modern-oil", why: "Red and apricot coats look rich in oil paint." },
     ],
     faq: [
       {
@@ -1215,7 +1190,7 @@ export const BREEDS: Breed[] = [
     personality: "Friendly, bouncy and curly, with a Lab's love of absolutely everyone.",
     intro: [
       "The Labradoodle, a Labrador Retriever and Poodle cross, was first bred deliberately in Australia in the late 1980s, when Wally Conron of the Royal Guide Dogs Association of Victoria set out to create a guide dog for a woman whose husband was allergic to dogs. The idea caught on around the world. As a mix, Labradoodles aren't ranked by the AKC, but they're a fixture of American parks.",
-      "Labradoodles vary widely: some have a Lab's sleek head and a light wave, others a full Poodle-style fleece. Chalk, cream, apricot, caramel, red, chocolate and black are all common. For a portrait, the essentials are the shape of the head, the dark eyes and the texture of the coat around the face. Their outgoing, sporty personality looks just as good in a bold linocut as in a classic oil painting.",
+      "Labradoodles vary widely: some have a Lab's sleek head and a light wave, others a full Poodle-style fleece. Chalk, cream, apricot, caramel, red, chocolate and black are all common. For a portrait, the essentials are the shape of the head, the dark eyes and the texture of the coat around the face. Their outgoing, sporty personality looks just as good in a clean modern illustration as in an oil painting.",
     ],
     coat: "Chalk, cream, apricot, caramel, red, chocolate, black and parti. Darker coats glow in oil; lighter, curly coats are lovely in watercolor.",
     tips: [
@@ -1233,7 +1208,7 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "Chocolate and caramel coats look gorgeous in warm old-master light." },
+      { slug: "modern-oil", why: "Chocolate and caramel coats look rich in oil paint." },
       { slug: "watercolor", why: "Cream and apricot fleece looks light and airy in loose washes." },
       { slug: "pastel", why: "Wavy coats suit soft, layered strokes." },
       { slug: "charcoal", why: "A black or chocolate coat becomes a study in texture." },
@@ -1273,7 +1248,6 @@ export const BREEDS: Breed[] = [
       },
     ],
     styles: [
-      { slug: "oil-classic", why: "No labels: just your dog, painted like a museum piece." },
       { slug: "modern-oil", why: "One-of-a-kind markings, set down in bold, confident paint." },
       { slug: "watercolor", why: "Soft and forgiving, lovely for any coat and any story." },
       { slug: "charcoal", why: "Whatever the coat, charcoal goes straight to the eyes." },

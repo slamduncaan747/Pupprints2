@@ -76,11 +76,11 @@ export function GiftRevealCard(p: Props) {
   return (
     <section aria-labelledby="gift-reveal-title" className="grid gap-5 py-12 sm:grid-cols-[220px_minmax(0,1fr)] sm:gap-12 sm:py-14">
       <h2 id="gift-reveal-title" className="font-display text-[30px] leading-[1.08] sm:text-[34px]">
-        The Gift Reveal
+        Share it
       </h2>
       <div className="min-w-0">
         <p className="max-w-md text-[14px] leading-relaxed text-ink-2">
-          A private unveiling of the finished portrait, without prices. Send it today; the piece follows in days.
+          A private link to the finished portrait, without prices. Useful if it&apos;s a gift.
         </p>
 
         {sentTo && (
@@ -91,7 +91,7 @@ export function GiftRevealCard(p: Props) {
 
         <div className="mt-6 flex items-end gap-6">
           <label htmlFor="reveal-link" className="sr-only">
-            Reveal link
+            Share link
           </label>
           <input
             id="reveal-link"
@@ -107,7 +107,7 @@ export function GiftRevealCard(p: Props) {
 
         <div className="mt-4 flex flex-wrap items-center gap-x-10 gap-y-1">
           <button type="button" onClick={share} className={textLink}>
-            Share the reveal
+            Share
           </button>
           {p.emailEnabled && (
             <button
@@ -147,7 +147,7 @@ export function GiftRevealCard(p: Props) {
             </div>
             <div className="sm:col-span-2">
               <label htmlFor="rv-msg" className={label}>
-                A note for the reveal — optional
+                A note — optional
               </label>
               <textarea
                 id="rv-msg"
@@ -160,7 +160,7 @@ export function GiftRevealCard(p: Props) {
             </div>
             <div className="sm:col-span-2">
               <Button type="submit" variant="primary" size="lg" disabled={state.status === "sending"} className="w-full sm:w-auto">
-                {state.status === "sending" ? "Sending…" : "Send the Gift Reveal"}
+                {state.status === "sending" ? "Sending…" : "Send"}
               </Button>
               {state.status === "error" && (
                 <p className="mt-3 text-[14px] text-ink" role="alert">

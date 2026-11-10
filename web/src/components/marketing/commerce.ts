@@ -133,12 +133,11 @@ export function formatDay(isoDate: string, opts: { weekday?: boolean; long?: boo
 /**
  * Christmas 2026 guidance (set by the team, not computed): order physical pieces by Dec 10 for
  * standard US delivery before Christmas. Canada is our own conservative assumption (a week earlier,
- * for cross-border transit from US print facilities). Gift Reveal works any time up to Dec 25.
+ * for cross-border transit from US print facilities).
  */
 export const CHRISTMAS_2026 = {
   usCutoff: "2026-12-10",
   canadaCutoff: "2026-12-05",
-  revealUntil: "2026-12-25",
 };
 
 export const CHRISTMAS_US_CUTOFF = formatDay(CHRISTMAS_2026.usCutoff, { long: true }); // "December 10"

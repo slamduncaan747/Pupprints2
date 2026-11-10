@@ -40,17 +40,19 @@ export default function OpengraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 76, lineHeight: 1.02, color: INK, letterSpacing: -2 }}>Your dog,</div>
-          <div style={{ fontSize: 76, lineHeight: 1.02, color: INK, letterSpacing: -2 }}>as art for your home.</div>
+          <div style={{ fontSize: 76, lineHeight: 1.02, color: INK, letterSpacing: -2 }}>as art.</div>
           <div style={{ marginTop: 28, fontSize: 30, lineHeight: 1.35, color: INK_2 }}>
-            Custom portraits from your photo. See yours free in about a minute.
+            Portraits made from your photo.
           </div>
         </div>
         <div style={{ display: "flex", gap: 28, fontSize: 24, color: INK_2 }}>
-          <span>Free preview</span>
+          <span>Print</span>
+          <span style={{ color: CLAY }}>·</span>
+          <span>Framed</span>
+          <span style={{ color: CLAY }}>·</span>
+          <span>Canvas</span>
           <span style={{ color: CLAY }}>·</span>
           <span>Free US shipping</span>
-          <span style={{ color: CLAY }}>·</span>
-          <span>Love-it guarantee</span>
         </div>
       </div>
       <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>

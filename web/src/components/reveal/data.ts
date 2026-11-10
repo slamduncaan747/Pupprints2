@@ -11,7 +11,7 @@ import {
   primaryItem,
   webImagePath,
 } from "@/lib/orders";
-import { GUARANTEE, REFERRAL } from "@/lib/offer";
+import { REFERRAL } from "@/lib/offer";
 import { ensureWebImage } from "@/lib/print-file";
 import { getCustomerReferral, isLiveReferral } from "@/lib/referrals";
 import { BUCKETS, db } from "@/lib/supabase/server";
@@ -43,7 +43,7 @@ export type RevealData = {
   productNote: string | null;
   frame: "gold" | "wood";
   ctas: RevealCta[];
-  /** Recipient's Choice, for the person who received an order as a gift (copy + a way to ask). */
+  /** For the person who received an order as a gift: they can ask for another style (copy + a way to ask). */
   choice: { title: string; body: string; href: string; label: string } | null;
 };
 
@@ -109,13 +109,13 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
       message: order.gift_message,
       productNote,
       frame: "gold",
-      // Remakes are arranged by client services (no self-serve flow): the recipient writes to us.
+      // Remakes are arranged by email (no self-serve flow): the recipient writes to us.
       choice: {
-        title: GUARANTEE.recipientName,
+        title: "A different style",
         body: hasPhysical(order)
-          ? "Prefer a different style? Ask within 30 days of delivery and we'll remake it, free."
-          : "Prefer a different style? Ask within 30 days and we'll remake it, free.",
-        href: `mailto:${site.supportEmail}?subject=${encodeURIComponent(`Recipient's Choice: order ${order.order_number}`)}`,
+          ? "Prefer another style? Ask within 30 days of delivery and we'll remake it at no charge."
+          : "Prefer another style? Ask within 30 days and we'll remake it at no charge.",
+        href: `mailto:${site.supportEmail}?subject=${encodeURIComponent(`A different style: order ${order.order_number}`)}`,
         label: "Ask for another style",
       },
       ctas: [
@@ -127,7 +127,7 @@ export const getRevealData = cache(async (token: string): Promise<RevealData | n
             ? {
                 note: "Want one of your own dog?",
                 lead: `${friend} off with ${giverName ? `${giverName}'s` : "their"} code, ${giverCode}`,
-                fine: `Your preview is free. ${friend} off a first order of $${REFERRAL.minimumCents / 100} or more, applied through this link. ${giverName ?? "Your giver"} gets $${REFERRAL.rewardCents / 100} too, as a thank-you.`,
+                fine: `${friend} off a first order of $${REFERRAL.minimumCents / 100} or more, applied through this link. ${giverName ?? "Your giver"} gets $${REFERRAL.rewardCents / 100} too, as a thank-you.`,
               }
             : {}),
         },

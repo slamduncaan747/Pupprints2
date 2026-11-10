@@ -17,7 +17,7 @@ export type RevealViewProps = {
   message: string | null;
   productNote: string | null;
   ctas: { href: string; label: string; note?: string; lead?: string; fine?: string; primary?: boolean }[];
-  /** Recipient's Choice (orders only): ask for a different style, remade free. */
+  /** Orders only: the recipient can ask for a different style, remade at no charge. */
   choice?: { title: string; body: string; href: string; label: string } | null;
 };
 
@@ -31,7 +31,7 @@ function prefersReducedMotion() {
 }
 
 /**
- * Gift Reveal: an ivory cover addressed to the recipient. One tap lifts it, the portrait fades
+ * The shared portrait page: an ivory cover addressed to the recipient. One tap lifts it, the portrait fades
  * in large on white, then the note appears beneath it. Motion is a few slow fades, and
  * prefers-reduced-motion skips them entirely.
  */
@@ -82,7 +82,7 @@ export function RevealExperience(p: RevealViewProps) {
     p.petName ?? (p.kind === "gift" ? "Your dog" : "Your portrait");
   const title =
     p.kind === "gift"
-      ? `${p.petName ?? "Your dog"}, as a work of art.`
+      ? `A portrait of ${p.petName ?? "your dog"}.`
       : p.styleName
         ? `${petTitle}, as ${p.styleName}.`
         : `${petTitle}.`;
@@ -128,7 +128,7 @@ export function RevealExperience(p: RevealViewProps) {
               )}
             >
               {from && <span className="label text-ink-3">{from}</span>}
-              <span className="mt-6 font-display text-[40px] leading-[1.04] sm:text-[52px]">
+              <span className="mt-6 font-display text-[40px] leading-[1.08] sm:text-[52px]">
                 {forWhom}
               </span>
               <span
@@ -154,7 +154,7 @@ export function RevealExperience(p: RevealViewProps) {
                 id="reveal-title"
                 ref={headingRef}
                 tabIndex={-1}
-                className="mt-5 font-display text-[40px] leading-[1.04] outline-none sm:text-[56px]"
+                className="mt-5 font-display text-[40px] leading-[1.08] outline-none sm:text-[56px]"
               >
                 {title}
               </h1>
@@ -243,7 +243,6 @@ export function RevealExperience(p: RevealViewProps) {
                   </a>
                 </div>
               )}
-              {p.kind === "order" && <p className="label mt-12 text-ink-3">Every portrait is checked by a person</p>}
             </div>
           </section>
         )}

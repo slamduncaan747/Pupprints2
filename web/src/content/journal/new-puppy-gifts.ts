@@ -101,7 +101,7 @@ export const newPuppyGifts: ArticleInput = {
     { type: "heading", level: 3, text: "A portrait of the puppy" },
     {
       type: "paragraph",
-      text: `A ${styleLink("pastel")} or ${styleLink("watercolor")} portrait captures how small and soft they are right now. With us, you can preview it free from any phone photo, then order a framed print or canvas. A lovely tradition: order another portrait in the same style and size a year later, and hang them side by side.`,
+      text: `A ${styleLink("pastel")} or ${styleLink("watercolor")} portrait captures how small and soft they are right now. It can be made from any phone photo, then ordered as a framed print or canvas. A lovely tradition: order another portrait in the same style and size a year later, and hang them side by side.`,
     },
     { type: "heading", level: 3, text: "A first-year photo book" },
     {
@@ -139,9 +139,9 @@ export const newPuppyGifts: ArticleInput = {
     {
       type: "cta",
       title: "Capture them while they're tiny",
-      body: "Upload a puppy photo and see the portrait free in about a minute.",
+      body: "Upload a puppy photo to see the portrait.",
       href: "/create?style=pastel",
-      label: "Create a free preview",
+      label: "Upload a photo",
       style: "pastel",
     },
   ],

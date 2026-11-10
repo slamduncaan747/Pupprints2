@@ -1,53 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DEFAULT_STYLE, PROMISES, STYLE_MAP } from "@/lib/catalog";
+import { DEFAULT_STYLE, STYLE_MAP } from "@/lib/catalog";
 import { BEFORE_AFTER, STYLE_SAMPLES } from "@/lib/samples";
 import { CampaignImage, Chapter, ProductShot } from "@/components/marketing/campaign";
 import { FramedArt } from "@/components/marketing/framed-art";
 import { PageHero } from "@/components/marketing/page-hero";
-import { Block, Bullets, Note, Rows, textLink } from "@/components/marketing/blocks";
+import { Block, Bullets, Note, Prose, textLink } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { FaqList, faqJsonLd } from "@/components/marketing/faq";
 import { JsonLd } from "@/components/marketing/json-ld";
 import { faq } from "@/components/marketing/faq-data";
 import { PHYSICAL_SHIP_WINDOW } from "@/components/marketing/commerce";
-import { GUARANTEE_IN_SENTENCE, OfferCta } from "@/components/marketing/offer";
-import { Container } from "@/components/ui/container";
-import { cn } from "@/lib/utils";
+import { OfferCta } from "@/components/marketing/offer";
 
 export const metadata: Metadata = {
-  title: "How It Works — One Photo, About a Minute, Free",
+  title: "How It Works",
   description:
-    "Upload one photo and see your dog's portrait free in about a minute: no account, no card. Then choose a print, frame or canvas, and we check, print and ship it.",
+    "Upload a photo of your dog, see the portrait, and order it as a print, framed print, canvas or digital file.",
   alternates: { canonical: "/how-it-works" },
 };
-
-/** The effort lever, in four short facts. */
-const EFFORT = [
-  { label: "What you need", value: "One photo" },
-  { label: "Until you see it", value: "About a minute" },
-  { label: "To sign up", value: "Nothing" },
-  { label: "To preview", value: "Free, no card" },
-];
-
-const STEPS = [
-  {
-    title: "Upload a photo",
-    body: "Any clear phone photo of your dog will do. JPG, PNG or iPhone photos are all fine.",
-  },
-  {
-    title: "See your portrait, free",
-    body: `Pick a style and your portrait appears in about a minute. ${PROMISES.rerolls}. No card needed.`,
-  },
-  {
-    title: "Choose how to hang it",
-    body: "Fine art print, framed print or gallery canvas. The hi-res digital file is included with every physical piece, and US shipping is free. Buying a gift? Send a Gift Reveal the moment you order.",
-  },
-  {
-    title: "We check, print and ship",
-    body: `A person on our team checks your art and print file before it's printed. It's made to order and arrives in ${PHYSICAL_SHIP_WINDOW} in the US, with tracking.`,
-  },
-];
 
 const DO = [
   "Close-up, at their eye level",
@@ -61,35 +32,6 @@ const AVOID = [
   "Blurry or moving: tap to focus on the eyes and hold steady",
   "Dark or backlit: face the window, not the other way round",
   "Ears cut off: leave a little room around the head",
-];
-
-const TIMELINE = [
-  { title: "In about a minute", body: "Your free preview. See your dog in any style, as many times as you like." },
-  { title: "Right after checkout", body: "The hi-res file lands in your inbox, and a Gift Reveal is ready to send." },
-  { title: "Before printing", body: "A person on our team reviews your art and print file, so problems are caught before they reach your wall." },
-  { title: `In ${PHYSICAL_SHIP_WINDOW}`, body: "Printed to order, packed and tracked all the way to your door (US estimate)." },
-];
-
-const MADE = [
-  {
-    title: "Our AI artist creates it",
-    body: "Your portrait is created from your photo by our AI artist, guided by styles we've designed to keep your dog's face, markings and expression.",
-  },
-  {
-    title: "You approve it before you pay",
-    body: "You see the exact art first. If it doesn't look like your dog, you don't buy it.",
-  },
-  {
-    title: "Our team checks every print",
-    body: `A person reviews every portrait and print file before it's printed, and ${GUARANTEE_IN_SENTENCE} covers what arrives.`,
-  },
-];
-
-const NEVER = [
-  "Claim your portrait was painted by hand",
-  "Charge you before you've seen your art",
-  "Pre-check add-ons or add surprise fees",
-  "Use fake sales, fake reviews or countdown timers",
 ];
 
 const FAQS = [
@@ -107,40 +49,15 @@ export default function HowItWorksPage() {
   return (
     <>
       <JsonLd data={faqJsonLd(FAQS)} />
-      <PageHero
-        align="center"
-        eyebrow="The Process"
-        title="One photo. About a minute."
-        lede="No account, no card, nothing to install. Upload a photo of your dog and see the portrait before you decide anything. Here is exactly what happens, from your phone to your wall."
-      >
-        <OfferCta align="center" note={null} />
+      <PageHero align="center" title="How it works" lede="Upload a photo. See the portrait. Order it if you like it.">
+        <OfferCta align="center" />
       </PageHero>
-
-      <section aria-label="What it takes" className="pb-20 sm:pb-28">
-        <Container>
-          <dl className="grid grid-cols-2 border-t border-line lg:grid-cols-4">
-            {EFFORT.map((e, i) => (
-              <div
-                key={e.label}
-                className={cn(
-                  "border-b border-line py-7 sm:py-9 lg:border-b-0 lg:px-6 lg:first:pl-0",
-                  i % 2 === 0 ? "border-r pr-4" : "pl-4 sm:pl-6",
-                  i === EFFORT.length - 1 ? "lg:border-r-0" : "lg:border-r",
-                )}
-              >
-                <dt className="label text-ink-3">{e.label}</dt>
-                <dd className="mt-3 font-display text-[28px] leading-[1.05] sm:text-[40px]">{e.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </Container>
-      </section>
 
       <h2 className="sr-only">Step by step</h2>
       <Chapter
         id="step-photo"
-        kicker="I · The photograph"
-        title="It begins with a photograph."
+        kicker="1"
+        title="Upload a photo."
         media={
           <CampaignImage
             src={pair?.before ?? STYLE_SAMPLES[DEFAULT_STYLE]}
@@ -151,7 +68,7 @@ export default function HowItWorksPage() {
           />
         }
       >
-        <p>{STEPS[0].body}</p>
+        <p>Any clear phone photo of your dog.</p>
         <p className="mt-6">
           <a href="#photo-tips" className="link-cta text-ink">
             Photo tips
@@ -161,8 +78,8 @@ export default function HowItWorksPage() {
       <Chapter
         id="step-preview"
         side="right"
-        kicker="II · The preview"
-        title="See it before you pay."
+        kicker="2"
+        title="See the portrait."
         media={
           <CampaignImage
             src={pair?.after ?? STYLE_SAMPLES[chapterStyle.slug]}
@@ -172,12 +89,12 @@ export default function HowItWorksPage() {
           />
         }
       >
-        <p>{STEPS[1].body}</p>
+        <p>Pick a style and it appears in about a minute. Try other styles, or another photo, as often as you like.</p>
       </Chapter>
       <Chapter
         id="step-piece"
-        kicker="III · The piece"
-        title="Checked by a person. Hung in days."
+        kicker="3"
+        title="Choose a format."
         media={
           <ProductShot>
             <FramedArt
@@ -190,19 +107,21 @@ export default function HowItWorksPage() {
           </ProductShot>
         }
       >
-        <p>{STEPS[2].body}</p>
-        <p className="mt-4">{STEPS[3].body}</p>
+        <p>
+          Print, framed print, canvas or the digital file. Physical pieces are made to order and arrive in{" "}
+          <span className="whitespace-nowrap">{PHYSICAL_SHIP_WINDOW}</span> in the US.
+        </p>
+        <p className="mt-6">
+          <Link href="/shop" className="link-cta text-ink">
+            Sizes and prices
+          </Link>
+        </p>
       </Chapter>
 
-      <Block
-        id="photo-tips"
-        eyebrow="The photograph"
-        title="The photo makes the portrait"
-        intro="A phone photo is perfect if it's sharp, close and well lit."
-      >
+      <Block id="photo-tips" title="Photo tips" intro="A phone photo works well if it is sharp, close and well lit.">
         <div className="grid gap-12 sm:grid-cols-2 sm:gap-10">
           <div>
-            <h3 className="label text-ink">A great photo</h3>
+            <h3 className="label text-ink">A good photo</h3>
             <Bullets items={DO} className="mt-5" />
           </div>
           <div>
@@ -210,39 +129,26 @@ export default function HowItWorksPage() {
             <Bullets items={AVOID} className="mt-5" />
           </div>
         </div>
-        <Note className="mt-8">
-          Not sure? Upload it anyway. Previews are free, and older or slightly blurry photos often work better than you&apos;d
-          expect.
-        </Note>
+        <Note className="mt-8">Not sure? Upload it and see. Older or slightly blurry photos often work.</Note>
       </Block>
 
-      <Block
-        eyebrow="Timing"
-        title="See it now. Hang it in days."
-        intro="No waiting days for a proof, and no paying for something you haven't seen."
-      >
-        <Rows items={TIMELINE} />
-      </Block>
-
-      <Block
-        id="how-its-made"
-        eyebrow="In confidence"
-        title="Honest about how it's made"
-        intro="You deserve to know exactly what you're buying."
-      >
-        <Rows items={MADE} />
-        <h3 className="label mt-14 text-ink">What we&apos;ll never do</h3>
-        <Bullets items={NEVER} className="mt-5" />
+      <Block id="how-its-made" title="How the art is made">
+        <Prose>
+          <p>
+            Your portrait is made from your photo by our AI artist, in styles we designed for dogs, and finished by our
+            team. It is printed with archival pigment inks. It is not painted by hand.
+          </p>
+        </Prose>
       </Block>
 
       <Block
         titleStyle="label"
-        title="Client services"
+        title="Questions"
         intro={
           <>
-            More answers in{" "}
+            More answers in the{" "}
             <Link href="/faq" className={textLink}>
-              Client Services
+              FAQ
             </Link>
             .
           </>

@@ -27,7 +27,7 @@ export function PaymentPending() {
       {!done ? (
         <>
           <p className="label text-ink-3">One moment</p>
-          <h1 className="mt-5 font-display text-[44px] leading-[1.02] sm:text-[64px]">Confirming your payment.</h1>
+          <h1 className="mt-5 font-display text-[44px] leading-[1.08] sm:text-[64px]">Confirming your payment.</h1>
           <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2">
             This usually takes a few seconds. Please keep this page open.
           </p>
@@ -37,8 +37,7 @@ export function PaymentPending() {
         </>
       ) : (
         <>
-          <p className="label text-ink-3">Client services</p>
-          <h1 className="mt-5 font-display text-[44px] leading-[1.02] sm:text-[64px]">Still confirming.</h1>
+          <h1 className="font-display text-[40px] leading-[1.08] sm:text-[56px]">Still confirming.</h1>
           <p className="mx-auto mt-6 max-w-sm text-[14px] leading-relaxed text-ink-2">
             Some payment methods take a little longer. Your confirmation email arrives as soon as it clears. Questions?
             Write to{" "}

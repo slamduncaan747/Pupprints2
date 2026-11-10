@@ -98,7 +98,7 @@ export function PartnerApplyForm({ partnersEmail }: { partnersEmail: string }) {
     return (
       <div role="status" className="border-y border-line py-12">
         <p className="label text-ink-3">Application received</p>
-        <h3 className="mt-5 font-display text-[36px] leading-[1.05] sm:text-[44px]">Thank you{firstName ? `, ${firstName}` : ""}.</h3>
+        <h3 className="mt-5 font-display text-[36px] leading-[1.08] sm:text-[44px]">Thank you{firstName ? `, ${firstName}` : ""}.</h3>
         <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-2">
           Your application is in. A real person on our team reads every one, and we&apos;ll reply by email within about a
           week.

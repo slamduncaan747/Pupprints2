@@ -31,7 +31,7 @@ function Invalid() {
   return (
     <Container className="py-24 sm:py-36">
       <p className="label text-ink-3">The Creator Programme</p>
-      <h1 className="mt-8 max-w-3xl font-display text-[44px] leading-[1] tracking-[-0.02em] sm:text-[72px]">This stats link isn&apos;t valid</h1>
+      <h1 className="mt-8 max-w-3xl font-display text-[44px] leading-[1.08] tracking-[-0.02em] sm:text-[72px]">This stats link isn&apos;t valid</h1>
       <p className="mt-8 max-w-md text-[15px] leading-relaxed text-ink-2">
         Your private stats link is in the welcome email we sent you. If it isn&apos;t working, email{" "}
         <a href={`mailto:${site.partnersEmail}`} className="break-all text-ink underline decoration-ink/30 underline-offset-4">
@@ -68,7 +68,7 @@ export default async function PartnerStatsPage({ searchParams }: PageProps<"/par
   return (
     <Container className="py-14 sm:py-24">
       <Eyebrow>The Creator Programme · Private</Eyebrow>
-      <h1 className="mt-8 max-w-4xl font-display text-[44px] leading-[1] tracking-[-0.02em] sm:text-[72px]">
+      <h1 className="mt-8 max-w-4xl font-display text-[44px] leading-[1.08] tracking-[-0.02em] sm:text-[72px]">
         {greeting ? `Hi ${greeting}, here's how it's going` : "Your partner stats"}
       </h1>
       <p className="mt-8 max-w-xl text-[15px] leading-relaxed text-ink-2">
@@ -115,7 +115,7 @@ export default async function PartnerStatsPage({ searchParams }: PageProps<"/par
 
       <section aria-labelledby="share" className="mt-20 grid gap-16 border-t border-line pt-12 lg:grid-cols-2 lg:gap-x-20 [&>*]:min-w-0">
         <div>
-          <h2 id="share" className="font-display text-[32px] leading-[1.06] sm:text-[40px]">Share</h2>
+          <h2 id="share" className="font-display text-[32px] leading-[1.08] sm:text-[40px]">Share</h2>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-2">
             Your audience gets {partner.discountPercent}% off with your code, and your link remembers them for {PROGRAM.attributionDays} days.
           </p>
@@ -130,7 +130,7 @@ export default async function PartnerStatsPage({ searchParams }: PageProps<"/par
         </div>
 
         <div>
-          <h2 className="font-display text-[32px] leading-[1.06] sm:text-[40px]">Recent orders</h2>
+          <h2 className="font-display text-[32px] leading-[1.08] sm:text-[40px]">Recent orders</h2>
           {all.recentOrders.length === 0 ? (
             <p className="mt-4 text-[15px] leading-relaxed text-ink-2">No orders yet. They&apos;ll appear here as soon as someone orders with your link or code.</p>
           ) : (

@@ -5,11 +5,10 @@ import { PageHero } from "@/components/marketing/page-hero";
 import { Container } from "@/components/ui/container";
 import { textLink } from "@/components/marketing/blocks";
 import { ContactForm } from "@/components/marketing/contact-form";
-import { GUARANTEE } from "@/lib/offer";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: `Questions about an order, a photo or a gift? Send us a message or email ${site.supportEmail}. A real person replies within one business day.`,
+  description: `Questions about an order, a photo or a gift? Send us a message or email ${site.supportEmail}. A person replies within one business day.`,
   alternates: { canonical: "/contact" },
 };
 
@@ -17,7 +16,7 @@ const QUICK = [
   { href: "/track", label: "Track an order" },
   { href: "/faq", label: "Read the FAQ" },
   { href: "/shipping", label: "Shipping & holiday dates" },
-  { href: "/guarantee", label: GUARANTEE.name },
+  { href: "/guarantee", label: "Returns" },
 ];
 
 export default async function ContactPage({ searchParams }: PageProps<"/contact">) {
@@ -48,9 +47,8 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact"
   return (
     <>
       <PageHero
-        eyebrow="Client Services"
-        title="Write to us"
-        lede="Questions about an order, a photo or a gift? Send a note and a real person will reply within one business day."
+        title="Contact"
+        lede="Send a note and a person will reply within one business day."
       />
 
       <section aria-label="Contact" className="pb-24 sm:pb-36">

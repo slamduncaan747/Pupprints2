@@ -7,7 +7,7 @@ export const BLEED_PAD_LEFT = "lg:pl-[max(2.5rem,calc((100vw_-_1440px)/2_+_2.5re
 export const BLEED_PAD_RIGHT = "lg:pr-[max(2.5rem,calc((100vw_-_1440px)/2_+_2.5rem))]";
 
 /**
- * Top of every secondary page: a `.label` kicker (eyebrow or breadcrumbs), one Bodoni headline and
+ * Top of every secondary page: an optional `.label` kicker (eyebrow or breadcrumbs), one headline and
  * a short intro. Without `media` the headline runs large across the page with the intro set off to
  * the right (or centered with `align="center"`). With `media` the hero splits in two: a campaign
  * image running to the edge of the screen on one side, the text on the other.
@@ -64,7 +64,7 @@ export function PageHero({
           )}
         >
           {kicker && <div className="mb-8 lg:mb-12">{kicker}</div>}
-          <h1 className="max-w-2xl font-display text-[42px] leading-[1.02] tracking-[-0.02em] sm:text-[60px] xl:text-[72px]">
+          <h1 className="max-w-2xl font-display text-[38px] leading-[1.08] tracking-[-0.015em] sm:text-[52px] xl:text-[60px]">
             {title}
           </h1>
           {lede && <div className="mt-7 max-w-md text-[15px] leading-relaxed text-ink-2 sm:text-[16px]">{lede}</div>}
@@ -79,7 +79,7 @@ export function PageHero({
       <section className={cn("pb-20 pt-16 text-center sm:pb-28 sm:pt-28", className)}>
         <Container>
           {kicker && <div className="mb-8 flex justify-center sm:mb-12">{kicker}</div>}
-          <h1 className="mx-auto max-w-5xl font-display text-[46px] leading-[1] tracking-[-0.02em] sm:text-[80px] lg:text-[108px]">
+          <h1 className="mx-auto max-w-5xl font-display text-[40px] leading-[1.08] tracking-[-0.015em] sm:text-[60px] lg:text-[72px]">
             {title}
           </h1>
           {lede && (
@@ -96,7 +96,7 @@ export function PageHero({
       <Container>
         {kicker && <div className="mb-8 sm:mb-12">{kicker}</div>}
         <div className="lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-10">
-          <h1 className="font-display text-[44px] leading-[1] tracking-[-0.02em] sm:text-[72px] lg:col-span-8 lg:text-[88px]">
+          <h1 className="font-display text-[40px] leading-[1.08] tracking-[-0.015em] sm:text-[60px] lg:col-span-8 lg:text-[72px]">
             {title}
           </h1>
           {lede && (

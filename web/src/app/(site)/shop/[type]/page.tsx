@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PRODUCT_MAP, PRODUCTS, type ProductType } from "@/lib/catalog";
-import { FORMAT_SHOWCASE, GUARANTEE, OFFER, valueStackFor } from "@/lib/offer";
+import { FORMAT_SHOWCASE } from "@/lib/offer";
 import { site } from "@/lib/config";
 import { absoluteUrl, formatPrice } from "@/lib/utils";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -16,7 +16,6 @@ import { Block, Bullets, Facts, Note, textLink } from "@/components/marketing/bl
 import { ProductCard } from "@/components/marketing/product-card";
 import { FormatTile } from "@/components/marketing/format-showcase";
 import { FrameMockup } from "@/components/product/frame-mockup";
-import { EFFORT_LINE, GuaranteeNote, ValueStack } from "@/components/marketing/offer";
 import { PRODUCT_CONTENT } from "@/components/marketing/product-content";
 import { firstSentences } from "@/components/marketing/honest";
 import { SizeTable } from "@/components/marketing/size-table";
@@ -98,11 +97,11 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           a: "Right away. The file is emailed to you as soon as you check out, usually within minutes.",
         },
     {
-      q: "What if I don't love it?",
+      q: "Can I return it?",
       a: physical
-        ? "Tell us within 30 days of delivery and we'll remake it free or refund you in full. If it arrives damaged, send us a photo and we'll replace it."
-        : "You see the exact art before you pay, but if something isn't right with your file, write to us and we'll make it right.",
-      link: { href: "/guarantee", label: GUARANTEE.name },
+        ? "Tell us within 30 days of delivery and we'll remake it or refund you in full. If it arrives damaged, send us a photo and we'll replace it."
+        : "You see the exact art before you pay. If something is wrong with your file, write to us and we'll fix it or refund you.",
+      link: { href: "/guarantee", label: "Returns" },
     },
   ];
 
@@ -192,11 +191,10 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         <p className="mt-7 max-w-md text-[15px] leading-relaxed text-ink-2">{firstSentences(c.intro)}</p>
 
         <ButtonLink href="/create" size="lg" className="mt-9 w-full">
-          {OFFER.cta}
+          {site.cta}
         </ButtonLink>
-        <p className="label mt-5 text-center text-ink-3">{EFFORT_LINE}</p>
-        <p className="label mt-2 text-center text-ink-3">
-          {physical ? `Free US shipping · Arrives in ${shipWindow(product)}` : "Delivered instantly · Free with any print"}
+        <p className="label mt-5 text-center text-ink-3">
+          {physical ? `Free US shipping · Arrives in ${shipWindow(product)}` : "Delivered by email · Included with any print"}
         </p>
 
         <div className="mt-10">
@@ -210,29 +208,14 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
           />
         )}
 
-        <GuaranteeNote className="mt-10" />
         <Note className="mt-9 border-t border-line pt-6">
           {physical
-            ? "Prices include free US shipping and the hi-res digital file. Art above furniture looks best at about two-thirds of its width."
-            : "The digital file is free with every print, framed print and canvas. Buy it alone only if you don't want a physical piece."}
+            ? "Prices include US shipping and the hi-res digital file."
+            : "The digital file is included with every print, framed print and canvas. Buy it alone only if you don't want a physical piece."}
         </Note>
       </ProductLayout>
 
-      {physical && (
-        <Block
-          id="included"
-          eyebrow="Everything included"
-          title="Everything included, in one price"
-          intro={`${multi ? "From " : ""}${formatPrice(fromPrice(product))}, with free US shipping. Nothing is added at checkout.`}
-        >
-          <ValueStack
-            items={valueStackFor({ productType: product.type, shipCountry: "US" })}
-            total={{ label: "Your price", value: `${multi ? "From " : ""}${formatPrice(fromPrice(product))}` }}
-          />
-        </Block>
-      )}
-
-      <Block eyebrow="The details" title={c.h1} layout="stack">
+      <Block title="Details" layout="stack">
         <div className={details.length > 2 ? "grid gap-12 md:grid-cols-3 md:gap-10" : "grid gap-12 md:grid-cols-2 md:gap-10"}>
           {details.map((g) => (
             <div key={g.title}>
@@ -276,14 +259,14 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
 
       <Block
         titleStyle="label"
-        title="Client services"
+        title="Questions"
         intro={
           <>
-            Still wondering? Read{" "}
+            More in the{" "}
             <Link href="/faq" className={textLink}>
-              Client Services
-            </Link>{" "}
-            or{" "}
+              FAQ
+            </Link>
+            , or{" "}
             <Link href="/contact" className={textLink}>
               write to us
             </Link>
@@ -294,7 +277,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         <FaqList items={faqs} />
       </Block>
 
-      <Block eyebrow="Also available" title="Other ways to hang it" layout="stack">
+      <Block title="Other formats" layout="stack">
         <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-4 lg:grid-cols-3">
           {others.map((p) => (
             <li key={p.type}>
@@ -304,11 +287,7 @@ export default async function ProductTypePage({ params }: PageProps<"/shop/[type
         </ul>
       </Block>
 
-      <CtaBand
-        eyebrow="Begin here"
-        title="First, meet your portrait"
-        body="See your portrait free in about a minute, then choose your size and finish."
-      />
+      <CtaBand />
     </>
   );
 }

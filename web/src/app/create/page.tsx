@@ -3,9 +3,9 @@ import { getStyle, styleAvailable } from "@/lib/catalog";
 import { CreateFlow } from "@/components/create/create-flow";
 
 export const metadata: Metadata = {
-  title: "Create your portrait — free preview",
+  title: "Upload a photo",
   description:
-    "Upload a photo of your dog and see a fine-art portrait free in about a minute. Then choose a canvas, framed print, fine-art print or digital file.",
+    "Upload a photo of your dog and see the portrait. Then choose a print, framed print, canvas or digital file.",
   alternates: { canonical: "/create" },
 };
 

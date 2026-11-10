@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OFFER } from "@/lib/offer";
+import { site } from "@/lib/config";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CtaBand } from "@/components/marketing/cta-band";
@@ -41,7 +41,7 @@ function metaDescription(b: Breed) {
     b.slug === "mixed-breed"
       ? "Custom portraits of your one-of-a-kind rescue or mixed-breed dog"
       : `Custom ${b.name} portraits`;
-  return `${subject}, made from your photo in styles like ${s1} and ${s2}. Preview free, then choose a print, frame or canvas.`;
+  return `${subject}, made from your photo in styles like ${s1} and ${s2}. Choose a print, framed print or canvas.`;
 }
 
 function buildFaq(b: Breed): FaqItem[] {
@@ -52,7 +52,7 @@ function buildFaq(b: Breed): FaqItem[] {
       b.slug === "mixed-breed"
         ? "Which portrait style suits a mixed-breed dog?"
         : `Which portrait style suits a ${b.name}?`,
-    a: `We'd start with ${STYLE_MAP[first.slug].name}: ${first.why} ${STYLE_MAP[second.slug].name} is a close second: ${second.why} That said, you can try every style free with your own photo and pick the one that looks most like your ${nick}.`,
+    a: `We'd start with ${STYLE_MAP[first.slug].name}: ${first.why} ${STYLE_MAP[second.slug].name} is a close second: ${second.why} You can try every style with your own photo and pick the one that looks most like your ${nick}.`,
     link: { href: `/styles/${first.slug}`, label: `About ${STYLE_MAP[first.slug].name}` },
   };
   const photoQ: FaqItem = {
@@ -72,7 +72,7 @@ function buildFaq(b: Breed): FaqItem[] {
       b.slug === "mixed-breed"
         ? "How much does a custom dog portrait cost?"
         : `How much does a custom ${b.name} portrait cost?`,
-    a: `The preview is free. If you love it: ${priceLine}. US shipping is free on every order, and every print, framed print and canvas includes the hi-res digital file.`,
+    a: `${priceLine}. US shipping is free on every order, and every print, framed print and canvas includes the hi-res digital file.`,
     link: { href: "/shop", label: "See every size and price" },
   };
   const own = b.faq.map((f) => ({ q: f.q, a: f.a }));
@@ -192,7 +192,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
         lede={
           <>
             <p className="font-display text-[22px] leading-[1.3] text-ink sm:text-[26px]">{breed.personality}</p>
-            <p className="mt-5">Upload a favorite photo of your {nick} and see them as a work of art in about a minute, free.</p>
+            <p className="mt-5">Upload a photo of your {nick} to see the portrait.</p>
           </>
         }
         media={
@@ -212,11 +212,11 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
             : `Shown: an example ${STYLE_MAP[sample.style].name} portrait`}
         </p>
         <Link href={`/create?style=${top}`} className="link-cta mt-8 inline-block">
-          {OFFER.cta}
+          {site.cta}
         </Link>
       </PageHero>
 
-      <Block eyebrow="The breed" title={isMixed ? "Portraits of one-of-a-kind dogs" : `Portraits of ${breed.plural}`}>
+      <Block title={isMixed ? "Portraits of one-of-a-kind dogs" : `Portraits of ${breed.plural}`}>
         <Prose>
           {breed.intro.map((p) => (
             <p key={p.slice(0, 24)}>{p}</p>
@@ -225,7 +225,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
         <Rows items={facts} className="mt-12" />
       </Block>
 
-      <Block id="photo-tips" eyebrow="The photograph" title={`Photo tips for your ${nick}`}>
+      <Block id="photo-tips" title={`Photo tips for your ${nick}`}>
         <Rows numbered items={breed.tips.map((t) => ({ title: t.title, body: t.body }))} />
         <p className="mt-8">
           <Link href="/journal/how-to-photograph-your-dog-for-a-portrait" className="link-cta">
@@ -236,9 +236,8 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
 
       <Block
         id="styles"
-        eyebrow="The edit"
         title={isMixed ? "Styles we'd try first" : `Styles for a ${nick}`}
-        intro={`Chosen for the ${isMixed ? "personality" : "breed's look and personality"}, best first. Preview every style free with your own photo.`}
+        intro={`Chosen for the ${isMixed ? "personality" : "breed's look and personality"}, best first.`}
         layout="stack"
       >
         <ul className="grid grid-cols-2 gap-x-3 gap-y-12 sm:grid-cols-4 sm:gap-x-4">
@@ -255,7 +254,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
           </Link>{" "}
           or{" "}
           <Link href="/styles" className={textLink}>
-            browse the collection
+            see all styles
           </Link>
           .
         </Note>
@@ -269,7 +268,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
           <>
             More answers in{" "}
             <Link href="/faq" className={textLink}>
-              Client Services
+              the FAQ
             </Link>
             .
           </>
@@ -278,7 +277,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
         <FaqList items={faq} />
       </Block>
 
-      <Block eyebrow="Further" title="Keep exploring" layout="stack">
+      <Block title="More" layout="stack">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {more.map((g) => (
             <div key={g.title}>
@@ -298,8 +297,7 @@ export default async function BreedPage({ params }: PageProps<"/breeds/[slug]">)
       </Block>
 
       <CtaBand
-        eyebrow={breed.name}
-        title={isMixed ? "See your dog as a work of art" : `See your ${nick} as a work of art`}
+        title={isMixed ? "Start with a photo of your dog." : `Start with a photo of your ${nick}.`}
         href={`/create?style=${top}`}
       />
     </>
