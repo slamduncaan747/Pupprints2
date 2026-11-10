@@ -19,7 +19,7 @@ export function CopyField({ label, value, mono = false }: { label: string; value
           value={value}
           onFocus={(e) => e.currentTarget.select()}
           className={cn(
-            "h-12 min-w-0 flex-1 rounded-none border-0 bg-transparent px-0 text-[15px] text-ink outline-none focus-visible:outline-none",
+            "h-12 min-w-0 flex-1 rounded-none border-0 bg-transparent px-0 text-[16px] text-ink sm:text-[15px] outline-none focus-visible:outline-none",
             mono && "font-mono tracking-wide",
           )}
         />

@@ -1,5 +1,6 @@
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
+import { MobileCta } from "@/components/site/mobile-cta";
 import { TopLine } from "@/components/site/top-line";
 
 /**
@@ -17,6 +18,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         {children}
       </main>
       <Footer />
+      <MobileCta />
     </>
   );
 }

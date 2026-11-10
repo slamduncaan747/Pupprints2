@@ -112,6 +112,41 @@
     opacity: 0.6;
   }
 
+  /*
+   * Phones: most orders come from a thumb. Text links keep their quiet size but get a tap
+   * area of at least 44px, without moving anything on the page.
+   */
+  @media (pointer: coarse) {
+    a.link-cta,
+    a.label,
+    button.label,
+    header a,
+    header button,
+    nav[aria-label="Breadcrumb"] a {
+      position: relative;
+    }
+    a.link-cta::after,
+    a.label::after,
+    button.label::after,
+    header a::after,
+    header button::after,
+    nav[aria-label="Breadcrumb"] a::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: calc(100% + 16px);
+      min-width: 44px;
+      height: 100%;
+      min-height: 44px;
+      transform: translate(-50%, -50%);
+    }
+    footer li a {
+      display: inline-block;
+      padding-block: 8px;
+    }
+  }
+
   /* Gallery frame used to display portraits */
   .frame-wood {
     background: #5a4434;

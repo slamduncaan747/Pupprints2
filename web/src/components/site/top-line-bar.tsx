@@ -56,7 +56,7 @@ export function TopLineBar({ message, cta }: { message: TopLineMessage; cta: str
     <div id={TOP_LINE_ID} data-key={key} className="relative bg-ink text-paper">
       <Link
         href={message.href}
-        className="mx-auto flex min-h-9 max-w-[1440px] items-center justify-center gap-x-3 px-12 py-2 text-center text-[10px] font-medium uppercase leading-[1.5] tracking-[0.16em] sm:text-[11px] sm:tracking-[0.18em]"
+        className="mx-auto flex min-h-11 max-w-[1440px] items-center justify-center gap-x-3 px-12 py-2 text-center text-[11px] font-medium uppercase leading-[1.5] tracking-[0.14em] sm:min-h-9 sm:text-[11px] sm:tracking-[0.18em]"
       >
         <span className="text-balance sm:hidden">{message.short}</span>
         <span className="hidden sm:inline">{message.long}</span>

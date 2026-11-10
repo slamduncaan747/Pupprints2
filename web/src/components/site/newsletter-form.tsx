@@ -65,7 +65,7 @@ export function NewsletterForm({
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className={cn(
-          "h-12 min-w-0 flex-1 rounded-none border-0 border-b bg-transparent px-0 text-[14px] outline-none ring-0 transition",
+          "h-12 min-w-0 flex-1 rounded-none border-0 border-b bg-transparent px-0 text-[16px] outline-none ring-0 sm:text-[14px] transition",
           dark
             ? "border-paper/40 text-paper placeholder:text-paper/50 focus:border-paper"
             : "border-ink/30 text-ink placeholder:text-ink-3 focus:border-ink",
