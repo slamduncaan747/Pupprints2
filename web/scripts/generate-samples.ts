@@ -40,18 +40,16 @@ const WEBP_QUALITY = 82;
 /** Which source photo (in scripts/sample-sources/) feeds each sample image. */
 const SOURCE_FOR: Record<string, string> = {
   // Style cards
-  "/samples/royal.webp": "cavalier-2.jpg",
-  "/samples/admiral.webp": "beagle.jpg",
-  "/samples/oil-classic.webp": "labrador.jpg",
-  "/samples/watercolor.webp": "french-bulldog.jpg",
-  "/samples/fine-line.webp": "labrador-2.jpg",
-  "/samples/pop-art.webp": "dachshund.jpg",
-  "/samples/storybook.webp": "doodle-puppy.jpg",
-  "/samples/botanical.webp": "cavalier.jpg",
-  "/samples/astronaut.webp": "husky.jpg",
-  "/samples/charcoal.webp": "border-collie-2.jpg",
+  "/samples/oil-classic.webp": "border-collie.jpg",
+  "/samples/modern-oil.webp": "dachshund.jpg",
+  "/samples/watercolor.webp": "beagle-2.jpg",
+  "/samples/pastel.webp": "cavalier-2.jpg",
+  "/samples/charcoal.webp": "labrador.jpg",
+  "/samples/ink-wash.webp": "border-collie-2.jpg",
+  "/samples/fine-line.webp": "french-bulldog.jpg",
+  "/samples/linocut.webp": "husky.jpg",
+  "/samples/botanical.webp": "cavapoo.jpg",
   "/samples/mid-century.webp": "corgi.jpg",
-  "/samples/holiday.webp": "corgi.jpg",
   // Before/after pairs (the "before" is the source photo itself)
   "/samples/pair-1-before.webp": "golden-retriever.jpg",
   "/samples/pair-1-after.webp": "golden-retriever.jpg",
@@ -60,11 +58,11 @@ const SOURCE_FOR: Record<string, string> = {
   "/samples/pair-3-before.webp": "beagle.jpg",
   "/samples/pair-3-after.webp": "beagle.jpg",
   // Gallery wall
-  "/samples/gallery-1.webp": "golden-retriever-2.jpg",
-  "/samples/gallery-2.webp": "french-bulldog.jpg",
+  "/samples/gallery-1.webp": "cavalier-3.jpg",
+  "/samples/gallery-2.webp": "french-bulldog-sitting.jpg",
   "/samples/gallery-3.webp": "cavapoo.jpg",
-  "/samples/gallery-4.webp": "husky.jpg",
-  "/samples/gallery-5.webp": "cavalier-3.jpg",
+  "/samples/gallery-4.webp": "doodle-puppy.jpg",
+  "/samples/gallery-5.webp": "labrador.jpg",
   "/samples/gallery-6.webp": "beagle-2.jpg",
 };
 
