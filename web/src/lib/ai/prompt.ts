@@ -45,7 +45,8 @@ export function imageGuide({ extraPhotos, styleSwatch }: ImageRoles): string {
   ];
   if (styleSwatch) {
     lines.push(
-      `IMAGE ${total} is the EXAMPLE PORTRAIT: a finished portrait of a different dog in the style the customer chose. It is the template. Make a new portrait that looks like a sister piece to it, by the same artist: the same pose and head angle, the same crop and framing, the same medium and mark-making, the same level of detail, the same palette, background colour, lighting and finish. Change only the dog, which must be the customer's dog. Copy nothing about the example's dog itself: not its breed, head shape, coat colours, markings, eyes or ears.`,
+      `IMAGE ${total} is the EXAMPLE PORTRAIT: a finished portrait of a different dog in the style the customer chose. It is the template. Make a new portrait that looks like a sister piece to it, by the same artist: the same pose and head angle, the same crop and framing, the same medium and mark-making, the same level of detail, the same palette, background colour, lighting and finish. Change only the dog, which must be the customer's dog. Copy nothing about the example's dog itself: not its breed, head shape, coat colours, markings, eyes or ears.
+DO NOT REPLICATE ANY FEATURE OF THE EXAMPLE'S DOG. Take only the style from the example portrait. Every physical feature of the dog you paint (its face, muzzle, nose, eye colour, ears, coat colours, coat length and texture, and every marking, white patch, blaze or spot) must come from the customer's photos alone. If the example's dog has a feature the customer's dog does not, leave it out; if the customer's dog has a feature the example's dog does not, include it.`,
     );
   }
   return lines.join("\n");
@@ -74,11 +75,11 @@ export function buildStylePrompt(
     imageGuide({ extraPhotos, styleSwatch: Boolean(opts.withReference) }),
     opts.identity ? identityNotes(opts.identity) : null,
     opts.withReference
-      ? "Generate this style of portrait, the example portrait, with this dog, the customer's dog."
+      ? "Generate this style of portrait, the example portrait, with this dog, the customer's dog. Replicate only the style of the example portrait, never any feature of its dog."
       : "Generate a portrait of the customer's dog in the style described in the style brief.",
     `STYLE BRIEF (${s.name}):\n${opts.withName ? `${s.prompt} ${NAME_HEADROOM}` : s.prompt}`,
     opts.withReference
-      ? "Final check before you finish: the pose, crop, background and medium match the example portrait; the dog is unmistakably the customer's dog, with its own head shape, markings on the same sides, eye colour and ears; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere."
+      ? "Final check before you finish: the pose, crop, background and medium match the example portrait; the dog is unmistakably the customer's dog, with its own head shape, markings on the same sides, eye colour and ears, and nothing taken from the example's dog; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere."
       : "Final check before you finish: the same dog as in the photos, with identical markings on the same sides, the same eye colour in both eyes and the same ear shape; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere.",
   ]
     .filter(Boolean)

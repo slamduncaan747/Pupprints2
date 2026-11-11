@@ -194,13 +194,11 @@ export function ProductStep({
   const style = getStyle(active.style);
   const name = (giftToken ? (active.petName ?? "") : flow.petName).trim();
 
-  const [view, setView] = useState<"room" | "closeup">("room");
   const [checkout, setCheckout] = useState<CheckoutState>({ kind: "idle" });
   const today = useToday();
   const ids = { stack: useId(), qty: useId() };
 
   const printSize = variant.widthIn > 0 ? { widthIn: variant.widthIn, heightIn: variant.heightIn } : undefined;
-  const showRoom = physical && view === "room";
 
   function selectProduct(type: ProductType) {
     const p = PRODUCT_MAP[type];
@@ -322,46 +320,10 @@ export function ProductStep({
           <button type="button" onClick={onBack} className={cn(TOGGLE, "text-ink-3 hover:text-ink sm:-ml-2")}>
             Back<span className="hidden sm:inline">&nbsp;{backLabel}</span>
           </button>
-          {physical && (
-            <div role="group" aria-label="Preview view" className="flex items-center gap-2 sm:-mr-2 sm:gap-4">
-              {(
-                [
-                  { id: "room", label: "On the wall" },
-                  { id: "closeup", label: "Close-up" },
-                ] as const
-              ).map(({ id, label }) => (
-                <button
-                  key={id}
-                  type="button"
-                  aria-pressed={view === id}
-                  onClick={() => setView(id)}
-                  className={cn(
-                    TOGGLE,
-                    view === id ? "text-ink underline underline-offset-[6px]" : "text-ink-3 hover:text-ink",
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         <div className="relative bg-paper-2">
           <div className="mx-auto w-full sm:max-w-[560px] lg:max-w-[min(100%,calc((100dvh_-_250px)_*_0.8))]">
-            {showRoom ? (
-              <FrameMockup
-                src={active.previewUrl}
-                alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, as a ${variant.label} ${product.name.toLowerCase()} on a wall`}
-                productType={product.type}
-                frameColor={selection.frameColor}
-                printSize={printSize}
-                room
-                size="lg"
-                priority
-                className="max-w-none"
-              />
-            ) : (
               <div className="@container flex aspect-[4/5] w-full items-center justify-center bg-paper-2">
                 <div style={{ width: `${closeupWidth}cqw` }}>
                   <FrameMockup
@@ -376,7 +338,6 @@ export function ProductStep({
                   />
                 </div>
               </div>
-            )}
           </div>
           <p className="label pointer-events-none absolute inset-x-0 bottom-4 px-5 text-center text-ink-3 sm:bottom-6">
             {physical ? variant.label : "High-resolution file"}
