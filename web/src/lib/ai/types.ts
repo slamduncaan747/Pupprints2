@@ -21,7 +21,7 @@ export type ProviderInput = {
   style: StyleSlug;
   /** More photos of the same dog, sent after the main photo where the provider takes several images. */
   extraImages?: ImageFile[];
-  /** A swatch of the style (no dog's face), sent last where the provider takes several images. */
+  /** The style's example portrait (the template for pose, crop and medium), sent last where the provider takes several images. */
   styleRef?: ImageFile;
 };
 

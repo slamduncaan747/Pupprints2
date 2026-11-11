@@ -11,9 +11,9 @@ import { MAX_EXTRA_PHOTOS, updateFlow, type UploadInfo } from "./store";
 type Pending = { key: string; url: string };
 
 /**
- * Optional extra photos of the same dog (up to three). They never change the pose, which comes
- * from the first photo; the server sends them to the image model for coat colours, markings on the
- * far side, eye colour and ears.
+ * Optional extra photos of the same dog (up to three). The pose always comes from the style's
+ * example portrait; the server sends every photo to the image model for identity only: coat
+ * colours, markings on the far side, eye colour and ears.
  */
 export function ExtraPhotos({ photos, disabled }: { photos: UploadInfo[]; disabled?: boolean }) {
   const inputId = useId();

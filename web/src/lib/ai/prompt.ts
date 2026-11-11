@@ -10,7 +10,7 @@ import { getStyle, type StyleSlug } from "@/lib/catalog";
  * watermarks") and Google's (say what you want positively and specifically). The output size/aspect
  * (3:4) is also set by request parameters; the composition section keeps the framing crop-safe.
  */
-export const PORTRAIT_SYSTEM_PROMPT = `You are a master portrait artist making a portrait of ONE specific, real dog: the dog in the customer's photos. Its owner must recognise their own dog at a glance, so likeness matters more than anything else. Study the dog's face closely before you start: its proportions, the exact shape and position of each marking, and its eye colour.
+export const PORTRAIT_SYSTEM_PROMPT = `You are a master portrait artist making a portrait of ONE specific, real dog: the dog in the customer's photos, painted to match the example portrait of the chosen style. Its owner must recognise their own dog at a glance, so likeness matters more than anything else. Study the dog's face closely before you start: its proportions, the exact shape and position of each marking, and its eye colour.
 
 KEEP IDENTICAL TO THE PHOTO (the dog's identity):
 - Breed or mix, build, size and age (a puppy stays a puppy; a grey muzzle stays grey).
@@ -21,9 +21,9 @@ KEEP IDENTICAL TO THE PHOTO (the dog's identity):
 - Every marking, in the same place and on the same side of the face and body: blaze, mask, eyebrow spots, ticking, freckles, brindle, merle or piebald patches, white chest, socks or tail tip.
 Do not turn the dog into a generic example of its breed. Do not add, remove, mirror or move markings. Do not change its weight or proportions.
 
-CHANGE ONLY what the style brief below asks for: the artistic medium, the background and the lighting. No costumes, clothing, props or scenes: the dog itself is the whole subject. Leave out people, hands, other animals, collars, leashes, harnesses and room clutter from the photo.
+TAKE FROM THE EXAMPLE PORTRAIT, NOT FROM THE PHOTOS: the pose, head angle, crop, composition, artistic medium, background and lighting. No costumes, clothing, props or scenes: the dog itself is the whole subject. Leave out people, hands, other animals, collars, leashes, harnesses and room clutter from the photo.
 
-COMPOSITION: a vertical 3:4 portrait. The dog's head and upper chest are the subject, centred left to right, eyes about one third from the top, head turned as in the main photo. Leave clear space of about one tenth of the canvas above the ears and at each side so the picture can be cropped to 4:5 or 2:3 without cutting off the ears. The artwork fills the whole canvas edge to edge.
+COMPOSITION: a vertical 3:4 portrait matching the example portrait: the same pose and head angle, the same crop of head and upper chest, the dog the same size and in the same place on the canvas. The pose, angle and framing of the customer's photos do not matter. Leave clear space of about one tenth of the canvas above the ears and at each side so the picture can be cropped to 4:5 or 2:3 without cutting off the ears. The artwork fills the whole canvas edge to edge.
 
 FINISH: a finished, gallery-quality original artwork in the medium the style brief names, showing that medium's real texture (brushwork, paper grain, ink line or pencil; for a modern illustration, its clean matte finish). It must not look like a photo with a filter or a 3D render. Crisp, lifelike eyes with a small catch-light, both eyes the same colour as in the photo (never one blue eye unless the photo shows it).
 
@@ -32,29 +32,20 @@ NEVER INCLUDE: text, letters, numbers, names, signatures, monograms, captions, w
 /** Added to the brief when we will letter the dog's name at the top afterwards (see @/lib/image/lettering). */
 export const NAME_HEADROOM = "Leave the top fifth of the image as calm, empty background above the ears.";
 
-/** One image the model receives, in order. */
+/** The images the model receives, in order: the customer's photos, then the style's example portrait. */
 export type ImageRoles = { extraPhotos: number; styleSwatch: boolean };
 
-/**
- * Says what each attached image is for, in the order the providers send them: the main photo,
- * then any extra photos of the same dog, then the style swatch.
- */
 export function imageGuide({ extraPhotos, styleSwatch }: ImageRoles): string {
-  const total = 1 + extraPhotos + (styleSwatch ? 1 : 0);
-  if (total === 1) return "You are given ONE image: the customer's photo of their dog.";
-  const lines = [`You are given ${total} images, in this order.`];
-  lines.push(
-    "IMAGE 1 is the MAIN PHOTO of the customer's dog. It sets the pose, the head angle and the expression of the portrait.",
-  );
-  if (extraPhotos > 0) {
-    const range = extraPhotos === 1 ? "IMAGE 2 is" : `IMAGES 2 to ${1 + extraPhotos} are`;
-    lines.push(
-      `${range} MORE PHOTOS OF THE SAME DOG, from other angles and in other light. Use them only to get the identity exactly right: the true coat colours, every marking (including any not visible in the main photo, on its correct side), the eye colour and the ear shape. Where the photos seem to disagree, trust the one with the most even, natural light. Do not copy their poses or backgrounds.`,
-    );
-  }
+  const photos = 1 + extraPhotos;
+  const total = photos + (styleSwatch ? 1 : 0);
+  const photoRange = photos === 1 ? "IMAGE 1 is a photo" : `IMAGES 1 to ${photos} are photos`;
+  const lines = [
+    total === 1 ? "You are given ONE image: the customer's photo of their dog." : `You are given ${total} images, in this order.`,
+    `${photoRange} of the customer's dog. Use ${photos === 1 ? "it" : "them"} ONLY to know what this dog looks like: breed or mix, head and muzzle shape, coat colours, every marking and which side it is on, eye colour, ears and age. Ignore ${photos === 1 ? "its" : "their"} pose, head angle, expression of the moment, background, lighting and camera colour.${photos > 1 ? " Where the photos disagree, trust the one with the most even, natural light." : ""}`,
+  ];
   if (styleSwatch) {
     lines.push(
-      `IMAGE ${total} is a STYLE SWATCH: two close-up cuttings from a finished artwork in the required style. It shows only the art materials: how the marks are made, how detailed or simplified the fur is, the palette temperature and saturation, and the exact background colour and treatment. Make the portrait in exactly that medium, with that background and that finish, as if by the same artist. Neutral, natural colour: no yellow or sepia cast unless the swatch has one. The swatch is not a dog to draw: take no shapes, markings, fur colours or composition from it.`,
+      `IMAGE ${total} is the EXAMPLE PORTRAIT: a finished portrait of a different dog in the style the customer chose. It is the template. Make a new portrait that looks like a sister piece to it, by the same artist: the same pose and head angle, the same crop and framing, the same medium and mark-making, the same level of detail, the same palette, background colour, lighting and finish. Change only the dog, which must be the customer's dog. Copy nothing about the example's dog itself: not its breed, head shape, coat colours, markings, eyes or ears.`,
     );
   }
   return lines.join("\n");
@@ -83,10 +74,12 @@ export function buildStylePrompt(
     imageGuide({ extraPhotos, styleSwatch: Boolean(opts.withReference) }),
     opts.identity ? identityNotes(opts.identity) : null,
     opts.withReference
-      ? "Turn the dog in IMAGE 1 into a finished head-and-chest artwork in the medium shown by the style swatch, as described in the style brief."
-      : "Turn the dog in the photo into the finished artwork described in the style brief.",
+      ? "Generate this style of portrait, the example portrait, with this dog, the customer's dog."
+      : "Generate a portrait of the customer's dog in the style described in the style brief.",
     `STYLE BRIEF (${s.name}):\n${opts.withName ? `${s.prompt} ${NAME_HEADROOM}` : s.prompt}`,
-    "Final check before you finish: the same dog as in the photos, with identical markings on the same sides, the same eye colour in both eyes and the same ear shape; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere.",
+    opts.withReference
+      ? "Final check before you finish: the pose, crop, background and medium match the example portrait; the dog is unmistakably the customer's dog, with its own head shape, markings on the same sides, eye colour and ears; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere."
+      : "Final check before you finish: the same dog as in the photos, with identical markings on the same sides, the same eye colour in both eyes and the same ear shape; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere.",
   ]
     .filter(Boolean)
     .join("\n\n");

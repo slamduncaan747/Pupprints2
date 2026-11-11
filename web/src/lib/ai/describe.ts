@@ -24,7 +24,7 @@ Eyes: colour of each eye (say "both dark brown" if they match; only mention a di
 Ears: shape, size, how they are carried, and colour.
 Muzzle and nose: length, shape, nose colour, lips or jowls.
 Head shape and expression.
-Rules: describe only the dog, never the background, people, collar, toys or the photo itself. Judge colours as they would look in even daylight: ignore tinted or dim lighting. If something is not visible, leave it out rather than guess. No introduction, no headings, no bullet symbols.`;
+Rules: describe only the dog itself, never its pose or head angle, the background, people, collar, toys or the photo itself. Judge colours as they would look in even daylight: ignore tinted or dim lighting. If something is not visible, leave it out rather than guess. No introduction, no headings, no bullet symbols.`;
 
 export async function describeDog(images: ImageFile[], signal?: AbortSignal): Promise<string | null> {
   if (process.env.AI_DESCRIBE?.trim().toLowerCase() === "off" || !gatewayConfigured() || images.length === 0) return null;

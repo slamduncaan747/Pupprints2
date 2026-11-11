@@ -76,7 +76,7 @@ async function editWithOpenAi(client: OpenAI, model: string, input: Parameters<P
   const extras = await Promise.all(
     (input.extraImages ?? []).map((f, i) => toFile(f.bytes, `dog-more-${i + 1}.jpg`, { type: f.mime })),
   );
-  const swatch = input.styleRef ? [await toFile(input.styleRef.bytes, "style-swatch.jpg", { type: input.styleRef.mime })] : [];
+  const swatch = input.styleRef ? [await toFile(input.styleRef.bytes, "example-portrait.jpg", { type: input.styleRef.mime })] : [];
   const files = [dog, ...extras, ...swatch];
   const image = files.length === 1 ? dog : files;
   const res = await client.images.edit(
