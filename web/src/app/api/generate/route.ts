@@ -196,7 +196,7 @@ export async function POST(req: Request) {
 
     // The name is type we set, never the model's. Flat-ground styles (Modern) are also set to their
     // exact ground color, name or not. On other styles the name is left off if the head is in its way.
-    const { bytes: art, lettered } = await letterName(result.bytes, withName ? body.petName : null, style.ground);
+    const { bytes: art, lettered } = await letterName(result.bytes, withName ? body.petName : null, style.ground, style.paper, style.mono);
     const [master, preview] = await Promise.all([toPrintMaster(art), makeWatermarkedPreview(art)]);
     // Never put the raw session id in object paths: preview URLs are public.
     const folder = sessionStorageFolder(sessionId);

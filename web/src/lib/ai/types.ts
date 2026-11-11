@@ -19,6 +19,8 @@ export type ProviderInput = {
   /** Style instruction. */
   prompt: string;
   style: StyleSlug;
+  /** A finished example of the style (a different dog), sent as a second image where the provider takes one. */
+  styleRef?: { bytes: Buffer; mime: string };
 };
 
 export type ProviderOutput = {

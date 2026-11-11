@@ -48,7 +48,8 @@ export function openaiImageSettings(model: string) {
   const sizeEnv = process.env.OPENAI_IMAGE_SIZE?.trim();
   const size = sizeEnv && /^(\d+x\d+|auto)$/.test(sizeEnv) ? sizeEnv : flexibleSize ? "1536x2048" : "1024x1536";
 
-  let quality: Quality = v25 ? "high" : "medium";
+  // The mini model is cheap enough that its best tier is the right default.
+  let quality: Quality = v25 || model.includes("mini") ? "high" : "medium";
   const qEnv = process.env.OPENAI_IMAGE_QUALITY?.trim().toLowerCase() as Quality | undefined;
   if (qEnv && QUALITIES.includes(qEnv)) quality = qEnv;
   if (!v25 && (quality === "xhigh" || quality === "max")) quality = "high"; // only 2.5 has xhigh/max
@@ -90,7 +91,8 @@ export const openai: PortraitProvider = {
     const model = this.model();
     const { size, quality, inputFidelity } = openaiImageSettings(model);
     const ext = input.mime === "image/png" ? "png" : input.mime === "image/webp" ? "webp" : "jpg";
-    const image = await toFile(input.imageBytes, `dog.${ext}`, { type: input.mime });
+    const dog = await toFile(input.imageBytes, `dog.${ext}`, { type: input.mime });
+    const image = input.styleRef ? [dog, await toFile(input.styleRef.bytes, "style-reference.jpg", { type: input.styleRef.mime })] : dog;
 
     let res;
     try {

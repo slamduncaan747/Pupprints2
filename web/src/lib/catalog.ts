@@ -39,6 +39,10 @@ export type ArtStyle = {
   lettering?: boolean;
   /** Flat-ground styles: the exact background color the finished portrait is set to. */
   ground?: string;
+  /** The paper color this style is made on; the finished portrait is color-balanced to it. */
+  paper?: string;
+  /** A black-and-white medium: the finished portrait is made neutral grey on its paper. */
+  mono?: boolean;
   /**
    * A dated edition: the last moment (ISO, with offset) the style can be chosen. After it, the
    * style leaves every picker, its page shows it as retired and /api/generate refuses it. Checked
@@ -96,6 +100,7 @@ export const STYLES: ArtStyle[] = [
     description: "Light, transparent washes with sharp detail in the eyes and plenty of white paper around your dog.",
     prompt: `A fine-art watercolor portrait of the dog on heavy white cold-press cotton watercolor paper. ${SUBJECT} Head and chest only. Transparent layered washes with visible pigment granulation and soft blooms, crisp precise detail in the eyes and nose; the painting dissolves into loose dry-brush strokes and bare paper toward the edges, with generous untouched white paper around the dog. The cold-press paper tooth is visible everywhere. Restrained natural palette of umber, sepia, warm ochre and slate grey with a touch of sage in the shadows. Calm and luminous, like a contemporary watercolor hung in a museum.`,
     swatch: "#7fa6b5",
+    paper: "#F7F6F2",
     goodFor: ["memorial", "gift", "decor"],
     popular: true,
   },
@@ -106,6 +111,8 @@ export const STYLES: ArtStyle[] = [
     description: "Your dog in black ink lines on off-white paper, with a little hatching in the shadows. No color.",
     prompt: `A refined fine-line ink drawing of the dog on warm white cotton rag paper. ${SUBJECT} Confident continuous black ink lines with a slight natural ink bleed into the paper fibres, sparse delicate hatching only where shadows fall; no color, no solid fills, no grey wash. A generous field of empty paper around the dog, the soft cotton paper texture visible. ${CALM} A refined contemporary gallery drawing.`,
     swatch: "#d8cfc0",
+    paper: "#F4F1EA",
+    mono: true,
     goodFor: ["decor", "memorial"],
   },
   {
@@ -115,6 +122,7 @@ export const STYLES: ArtStyle[] = [
     description: "Layered pastel strokes on warm, sand-colored paper, with fine detail in the eyes.",
     prompt: `A soft pastel portrait of the dog on warm toned pastel paper (a mid-tone sand or grey-beige). ${SUBJECT} Head and chest in a calm three-quarter view. Velvety layered pastel strokes follow the direction of the fur, softly blended in the shadows and left as open, chalky strokes in the lights; crisp precise detail in the eyes and nose with a small catch-light. The toned paper is left bare around the dog and shows through between strokes, its tooth visible everywhere; the drawing fades out loosely toward the chest. A single soft light from the upper left. Restrained natural palette of umber, bone, ochre and slate with the dog's true coat colors. Matte, powdery surface. Like a fine pastel portrait from an artist's studio.`,
     swatch: "#b3a394",
+    paper: "#D2CAC0",
     goodFor: ["memorial", "gift", "decor"],
   },
   {
@@ -134,6 +142,8 @@ export const STYLES: ArtStyle[] = [
     description: "Deep blacks, soft grey shading and sharp eyes on warm paper. No color.",
     prompt: `An expressive charcoal portrait drawing of the dog on warm toned ivory drawing paper. ${SUBJECT} Rich velvety charcoal blacks, soft smudged half-tones, fine sharp detail in the eyes and nose, loose gestural strokes that fade into bare paper at the edges. The paper grain catches the charcoal everywhere, with a few soft finger smudges and lifted highlights. No color. A fine-art academic drawing from a master's studio.`,
     swatch: "#3a3733",
+    paper: "#EFEBE1",
+    mono: true,
     goodFor: ["memorial", "decor", "gift"],
     popular: true,
   },

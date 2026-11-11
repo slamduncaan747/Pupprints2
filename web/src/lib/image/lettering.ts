@@ -247,12 +247,57 @@ export async function makeHeadroom(input: Buffer, shift = 0.17): Promise<Buffer>
     .toBuffer();
 }
 
+/**
+ * Remove an overall colour cast: scale the channels so the picture's own background (top band and
+ * upper side edges) lands on `paper`, the color that style's paper or ground should be. Applied
+ * to the whole picture, so a yellowed coat is corrected along with the paper. Skipped when the
+ * background is nowhere near `paper` (then it isn't a cast, it's a different picture).
+ */
+export async function neutralizeCast(input: Buffer, paper: string, mono = false): Promise<Buffer> {
+  // Black-and-white media (charcoal, ink line) carry no color of their own: drop it first, so a
+  // sepia or tan result becomes a neutral drawing, then lift the paper to its proper tone.
+  if (mono) input = await sharp(input, { failOn: "none" }).autoOrient().greyscale().toColourspace("srgb").png().toBuffer();
+  const { data, info } = await sharp(input, { failOn: "none" })
+    .autoOrient()
+    .flatten({ background: "#ffffff" })
+    .toColourspace("srgb")
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = info;
+  if (channels < 3) return input;
+  const band = Math.max(3, Math.round(width * 0.025));
+  const samples: number[][] = [[], [], []];
+  const take = (x: number, y: number) => {
+    const k = (y * width + x) * channels;
+    for (let c = 0; c < 3; c++) samples[c].push(data[k + c]);
+  };
+  for (let y = 0; y < band; y++) for (let x = 0; x < width; x += 2) take(x, y);
+  for (let y = band; y < height / 3; y += 2) {
+    for (let x = 0; x < band; x++) {
+      take(x, y);
+      take(width - 1 - x, y);
+    }
+  }
+  const bg = samples.map((v) => v.sort((a, b) => a - b)[v.length >> 1]);
+  const target = hexToRgb(paper);
+  const lum = (c: number[]) => 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2];
+  if (!mono && Math.abs(lum(bg) - lum(target)) > 70) return input;
+  const max = mono ? 1.6 : 1.22;
+  const gains = bg.map((v, c) => Math.max(0.82, Math.min(max, target[c] / Math.max(1, v))));
+  if (gains.every((g) => Math.abs(g - 1) < 0.012)) return input;
+  return sharp(data, { raw: { width, height, channels } }).removeAlpha().linear(gains, [0, 0, 0]).png().toBuffer();
+}
+
 export async function letterName(
   input: Buffer,
   name: string | null | undefined,
   ground?: string,
+  paper?: string,
+  mono = false,
 ): Promise<{ bytes: Buffer; lettered: boolean; stats?: NameStripStats }> {
   const text = letteringText(name);
+  const cast = ground ?? paper;
+  if (cast) input = await neutralizeCast(input, cast, mono);
   if (ground) input = await prepareGround(input, ground, text ? HEADROOM_FOR_NAME : 0);
   if (!text) return { bytes: input, lettered: false };
   let stats = await nameStripStats(input, text);
@@ -277,6 +322,8 @@ export async function addNameLettering(
   input: Buffer,
   name: string | null | undefined,
   ground?: string,
+  paper?: string,
+  mono = false,
 ): Promise<Buffer> {
-  return (await letterName(input, name, ground)).bytes;
+  return (await letterName(input, name, ground, paper, mono)).bytes;
 }

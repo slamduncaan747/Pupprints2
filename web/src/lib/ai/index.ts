@@ -3,6 +3,7 @@ import sharp from "sharp";
 import { env } from "@/lib/env";
 import { errorMessage, PROVIDER_TIMEOUT_MS } from "./http";
 import { buildStylePrompt, PORTRAIT_SYSTEM_PROMPT } from "./prompt";
+import { styleReference } from "./style-refs";
 import { fal, falGpt } from "./providers/fal";
 import { gateway } from "./providers/gateway";
 import { gemini } from "./providers/gemini";
@@ -71,7 +72,8 @@ export async function generatePortrait(input: GeneratePortraitInput): Promise<Ge
   const providers = configuredProviders();
   if (providers.length === 0) throw new AiUnavailableError();
 
-  const prompt = buildStylePrompt(input.style, { withName: input.withName });
+  const styleRef = styleReference(input.style) ?? undefined;
+  const prompt = buildStylePrompt(input.style, { withName: input.withName, withReference: Boolean(styleRef) });
   const deadline = input.deadline ?? Date.now() + PROVIDER_TIMEOUT_MS;
   const attempts: ProviderAttempt[] = [];
   const refusedFamilies = new Set<ModelFamily>();
@@ -93,6 +95,7 @@ export async function generatePortrait(input: GeneratePortraitInput): Promise<Ge
           system: PORTRAIT_SYSTEM_PROMPT,
           prompt,
           style: input.style,
+          styleRef,
         },
         controller.signal,
       );

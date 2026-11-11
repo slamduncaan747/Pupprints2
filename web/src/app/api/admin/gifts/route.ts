@@ -331,7 +331,7 @@ export async function POST(req: Request) {
     });
 
     // Every portrait carries the name when one is given.
-    const art = await addNameLettering(result.bytes, petName, getStyle(style)?.ground);
+    const art = await addNameLettering(result.bytes, petName, getStyle(style)?.ground, getStyle(style)?.paper, getStyle(style)?.mono);
     const giftId = existing?.id ?? randomUUID();
     const [master, preview, web] = await Promise.all([
       toPrintMaster(art),

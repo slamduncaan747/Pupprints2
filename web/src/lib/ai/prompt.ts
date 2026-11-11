@@ -39,11 +39,19 @@ export const NAME_HEADROOM = "Leave the top fifth of the image as calm, empty ba
  * (nameplates, banners), which the rules above forbid. `withName` only asks for room above the
  * head, so the name can be set there in our own type afterwards.
  */
-export function buildStylePrompt(style: StyleSlug, opts: { withName?: boolean } = {}): string {
+/** Added when a finished example of the style is attached as a second image. */
+export const STYLE_REFERENCE = `You are given TWO images.
+IMAGE 1 is the customer's dog: the only subject of the artwork. Its identity, markings, coat colour, eye colour and ear shape come from IMAGE 1 alone.
+IMAGE 2 is a STYLE REFERENCE: a finished artwork of a different dog. Make your artwork look as if the same artist made it on the same day: the same medium and mark-making, the same level of detail and simplification, the same palette temperature and saturation, the same background colour and treatment, the same lighting, the same head-and-chest crop and the same finish. Neutral, natural colour: no yellow or sepia cast unless IMAGE 2 has one.
+Never copy the dog, breed, pose, markings or any lettering from IMAGE 2.`;
+
+export function buildStylePrompt(style: StyleSlug, opts: { withName?: boolean; withReference?: boolean } = {}): string {
   const s = getStyle(style);
   if (!s) throw new Error(`Unknown style: ${style}`);
   return [
-    "Turn the attached photo of this dog into the finished artwork described in the style brief.",
+    opts.withReference
+      ? `${STYLE_REFERENCE}\n\nTurn the dog in IMAGE 1 into a finished artwork in the style of IMAGE 2, as described in the style brief.`
+      : "Turn the attached photo of this dog into the finished artwork described in the style brief.",
     `STYLE BRIEF (${s.name}):\n${opts.withName ? `${s.prompt} ${NAME_HEADROOM}` : s.prompt}`,
     "Final check before you finish: the same dog as in the photo, with identical markings, eye colour and ear shape; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere.",
   ].join("\n\n");

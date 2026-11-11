@@ -352,7 +352,7 @@ export function ProductStep({
             {showRoom ? (
               <FrameMockup
                 src={active.previewUrl}
-                alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, shown to scale as a ${variant.label} ${product.name.toLowerCase()} on a wall`}
+                alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}, as a ${variant.label} ${product.name.toLowerCase()} on a wall`}
                 productType={product.type}
                 frameColor={selection.frameColor}
                 printSize={printSize}
@@ -379,7 +379,7 @@ export function ProductStep({
             )}
           </div>
           <p className="label pointer-events-none absolute inset-x-0 bottom-4 px-5 text-center text-ink-3 sm:bottom-6">
-            {physical ? `${variant.label} — ${showRoom ? "shown to scale" : "close-up"}` : "High-resolution file"}
+            {physical ? variant.label : "High-resolution file"}
           </p>
         </div>
         <p className="mt-3 px-5 text-center text-[12px] text-ink-3 sm:px-0">

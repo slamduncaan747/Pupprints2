@@ -22,9 +22,12 @@ const BASE_URL = "https://ai-gateway.vercel.sh/v1";
 const DEFAULT_MODELS = [
   "openai/gpt-image-2.5-flare",
   "google/gemini-3.1-flash-image",
+  "openai/gpt-image-2",
+  "google/gemini-3-pro-image",
+  "openai/gpt-image-1.5",
   "google/gemini-2.5-flash-image",
-  "openai/gpt-image-1-mini",
   "google/gemini-3.1-flash-lite-image",
+  "openai/gpt-image-1-mini",
 ];
 
 function models(): string[] {
@@ -68,7 +71,8 @@ function toProviderError(err: unknown): ProviderError {
 async function editWithOpenAi(client: OpenAI, model: string, input: Parameters<PortraitProvider["generate"]>[0], signal: AbortSignal) {
   const { size, quality, inputFidelity } = openaiImageSettings(model.replace(/^[^/]+\//, ""));
   const ext = input.mime === "image/png" ? "png" : input.mime === "image/webp" ? "webp" : "jpg";
-  const image = await toFile(input.imageBytes, `dog.${ext}`, { type: input.mime });
+  const dog = await toFile(input.imageBytes, `dog.${ext}`, { type: input.mime });
+  const image = input.styleRef ? [dog, await toFile(input.styleRef.bytes, "style-reference.jpg", { type: input.styleRef.mime })] : dog;
   const res = await client.images.edit(
     {
       model,
@@ -100,6 +104,9 @@ async function editWithChat(client: OpenAI, model: string, input: Parameters<Por
           content: [
             { type: "text", text: `${input.prompt}\n\nOutput one image only, in a 3:4 portrait format (taller than wide).` },
             { type: "image_url", image_url: { url: dataUrl } },
+            ...(input.styleRef
+              ? [{ type: "image_url", image_url: { url: `data:${input.styleRef.mime};base64,${input.styleRef.bytes.toString("base64")}` } }]
+              : []),
           ],
         },
       ],
