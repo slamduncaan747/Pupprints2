@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { ZoomImage } from "@/components/marketing/campaign";
-import { SourcePhoto } from "@/components/create/style-thumb";
 import { availableStyles, STYLE_MAP, styleAvailable, type StyleSlug } from "@/lib/catalog";
 import { STYLE_SAMPLES } from "@/lib/samples";
 import { cn } from "@/lib/utils";
@@ -77,7 +76,6 @@ export function Collection() {
                           swatch={style.swatch}
                           sizes={look === "large" ? "(min-width: 1440px) 430px, (min-width: 1024px) 30vw, 45vw" : "(min-width: 1440px) 300px, (min-width: 1024px) 21vw, 45vw"}
                         />
-                        <SourcePhoto slug={style.slug} className="bottom-2 left-2 w-[30%]" />
                       </div>
                       <p className="label mt-4 text-ink sm:mt-5">{style.name}</p>
                       <p className="mt-1.5 max-w-xs text-[13px] leading-snug text-ink-3">{style.blurb}</p>

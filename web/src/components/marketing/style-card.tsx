@@ -1,4 +1,3 @@
-import { SourcePhoto } from "@/components/create/style-thumb";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ArtStyle } from "@/lib/catalog";
@@ -46,7 +45,6 @@ export function StyleCard({
             sizes={sizes}
             priority={priority}
           />
-          <SourcePhoto slug={style.slug} className="bottom-2 left-2 w-[30%]" />
         </div>
         <div className={cn("mt-4 flex items-baseline justify-between gap-3", bleed && "px-3 sm:px-0")}>
           <h3 className="label text-ink">{style.name}</h3>

@@ -34,7 +34,7 @@ export function StyleThumb({
   return (
     <div
       className={cn(
-        "relative p-[4px] shadow-[0_12px_24px_-16px_rgb(0_0_0/0.45)] outline-2 outline-offset-[5px] transition-[outline-color] duration-200 sm:p-[6px]",
+        "p-[4px] shadow-[0_12px_24px_-16px_rgb(0_0_0/0.45)] outline-2 outline-offset-[5px] transition-[outline-color] duration-200 sm:p-[6px]",
         selected ? "outline-ink" : "outline-transparent",
         className,
       )}
@@ -55,33 +55,6 @@ export function StyleThumb({
             />
           )}
         </div>
-      </div>
-      {/* The photo the example was made from, so the before and after read together. */}
-      {!src && !failed && <SourcePhoto slug={style.slug} />}
-    </div>
-  );
-}
-
-/** Small inset of the photo a style's example portrait was made from (/samples/<slug>-photo.webp). */
-export function SourcePhoto({ slug, className }: { slug: string; className?: string }) {
-  const [hidden, setHidden] = useState(false);
-  if (hidden) return null;
-  return (
-    <div
-      className={cn(
-        "absolute -bottom-2 -left-2 w-[34%] border-[3px] border-paper bg-paper shadow-[0_6px_14px_-6px_rgb(0_0_0/0.5)]",
-        className,
-      )}
-    >
-      <div className="relative aspect-[4/5] w-full overflow-hidden">
-        <Image
-          src={`/samples/${slug}-photo.webp`}
-          alt="The photo this example was made from"
-          fill
-          sizes="120px"
-          className="object-cover"
-          onError={() => setHidden(true)}
-        />
       </div>
     </div>
   );
