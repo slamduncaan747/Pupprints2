@@ -19,9 +19,13 @@ export type ProviderInput = {
   /** Style instruction. */
   prompt: string;
   style: StyleSlug;
-  /** A finished example of the style (a different dog), sent as a second image where the provider takes one. */
-  styleRef?: { bytes: Buffer; mime: string };
+  /** More photos of the same dog, sent after the main photo where the provider takes several images. */
+  extraImages?: ImageFile[];
+  /** A swatch of the style (no dog's face), sent last where the provider takes several images. */
+  styleRef?: ImageFile;
 };
+
+export type ImageFile = { bytes: Buffer; mime: string };
 
 export type ProviderOutput = {
   bytes: Buffer;
@@ -45,6 +49,8 @@ export type GeneratePortraitInput = {
   imageBytes: Buffer;
   mime: string;
   style: StyleSlug;
+  /** Up to three more photos of the same dog, used for identity only. */
+  extraImages?: ImageFile[];
   petName?: string;
   /**
    * The dog's name will be lettered at the top afterwards: ask the model for empty background

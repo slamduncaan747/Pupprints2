@@ -120,7 +120,12 @@ async function viaGenerateContent(model: string, prompt: string, input: Provider
     contents: [
       {
         role: "user",
-        parts: [{ inlineData: { mimeType: input.mime, data: input.imageBytes.toString("base64") } }, { text: prompt }],
+        parts: [
+          { inlineData: { mimeType: input.mime, data: input.imageBytes.toString("base64") } },
+          ...(input.extraImages ?? []).map((f) => ({ inlineData: { mimeType: f.mime, data: f.bytes.toString("base64") } })),
+          ...(input.styleRef ? [{ inlineData: { mimeType: input.styleRef.mime, data: input.styleRef.bytes.toString("base64") } }] : []),
+          { text: prompt },
+        ],
       },
     ],
     config: {

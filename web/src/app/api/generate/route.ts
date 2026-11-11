@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getStyle, isRetiredStyle, styleAvailable } from "@/lib/catalog";
 import { env } from "@/lib/env";
-import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError } from "@/lib/ai";
+import { aiAvailable, AiUnavailableError, generatePortrait, GenerationFailedError, type ImageFile } from "@/lib/ai";
 import { makeWatermarkedPreview, toPrintMaster } from "@/lib/image";
 import { letteringText, letterName } from "@/lib/image/lettering";
 import { BUCKETS, db, previewUrl, signedUrl } from "@/lib/supabase/server";
@@ -17,6 +17,8 @@ const AI_BUDGET_MS = 105_000;
 
 const Body = z.object({
   uploadId: z.string().uuid(),
+  /** Up to three more photos of the same dog (optional), used for likeness only. */
+  extraUploadIds: z.array(z.string().uuid()).max(3).optional(),
   /** Checked against the catalog below, so a retired slug gets a clear 410 rather than a generic 400. */
   style: z.string().min(1).max(40),
   petName: z
@@ -179,6 +181,24 @@ export async function POST(req: Request) {
     const { data: file, error: downloadError } = await supabase.storage.from(BUCKETS.uploads).download(upload.storage_path);
     if (downloadError || !file) throw new Error(`Could not read upload: ${downloadError?.message}`);
     const imageBytes = Buffer.from(await file.arrayBuffer());
+
+    // Extra photos: only this browser's own uploads; a missing or unreadable one is just skipped.
+    const extraIds = [...new Set(body.extraUploadIds ?? [])].filter((id) => id !== upload.id).slice(0, 3);
+    let extraImages: ImageFile[] = [];
+    if (extraIds.length) {
+      const { data: rows } = await supabase
+        .from("uploads")
+        .select("id, storage_path, session_id")
+        .in("id", extraIds);
+      const own = (rows ?? []).filter((r) => r.session_id === sessionId);
+      const files = await Promise.all(
+        own.map(async (r) => {
+          const { data } = await supabase.storage.from(BUCKETS.uploads).download(r.storage_path);
+          return data ? ({ bytes: Buffer.from(await data.arrayBuffer()), mime: "image/jpeg" } as ImageFile) : null;
+        }),
+      );
+      extraImages = files.filter((f): f is ImageFile => f !== null);
+    }
     const imageUrl = await signedUrl("uploads", upload.storage_path, 60 * 10);
 
     // The name is lettered only when the customer asked for it and it is one we can set.
@@ -189,6 +209,7 @@ export async function POST(req: Request) {
       imageBytes,
       mime: "image/jpeg",
       style: style.slug,
+      extraImages,
       petName: body.petName,
       withName,
       deadline: started + AI_BUDGET_MS,

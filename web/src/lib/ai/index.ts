@@ -4,6 +4,7 @@ import { env } from "@/lib/env";
 import { errorMessage, PROVIDER_TIMEOUT_MS } from "./http";
 import { buildStylePrompt, PORTRAIT_SYSTEM_PROMPT } from "./prompt";
 import { styleReference } from "./style-refs";
+import { describeDog } from "./describe";
 import { fal, falGpt } from "./providers/fal";
 import { gateway } from "./providers/gateway";
 import { gemini } from "./providers/gemini";
@@ -73,7 +74,15 @@ export async function generatePortrait(input: GeneratePortraitInput): Promise<Ge
   if (providers.length === 0) throw new AiUnavailableError();
 
   const styleRef = styleReference(input.style) ?? undefined;
-  const prompt = buildStylePrompt(input.style, { withName: input.withName, withReference: Boolean(styleRef) });
+  const extraImages = (input.extraImages ?? []).slice(0, 3);
+  // Written notes on this dog's identity (coat colours, markings and their sides, eye colour).
+  const identity = await describeDog([{ bytes: input.imageBytes, mime: input.mime }, ...extraImages]);
+  const prompt = buildStylePrompt(input.style, {
+    withName: input.withName,
+    withReference: Boolean(styleRef),
+    extraPhotos: extraImages.length,
+    identity,
+  });
   const deadline = input.deadline ?? Date.now() + PROVIDER_TIMEOUT_MS;
   const attempts: ProviderAttempt[] = [];
   const refusedFamilies = new Set<ModelFamily>();
@@ -95,6 +104,7 @@ export async function generatePortrait(input: GeneratePortraitInput): Promise<Ge
           system: PORTRAIT_SYSTEM_PROMPT,
           prompt,
           style: input.style,
+          extraImages,
           styleRef,
         },
         controller.signal,

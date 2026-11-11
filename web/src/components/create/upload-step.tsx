@@ -6,6 +6,7 @@ import { getStyle, type StyleSlug } from "@/lib/catalog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ApiError, uploadPhoto } from "./api";
+import { ExtraPhotos } from "./extra-photos";
 import { NameOption } from "./name-option";
 import { PhotoTips } from "./photo-tips";
 import { prepareImage, PrepareError } from "./prepare-image";
@@ -140,6 +141,7 @@ export function UploadStep({
                 roll works best.
               </p>
             )}
+            {flow.upload && <ExtraPhotos photos={flow.extraUploads} disabled={busy} />}
           </div>
         ) : (
           <>

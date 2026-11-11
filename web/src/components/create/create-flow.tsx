@@ -219,7 +219,11 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
     track("GeneratePreview", { style, regenerate: Boolean(opts.force) });
 
     try {
-      const res = await generatePortrait({ uploadId: upload.uploadId, style, petName, nameOnArt }, controller.signal);
+      const extraUploadIds = s.extraUploads.map((u) => u.uploadId);
+      const res = await generatePortrait(
+        { uploadId: upload.uploadId, extraUploadIds: extraUploadIds.length ? extraUploadIds : undefined, style, petName, nameOnArt },
+        controller.signal,
+      );
       const gen: Generation = {
         generationId: res.generationId,
         style: res.style,
@@ -239,7 +243,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
       const e =
         err instanceof ApiError ? err : new ApiError("network", "We couldn't reach our studio. Please try again.", 0);
       if (e.code === "upload_not_found") {
-        updateFlow((st) => ({ ...st, upload: null, activeId: null }));
+        updateFlow((st) => ({ ...st, upload: null, extraUploads: [], activeId: null }));
         goTo("upload");
       }
       const pendingId = typeof e.data.generationId === "string" ? e.data.generationId : undefined;

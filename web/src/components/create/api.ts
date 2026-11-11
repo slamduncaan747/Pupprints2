@@ -96,7 +96,7 @@ export type GenerateResponse = {
 };
 
 export function generatePortrait(
-  body: { uploadId: string; style: StyleSlug; petName?: string; nameOnArt?: boolean },
+  body: { uploadId: string; extraUploadIds?: string[]; style: StyleSlug; petName?: string; nameOnArt?: boolean },
   signal?: AbortSignal,
 ) {
   return postJson<GenerateResponse>("/api/generate", body, signal);

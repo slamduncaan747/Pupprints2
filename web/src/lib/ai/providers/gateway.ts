@@ -41,7 +41,8 @@ function models(): string[] {
 /** Models this account was refused, for the life of the server instance. */
 const noAccess = new Set<string>();
 
-async function apiKey(): Promise<string> {
+/** Credentials for the gateway: AI_GATEWAY_API_KEY, else the deployment's OIDC token. */
+export async function gatewayApiKey(): Promise<string> {
   const key = process.env.AI_GATEWAY_API_KEY?.trim();
   if (key) return key;
   try {
@@ -72,7 +73,12 @@ async function editWithOpenAi(client: OpenAI, model: string, input: Parameters<P
   const { size, quality, inputFidelity } = openaiImageSettings(model.replace(/^[^/]+\//, ""));
   const ext = input.mime === "image/png" ? "png" : input.mime === "image/webp" ? "webp" : "jpg";
   const dog = await toFile(input.imageBytes, `dog.${ext}`, { type: input.mime });
-  const image = input.styleRef ? [dog, await toFile(input.styleRef.bytes, "style-swatch.jpg", { type: input.styleRef.mime })] : dog;
+  const extras = await Promise.all(
+    (input.extraImages ?? []).map((f, i) => toFile(f.bytes, `dog-more-${i + 1}.jpg`, { type: f.mime })),
+  );
+  const swatch = input.styleRef ? [await toFile(input.styleRef.bytes, "style-swatch.jpg", { type: input.styleRef.mime })] : [];
+  const files = [dog, ...extras, ...swatch];
+  const image = files.length === 1 ? dog : files;
   const res = await client.images.edit(
     {
       model,
@@ -104,6 +110,10 @@ async function editWithChat(client: OpenAI, model: string, input: Parameters<Por
           content: [
             { type: "text", text: `${input.prompt}\n\nOutput one image only, in a 3:4 portrait format (taller than wide).` },
             { type: "image_url", image_url: { url: dataUrl } },
+            ...(input.extraImages ?? []).map((f) => ({
+              type: "image_url",
+              image_url: { url: `data:${f.mime};base64,${f.bytes.toString("base64")}` },
+            })),
             ...(input.styleRef
               ? [{ type: "image_url", image_url: { url: `data:${input.styleRef.mime};base64,${input.styleRef.bytes.toString("base64")}` } }]
               : []),
@@ -122,6 +132,16 @@ async function editWithChat(client: OpenAI, model: string, input: Parameters<Por
   return Buffer.from(b64, "base64");
 }
 
+export const GATEWAY_BASE_URL = BASE_URL;
+
+/** True when the gateway can be called (key set, or running on Vercel). */
+export function gatewayConfigured(): boolean {
+  return (
+    process.env.AI_GATEWAY?.trim().toLowerCase() !== "off" &&
+    Boolean(process.env.AI_GATEWAY_API_KEY?.trim() || process.env.VERCEL === "1")
+  );
+}
+
 export const gateway: PortraitProvider = {
   id: "gateway",
   configured: () =>
@@ -136,7 +156,7 @@ export const gateway: PortraitProvider = {
     let last: ProviderError | null = null;
     let client: OpenAI;
     try {
-      client = new OpenAI({ apiKey: await apiKey(), baseURL: BASE_URL, timeout: PROVIDER_TIMEOUT_MS, maxRetries: 0 });
+      client = new OpenAI({ apiKey: await gatewayApiKey(), baseURL: BASE_URL, timeout: PROVIDER_TIMEOUT_MS, maxRetries: 0 });
     } catch (err) {
       throw toProviderError(err);
     }

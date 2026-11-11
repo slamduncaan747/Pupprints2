@@ -46,6 +46,9 @@ export type Selection = {
   quantity: number;
 };
 
+/** Extra photos the upload step suggests (the first photo is the only required one). */
+export const MAX_EXTRA_PHOTOS = 3;
+
 /** Most of one piece the product step offers in a single order. */
 export const MAX_QUANTITY = 5;
 
@@ -53,6 +56,8 @@ export type FlowState = {
   v: 1;
   step: Step;
   upload: UploadInfo | null;
+  /** Optional extra photos of the same dog (up to MAX_EXTRA_PHOTOS), used for likeness only. */
+  extraUploads: UploadInfo[];
   petName: string;
   /** "Add the name to the portrait": letter petName on new portraits, in any style. On by default. */
   nameOnArt: boolean;
@@ -71,6 +76,7 @@ export const INITIAL: FlowState = {
   v: 1,
   step: "upload",
   upload: null,
+  extraUploads: [],
   petName: "",
   nameOnArt: true,
   generations: [],
@@ -118,6 +124,9 @@ function sanitize(raw: unknown): FlowState {
     ...INITIAL,
     step,
     upload,
+    extraUploads: upload && Array.isArray(s.extraUploads)
+      ? s.extraUploads.filter((u) => u && typeof u.uploadId === "string" && typeof u.url === "string").slice(0, MAX_EXTRA_PHOTOS)
+      : [],
     petName: typeof s.petName === "string" ? s.petName.slice(0, 40) : "",
     nameOnArt: s.nameOnArt !== false,
     generations,

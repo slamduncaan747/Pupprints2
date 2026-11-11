@@ -92,7 +92,12 @@ export const openai: PortraitProvider = {
     const { size, quality, inputFidelity } = openaiImageSettings(model);
     const ext = input.mime === "image/png" ? "png" : input.mime === "image/webp" ? "webp" : "jpg";
     const dog = await toFile(input.imageBytes, `dog.${ext}`, { type: input.mime });
-    const image = input.styleRef ? [dog, await toFile(input.styleRef.bytes, "style-reference.jpg", { type: input.styleRef.mime })] : dog;
+    const extras = await Promise.all(
+      (input.extraImages ?? []).map((f, i) => toFile(f.bytes, `dog-more-${i + 1}.jpg`, { type: f.mime })),
+    );
+    const swatch = input.styleRef ? [await toFile(input.styleRef.bytes, "style-swatch.jpg", { type: input.styleRef.mime })] : [];
+    const files = [dog, ...extras, ...swatch];
+    const image = files.length === 1 ? dog : files;
 
     let res;
     try {
