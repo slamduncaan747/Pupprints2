@@ -45,6 +45,7 @@ const nextConfig: NextConfig = {
     return [
       // Old style pages go to the collection, permanently, so old links and search results never 404.
       ...RETIRED_STYLES.map((slug) => ({ source: `/styles/${slug}`, destination: "/styles", permanent: true })),
+      { source: "/christmas", destination: "/holiday", permanent: false },
       // The court-portrait history article was rewritten as a history of dog portraiture.
       { source: "/journal/history-of-royal-pet-portraits", destination: "/journal/history-of-dog-portraits", permanent: true },
     ];

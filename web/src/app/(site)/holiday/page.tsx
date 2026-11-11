@@ -10,15 +10,15 @@ import { CampaignImage } from "@/components/marketing/campaign";
 import { ButtonLink } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "The Christmas special",
+  title: "The holiday special",
   description: `Order two portraits and two matching ornaments are on us, through ${GIFT_TWO.endsLabel}. ${HOLIDAY.label}.`,
-  alternates: { canonical: "/christmas" },
+  alternates: { canonical: "/holiday" },
 };
 
 /** The offer follows the calendar (see @/lib/offer), so re-render hourly. */
 export const revalidate = 3600;
 
-export default function ChristmasPage() {
+export default function HolidayPage() {
   const live = giftTwoActive();
   const ornament = ADDONS.find((a) => a.id === GIFT_TWO.ornamentId);
   const gift = campaign("gift");
@@ -35,11 +35,11 @@ export default function ChristmasPage() {
   return (
     <>
       <PageHero
-        title="The Christmas special"
+        title="The holiday special"
         lede={
           live
             ? `Order two portraits and two matching ornaments are on us, through ${GIFT_TWO.endsLabel}.`
-            : "This year's Christmas special has ended."
+            : "This year's holiday special has ended."
         }
       />
 

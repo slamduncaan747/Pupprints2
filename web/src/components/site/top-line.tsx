@@ -12,7 +12,7 @@ import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-ke
 function message(now: number = Date.now()): TopLineMessage | null {
   // Nov 1–Dec 10: two portraits, two ornaments on us (it ends with the US Christmas cutoff).
   if (giftTwoActive(now)) {
-    return { key: "christmas-2026", short: "The Christmas special", long: "The Christmas special", href: "/christmas", cta: "See it" };
+    return { key: "holiday-special-2026", short: "The holiday special", long: "The holiday special", href: "/holiday", cta: "See it" };
   }
   // Up to the Dec 10 cutoff: the US Christmas order-by date. Nothing after it.
   if (holidayNotice(now, { physical: true, shipCountry: "US" }) === HOLIDAY.label) {
