@@ -207,56 +207,42 @@ export async function prepareGround(input: Buffer, ground: string, headroom: num
  * off-white on dark ones, judged from the strip the lettering sits on.
  */
 /**
- * Any style: scale the picture down, anchored bottom-centre, onto a canvas of its own background
- * color (taken from the top corners and upper side edges), with feathered top and side edges so
- * paper texture blends into the fill. The freed band at the top is where the name goes.
+ * Any style: move the picture down by `shift` of its height so the name has clear room above the
+ * head. The band that opens at the top is grown from the picture's own top edge (its first rows,
+ * smoothed sideways and stretched), so paper, washes and painted grounds continue without a seam;
+ * the same amount is trimmed from the bottom, which is chest in a head-and-chest portrait.
  */
-export async function makeHeadroom(input: Buffer, scale = 0.82): Promise<Buffer> {
-  const { data, info } = await sharp(input, { failOn: "none" })
-    .autoOrient()
-    .flatten({ background: "#ffffff" })
-    .toColourspace("srgb")
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-  const { width, height, channels } = info;
-  if (channels < 3) return input;
-
-  // Background: median of a band along the top edge and the upper third of both side edges.
-  const band = Math.max(3, Math.round(width * 0.025));
-  const samples: number[][] = [[], [], []];
-  const take = (x: number, y: number) => {
-    const i = (y * width + x) * channels;
-    for (let c = 0; c < 3; c++) samples[c].push(data[i + c]);
-  };
-  for (let y = 0; y < band; y++) for (let x = 0; x < width; x += 2) take(x, y);
-  for (let y = band; y < height / 3; y += 2) {
-    for (let x = 0; x < band; x++) {
-      take(x, y);
-      take(width - 1 - x, y);
-    }
-  }
-  const bg = samples.map((v) => v.sort((a, b) => a - b)[v.length >> 1]);
-
-  const w2 = Math.round(width * scale);
-  const h2 = Math.round(height * scale);
-  const feather = Math.max(2, Math.round(w2 * 0.05));
-  // Alpha ramp on the top and side edges of the reduced picture; the bottom edge stays solid.
-  const mask = Buffer.alloc(w2 * h2);
-  for (let y = 0; y < h2; y++) {
-    const ay = Math.min(1, y / feather);
-    for (let x = 0; x < w2; x++) {
-      const ax = Math.min(1, x / feather, (w2 - 1 - x) / feather);
-      mask[y * w2 + x] = Math.round(255 * Math.min(ax, ay));
-    }
-  }
-  const small = await sharp(data, { raw: { width, height, channels } })
-    .removeAlpha()
-    .resize(w2, h2, { kernel: "lanczos3" })
-    .joinChannel(mask, { raw: { width: w2, height: h2, channels: 1 } })
+export async function makeHeadroom(input: Buffer, shift = 0.17): Promise<Buffer> {
+  const base = sharp(input, { failOn: "none" }).autoOrient().flatten({ background: "#ffffff" }).toColourspace("srgb");
+  const { data, info } = await base.png().toBuffer({ resolveWithObject: true });
+  const { width, height } = info;
+  const band = Math.round(height * shift);
+  const strip = Math.max(2, Math.round(height * 0.012));
+  if (band < 4 || height - band < 16) return input;
+  const top = await sharp(data)
+    .extract({ left: 0, top: 0, width, height: strip })
+    .blur(Math.max(1, width * 0.03))
+    .resize(width, band + strip, { fit: "fill", kernel: "cubic" })
+    .blur(Math.max(1, width * 0.01))
     .png()
     .toBuffer();
-  return sharp({ create: { width, height, channels: 3, background: { r: bg[0], g: bg[1], b: bg[2] } } })
-    .composite([{ input: small, left: Math.round((width - w2) / 2), top: height - h2 }])
+  const kept = await sharp(data).extract({ left: 0, top: 0, width, height: height - band }).png().toBuffer();
+  // The grown band overlaps the picture's first rows with a soft ramp, so there is no line.
+  const ramp = Buffer.alloc(width * (band + strip), 255);
+  for (let y = band; y < band + strip; y++) {
+    const a = Math.round(255 * (1 - (y - band + 1) / (strip + 1)));
+    ramp.fill(a, y * width, (y + 1) * width);
+  }
+  const topWithAlpha = await sharp(top)
+    .removeAlpha()
+    .joinChannel(ramp, { raw: { width, height: band + strip, channels: 1 } })
+    .png()
+    .toBuffer();
+  return sharp({ create: { width, height, channels: 3, background: "#ffffff" } })
+    .composite([
+      { input: kept, left: 0, top: band },
+      { input: topWithAlpha, left: 0, top: 0 },
+    ])
     .png()
     .toBuffer();
 }
