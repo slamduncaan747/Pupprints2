@@ -326,10 +326,12 @@ export async function POST(req: Request) {
       mime: "image/jpeg",
       style,
       petName,
+      withName: Boolean(petName),
       deadline: started + AI_BUDGET_MS,
     });
 
-    const art = getStyle(style)?.lettering ? await addNameLettering(result.bytes, petName, getStyle(style)?.ground) : result.bytes;
+    // Every portrait carries the name when one is given.
+    const art = await addNameLettering(result.bytes, petName, getStyle(style)?.ground);
     const giftId = existing?.id ?? randomUUID();
     const [master, preview, web] = await Promise.all([
       toPrintMaster(art),

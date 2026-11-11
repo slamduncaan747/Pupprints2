@@ -4,6 +4,7 @@ import { env } from "@/lib/env";
 import { errorMessage, PROVIDER_TIMEOUT_MS } from "./http";
 import { buildStylePrompt, PORTRAIT_SYSTEM_PROMPT } from "./prompt";
 import { fal, falGpt } from "./providers/fal";
+import { gateway } from "./providers/gateway";
 import { gemini } from "./providers/gemini";
 import { mock, mockEnabled } from "./providers/mock";
 import { openai } from "./providers/openai";
@@ -28,6 +29,7 @@ const REGISTRY: Record<string, PortraitProvider> = {
   replicate,
   gemini,
   openai,
+  gateway,
   mock,
 };
 
@@ -114,6 +116,11 @@ export async function generatePortrait(input: GeneratePortraitInput): Promise<Ge
     } finally {
       clearTimeout(timer);
     }
+  }
+  // Every provider that ran said it can't serve anyone right now (no credits, not enabled):
+  // treat it like having no provider, so the visitor can leave an email instead of retrying.
+  if (attempts.length > 0 && attempts.every((a) => !a.ok && /unavailable:/.test(a.error ?? ""))) {
+    throw new AiUnavailableError();
   }
   throw new GenerationFailedError(attempts);
 }

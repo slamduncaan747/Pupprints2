@@ -30,6 +30,7 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Freq }[]
   { path: "/how-it-works", priority: 0.7, changeFrequency: "monthly" },
   { path: "/faq", priority: 0.6, changeFrequency: "monthly" },
   { path: "/guarantee", priority: 0.6, changeFrequency: "yearly" },
+  { path: "/christmas", priority: 0.7, changeFrequency: "weekly" },
   { path: "/shipping", priority: 0.6, changeFrequency: "monthly" },
   { path: "/gift-cards", priority: 0.6, changeFrequency: "monthly" },
   { path: "/about", priority: 0.5, changeFrequency: "yearly" },

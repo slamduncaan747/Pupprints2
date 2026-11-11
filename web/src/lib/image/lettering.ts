@@ -206,6 +206,61 @@ export async function prepareGround(input: Buffer, ground: string, headroom: num
  * sit (the portrait is then returned as it came). The ink is dark on light backgrounds and
  * off-white on dark ones, judged from the strip the lettering sits on.
  */
+/**
+ * Any style: scale the picture down, anchored bottom-centre, onto a canvas of its own background
+ * color (taken from the top corners and upper side edges), with feathered top and side edges so
+ * paper texture blends into the fill. The freed band at the top is where the name goes.
+ */
+export async function makeHeadroom(input: Buffer, scale = 0.82): Promise<Buffer> {
+  const { data, info } = await sharp(input, { failOn: "none" })
+    .autoOrient()
+    .flatten({ background: "#ffffff" })
+    .toColourspace("srgb")
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = info;
+  if (channels < 3) return input;
+
+  // Background: median of a band along the top edge and the upper third of both side edges.
+  const band = Math.max(3, Math.round(width * 0.025));
+  const samples: number[][] = [[], [], []];
+  const take = (x: number, y: number) => {
+    const i = (y * width + x) * channels;
+    for (let c = 0; c < 3; c++) samples[c].push(data[i + c]);
+  };
+  for (let y = 0; y < band; y++) for (let x = 0; x < width; x += 2) take(x, y);
+  for (let y = band; y < height / 3; y += 2) {
+    for (let x = 0; x < band; x++) {
+      take(x, y);
+      take(width - 1 - x, y);
+    }
+  }
+  const bg = samples.map((v) => v.sort((a, b) => a - b)[v.length >> 1]);
+
+  const w2 = Math.round(width * scale);
+  const h2 = Math.round(height * scale);
+  const feather = Math.max(2, Math.round(w2 * 0.05));
+  // Alpha ramp on the top and side edges of the reduced picture; the bottom edge stays solid.
+  const mask = Buffer.alloc(w2 * h2);
+  for (let y = 0; y < h2; y++) {
+    const ay = Math.min(1, y / feather);
+    for (let x = 0; x < w2; x++) {
+      const ax = Math.min(1, x / feather, (w2 - 1 - x) / feather);
+      mask[y * w2 + x] = Math.round(255 * Math.min(ax, ay));
+    }
+  }
+  const small = await sharp(data, { raw: { width, height, channels } })
+    .removeAlpha()
+    .resize(w2, h2, { kernel: "lanczos3" })
+    .joinChannel(mask, { raw: { width: w2, height: h2, channels: 1 } })
+    .png()
+    .toBuffer();
+  return sharp({ create: { width, height, channels: 3, background: { r: bg[0], g: bg[1], b: bg[2] } } })
+    .composite([{ input: small, left: Math.round((width - w2) / 2), top: height - h2 }])
+    .png()
+    .toBuffer();
+}
+
 export async function letterName(
   input: Buffer,
   name: string | null | undefined,
@@ -214,8 +269,13 @@ export async function letterName(
   const text = letteringText(name);
   if (ground) input = await prepareGround(input, ground, text ? HEADROOM_FOR_NAME : 0);
   if (!text) return { bytes: input, lettered: false };
-  const stats = await nameStripStats(input, text);
-  if (!ground && !nameStripIsCalm(stats)) return { bytes: input, lettered: false, stats };
+  let stats = await nameStripStats(input, text);
+  if (!ground && !nameStripIsCalm(stats)) {
+    // The head reaches the name line: set the picture lower on its own background so the
+    // name always has clear room, whatever the style.
+    input = await makeHeadroom(input);
+    stats = await nameStripStats(input, text);
+  }
   const { data, info } = await sharp(input, { failOn: "none" })
     .autoOrient()
     .toColourspace("srgb")

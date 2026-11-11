@@ -20,7 +20,7 @@ export const env = {
   // AI image providers (first configured one in AI_PROVIDER_ORDER wins, others are fallbacks; a
   // provider without its key is skipped). Default: OpenAI GPT Image direct, then Google Gemini direct.
   // Ids: openai, gemini, fal (Nano Banana 2.1 on fal), replicate (same model), fal-gpt (GPT Image 2.5 on fal).
-  aiProviderOrder: (process.env.AI_PROVIDER_ORDER?.trim() || "openai,gemini,fal,replicate")
+  aiProviderOrder: (process.env.AI_PROVIDER_ORDER?.trim() || "openai,gemini,fal,replicate,gateway")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean),
@@ -59,7 +59,10 @@ export const features = {
     return Boolean(env.stripeSecretKey);
   },
   get ai() {
-    return Boolean(env.geminiApiKey || env.falKey || env.openaiApiKey || env.replicateToken);
+    const gateway =
+      process.env.AI_GATEWAY?.trim().toLowerCase() !== "off" &&
+      Boolean(process.env.AI_GATEWAY_API_KEY?.trim() || process.env.VERCEL === "1");
+    return Boolean(env.geminiApiKey || env.falKey || env.openaiApiKey || env.replicateToken || gateway);
   },
   get email() {
     return Boolean(env.resendApiKey);

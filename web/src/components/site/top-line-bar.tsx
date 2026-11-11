@@ -13,6 +13,8 @@ export type TopLineMessage = {
   /** Wider screens. */
   long: string;
   href: string;
+  /** Link wording on wider screens; defaults to the site's one button label. */
+  cta?: string;
 };
 
 const CHANGE_EVENT = "pp-topline-change";

@@ -1,7 +1,7 @@
 import type { StyleSlug } from "@/lib/catalog";
 
 /** Ids accepted in AI_PROVIDER_ORDER. */
-export type ProviderId = "fal" | "replicate" | "fal-gpt" | "gemini" | "openai" | "mock";
+export type ProviderId = "fal" | "replicate" | "fal-gpt" | "gemini" | "openai" | "gateway" | "mock";
 
 /**
  * Who actually makes the model. gemini (direct), fal and Replicate all run Google's Nano Banana by

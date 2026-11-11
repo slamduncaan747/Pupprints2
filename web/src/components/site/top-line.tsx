@@ -1,6 +1,6 @@
 import { SHIPPING_RATES } from "@/lib/catalog";
 import { site } from "@/lib/config";
-import { GIFT_TWO, HOLIDAY, giftTwoActive, holidayNotice } from "@/lib/offer";
+import { HOLIDAY, giftTwoActive, holidayNotice } from "@/lib/offer";
 import { TopLineBar, type TopLineMessage } from "@/components/site/top-line-bar";
 import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-keys";
 
@@ -12,7 +12,7 @@ import { TOP_LINE_ID, TOP_LINE_STORAGE_KEY } from "@/components/site/top-line-ke
 function message(now: number = Date.now()): TopLineMessage | null {
   // Nov 1–Dec 10: two portraits, two ornaments on us (it ends with the US Christmas cutoff).
   if (giftTwoActive(now)) {
-    return { key: "gift-two-2026", short: GIFT_TWO.short, long: `${GIFT_TWO.short}. ${HOLIDAY.label}.`, href: "/create" };
+    return { key: "christmas-2026", short: "The Christmas special", long: "The Christmas special", href: "/christmas", cta: "See it" };
   }
   // Up to the Dec 10 cutoff: the US Christmas order-by date. Nothing after it.
   if (holidayNotice(now, { physical: true, shipCountry: "US" }) === HOLIDAY.label) {
@@ -34,7 +34,7 @@ export function TopLine() {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: hideIfDismissed }} />
-      <TopLineBar message={current} cta={site.cta} />
+      <TopLineBar message={current} cta={current.cta ?? site.cta} />
     </>
   );
 }
