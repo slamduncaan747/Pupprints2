@@ -223,7 +223,6 @@ export default async function OrderSuccessPage({ searchParams }: PageProps<"/ord
             ) : (
               <div className="aspect-[3/4] w-[86%] max-w-[480px] bg-paper-2" />
             )}
-            {!clean && src && <p className="label mt-6 text-center text-ink-3">Preview shown. Your file has no watermark.</p>}
           </div>
 
           {/* What happens next */}

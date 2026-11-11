@@ -382,9 +382,6 @@ export function ProductStep({
             {physical ? variant.label : "High-resolution file"}
           </p>
         </div>
-        <p className="mt-3 px-5 text-center text-[12px] text-ink-3 sm:px-0">
-          {physical ? "The preview watermark is never printed." : "The preview watermark is not on your file."}
-        </p>
       </div>
 
       {/* ---------------- Configurator ---------------- */}

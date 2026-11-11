@@ -171,7 +171,8 @@ export function watermarkSvg(width: number, height: number): string {
 }
 
 /**
- * Downscale a portrait and composite the watermark. Output is a progressive JPEG
+ * Downscale a portrait for the preview. Previews carry no watermark (the owner's choice, Nov 2026;
+ * the name is historical, and `watermarkSvg` is kept in case it is ever wanted back). Output is a progressive JPEG
  * (small, universally supported, and what the public `previews` bucket stores).
  */
 export async function makeWatermarkedPreview(input: Buffer, maxEdge = PREVIEW_MAX_EDGE): Promise<ImageResult> {
@@ -182,10 +183,7 @@ export async function makeWatermarkedPreview(input: Buffer, maxEdge = PREVIEW_MA
     .toColourspace("srgb")
     .toBuffer({ resolveWithObject: true });
 
-  const { width, height } = resized.info;
-  const overlay = Buffer.from(watermarkSvg(width, height));
   const { data, info } = await sharp(resized.data)
-    .composite([{ input: overlay, top: 0, left: 0 }])
     .jpeg({ quality: 82, mozjpeg: true, progressive: true })
     .toBuffer({ resolveWithObject: true });
   return { bytes: data, width: info.width, height: info.height, mime: "image/jpeg" };

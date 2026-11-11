@@ -51,16 +51,13 @@ export function ResultView({
           <motion.img
             key={active.generationId}
             src={active.previewUrl}
-            alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"} (watermarked preview)`}
+            alt={`${name || "Your dog"} as ${style?.name ?? "a portrait"}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.1, ease: "easeOut" }}
             className="aspect-[3/4] w-full object-cover"
           />
         </div>
-        <figcaption className="label mt-4 px-5 text-center text-ink-3 sm:px-0">
-          Preview only. No watermark on your piece.
-        </figcaption>
       </figure>
 
       {/* Caption + actions */}
