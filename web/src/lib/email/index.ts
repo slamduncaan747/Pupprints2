@@ -96,6 +96,8 @@ export type EmailMessage = {
   tag?: string;
   /** Resend de-duplicates sends with the same key for 24h (safe webhook retries). */
   idempotencyKey?: string;
+  /** Sender override (owner alerts use Resend's test sender until the domain is verified). */
+  from?: string;
 };
 
 /**
@@ -112,7 +114,7 @@ export async function sendEmail(msg: EmailMessage): Promise<SendResult> {
   try {
     const { data, error } = await c.emails.send(
       {
-        from: env.emailFrom,
+        from: msg.from ?? env.emailFrom,
         to: [msg.to],
         replyTo: process.env.EMAIL_REPLY_TO || site.supportEmail,
         subject: oneLine(msg.subject).slice(0, 200),

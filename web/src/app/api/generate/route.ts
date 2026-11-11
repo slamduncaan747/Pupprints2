@@ -7,6 +7,9 @@ import { letteringText, letterName } from "@/lib/image/lettering";
 import { BUCKETS, db, previewUrl, signedUrl } from "@/lib/supabase/server";
 import { storeObject } from "@/lib/image/storage";
 import { ensureSessionId, getIpHash, sessionStorageFolder } from "@/lib/session";
+import { PER_IP_DAILY_USD, PER_PERSON_DAILY_USD, portraitCost } from "@/lib/ai/cost";
+import { checkAiCredits } from "@/lib/alerts";
+import { after } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -130,32 +133,41 @@ export async function POST(req: Request) {
   }
   const generationId: string = row.id;
 
-  // Per-IP daily limit + optional site-wide daily cap (GLOBAL_DAILY_GENERATION_LIMIT). Only
-  // attempts that reached the AI count: failed and queued (pending) ones cost nothing.
+  // Spending limits, in dollars of AI cost over the last 24 hours: PER_PERSON_DAILY_USD per
+  // browser session, a looser backstop per network address, and an optional site-wide count cap.
+  // This attempt already has a row (no model yet), so it counts at the default estimate.
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  const countAttempts = async (byIp: boolean) => {
-    let q = supabase
+  const { data: recent, error: spendError } = await supabase
+    .from("generations")
+    .select("model, session_id, ip_hash")
+    .in("status", ["processing", "succeeded"])
+    .gte("created_at", since)
+    .or(`session_id.eq.${sessionId},ip_hash.eq.${ipHash}`)
+    .limit(500);
+  if (spendError) console.error("[generate] spend check failed", spendError.message);
+  let personSpend = 0;
+  let ipSpend = 0;
+  for (const r of recent ?? []) {
+    const usd = portraitCost(r.model);
+    if (r.session_id === sessionId) personSpend += usd;
+    if (r.ip_hash === ipHash) ipSpend += usd;
+  }
+  const globalLimit = env.globalDailyGenerationLimit;
+  let globalCount = 0;
+  if (globalLimit > 0) {
+    const { count } = await supabase
       .from("generations")
       .select("id", { count: "exact", head: true })
       .in("status", ["processing", "succeeded"])
       .gte("created_at", since);
-    if (byIp) q = q.eq("ip_hash", ipHash);
-    const { count, error } = await q;
-    if (error) console.error("[generate] limit count failed", error.message);
-    return count ?? 0;
-  };
-  const globalLimit = env.globalDailyGenerationLimit;
-  const [ipCount, globalCount] = await Promise.all([
-    countAttempts(true),
-    globalLimit > 0 ? countAttempts(false) : Promise.resolve(0),
-  ]);
-  if (ipCount > env.dailyGenerationLimitPerIp) {
+    globalCount = count ?? 0;
+  }
+  if (personSpend > PER_PERSON_DAILY_USD + 1e-9 || ipSpend > PER_IP_DAILY_USD + 1e-9) {
     await supabase.from("generations").delete().eq("id", generationId);
     return json(
       {
         error: "rate_limited",
-        message:
-          "You've reached today's limit for previews. Your portraits are saved, and you can make more tomorrow.",
+        message: "That's today's portraits. Yours are all saved here, and you can make more tomorrow.",
       },
       429,
     );
@@ -249,6 +261,9 @@ export async function POST(req: Request) {
         error: null,
       })
       .eq("id", generationId);
+
+    // After the response: email the owner if the AI credit balance has run low.
+    after(() => checkAiCredits());
 
     return json({
       generationId,

@@ -597,6 +597,9 @@ export async function runPostPaymentTasks(order: OrderRow, opts: { giftSendNow: 
   await sendConfirmationEmail(order, { giftEmailedNow, referralCode }).catch((err) =>
     console.error("[orders] confirmation failed", err),
   );
+  // Tell the owner, with the shipping details and full-resolution files (orders are made by hand).
+  const { notifyOwnerOfOrder } = await import("@/lib/alerts");
+  await notifyOwnerOfOrder(order);
 }
 
 /**

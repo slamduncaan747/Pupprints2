@@ -57,6 +57,8 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
   const [gift, setGift] = useState<GiftState | null>(giftToken ? { status: "loading" } : null);
   const [job, setJob] = useState<Job>({ kind: "idle" });
   const [styleView, setStyleView] = useState<"grid" | "result">("result");
+  /** Shown above the result when today's portrait budget is used up and we fell back to a saved one. */
+  const [limitNotice, setLimitNotice] = useState<string | null>(null);
   const [preselected, setPreselected] = useState<StyleSlug | undefined>(initialStyle);
   /** Set once the visitor heads to checkout: the keep-your-portrait prompt stays quiet after that. */
   const [checkingOut, setCheckingOut] = useState(false);
@@ -214,6 +216,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
     abortRef.current = controller;
     const startedAt = Date.now();
     setJob({ kind: "generating", style, startedAt });
+    setLimitNotice(null);
     setPreselected(style);
     goTo("style");
     track("GeneratePreview", { style, regenerate: Boolean(opts.force) });
@@ -245,6 +248,23 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
       if (e.code === "upload_not_found") {
         updateFlow((st) => ({ ...st, upload: null, extraUploads: [], activeId: null }));
         goTo("upload");
+      }
+      if (e.code === "rate_limited") {
+        // Today's budget is spent: never leave them empty-handed. Show the portrait they already
+        // have in this style, else their newest one for this photo, else their newest at all.
+        const st = readFlow();
+        const mine = st.generations.filter((g) => g.uploadId === upload.uploadId);
+        const fallback =
+          mine.find((g) => g.style === style) ??
+          [...mine].sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0] ??
+          [...st.generations].sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+        if (fallback) {
+          updateFlow((s2) => ({ ...s2, activeId: fallback.generationId }));
+          setLimitNotice(e.message);
+          setJob({ kind: "idle" });
+          setStyleView("result");
+          return;
+        }
       }
       const pendingId = typeof e.data.generationId === "string" ? e.data.generationId : undefined;
       setJob({ kind: "error", style, code: e.code, message: e.message, generationId: pendingId });
@@ -307,6 +327,12 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
       );
     } else if (styleView === "result" && active && job.kind !== "error") {
       content = (
+        <>
+        {limitNotice && (
+          <p role="status" className="mx-auto mt-6 max-w-md px-5 text-center text-[14px] leading-relaxed text-ink-2">
+            {limitNotice}
+          </p>
+        )}
         <ResultView
           active={active}
           generations={currentGens}
@@ -321,6 +347,7 @@ export function CreateFlow({ initialStyle, giftToken }: { initialStyle?: StyleSl
           }}
           onRegenerate={() => void generate(active.style, { force: true })}
         />
+        </>
       );
     } else {
       content = (
