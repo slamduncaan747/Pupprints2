@@ -25,7 +25,7 @@ CHANGE ONLY what the style brief below asks for: the artistic medium, the backgr
 
 COMPOSITION: a vertical 3:4 portrait. The dog's head and upper chest are the subject, centred left to right, eyes about one third from the top, head turned as in the photo. Leave clear space of about one tenth of the canvas above the ears and at each side so the picture can be cropped to 4:5 or 2:3 without cutting off the ears. The artwork fills the whole canvas edge to edge.
 
-FINISH: a finished, gallery-quality original artwork in the medium the style brief names, showing that medium's real texture (brushwork, paper grain, ink line or pencil; for a modern illustration, its clean matte finish). It must not look like a photo with a filter or a 3D render. Crisp, lifelike eyes with a small catch-light.
+FINISH: a finished, gallery-quality original artwork in the medium the style brief names, showing that medium's real texture (brushwork, paper grain, ink line or pencil; for a modern illustration, its clean matte finish). It must not look like a photo with a filter or a 3D render. Crisp, lifelike eyes with a small catch-light, both eyes the same colour as in the photo (never one blue eye unless the photo shows it).
 
 NEVER INCLUDE: text, letters, numbers, names, signatures, monograms, captions, watermarks or logos; borders, frames, mats, or the artwork shown hanging on a wall.`;
 
@@ -41,16 +41,16 @@ export const NAME_HEADROOM = "Leave the top fifth of the image as calm, empty ba
  */
 /** Added when a finished example of the style is attached as a second image. */
 export const STYLE_REFERENCE = `You are given TWO images.
-IMAGE 1 is the customer's dog: the only subject of the artwork. Its identity, markings, coat colour, eye colour and ear shape come from IMAGE 1 alone.
-IMAGE 2 is a STYLE REFERENCE: a finished artwork of a different dog. Make your artwork look as if the same artist made it on the same day: the same medium and mark-making, the same level of detail and simplification, the same palette temperature and saturation, the same background colour and treatment, the same lighting, the same head-and-chest crop and the same finish. Neutral, natural colour: no yellow or sepia cast unless IMAGE 2 has one.
-Never copy the dog, breed, pose, markings or any lettering from IMAGE 2.`;
+IMAGE 1 is the customer's dog: the only subject of the artwork. Everything about the dog comes from IMAGE 1 alone: its breed, face, markings, coat colour, ear shape and eye colour (both eyes the same colour as in the photo).
+IMAGE 2 is a STYLE SWATCH: two close-up cuttings from a finished artwork in the required style. It shows only the art materials: how the marks are made, how detailed or simplified the fur is, the palette temperature and saturation, and the exact background colour and treatment. Make your artwork in exactly that medium, with that background and that finish, as if by the same artist. Neutral, natural colour: no yellow or sepia cast unless the swatch has one.
+IMAGE 2 is not a dog to draw: take no shapes, markings, colours of fur, or composition from it.`;
 
 export function buildStylePrompt(style: StyleSlug, opts: { withName?: boolean; withReference?: boolean } = {}): string {
   const s = getStyle(style);
   if (!s) throw new Error(`Unknown style: ${style}`);
   return [
     opts.withReference
-      ? `${STYLE_REFERENCE}\n\nTurn the dog in IMAGE 1 into a finished artwork in the style of IMAGE 2, as described in the style brief.`
+      ? `${STYLE_REFERENCE}\n\nTurn the dog in IMAGE 1 into a finished head-and-chest artwork in the medium shown by IMAGE 2, as described in the style brief.`
       : "Turn the attached photo of this dog into the finished artwork described in the style brief.",
     `STYLE BRIEF (${s.name}):\n${opts.withName ? `${s.prompt} ${NAME_HEADROOM}` : s.prompt}`,
     "Final check before you finish: the same dog as in the photo, with identical markings, eye colour and ear shape; one complete artwork filling a vertical 3:4 canvas; no text or frame anywhere.",

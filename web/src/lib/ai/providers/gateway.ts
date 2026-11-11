@@ -72,7 +72,7 @@ async function editWithOpenAi(client: OpenAI, model: string, input: Parameters<P
   const { size, quality, inputFidelity } = openaiImageSettings(model.replace(/^[^/]+\//, ""));
   const ext = input.mime === "image/png" ? "png" : input.mime === "image/webp" ? "webp" : "jpg";
   const dog = await toFile(input.imageBytes, `dog.${ext}`, { type: input.mime });
-  const image = input.styleRef ? [dog, await toFile(input.styleRef.bytes, "style-reference.jpg", { type: input.styleRef.mime })] : dog;
+  const image = input.styleRef ? [dog, await toFile(input.styleRef.bytes, "style-swatch.jpg", { type: input.styleRef.mime })] : dog;
   const res = await client.images.edit(
     {
       model,
